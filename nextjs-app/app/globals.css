@@ -1,3 +1,58 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body,
+p {
+    line-height: 1.7;
+    font-family: var(--font-lato), sans-serif;
+    color: #000;
+    font-size: 19px;
+}
+
+p {
+    margin-top: 19px;
+    margin-bottom: 19px;
+}
+
+h2 {
+    width: 47%;
+    margin-bottom: 27px;
+    margin-top: 45px;
+    line-height: 1.2;
+    font-size: 29px;
+    font-style: normal;
+    font-weight: 900;
+    color: #00245d;
+}
+h3 {
+    font-family: var(--font-lato), sans-serif;
+    color: #000;
+    font-weight: 700;
+    width: 45%;
+    font-size: 29px;
+    line-height: 1.1;
+    font-size: 25px;
+    margin: 22px 0;
+}
+h4 {
+    margin-top: 45px;
+    font-size: 27px;
+    margin-bottom: 5px;
+    letter-spacing: -.3px;
+}
+
+.aside h4 {
+    font-size: 22px;
+    margin-top: 0;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 1.7;
+}
+
+.aside p {
+    line-height: 1.7;
+    margin-top: 19px;
+    margin-bottom: 19px;
+}
+

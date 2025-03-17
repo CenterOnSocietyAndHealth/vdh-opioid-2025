@@ -1,24 +1,21 @@
+import Image from 'next/image'
+import VDHlogo from '@/public/vdh.png'
+import CSHlogo from '@/public/csh-logo.svg'
+
 export default function Footer() {
   return (
-    <footer className="bg-gray-50 border-gray-100 border-t">
-      <div className="container">
-        <div className="flex flex-col items-center py-28 lg:flex-row">
-          <h3 className="mb-10 text-center text-4xl font-bold leading-tight tracking-tighter lg:mb-0 lg:w-1/2 lg:pr-4 lg:text-left lg:text-5xl">
-            Built with Sanity + Next.js.
-          </h3>
-          <div className="flex flex-col gap-3 items-center justify-center lg:w-1/2 lg:flex-row lg:pl-4">
-            <a
-              href="https://github.com/sanity-io/sanity-template-nextjs-clean"
-              className="rounded-full flex gap-2 items-center bg-black hover:bg-red-500 focus:bg-cyan-500 py-3 px-6 text-white transition-colors duration-200"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub
-            </a>
-            <a href="https://nextjs.org/docs" className="mx-3 hover:underline">
-              Read Next.js Documentation
-            </a>
-          </div>
+    <footer className="pb-10">
+      <hr className="my-10"></hr>
+      <div className="footer-container flex justify-between items-center">
+        <div className="footer-left">
+          <a href="https://www.vdh.virginia.gov/" target="_blank" rel="noopener noreferrer">
+            <Image src={VDHlogo} alt='VDH Logo' className="h-[50px] w-auto" />
+          </a>
+        </div>
+        <div className="footer-right">
+          <a href="https://societyhealth.vcu.edu/" target="_blank" rel="noopener noreferrer">
+            <Image src={CSHlogo} alt='CSH Logo' className="h-[50px] w-auto" />
+          </a>
         </div>
       </div>
     </footer>
