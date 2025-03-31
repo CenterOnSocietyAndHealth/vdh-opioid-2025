@@ -8,9 +8,31 @@ import BlockRenderer from "@/app/components/BlockRenderer";
 import { GetPageQueryResult } from "@/sanity.types";
 import { dataAttr } from "@/sanity/lib/utils";
 import { studioUrl } from "@/sanity/lib/api";
+import { LocalityProvider } from "@/app/contexts/LocalityContext";
 
 type PageBuilderPageProps = {
   page: GetPageQueryResult;
+  localities?: Array<{
+    _id: string;
+    counties: string;
+    fips: string;
+    opioidMetrics: {
+      totalPerCapita: number;
+      totalTotal: number;
+      laborPerCapita: number;
+      laborTotal: number;
+      healthcarePerCapita: number;
+      healthcareTotal: number;
+      crimeOtherPerCapita: number;
+      crimeOtherTotal: number;
+      householdPerCapita: number;
+      householdTotal: number;
+      totalTotalPercentile: number;
+      totalTotalComparison: string;
+      totalPerCapitaPercentile: number;
+      totalPerCapitaComparison: string;
+    };
+  }>;
 };
 
 type PageBuilderSection = {
@@ -27,34 +49,6 @@ type PageData = {
 /**
  * The PageBuilder component is used to render the blocks from the `pageBuilder` field in the Page type in your Sanity Studio.
  */
-
-function renderSections(
-  pageBuilderSections: PageBuilderSection[],
-  page: GetPageQueryResult,
-) {
-  if (!page) {
-    return null;
-  }
-  return (
-    <div
-      data-sanity={dataAttr({
-        id: page._id,
-        type: page._type,
-        path: `pageBuilder`,
-      }).toString()}
-    >
-      {pageBuilderSections.map((block: any, index: number) => (
-        <BlockRenderer
-          key={block._key}
-          index={index}
-          block={block}
-          pageId={page._id}
-          pageType={page._type}
-        />
-      ))}
-    </div>
-  );
-}
 
 function renderEmptyState(page: GetPageQueryResult) {
   if (!page) {
@@ -82,7 +76,8 @@ function renderEmptyState(page: GetPageQueryResult) {
   );
 }
 
-export default function PageBuilder({ page }: PageBuilderPageProps) {
+export default function PageBuilder({ page, localities }: PageBuilderPageProps) {
+
   const pageBuilderSections = useOptimistic<
     PageBuilderSection[] | undefined,
     SanityDocument<PageData>
@@ -112,7 +107,30 @@ export default function PageBuilder({ page }: PageBuilderPageProps) {
     return renderEmptyState(page);
   }
 
-  return pageBuilderSections && pageBuilderSections.length > 0
-    ? renderSections(pageBuilderSections, page)
-    : renderEmptyState(page);
+  if (!pageBuilderSections || pageBuilderSections.length === 0) {
+    return renderEmptyState(page);
+  }
+
+  return (
+    <LocalityProvider initialLocality={page.selectedLocality}>
+      <div
+        data-sanity={dataAttr({
+          id: page._id,
+          type: page._type,
+          path: `pageBuilder`,
+        }).toString()}
+      >
+        {pageBuilderSections.map((block: any, index: number) => (
+          <BlockRenderer
+            key={block._key}
+            index={index}
+            block={block}
+            pageId={page._id}
+            pageType={page._type}
+            localities={localities}
+          />
+        ))}
+      </div>
+    </LocalityProvider>
+  );
 }

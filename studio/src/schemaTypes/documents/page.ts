@@ -30,21 +30,22 @@ export const page = defineType({
       },
     }),
     defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'subheading',
-      title: 'Subheading',
-      type: 'string',
+      name: 'selectedLocality',
+      title: 'Selected Locality',
+      type: 'reference',
+      to: [{type: 'locality'}],
+      description: 'The currently selected locality for this page',
     }),
     defineField({
       name: 'pageBuilder',
       title: 'Page builder',
       type: 'array',
-      of: [{type: 'textContent'}],
+      of: [
+        { type: 'textContent' },
+        { type: 'localitySelector' },
+        { type: 'columnLayout' },
+        { type: 'costsMaps' },
+      ],
       options: {
         insertMenu: {
           // Configure the "Add Item" menu to display a thumbnail preview of the content type. https://www.sanity.io/docs/array-type#efb1fe03459d

@@ -27,6 +27,30 @@ const linkFields = /* groq */ `
       }
 `;
 
+export const localitiesQuery = defineQuery(`
+  *[_type == "locality"] | order(counties asc) {
+    _id,
+    counties,
+    fips,
+    opioidMetrics {
+      totalPerCapita,
+      totalTotal,
+      laborPerCapita,
+      laborTotal,
+      healthcarePerCapita,
+      healthcareTotal,
+      crimeOtherPerCapita,
+      crimeOtherTotal,
+      householdPerCapita,
+      householdTotal,
+      totalTotalPercentile,
+      totalTotalComparison,
+      totalPerCapitaPercentile,
+      totalPerCapitaComparison
+    }
+  }
+`);
+
 export const getPageQuery = defineQuery(`
   *[_type == 'page' && slug.current == $slug][0]{
     _id,
@@ -35,6 +59,33 @@ export const getPageQuery = defineQuery(`
     slug,
     heading,
     subheading,
+    "rawSelectedLocality": selectedLocality,
+    "selectedLocality": select(
+      defined(selectedLocality) => selectedLocality->{
+        _id,
+        counties,
+        demographics,
+        regions,
+        classification,
+        opioidMetrics {
+          totalPerCapita,
+          totalTotal,
+          laborPerCapita,
+          laborTotal,
+          healthcarePerCapita,
+          healthcareTotal,
+          crimeOtherPerCapita,
+          crimeOtherTotal,
+          householdPerCapita,
+          householdTotal,
+          totalTotalPercentile,
+          totalTotalComparison,
+          totalPerCapitaPercentile,
+          totalPerCapitaComparison
+        }
+      },
+      null
+    ),
     "pageBuilder": pageBuilder[]{
       ...,
       _type == "callToAction" => {

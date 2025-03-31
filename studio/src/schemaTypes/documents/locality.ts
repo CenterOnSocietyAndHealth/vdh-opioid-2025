@@ -1,11 +1,11 @@
 import { defineField, defineType } from 'sanity'
-import { DocumentIcon } from '@sanity/icons'
+import { IoLocationOutline } from "react-icons/io5";
 
 export const locality = defineType({
     name: 'locality',
     title: 'Locality',
     type: 'document',
-    icon: DocumentIcon,
+    icon: IoLocationOutline,
     fields: [
         defineField({
             name: 'counties',
@@ -18,6 +18,36 @@ export const locality = defineType({
             title: 'FIPS Code',
             type: 'string',
             validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+            name: 'Total_PerCapita',
+            title: 'Total Cost Per Capita',
+            type: 'number',
+            description: 'Total economic burden per person in the locality',
+        }),
+        defineField({
+            name: 'Labor_PerCapita',
+            title: 'Lost Labor Cost Per Capita',
+            type: 'number',
+            description: 'Lost productivity cost per person due to opioid-related deaths, disabilities, and incarcerations',
+        }),
+        defineField({
+            name: 'HealthCare_PerCapita',
+            title: 'Healthcare Cost Per Capita',
+            type: 'number',
+            description: 'Healthcare cost per person related to opioid use',
+        }),
+        defineField({
+            name: 'Crime_Other_PerCapita',
+            title: 'Crime and Other Costs Per Capita',
+            type: 'number',
+            description: 'Criminal justice and social services cost per person related to opioid use',
+        }),
+        defineField({
+            name: 'Household_PerCapita',
+            title: 'Household Cost Per Capita',
+            type: 'number',
+            description: 'Economic burden per person borne by households',
         }),
         defineField({
             name: 'opioidMetrics',
@@ -33,7 +63,31 @@ export const locality = defineType({
                 defineField({ name: 'crimeOtherPerCapita', title: 'Crime/Other Per Capita', type: 'number' }),
                 defineField({ name: 'crimeOtherTotal', title: 'Crime/Other Total', type: 'number' }),
                 defineField({ name: 'householdPerCapita', title: 'Household Per Capita', type: 'number' }),
-                defineField({ name: 'householdTotal', title: 'Household Total', type: 'number' })
+                defineField({ name: 'householdTotal', title: 'Household Total', type: 'number' }),
+                defineField({ 
+                    name: 'totalTotalPercentile', 
+                    title: 'Total Cost Percentile', 
+                    type: 'number',
+                    description: 'Percentile rank (1-100) for total cost among all localities'
+                }),
+                defineField({ 
+                    name: 'totalTotalComparison', 
+                    title: 'Total Cost Comparison', 
+                    type: 'string',
+                    description: 'Human-readable comparison phrase for total cost (e.g., "higher than 75%")'
+                }),
+                defineField({ 
+                    name: 'totalPerCapitaPercentile', 
+                    title: 'Total Per Capita Percentile', 
+                    type: 'number',
+                    description: 'Percentile rank (1-100) for per capita cost among all localities'
+                }),
+                defineField({ 
+                    name: 'totalPerCapitaComparison', 
+                    title: 'Total Per Capita Comparison', 
+                    type: 'string',
+                    description: 'Human-readable comparison phrase for per capita cost (e.g., "higher than 75%")'
+                })
             ]
         }),
         defineField({

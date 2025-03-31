@@ -74,6 +74,85 @@ export const blockContent = defineType({
               }),
             ],
           },
+          {
+            name: 'localityField',
+            type: 'object',
+            title: 'Locality Field',
+            icon: () => (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                <circle cx="12" cy="9" r="2.5" />
+              </svg>
+            ),
+            fields: [
+              defineField({
+                name: 'fieldPath',
+                title: 'Field Path',
+                type: 'string',
+                options: {
+                  list: [
+                    {title: 'County/City Name', value: 'counties'},
+                    {title: 'Total Population', value: 'demographics.totalPopulation'},
+                    {title: 'Median Age', value: 'demographics.medianAge'},
+                    {title: 'Median Income', value: 'demographics.medianIncome'},
+                    {title: 'Poverty Percentage', value: 'demographics.povertyPct'},
+                    {title: 'Health District', value: 'regions.healthDistrict'},
+                    {title: 'Health Region', value: 'regions.healthRegion'},
+                    {title: 'Cooper Center Region', value: 'regions.cooperCtrRegion'},
+                    {title: 'Category', value: 'classification.category'},
+                    {title: 'Urban/Rural', value: 'classification.urbanRural'},
+                    {title: 'Metro/Non-Metro', value: 'classification.metroNonMetro'},
+                    {title: 'Total Per Capita', value: 'opioidMetrics.totalPerCapita'},
+                    {title: 'Total Cost', value: 'opioidMetrics.totalTotal'},
+                    {title: 'Labor Per Capita', value: 'opioidMetrics.laborPerCapita'},
+                    {title: 'Labor Total', value: 'opioidMetrics.laborTotal'},
+                    {title: 'Healthcare Per Capita', value: 'opioidMetrics.healthcarePerCapita'},
+                    {title: 'Healthcare Total', value: 'opioidMetrics.healthcareTotal'},
+                    {title: 'Crime/Other Per Capita', value: 'opioidMetrics.crimeOtherPerCapita'},
+                    {title: 'Crime/Other Total', value: 'opioidMetrics.crimeOtherTotal'},
+                    {title: 'Household Per Capita', value: 'opioidMetrics.householdPerCapita'},
+                    {title: 'Household Total', value: 'opioidMetrics.householdTotal'},
+                    {title: 'Total Cost Percentile', value: 'opioidMetrics.totalTotalPercentile'},
+                    {title: 'Total Cost Comparison', value: 'opioidMetrics.totalTotalComparison'},
+                    {title: 'Total Per Capita Percentile', value: 'opioidMetrics.totalPerCapitaPercentile'},
+                    {title: 'Total Per Capita Comparison', value: 'opioidMetrics.totalPerCapitaComparison'},
+                  ],
+                },
+                validation: (Rule) => Rule.required(),
+              }),
+              defineField({
+                name: 'addArticle',
+                title: 'Add Article (a/an)',
+                type: 'boolean',
+                initialValue: false,
+                description: 'Adds "a" or "an" before the value based on whether it starts with a vowel',
+              }),
+              defineField({
+                name: 'textCase',
+                title: 'Text Case',
+                type: 'string',
+                options: {
+                  list: [
+                    {title: 'Default', value: 'default'},
+                    {title: 'Capitalize', value: 'capitalize'},
+                    {title: 'Lowercase', value: 'lowercase'},
+                  ],
+                },
+                initialValue: 'default',
+                description: 'Transform the text case of the value',
+              }),
+            ],
+          },
         ],
       },
     }),

@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import PageBuilderPage from "@/app/components/PageBuilder";
 import { sanityFetch } from "@/sanity/lib/live";
-import { getPageQuery, pagesSlugs } from "@/sanity/lib/queries";
+import { getPageQuery, pagesSlugs, localitiesQuery } from "@/sanity/lib/queries";
 import { GetPageQueryResult } from "@/sanity.types";
 
 type Props = {
@@ -45,8 +45,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function Page(props: Props) {
   const params = await props.params;
-  const [{ data: page }] = await Promise.all([
+  const [{ data: page }, { data: localities }] = await Promise.all([
     sanityFetch({ query: getPageQuery, params }),
+    sanityFetch({ query: localitiesQuery }),
   ]);
 
   if (!page?._id) {
@@ -56,6 +57,14 @@ export default async function Page(props: Props) {
       </div>
     );
   }
+
+  console.log('Page data:', {
+    rawSelectedLocality: page.rawSelectedLocality,
+    selectedLocality: page.selectedLocality,
+    pageId: page._id,
+    localities,
+    localitiesCount: localities?.length
+  });
 
   return (
     <div className="my-12 lg:my-24 max-w-xl mx-auto">
@@ -76,7 +85,7 @@ export default async function Page(props: Props) {
           </div>
         </div>
       </div>
-      <PageBuilderPage page={page as GetPageQueryResult} />
+      <PageBuilderPage page={page as GetPageQueryResult} localities={localities} />
     </div>
   );
 }

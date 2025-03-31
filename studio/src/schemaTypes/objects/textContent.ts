@@ -1,12 +1,13 @@
 import {defineField, defineType} from 'sanity'
-import {TextIcon} from '@sanity/icons'
-import React from 'react'
+import { LuLetterText } from "react-icons/lu";
+
+
 
 export const textContent = defineType({
   name: 'textContent',
   title: 'Text Content',
   type: 'object',
-  icon: TextIcon,
+  icon: LuLetterText,
   fields: [
     defineField({
       name: 'content',
@@ -39,7 +40,7 @@ export const textContent = defineType({
           {title: 'Large', value: 'large'},
         ],
       },
-      initialValue: 'medium',
+      initialValue: 'none',
     }),
     defineField({
       name: 'marginBottom',
@@ -87,8 +88,15 @@ export const textContent = defineType({
 
       return {
         title: 'Text Content',
-        subtitle: isAside ? 'Aside' : undefined
+        subtitle: isAside ? 'Aside' : undefined,
+        media: LuLetterText
       }
     },
   },
+  options: {
+    modal: {
+      type: 'dialog',
+      width: 'auto'
+    }
+  }
 }) 

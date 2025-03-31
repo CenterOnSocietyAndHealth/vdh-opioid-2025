@@ -61,6 +61,7 @@ const lato = Lato({
   variable: "--font-lato",
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -74,7 +75,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${lato.variable} bg-white text-black`}>
       <body>
-        <section className="min-h-screen pt-24 max-w-5xl mx-auto">
+        <section className="min-h-screen max-w-[1100px] mx-auto">
           {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
           <Toaster />
           {isDraftMode && (

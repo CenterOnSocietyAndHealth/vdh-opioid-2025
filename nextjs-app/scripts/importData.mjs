@@ -18,6 +18,34 @@ const client = createClient({
     apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION
 })
 
+const getPercentileRank = (values, value) => {
+    const sortedValues = [...values].sort((a, b) => a - b);
+    // Find the insertion point (like d3.bisect)
+    let left = 0;
+    let right = sortedValues.length;
+    while (left < right) {
+        const mid = Math.floor((left + right) / 2);
+        if (sortedValues[mid] < value) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+    return Math.round(100 * left / values.length);
+}
+
+const getComparisonPhrase = (percentileRank) => {
+    if (percentileRank === 1) {
+        return 'the lowest';
+    } else if (percentileRank <= 50) {
+        return `lower than ${100 - percentileRank}%`;
+    } else if (percentileRank === 100) {
+        return 'the highest';
+    } else {
+        return `higher than ${percentileRank}%`;
+    }
+}
+
 const importData = async () => {
     const results = []
 
@@ -26,15 +54,30 @@ const importData = async () => {
         .pipe(csv())
         .on('data', (data) => results.push(data))
         .on('end', async () => {
+            // Calculate all totalTotal and totalPerCapita values
+            const totalTotalValues = results.map(row => parseFloat(row.Total_Total));
+            const totalPerCapitaValues = results.map(row => parseFloat(row.Total_PerCapita));
+
             // Process each row
             for (const row of results) {
+                const totalTotal = parseFloat(row.Total_Total);
+                const totalPerCapita = parseFloat(row.Total_PerCapita);
+
+                // Calculate percentile ranks
+                const totalTotalPercentile = getPercentileRank(totalTotalValues, totalTotal);
+                const totalPerCapitaPercentile = getPercentileRank(totalPerCapitaValues, totalPerCapita);
+
+                // Calculate comparison phrases
+                const totalTotalComparison = getComparisonPhrase(totalTotalPercentile);
+                const totalPerCapitaComparison = getComparisonPhrase(totalPerCapitaPercentile);
+
                 const document = {
                     _type: 'locality',
                     counties: row.Counties,
                     fips: row.FIPS,
                     opioidMetrics: {
-                        totalPerCapita: parseFloat(row.Total_PerCapita),
-                        totalTotal: parseFloat(row.Total_Total),
+                        totalPerCapita,
+                        totalTotal,
                         laborPerCapita: parseFloat(row.Labor_PerCapita),
                         laborTotal: parseFloat(row.Labor_Total),
                         healthcarePerCapita: parseFloat(row.HealthCare_PerCapita),
@@ -42,7 +85,11 @@ const importData = async () => {
                         crimeOtherPerCapita: parseFloat(row.Crime_Other_PerCapita),
                         crimeOtherTotal: parseFloat(row.Crime_Other_Total),
                         householdPerCapita: parseFloat(row.Household_PerCapita),
-                        householdTotal: parseFloat(row.Household_Total)
+                        householdTotal: parseFloat(row.Household_Total),
+                        totalTotalPercentile,
+                        totalTotalComparison,
+                        totalPerCapitaPercentile,
+                        totalPerCapitaComparison
                     },
                     demographics: {
                         totalPopulation: parseInt(row.TotalPopulation),

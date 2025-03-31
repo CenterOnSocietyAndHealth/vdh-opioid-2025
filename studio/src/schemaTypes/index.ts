@@ -4,6 +4,9 @@ import {settings} from './singletons/settings'
 import {link} from './objects/link'
 import {blockContent} from './objects/blockContent'
 import {textContent} from './objects/textContent'
+import {localitySelector} from './objects/localitySelector'
+import {columnLayout} from './objects/columnLayout'
+import {costsMaps} from './objects/costsMaps'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -17,4 +20,7 @@ export const schemaTypes = [
   blockContent,
   link,
   textContent,
+  localitySelector,
+  columnLayout,
+  costsMaps,
 ]

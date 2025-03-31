@@ -1,25 +1,29 @@
 import React from "react";
 import { dataAttr } from "@/sanity/lib/utils";
 import TextContent from "./blocks/TextContent";
+import LocalitySelector from "./blocks/LocalitySelector";
+import ColumnLayout from "./blocks/ColumnLayout";
+import CostsMaps from "./blocks/CostsMaps";
+import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
   [key: string]: React.FC<any>;
 };
 
-type BlockType = {
-  _type: string;
-  _key: string;
-};
-
 type BlockProps = {
+  block: any;
   index: number;
-  block: BlockType;
   pageId: string;
   pageType: string;
+  localities?: Array<any>;
+  path?: string;
 };
 
 const Blocks: BlocksType = {
   textContent: TextContent,
+  localitySelector: LocalitySelector,
+  columnLayout: ColumnLayout,
+  costsMaps: CostsMaps,
 };
 
 /**
@@ -30,7 +34,12 @@ export default function BlockRenderer({
   index,
   pageId,
   pageType,
+  localities,
+  path,
 }: BlockProps) {
+  const { selectedLocality } = useLocality();
+  const blockPath = path || `pageBuilder[_key=="${block._key}"]`;
+
   // Block does exist
   if (typeof Blocks[block._type] !== "undefined") {
     return (
@@ -39,17 +48,23 @@ export default function BlockRenderer({
         data-sanity={dataAttr({
           id: pageId,
           type: pageType,
-          path: `pageBuilder[_key=="${block._key}"]`,
+          path: blockPath,
         }).toString()}
       >
         {React.createElement(Blocks[block._type], {
           key: block._key,
           block: block,
           index: index,
+          selectedLocality: selectedLocality,
+          localities: localities,
+          pageId,
+          pageType,
+          path: blockPath,
         })}
       </div>
     );
   }
+
   // Block doesn't exist yet
   return React.createElement(
     () => (

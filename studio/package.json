@@ -10,19 +10,22 @@
     "prebuild": "npm run extract-types",
     "build": "sanity build",
     "deploy": "sanity deploy",
-    "extract-types": "sanity schema extract --enforce-required-fields"
+    "extract-types": "sanity schema extract --enforce-required-fields",
+    "migrate-costs": "ts-node migrations/move-costs-data.ts"
   },
   "keywords": [
     "sanity"
   ],
   "dependencies": {
     "@sanity/assist": "^3.2.0",
+    "@sanity/client": "^6.12.3",
     "@sanity/icons": "^3.5.0",
     "@sanity/vision": "^3.77.0",
     "date-fns": "^3.6.0",
     "pluralize-esm": "^9.0.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.5.0",
     "rxjs": "^7.8.1",
     "sanity": "^3.77.0",
     "sanity-plugin-asset-source-unsplash": "^3.0.1",
@@ -33,6 +36,7 @@
     "@types/react": "^18.3.12",
     "eslint": "^8.6.0",
     "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   },
   "prettier": {

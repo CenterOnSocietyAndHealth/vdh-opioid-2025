@@ -1,20 +1,11 @@
 import { PortableText } from '@portabletext/react'
-import { TypedObject } from '@portabletext/types'
 import imageUrlBuilder from '@sanity/image-url'
 import { client } from '@/sanity/lib/client'
+import { useEffect, useState } from 'react'
+import { TextContentProps } from '@/app/types/locality'
 
 const urlForImage = (source: any) => {
   return imageUrlBuilder(client).image(source)
-}
-
-type TextContentProps = {
-  block: {
-    content: TypedObject[]
-    marginTop?: 'none' | 'small' | 'medium' | 'large'
-    marginBottom?: 'none' | 'small' | 'medium' | 'large'
-    isAside?: boolean
-    backgroundColor?: string
-  }
 }
 
 const marginMap = {
@@ -31,9 +22,30 @@ const marginBottomMap = {
   large: 'mb-16',
 }
 
-export default function TextContent({ block }: TextContentProps) {
-  const { content, marginTop = 'medium', marginBottom = 'medium', isAside = false, backgroundColor = '#b7e3d6' } = block
+const getNestedValue = (obj: any, path: string) => {
+  return path.split('.').reduce((acc, part) => acc && acc[part], obj)
+}
 
+export default function TextContent({ block, selectedLocality }: TextContentProps) {
+  const { content, marginTop = 'medium', marginBottom = 'medium', isAside = false, backgroundColor = '#b7e3d6' } = block
+  const [isUpdating, setIsUpdating] = useState(false)
+
+  // Listen for locality updates
+  useEffect(() => {
+    const handleUpdateStart = () => setIsUpdating(true)
+    const handleUpdateEnd = () => setIsUpdating(false)
+
+    window.addEventListener('localityUpdateStart', handleUpdateStart)
+    window.addEventListener('localityUpdateEnd', handleUpdateEnd)
+
+    return () => {
+      window.removeEventListener('localityUpdateStart', handleUpdateStart)
+      window.removeEventListener('localityUpdateEnd', handleUpdateEnd)
+    }
+  }, [])
+
+  console.log(selectedLocality)
+  
   return (
     <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
       <div className={isAside ? 'p-[35px_30px] aside' : ''} style={isAside ? { backgroundColor } : undefined}>
@@ -51,6 +63,66 @@ export default function TextContent({ block }: TextContentProps) {
                     alt={value.alt || ' '}
                     loading="lazy"
                   />
+                )
+              },
+            },
+            marks: {
+              localityField: ({ children, value }) => {
+                if (!selectedLocality || !value.fieldPath) {
+                  return children
+                }
+                const fieldValue = getNestedValue(selectedLocality, value.fieldPath)
+                if (fieldValue === undefined) {
+                  return children
+                }
+
+                // Format the value based on the field type
+                let displayValue = fieldValue
+                if (typeof fieldValue === 'number') {
+                  if (value.fieldPath.includes('PerCapita')) {
+                    displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                  } else if (value.fieldPath.includes('Total')) {
+                    displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                  } else if (value.fieldPath.includes('Pct')) {
+                    displayValue = `${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
+                  } else if (value.fieldPath.includes('Population')) {
+                    displayValue = fieldValue.toLocaleString()
+                  } else if (value.fieldPath.includes('Income')) {
+                    displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                  } else if (value.fieldPath.includes('Percentile')) {
+                    displayValue = `${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
+                  } else if (value.fieldPath.includes('Comparison')) {
+                    displayValue = `${fieldValue}`
+                  } else {
+                    displayValue = fieldValue.toLocaleString()
+                  }
+                }
+
+                // Transform text case if specified
+                if (typeof displayValue === 'string' && value.textCase) {
+                  switch (value.textCase) {
+                    case 'capitalize':
+                      displayValue = displayValue.split(' ').map(word => 
+                        word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+                      ).join(' ')
+                      break
+                    case 'lowercase':
+                      displayValue = displayValue.toLowerCase()
+                      break
+                  }
+                }
+
+                // Add article if requested
+                if (value.addArticle && typeof displayValue === 'string') {
+                  const firstChar = displayValue.toLowerCase().charAt(0)
+                  const article = ['a', 'e', 'i', 'o', 'u'].includes(firstChar) ? 'an' : 'a'
+                  displayValue = `${article} ${displayValue}`
+                }
+
+                return (
+                  <span className={`${isUpdating ? 'animate-pulse' : ''}`}>
+                    {isUpdating ? '...' : displayValue}
+                  </span>
                 )
               },
             },

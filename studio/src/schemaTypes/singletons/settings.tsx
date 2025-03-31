@@ -16,7 +16,7 @@ export const settings = defineType({
   fields: [
     defineField({
       name: 'title',
-      description: 'This field is the title of your blog.',
+      description: 'Costs of the Opioid Epidemic in Virginia',
       title: 'Title',
       type: 'string',
       initialValue: demo.title,
@@ -24,7 +24,7 @@ export const settings = defineType({
     }),
     defineField({
       name: 'description',
-      description: 'Used both for the <meta> description tag for SEO, and the blog subheader.',
+      description: 'Costs of the Opioid Epidemic in Virginia',
       title: 'Description',
       type: 'array',
       initialValue: demo.description,
@@ -92,6 +92,50 @@ export const settings = defineType({
               More information
             </a>
           ),
+        }),
+      ],
+    }),
+    defineField({
+      name: 'headerLine1',
+      title: 'Header Line 1',
+      type: 'string',
+      description: 'First line of the header text',
+      initialValue: 'Opioid Data',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'headerLine2',
+      title: 'Header Line 2',
+      type: 'string',
+      description: 'Second line of the header text',
+      initialValue: 'Financial Impact',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'headerBackground',
+      title: 'Header Background Image',
+      type: 'image',
+      description: 'Background image for the header section',
+      options: {
+        hotspot: true,
+        aiAssist: {
+          imageDescriptionField: 'alt',
+        },
+      },
+      fields: [
+        defineField({
+          name: 'alt',
+          description: 'Important for accessibility and SEO.',
+          title: 'Alternative text',
+          type: 'string',
+          validation: (rule) => {
+            return rule.custom((alt, context) => {
+              if ((context.document?.headerBackground as any)?.asset?._ref && !alt) {
+                return 'Required'
+              }
+              return true
+            })
+          },
         }),
       ],
     }),
