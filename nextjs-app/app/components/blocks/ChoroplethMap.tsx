@@ -13,6 +13,7 @@ type ChoroplethMapProps = {
   localities: Locality[];
   colors: string[];
   totalValue: number;
+  onLocalityClick?: (locality: Locality) => void;
 };
 
 export default function ChoroplethMap({ 
@@ -21,23 +22,25 @@ export default function ChoroplethMap({
   selectedLocality, 
   localities, 
   colors,
-  totalValue
+  totalValue,
+  onLocalityClick
 }: ChoroplethMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [tooltipContent, setTooltipContent] = useState('');
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 800);
   const mapGroupRef = useRef<SVGGElement | null>(null);
   const [transform, setTransform] = useState<d3.ZoomTransform>(d3.zoomIdentity);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Function to format numbers in a readable way
   function formatNumber(num: number, prefix = "", suffix = "") {
     if (num === undefined || num === null) return "N/A";
     const value = Number(num.toPrecision(3));
-    if (value >= 1e9) return `${prefix}` + (value / 1e9).toFixed(1) + ' Billion' + `${suffix}`;
-    if (value >= 1e6) return `${prefix}` + (value / 1e6).toFixed(1) + ' Million' + `${suffix}`;
+    if (value >= 1e9) return `${prefix}` + (value / 1e9).toFixed(2) + ' Billion' + `${suffix}`;
+    if (value >= 1e6) return `${prefix}` + (value / 1e6).toFixed(0) + ' Million' + `${suffix}`;
     if (value >= 1e3) return `${prefix}` + (value / 1e3).toFixed(1) + 'K' + `${suffix}`;
     return `${prefix}` + Math.round(value) + `${suffix}`;
   }
@@ -54,20 +57,25 @@ export default function ChoroplethMap({
   // Get field path for accessing data
   const getFieldPath = (locality: Locality, indicator: CostsMapIndicator, type: DisplayType) => {
     const basePath = 'opioidMetrics';
-    let indicatorLower = indicator.toLowerCase();
+    let fieldName = indicator.toLowerCase();
     
     // Special case for Crime_Other to match the field names in the data
-    if (indicatorLower === 'crime_other') {
-      indicatorLower = 'crimeOther';
+    if (fieldName === 'crime_other') {
+      fieldName = 'crimeOther';
+    }
+    // Special case for HealthCare to match the field names in the data
+    if (fieldName === 'healthcare') {
+      fieldName = 'healthcare';
     }
     
     const typeSuffix = type === 'PerCapita' ? 'PerCapita' : 'Total';
-    return `${basePath}.${indicatorLower}${typeSuffix}`;
+    return `${basePath}.${fieldName}${typeSuffix}`;
   };
 
   // Get value from nested property path
   const getValueFromPath = (obj: any, path: string): number => {
-    return path.split('.').reduce((o, key) => (o?.[key] !== undefined ? o[key] : 0), obj) || 0;
+    const value = path.split('.').reduce((o, key) => (o?.[key] !== undefined ? o[key] : 0), obj);
+    return value || 0;
   };
 
   // Set up window resize handler
@@ -90,6 +98,9 @@ export default function ChoroplethMap({
 
     const drawMap = async () => {
       try {
+        // Set initialized state to true after first render
+        setIsInitialized(true);
+
         // Load Virginia counties GeoJSON
         console.log('Attempting to load TopoJSON from: /virginia-counties.json');
         const response = await fetch('/virginia-counties.json');
@@ -261,7 +272,6 @@ export default function ChoroplethMap({
             return value ? colorScale(value) : "#ccc";
           })
           .attr("stroke", "#000")
-          .attr("stroke-width", 0.5)
           .attr("stroke-opacity", 1)
           .attr("stroke-width", (d: any) => {
             // Highlight selected locality
@@ -280,9 +290,33 @@ export default function ChoroplethMap({
             if ((fipsCode && selectedLocality.fips === fipsCode) || 
                 (d.properties.NAME && selectedLocality.counties === d.properties.NAME) ||
                 (d.properties.name && selectedLocality.counties === d.properties.name)) {
-              return 2;
+              return 3;
             }
             return 0.5;
+          })
+          .style("cursor", "pointer")
+          .on("click", (event: any, d: any) => {
+            // Get FIPS code using various property names
+            let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
+                          d.properties.id || d.id;
+            
+            // Add prefix if needed
+            if (fipsCode && typeof fipsCode === 'string' && !fipsCode.startsWith('51') && fipsCode.length === 3) {
+              fipsCode = `51${fipsCode}`;
+            }
+            
+            // Get locality name
+            const countyName = d.properties.NAME || d.properties.name;
+            
+            // Try to find matching locality
+            const locality = localities.find(loc => 
+              (fipsCode && loc.fips === fipsCode) || 
+              (countyName && loc.counties === countyName)
+            );
+            
+            if (locality && onLocalityClick) {
+              onLocalityClick(locality);
+            }
           })
           .on("mouseover", (event: any, d: any) => {
             // Handle mouseover event
@@ -351,7 +385,7 @@ export default function ChoroplethMap({
         const spacing = isMobile ? 30 : 20;
         
         const legend = svg.append("g")
-          .attr("transform", `translate(${isMobile ? 20 : 10}, ${isMobile ? height - legendHeight - 20 : 140})`);
+          .attr("transform", `translate(${isMobile ? 20 : 5}, ${isMobile ? height - legendHeight - 20 : 150})`);
         
         legend.append("rect")
           .attr("width", legendWidth)
@@ -388,115 +422,71 @@ export default function ChoroplethMap({
         
         // Add title
         const title = svg.append("g")
-          .attr("transform", `translate(${isMobile ? 20 : 20}, ${isMobile ? 50 : 30})`);
-        
-        title.append("rect")
-          .attr("width", isMobile ? width - 40 : 250)
-          .attr("height", isMobile ? 130 : 110)
-          .attr("fill", "white")
-          .attr("stroke", "#ddd")
-          .attr("stroke-width", 1);
+          .attr("transform", `translate(${isMobile ? 0 : 15}, ${isMobile ? 50 : 30})`);
         
         title.append("text")
-          .attr("x", 10)
-          .attr("y", 25)
-          .attr("font-size", isMobile ? "18px" : "16px")
-          .attr("font-weight", "bold")
+          .attr("x", 0)
+          .attr("y", 20)
+          .attr("font-family", "Lato, sans-serif")
+          .attr("font-weight", "800")
+          .attr("font-size", "23px")
           .text(`${indicatorDisplayNames[indicator]} Costs`);
           
         title.append("text")
-          .attr("x", 10)
-          .attr("y", 50)
-          .attr("font-size", isMobile ? "18px" : "16px")
-          .attr("font-weight", "bold")
+          .attr("x", 0)
+          .attr("y", 45)
+          .attr("font-family", "Lato, sans-serif")
+          .attr("font-weight", "800")
+          .attr("font-size", "23px")
           .text("in Virginia");
         
         title.append("text")
-          .attr("x", 10)
-          .attr("y", 80)
-          .attr("font-size", isMobile ? "16px" : "14px")
-          .text(formatNumber(totalValue, "$"));
+          .attr("x", 0)
+          .attr("y", 70)
+          .attr("font-size", isMobile ? "16px" : "23px")
+          .text(() => {
+            // Calculate total based on indicator
+            let total = 0;
+            switch (indicator) {
+              case 'Total':
+                total = localities.reduce((sum, loc) => sum + getValueFromPath(loc, 'opioidMetrics.totalTotal'), 0);
+                break;
+              case 'Labor':
+                total = localities.reduce((sum, loc) => sum + getValueFromPath(loc, 'opioidMetrics.laborTotal'), 0);
+                break;
+              case 'HealthCare':
+                total = localities.reduce((sum, loc) => sum + getValueFromPath(loc, 'opioidMetrics.healthcareTotal'), 0);
+                break;
+              case 'Crime_Other':
+                total = localities.reduce((sum, loc) => sum + getValueFromPath(loc, 'opioidMetrics.crimeOtherTotal'), 0);
+                break;
+              case 'Household':
+                total = localities.reduce((sum, loc) => sum + getValueFromPath(loc, 'opioidMetrics.householdTotal'), 0);
+                break;
+            }
+            return formatNumber(total, "$");
+          });
           
         title.append("text")
-          .attr("x", 10)
+          .attr("x", 0)
+          .attr("y", 87)
+          .attr("font-size", "12px")
+          .attr("font-weight", "400")
+          .text("Annual Economic Burden");
+          
+        title.append("text")
+          .attr("x", 0)
           .attr("y", 100)
-          .attr("font-size", isMobile ? "12px" : "10px")
-          .text("Economic Burden of Opioids in Virginia, 2021");
-        
-        // Add zoom controls
-        const zoomControls = svg.append("g")
-          .attr("transform", `translate(${width - 60}, ${height - 60})`);
+          .attr("font-size", "12px")
+          .attr("font-weight", "400")
+          .text("of Opioids Per Person by");
           
-        // Zoom in button
-        const zoomInButton = zoomControls.append("g")
-          .attr("class", "zoom-button zoom-in")
-          .style("cursor", "pointer")
-          .on("click", () => {
-            svg.transition().duration(300).call(
-              (zoom.scaleBy as any), 1.3
-            );
-          });
-        
-        zoomInButton.append("circle")
-          .attr("r", 15)
-          .attr("fill", "white")
-          .attr("stroke", "#666")
-          .attr("stroke-width", 1);
-          
-        zoomInButton.append("text")
-          .attr("text-anchor", "middle")
-          .attr("dy", "0.3em")
-          .attr("font-size", "20px")
-          .attr("font-weight", "bold")
-          .text("+");
-        
-        // Zoom out button
-        const zoomOutButton = zoomControls.append("g")
-          .attr("class", "zoom-button zoom-out")
-          .attr("transform", "translate(0, 35)")
-          .style("cursor", "pointer")
-          .on("click", () => {
-            svg.transition().duration(300).call(
-              (zoom.scaleBy as any), 0.7
-            );
-          });
-          
-        zoomOutButton.append("circle")
-          .attr("r", 15)
-          .attr("fill", "white")
-          .attr("stroke", "#666")
-          .attr("stroke-width", 1);
-          
-        zoomOutButton.append("text")
-          .attr("text-anchor", "middle")
-          .attr("dy", "0.3em")
-          .attr("font-size", "20px")
-          .attr("font-weight", "bold")
-          .text("−");
-        
-        // Reset button
-        const resetButton = zoomControls.append("g")
-          .attr("class", "zoom-button reset")
-          .attr("transform", "translate(0, 70)")
-          .style("cursor", "pointer")
-          .on("click", () => {
-            svg.transition().duration(300).call(
-              (zoom.transform as any), d3.zoomIdentity
-            );
-          });
-          
-        resetButton.append("circle")
-          .attr("r", 15)
-          .attr("fill", "white")
-          .attr("stroke", "#666")
-          .attr("stroke-width", 1);
-          
-        resetButton.append("text")
-          .attr("text-anchor", "middle")
-          .attr("font-size", "10px")
-          .attr("dy", "0.3em")
-          .attr("font-weight", "bold")
-          .text("RESET");
+        title.append("text")
+          .attr("x", 0)
+          .attr("y", 113)
+          .attr("font-size", "12px")
+          .attr("font-weight", "400")
+          .text("Locality in Virginia, 2021");
         
         // If a locality is selected, add an annotation
         if (selectedLocality) {
@@ -576,15 +566,6 @@ export default function ChoroplethMap({
           }
         }
         
-        // Add instruction text
-        svg.append("text")
-          .attr("x", width / 2)
-          .attr("y", height - 10)
-          .attr("text-anchor", "middle")
-          .attr("font-size", "10px")
-          .attr("fill", "#666")
-          .text("Drag to pan, use scroll wheel or buttons to zoom");
-        
         setMapLoaded(true);
       } catch (error) {
         console.error("Error rendering map:", error);
@@ -596,7 +577,12 @@ export default function ChoroplethMap({
 
   return (
     <div className="relative">
-      <svg ref={svgRef} className="w-full max-w-full" aria-label={`Map showing ${indicatorDisplayNames[indicator]} costs in Virginia`} />
+      <svg 
+        ref={svgRef} 
+        className="w-full max-w-full" 
+        aria-label={`Map showing ${indicatorDisplayNames[indicator]} costs in Virginia`}
+        style={{ visibility: isInitialized ? 'visible' : 'hidden' }}
+      />
       
       {!mapLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-60">

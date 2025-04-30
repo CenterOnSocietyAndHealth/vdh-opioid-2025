@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import { MdOutlineMap } from "react-icons/md";
+import { blockContent } from './blockContent';
 
 export const costsMaps = defineType({
   name: 'costsMaps',
@@ -67,6 +68,36 @@ export const costsMaps = defineType({
         ],
       },
       initialValue: 'none',
+    }),
+    defineField({
+      name: 'totalDescription',
+      title: 'Total Cost Description',
+      type: 'blockContent',
+      description: 'Detailed description for the Total Cost tab',
+    }),
+    defineField({
+      name: 'laborDescription',
+      title: 'Lost Labor Description',
+      type: 'blockContent',
+      description: 'Detailed description for the Lost Labor tab',
+    }),
+    defineField({
+      name: 'healthcareDescription',
+      title: 'Health Care Description',
+      type: 'blockContent',
+      description: 'Detailed description for the Health Care tab',
+    }),
+    defineField({
+      name: 'crimeOtherDescription',
+      title: 'Crime/Other Description',
+      type: 'blockContent',
+      description: 'Detailed description for the Crime/Other tab',
+    }),
+    defineField({
+      name: 'householdDescription',
+      title: 'Household Description',
+      type: 'blockContent',
+      description: 'Detailed description for the Household tab',
     }),
   ],
   preview: {

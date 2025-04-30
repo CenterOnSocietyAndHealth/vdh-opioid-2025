@@ -12,6 +12,11 @@ export interface CostsMapProps {
     type?: DisplayType;
     marginTop?: string;
     marginBottom?: string;
+    totalDescription?: any[];
+    laborDescription?: any[];
+    healthcareDescription?: any[];
+    crimeOtherDescription?: any[];
+    householdDescription?: any[];
   };
   localities?: Locality[];
   selectedLocality: Locality | null;

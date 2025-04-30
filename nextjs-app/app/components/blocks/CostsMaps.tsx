@@ -5,6 +5,7 @@ import { CostsMapProps, CostsMapIndicator, DisplayType } from '@/app/types/costs
 import { useLocality } from '@/app/contexts/LocalityContext';
 import dynamic from 'next/dynamic';
 import { Locality } from '@/app/types/locality';
+import { PortableText } from '@portabletext/react';
 
 // Define the ChoroplethMap props type to match what we'll pass to the dynamic component
 interface ChoroplethMapProps {
@@ -14,16 +15,17 @@ interface ChoroplethMapProps {
   localities: Locality[];
   colors: string[];
   totalValue: number;
+  onLocalityClick?: (locality: Locality) => void;
 }
 
 // Dynamic import for ChoroplethMap to avoid server-side rendering issues with D3
 const ChoroplethMap = dynamic<ChoroplethMapProps>(
-  () => import('@/app/components/blocks/ChoroplethMap').then((mod) => mod.default),
+  () => import('@/app/components/blocks/ChoroplethMap'),
   {
     ssr: false,
     loading: () => <div className="w-full h-[400px] bg-gray-100 flex items-center justify-center">Loading map...</div>
   }
-);
+) as React.ComponentType<ChoroplethMapProps>;
 
 // Mapping for the margin classes
 const marginMap: Record<string, string> = {
@@ -68,10 +70,11 @@ const tooltipContents = {
 };
 
 export default function CostsMaps({ block, localities, pageId }: CostsMapProps) {
-  const { selectedLocality } = useLocality();
+  const { selectedLocality, setSelectedLocality } = useLocality();
   const [indicatorTab, setIndicatorTab] = useState<CostsMapIndicator>(block.defaultIndicator || 'Total');
   const [tooltipOpen, setTooltipOpen] = useState<Record<string, boolean>>({});
   const [mounted, setMounted] = useState(false);
+  const [showDetailedDescription, setShowDetailedDescription] = useState(false);
 
   // Arrow positions for the tabs (in percentage)
   const arrowPositions = ['62%', '56%', '50%', '44%', '38%'];
@@ -96,13 +99,46 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
   const calculateTotal = (indicator: string) => {
     if (!localities) return 0;
     
-    const fieldPath = `opioidMetrics.${indicator.toLowerCase()}${displayType === 'PerCapita' ? 'PerCapita' : 'Total'}`;
+    let fieldName = indicator.toLowerCase();
+    // Special case for Crime_Other to match the field names in the data
+    if (fieldName === 'crime_other') {
+      fieldName = 'crimeOther';
+    }
+    // Special case for HealthCare to match the field names in the data
+    if (fieldName === 'healthcare') {
+      fieldName = 'healthcare';
+    }
+    
+    const fieldPath = `opioidMetrics.${fieldName}${displayType === 'PerCapita' ? 'PerCapita' : 'Total'}`;
     
     return localities.reduce((total, locality) => {
       // Access nested properties using the fieldPath
       const value = fieldPath.split('.').reduce((obj, key) => obj?.[key], locality as any) || 0;
       return total + value;
     }, 0);
+  };
+
+  // Handle locality click
+  const handleLocalityClick = (locality: Locality) => {
+    setSelectedLocality(locality);
+  };
+
+  // Get the description for the current tab
+  const getCurrentDescription = () => {
+    switch (indicatorTab) {
+      case 'Total':
+        return block.totalDescription;
+      case 'Labor':
+        return block.laborDescription;
+      case 'HealthCare':
+        return block.healthcareDescription;
+      case 'Crime_Other':
+        return block.crimeOtherDescription;
+      case 'Household':
+        return block.householdDescription;
+      default:
+        return null;
+    }
   };
 
   // Don't render until mounted on the client
@@ -120,30 +156,51 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
 
   return (
     <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+      {/* Detailed Description */}
+      {getCurrentDescription() && (
+        <div className="bg-white mt-4 mb-2">
+          <button
+            onClick={() => setShowDetailedDescription(!showDetailedDescription)}
+            className="text-sm font-bold uppercase tracking-wider text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center gap-2"
+          >
+            Detailed Chart Description{' '}
+            <span 
+              className="inline-block transform transition-transform duration-200"
+              style={{
+                transform: showDetailedDescription ? 'rotate(225deg) translate(-4px,-3px)' : 'rotate(45deg)',
+                display: 'inline-block',
+                width: '10px',
+                height: '10px',
+                borderRight: '3px solid currentColor',
+                borderBottom: '3px solid currentColor',
+                marginLeft: '4px',
+                marginTop: '-2px'
+              }}
+            />
+          </button>
+          <div
+            className={`px-2 py-0 max-w-none text-[16px] [&_p]:text-[16px] transition-all duration-300 ease-in-out ${
+              showDetailedDescription ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+            }`}
+          >
+            <PortableText value={getCurrentDescription()} />
+          </div>
+        </div>
+      )}
       <div className="relative mx-auto">
         {/* Tab Navigation */}
-        <div style={{ padding: '0px', backgroundColor: '#F3F3F3', borderRadius: '0px', border: 'solid 0.5px black', margin: '0' }}>
+        <div className="bg-[#F3F3F3] border border-black m-0">
           <div className="tab-section">
-            <div style={{ display: 'flex', boxSizing: 'border-box', borderBottom: 'solid 0.5px black', fontSize: 16 }}>
-              <div style={{
-                width: '80%',
-                backgroundColor: indicatorTab === 'Household' ? '#F3F3F4' : '#D3D8E2',
-                textAlign: 'center',
-                padding: '10px 38px',
-                fontWeight: 'bold',
-                borderRight: 'solid 0.5px black'
-              }}>BY SECTOR</div>
-              <div style={{
-                width: '20%',
-                backgroundColor: indicatorTab === 'Household' ? '#D3D8E2' : '#F3F3F4',
-                textAlign: 'center',
-                padding: '10px',
-                fontWeight: 'bold',
-                borderLeft: 'solid 0.5px black'
-              }}>BY PAYER</div>
+            <div className="flex box-border border-b border-black text-base">
+              <div className={`w-4/5 text-center py-2.5 px-[38px] font-bold border-r-[0.5px] border-black ${
+                indicatorTab === 'Household' ? 'bg-[#F3F3F4]' : 'bg-[#D3D8E2]'
+              }`}>BY SECTOR</div>
+              <div className={`w-1/5 text-center py-2.5 px-2.5 font-bold border-l-[0.5px] border-black ${
+                indicatorTab === 'Household' ? 'bg-[#D3D8E2]' : 'bg-[#F3F3F4]'
+              }`}>BY PAYER</div>
             </div>
             
-            <div role="tablist" style={{ display: 'flex', marginBottom: '0px' }}>
+            <div role="tablist" className="flex mb-0">
               {tabs.map((tab, index) => {
                 const isActiveTab = indicatorTab === tab;
                 
@@ -171,62 +228,37 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
                         setIndicatorTab(tabs[prevIndex]);
                       }
                     }}
-                    className={`chartTab ${isActiveTab ? 'active-tab' : ''}`}
-                    style={{
-                      flex: 1,
-                      padding: '12px 8px',
-                      cursor: 'pointer',
-                      borderRight: index === tabs.length - 1 ? 'none' : 'solid 0.5px black',
-                      borderLeft: index === 0 ? 'none' : '',
-                      borderBottom: 'solid 0.5px black',
-                      backgroundColor: isActiveTab ? '#082459' : '#EAEAEA',
-                      color: isActiveTab ? 'white' : 'black',
-                      position: 'relative',
-                      textAlign: 'center',
-                      fontWeight: 500,
-                      zIndex: 5 - index
-                    }}
+                    className={`flex-1 p-5 cursor-pointer relative text-center text-[21px] font-[300] z-[${5 - index}] ${
+                      index === tabs.length - 1 ? '' : 'border-r-[0.5px] border-black'
+                    } ${
+                      index === 0 ? '' : 'border-l-[0.5px] border-black'
+                    } border-b border-black ${
+                      isActiveTab ? 'bg-[#082459] text-white' : 'bg-[#EAEAEA] text-black'
+                    }`}
                   >
                     {tabIndicatorMapping[tab]}
                     <button
-                      className="info"
+                      className="info ml-[7px] -translate-y-0.5 w-[15px] h-[15px] border rounded-full inline-flex items-center justify-center p-0 bg-transparent cursor-pointer"
                       tabIndex={0}
                       aria-label={`${tabIndicatorMapping[tab]} information`}
                       title={tooltipContents[tab]}
                       style={{
-                        marginLeft: '7px',
-                        transform: 'translateY(-2px)',
-                        width: '15px',
-                        height: '15px',
-                        border: '1px solid',
-                        borderColor: isActiveTab ? 'white' : 'black',
-                        borderRadius: '50%',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: 0,
-                        backgroundColor: 'transparent',
-                        cursor: 'pointer'
+                        borderColor: isActiveTab ? 'white' : 'black'
                       }}
                     >
-                      <span aria-hidden="true" style={{ fontSize: '12px' }}>i</span>
+                      <span aria-hidden="true" className="text-xs">i</span>
                     </button>
                     
                     {isActiveTab && (
                       <div
-                        className="tabArrow"
+                        className="tabArrow absolute -bottom-4 left-1/2 -translate-x-1/2 z-10"
                         style={{
                           content: '""',
                           width: 0,
                           height: 0,
                           borderLeft: '16px solid transparent',
                           borderRight: '16px solid transparent',
-                          borderTop: '16px solid #082459',
-                          position: 'absolute',
-                          bottom: '-16px',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          zIndex: 10
+                          borderTop: '16px solid #082459'
                         }}
                       />
                     )}
@@ -238,7 +270,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
           
           {/* Map Container */}
           <div 
-            style={{ backgroundColor: 'white', padding: '0px', borderRadius: '0', minHeight: '400px' }}
+            className="bg-white p-0 min-h-[400px]"
             role="region"
             aria-label={`${tabIndicatorMapping[indicatorTab]} Costs Map`}
           >
@@ -250,9 +282,12 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
               localities={localities || []}
               colors={getColorsByIndicator(indicatorTab)}
               totalValue={calculateTotal(`${indicatorTab}`)}
+              onLocalityClick={handleLocalityClick}
             />
           </div>
         </div>
+        
+
         
         {/* Data Summary */}
         <div className="mt-6 p-4 border border-gray-300">

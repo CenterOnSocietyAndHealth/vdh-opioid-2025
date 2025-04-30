@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typegen": "sanity typegen generate"
+    "typegen": "sanity typegen generate",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@sanity/client": "^6.27.2",
@@ -35,14 +37,29 @@
     "topojson-client": "^3.1.0"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.6",
+    "@storybook/addon-essentials": "^8.6.12",
+    "@storybook/addon-onboarding": "^8.6.12",
+    "@storybook/blocks": "^8.6.12",
+    "@storybook/experimental-addon-test": "^8.6.12",
+    "@storybook/nextjs": "^8.6.12",
+    "@storybook/react": "^8.6.12",
+    "@storybook/test": "^8.6.12",
     "@types/node": "^20.17.17",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/topojson-client": "^3.1.5",
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.2.3",
+    "eslint-plugin-storybook": "^0.12.0",
     "postcss": "^8.4.49",
+    "storybook": "^8.6.12",
     "tailwindcss": "^3.4.15",
     "typescript": "5.6.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }
