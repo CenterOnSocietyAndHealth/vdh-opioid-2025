@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import imageUrlBuilder from '@sanity/image-url'
 import { client } from "@/sanity/lib/client";
 import { groq } from "next-sanity";
@@ -33,7 +34,7 @@ export default async function Header() {
       <div className="container max-w-[1288px] px-1 mx-auto flex items-center justify-between">
         <div className="logo h-[70px]">
           {logoUrl ? (
-            <a href="/">
+            <Link href="/">
               <Image 
                 src={logoUrl} 
                 alt={settings.logo.alt || "Virginia Opioid Cost Data Tool"}
@@ -41,11 +42,11 @@ export default async function Header() {
                 height={102}
                 style={{ maxHeight: '70px', width: 'auto', height: '100%' }}
               />
-            </a>
+            </Link>
           ) : (
-            <a href="/" className="text-2xl font-bold">
+            <Link href="/" className="text-2xl font-bold">
               Virginia Opioid Cost Data Tool
-            </a>
+            </Link>
           )}
         </div>
 
