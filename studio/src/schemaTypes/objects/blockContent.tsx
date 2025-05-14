@@ -20,6 +20,11 @@ export const blockContent = defineType({
     defineArrayMember({
       type: 'block',
       marks: {
+        decorators: [
+          {title: 'Strong', value: 'strong'},
+          {title: 'Emphasis', value: 'em'},
+          {title: 'Small Gray Text', value: 'smallGrayText'},
+        ],
         annotations: [
           {
             name: 'link',

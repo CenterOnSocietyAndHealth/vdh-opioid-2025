@@ -96,47 +96,111 @@ export const settings = defineType({
       ],
     }),
     defineField({
-      name: 'headerLine1',
-      title: 'Header Line 1',
-      type: 'string',
-      description: 'First line of the header text',
-      initialValue: 'Opioid Data',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'headerLine2',
-      title: 'Header Line 2',
-      type: 'string',
-      description: 'Second line of the header text',
-      initialValue: 'Financial Impact',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'headerBackground',
-      title: 'Header Background Image',
+      name: 'logo',
+      title: 'Logo',
       type: 'image',
-      description: 'Background image for the header section',
+      description: 'Logo displayed in the header',
       options: {
         hotspot: true,
-        aiAssist: {
-          imageDescriptionField: 'alt',
-        },
       },
       fields: [
         defineField({
           name: 'alt',
-          description: 'Important for accessibility and SEO.',
+          description: 'Alternative text for the logo image',
           title: 'Alternative text',
           type: 'string',
           validation: (rule) => {
             return rule.custom((alt, context) => {
-              if ((context.document?.headerBackground as any)?.asset?._ref && !alt) {
+              if ((context.document?.logo as any)?.asset?._ref && !alt) {
                 return 'Required'
               }
               return true
             })
           },
         }),
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'navigation',
+      title: 'Navigation Menu',
+      description: 'Navigation menu items displayed in the header',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          name: 'menuItem',
+          title: 'Menu Item',
+          fields: [
+            {
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            },
+            {
+              name: 'linkType',
+              title: 'Link Type',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Internal Page', value: 'internal' },
+                  { title: 'External URL', value: 'external' },
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'internal',
+              validation: (rule) => rule.required(),
+            },
+            {
+              name: 'internalLink',
+              title: 'Internal Page',
+              type: 'reference',
+              to: [{ type: 'page' }],
+              hidden: ({ parent }) => parent?.linkType !== 'internal',
+              validation: (rule) => rule.custom((value, context: any) => {
+                // Only required when linkType is internal
+                if (context.parent?.linkType === 'internal' && !value) {
+                  return 'Required'
+                }
+                return true
+              }),
+            },
+            {
+              name: 'externalLink',
+              title: 'External URL',
+              type: 'url',
+              description: 'URL for external link (e.g., "https://example.com")',
+              hidden: ({ parent }) => parent?.linkType !== 'external',
+              validation: (rule) => rule.custom((value, context: any) => {
+                // Only required when linkType is external
+                if (context.parent?.linkType === 'external' && !value) {
+                  return 'Required'
+                }
+                return true
+              }),
+            },
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              linkType: 'linkType',
+              internalRef: 'internalLink.name',
+              externalUrl: 'externalLink',
+            },
+            prepare(selection: any) {
+              const { title, linkType, internalRef, externalUrl } = selection;
+              const subtitle = linkType === 'internal' 
+                ? `Page: ${internalRef || 'Not selected'}`
+                : externalUrl || 'No URL set';
+              
+              return {
+                title,
+                subtitle,
+              }
+            },
+          },
+        },
       ],
     }),
   ],

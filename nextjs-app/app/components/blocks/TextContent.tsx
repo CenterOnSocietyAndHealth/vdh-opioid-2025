@@ -22,12 +22,26 @@ const marginBottomMap = {
   large: 'mb-16',
 }
 
+const alignmentMap = {
+  left: 'text-left',
+  center: 'text-center',
+  right: 'text-right',
+}
+
 const getNestedValue = (obj: any, path: string) => {
   return path.split('.').reduce((acc, part) => acc && acc[part], obj)
 }
 
 export default function TextContent({ block, selectedLocality }: TextContentProps) {
-  const { content, marginTop = 'medium', marginBottom = 'medium', isAside = false, backgroundColor = '#b7e3d6' } = block
+  const { 
+    content, 
+    marginTop = 'medium', 
+    marginBottom = 'medium', 
+    isAside = false, 
+    backgroundColor = '#b7e3d6',
+    textAlignment = 'left',
+    maxWidth
+  } = block
   const [isUpdating, setIsUpdating] = useState(false)
 
   // Listen for locality updates
@@ -48,7 +62,13 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
   
   return (
     <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
-      <div className={isAside ? 'p-[35px_30px] aside' : ''} style={isAside ? { backgroundColor } : undefined}>
+      <div 
+        className={`${isAside ? 'p-[35px_30px] aside' : ''} ${textAlignment && alignmentMap[textAlignment as keyof typeof alignmentMap] || 'text-left'}`} 
+        style={{
+          ...(isAside ? { backgroundColor } : {}),
+          ...(maxWidth ? { maxWidth: `${maxWidth}px`, marginLeft: 'auto', marginRight: 'auto' } : {})
+        }}
+      >
         <PortableText
           value={content}
           components={{
@@ -67,6 +87,19 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
               },
             },
             marks: {
+              smallGrayText: ({ children }) => (
+                <span style={{
+                  color: '#747474',
+                  fontFamily: 'Inter',
+                  fontSize: '14px',
+                  fontStyle: 'normal',
+                  fontWeight: 500,
+                  lineHeight: '130%',
+                  letterSpacing: '-0.266px',
+                }}>
+                  {children}
+                </span>
+              ),
               localityField: ({ children, value }) => {
                 if (!selectedLocality || !value.fieldPath) {
                   return children

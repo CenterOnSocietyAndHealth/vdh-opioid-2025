@@ -4,6 +4,7 @@ import TextContent from "./blocks/TextContent";
 import LocalitySelector from "./blocks/LocalitySelector";
 import ColumnLayout from "./blocks/ColumnLayout";
 import CostsMaps from "./blocks/CostsMaps";
+import CostsBreakdown from "./blocks/CostsBreakdown";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -24,6 +25,7 @@ const Blocks: BlocksType = {
   localitySelector: LocalitySelector,
   columnLayout: ColumnLayout,
   costsMaps: CostsMaps,
+  costsBreakdown: CostsBreakdown,
 };
 
 /**

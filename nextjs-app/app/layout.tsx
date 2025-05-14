@@ -2,7 +2,7 @@ import "./globals.css";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { Inter, Lato } from "next/font/google";
+import { Inter, Lato, Merriweather } from "next/font/google";
 import { draftMode } from "next/headers";
 import { VisualEditing, toPlainText } from "next-sanity";
 import { Toaster } from "sonner";
@@ -65,6 +65,14 @@ const lato = Lato({
   display: "swap",
 });
 
+const merriweather = Merriweather({
+  variable: "--font-merriweather",
+  subsets: ["latin"],
+  weight: ["300", "400", "700", "900"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
 export default async function RootLayout({
   children,
 }: {
@@ -73,9 +81,9 @@ export default async function RootLayout({
   const { isEnabled: isDraftMode } = await draftMode();
 
   return (
-    <html lang="en" className={`${inter.variable} ${lato.variable} bg-white text-black`}>
+    <html lang="en" className={`${inter.variable} ${lato.variable} ${merriweather.variable} bg-white text-black`}>
       <body>
-        <section className="min-h-screen max-w-[1100px] mx-auto">
+        <section className="min-h-screen mx-auto">
           {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
           <Toaster />
           {isDraftMode && (

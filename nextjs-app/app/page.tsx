@@ -20,7 +20,7 @@ export default async function Page() {
   });
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-[1288px] mx-auto px-1">
       <PageBuilderPage page={page as GetPageQueryResult} localities={localities} />
     </div>
   );

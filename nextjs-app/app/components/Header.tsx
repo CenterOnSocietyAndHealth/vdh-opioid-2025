@@ -1,7 +1,8 @@
-import Link from "next/link";
+import Image from "next/image";
 import imageUrlBuilder from '@sanity/image-url'
 import { client } from "@/sanity/lib/client";
 import { groq } from "next-sanity";
+import Navigation from "./Navigation";
 
 const urlForImage = (source: any) => {
   return imageUrlBuilder(client).image(source)
@@ -9,51 +10,49 @@ const urlForImage = (source: any) => {
 
 async function getSettings() {
   return client.fetch(groq`*[_type == "settings"][0]{
-    headerLine1,
-    headerLine2,
-    headerBackground
+    logo,
+    "navigationItems": navigation[] {
+      title,
+      linkType,
+      "slug": internalLink->slug.current,
+      externalLink
+    }
   }`);
 }
 
 export default async function Header() {
   const settings = await getSettings();
-  const backgroundImageUrl = settings?.headerBackground ? urlForImage(settings.headerBackground).url() : '';
+  const logoUrl = settings?.logo ? urlForImage(settings.logo).width(295).url() : '';
+  const navigationItems = settings?.navigationItems || [];
 
   return (
     <header 
       role="banner" 
-      className="relative w-full min-h-[275px] bg-no-repeat bg-[0_0] p-[63px_35px_5px] m-[16px_0_59px] rounded-[15px_55px_15px_55px] bg-cover my-[8px_0_59px] overflow-hidden"
-      style={{
-        backgroundImage: backgroundImageUrl ? `linear-gradient(180deg, transparent 10.94%, rgba(0, 0, 0, .28) 33.33%, #6d6d6d 99.99%, rgba(1, 1, 1, .99)), url(${backgroundImageUrl})` : 'none',
-      }}
+      className="w-full p-4 flex items-center justify-between bg-[#FFFDF8]"
     >
-      <div className="relative z-10">
-        <h1 
-          className="text-white font-bold mb-[6px] leading-none text-[31px] italic mt-[140px] font-size-[31px]" 
-          style={{
-            fontWeight: 700,
-            textShadow: '5px 5px 10px #000'
-          }}
-          title='title line 1'
-        >
-          {settings?.headerLine1 || 'Opioid Data'}
-        </h1>
-        <h1 
-          className="text-white font-bold leading-none mb-[33px] w-1/2" 
-          style={{
-            fontWeight: 700,
-            textShadow: '5px 5px 10px #000',
-            color: '#fff',
-            fontSize: '57px',
-            marginTop: 0,
-            fontStyle: 'normal'
-          }}
-          title='title line 2'
-        >
-          {settings?.headerLine2 || 'Financial Impact'}
-        </h1>
-      </div>
+      <div className="container max-w-[1288px] px-1 mx-auto flex items-center justify-between">
+        <div className="logo h-[70px]">
+          {logoUrl ? (
+            <a href="/">
+              <Image 
+                src={logoUrl} 
+                alt={settings.logo.alt || "Virginia Opioid Cost Data Tool"}
+                width={295}
+                height={102}
+                style={{ maxHeight: '70px', width: 'auto', height: '100%' }}
+              />
+            </a>
+          ) : (
+            <a href="/" className="text-2xl font-bold">
+              Virginia Opioid Cost Data Tool
+            </a>
+          )}
+        </div>
 
+        {/* Use the client-side Navigation component */}
+        <Navigation items={navigationItems} />
+        <div className="flex items-center gap-4 w-48"></div>
+      </div>
     </header>
   );
 }

@@ -16,6 +16,19 @@ export const textContent = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'textAlignment',
+      title: 'Text Alignment',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Left', value: 'left'},
+          {title: 'Center', value: 'center'},
+          {title: 'Right', value: 'right'},
+        ],
+      },
+      initialValue: 'left',
+    }),
+    defineField({
       name: 'isAside',
       title: 'Display as Aside',
       type: 'boolean',
@@ -55,6 +68,12 @@ export const textContent = defineType({
         ],
       },
       initialValue: 'none',
+    }),
+    defineField({
+      name: 'maxWidth',
+      title: 'Max Width',
+      type: 'number',
+      description: 'Set maximum width in pixels (leave empty for full width)',
     }),
   ],
   preview: {

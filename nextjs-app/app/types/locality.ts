@@ -64,6 +64,27 @@ export type TextContentProps = {
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
     isAside?: boolean;
     backgroundColor?: string;
+    textAlignment?: 'left' | 'center' | 'right';
+    maxWidth?: number;
   };
   selectedLocality?: Locality;
+};
+
+// Type for the costs breakdown component props
+export type CostsBreakdownProps = {
+  block: {
+    totalCost: string;
+    totalCostSubtitle?: string;
+    source?: string;
+    costSectors: Array<{
+      title: string;
+      subtitle?: string;
+      value: number;
+      color: string;
+      textColor?: string;
+      description?: any[];
+    }>;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  };
 }; 
