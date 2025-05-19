@@ -30,7 +30,7 @@
     "vitest": "^3.1.2"
   },
   "dependencies": {
-    "sanity": "^3.79.0",
+    "sanity": "^3.88.3",
     "styled-components": "^6.1.16"
   }
 }

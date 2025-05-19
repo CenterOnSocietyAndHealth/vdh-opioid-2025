@@ -82,7 +82,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${inter.variable} ${lato.variable} ${merriweather.variable} bg-white text-black`}>
-      <body>
+      <body suppressHydrationWarning>
         <section className="min-h-screen mx-auto">
           {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
           <Toaster />

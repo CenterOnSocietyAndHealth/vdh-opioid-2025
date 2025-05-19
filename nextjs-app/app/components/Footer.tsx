@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="pb-10">
       <hr className="my-10"></hr>
-      <div className="footer-container flex justify-between items-center">
+      <div className="footer-container flex justify-between items-center max-w-[1280px] mx-auto">
         <div className="footer-left">
           <a href="https://www.vdh.virginia.gov/" target="_blank" rel="noopener noreferrer">
             <Image src={VDHlogo} alt='VDH Logo' className="h-[50px] w-auto" />
