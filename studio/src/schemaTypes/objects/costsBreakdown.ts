@@ -24,6 +24,16 @@ export const costsBreakdown = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'updatedLast',
+      title: 'Updated Last',
+      type: 'date',
+    }),
+    defineField({
+      name: 'aside',
+      title: 'Aside',
+      type: 'blockContent',
+    }),
+    defineField({
       name: 'costSectors',
       title: 'Cost Sectors',
       type: 'array',
@@ -65,7 +75,7 @@ export const costsBreakdown = defineType({
             defineField({
               name: 'description',
               title: 'Description',
-              type: 'blockContent',
+              type: 'string',
             }),
           ],
           preview: {

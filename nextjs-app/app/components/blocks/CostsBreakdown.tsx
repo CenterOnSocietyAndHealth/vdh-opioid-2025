@@ -23,8 +23,6 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
     totalCostSubtitle, 
     source, 
     costSectors,
-    marginTop = 'medium', 
-    marginBottom = 'medium'
   } = block;
   
   const chartRef = useRef<HTMLDivElement>(null);
@@ -136,16 +134,59 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
     });
   }, [costSectors, chartWidth, totalCost, totalCostSubtitle]);
   
+  const totalValue = d3.sum(costSectors, d => d.value);
   return (
-    <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+    <div>
       <div ref={chartRef} className="w-full h-auto"></div>
       
-      {activeIndex !== null && costSectors[activeIndex].description && (
+      {/* Render aside/sidebar if present */}
+      {block.aside && (
         <div className="mt-8 bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-xl font-bold mb-3">{costSectors[activeIndex].title}</h3>
-          <PortableText value={costSectors[activeIndex].description} />
+          <PortableText value={block.aside} />
         </div>
       )}
+      
+      {/* Render all sector descriptions below the chart */}
+      <div className="mt-8 grid gap-8 md:grid-cols-2">
+        {costSectors.map((sector, i) => {
+          const percentOfTotal = sector.value / totalValue;
+          // For mini-graph: build an array of widths/colors for all sectors
+          let accumulated = 0;
+          const miniBarSegments = costSectors.map((s, idx) => {
+            const width = (s.value / totalValue) * 100;
+            const color = idx === i ? sector.color : '#E3E2D8';
+            const segment = (
+              <div
+                key={idx}
+                style={{
+                  width: `${width}%`,
+                  backgroundColor: color,
+                  height: '100%',
+                  display: 'inline-block',
+                  borderTopLeftRadius: idx === 0 ? 4 : 0,
+                  borderBottomLeftRadius: idx === 0 ? 4 : 0,
+                  borderTopRightRadius: idx === costSectors.length - 1 ? 4 : 0,
+                  borderBottomRightRadius: idx === costSectors.length - 1 ? 4 : 0,
+                }}
+              />
+            );
+            accumulated += width;
+            return segment;
+          });
+          return (
+            <div key={i} className="mb-8">
+              {/* Mini-graph bar */}
+              <div className="mb-2 w-full h-2 flex rounded overflow-hidden" style={{minWidth: 80, maxWidth: 240}}>
+                {miniBarSegments}
+              </div>
+              {/* Title */}
+              <h3 className="text-lg font-bold mb-2">{sector.title} - ${sector.value.toLocaleString('en-US', { maximumFractionDigits: 0 })}</h3>
+              {/* Description */}
+              <div className="text-base">{sector.description && <PortableText value={sector.description} />}</div>
+            </div>
+          );
+        })}
+      </div>
       
       {source && (
         <div className="mt-4 text-sm text-gray-500">

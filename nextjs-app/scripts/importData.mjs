@@ -46,22 +46,28 @@ const getComparisonPhrase = (percentileRank) => {
     }
 }
 
+const cleanCurrencyValue = (value) => {
+    if (!value) return 0;
+    // Remove currency symbol, commas, and trim whitespace
+    return parseFloat(value.replace(/[$,]/g, '').trim());
+}
+
 const importData = async () => {
     const results = []
 
     // Read CSV file
-    fs.createReadStream('nextjs-app/public/AllOpioidData2021e.csv')
+    fs.createReadStream('nextjs-app/public/AllOpioidData2021f.csv')
         .pipe(csv())
         .on('data', (data) => results.push(data))
         .on('end', async () => {
             // Calculate all totalTotal and totalPerCapita values
-            const totalTotalValues = results.map(row => parseFloat(row.Total_Total));
-            const totalPerCapitaValues = results.map(row => parseFloat(row.Total_PerCapita));
+            const totalTotalValues = results.map(row => cleanCurrencyValue(row.Total_Total));
+            const totalPerCapitaValues = results.map(row => cleanCurrencyValue(row.Total_PerCapita));
 
             // Process each row
             for (const row of results) {
-                const totalTotal = parseFloat(row.Total_Total);
-                const totalPerCapita = parseFloat(row.Total_PerCapita);
+                const totalTotal = cleanCurrencyValue(row.Total_Total);
+                const totalPerCapita = cleanCurrencyValue(row.Total_PerCapita);
 
                 // Calculate percentile ranks
                 const totalTotalPercentile = getPercentileRank(totalTotalValues, totalTotal);
@@ -73,26 +79,33 @@ const importData = async () => {
 
                 const document = {
                     _type: 'locality',
-                    counties: row.Counties,
+                    counties: row.LocalityName,
                     fips: row.FIPS,
+                    // Add top-level fields
+                    Total_PerCapita: totalPerCapita,
+                    Labor_PerCapita: cleanCurrencyValue(row.Labor_PerCapita),
+                    HealthCare_PerCapita: cleanCurrencyValue(row.Health_PerCapita),
+                    Crime_Other_PerCapita: cleanCurrencyValue(row.Crime_PerCapita),
+                    Household_PerCapita: cleanCurrencyValue(row.ChildFamily_PerCapita),
+                    // Keep nested fields under opioidMetrics
                     opioidMetrics: {
                         totalPerCapita,
                         totalTotal,
-                        laborPerCapita: parseFloat(row.Labor_PerCapita),
-                        laborTotal: parseFloat(row.Labor_Total),
-                        healthcarePerCapita: parseFloat(row.HealthCare_PerCapita),
-                        healthcareTotal: parseFloat(row.HealthCare_Total),
-                        crimeOtherPerCapita: parseFloat(row.Crime_Other_PerCapita),
-                        crimeOtherTotal: parseFloat(row.Crime_Other_Total),
-                        householdPerCapita: parseFloat(row.Household_PerCapita),
-                        householdTotal: parseFloat(row.Household_Total),
+                        laborPerCapita: cleanCurrencyValue(row.Labor_PerCapita),
+                        laborTotal: cleanCurrencyValue(row.Labor_Total),
+                        healthcarePerCapita: cleanCurrencyValue(row.Health_PerCapita),
+                        healthcareTotal: cleanCurrencyValue(row.Health_Total),
+                        crimeOtherPerCapita: cleanCurrencyValue(row.Crime_PerCapita),
+                        crimeOtherTotal: cleanCurrencyValue(row.Crime_Total),
+                        householdPerCapita: cleanCurrencyValue(row.ChildFamily_PerCapita),
+                        householdTotal: cleanCurrencyValue(row.ChildFamily_Total),
                         totalTotalPercentile,
                         totalTotalComparison,
                         totalPerCapitaPercentile,
                         totalPerCapitaComparison
                     },
                     demographics: {
-                        totalPopulation: parseInt(row.TotalPopulation),
+                        totalPopulation: parseInt(row.Population2023),
                         medianAge: parseFloat(row.MedianAgeYrs),
                         medianIncome: parseInt(row.MedianHHIncome),
                         povertyPct: parseFloat(row.PovertyPct)
@@ -123,9 +136,9 @@ const importData = async () => {
                         ...document,
                         _id: `locality-${row.FIPS.replace('us-va-', '')}`
                     })
-                    console.log(`Imported ${row.Counties}`)
+                    console.log(`Imported ${row.LocalityName}`)
                 } catch (error) {
-                    console.error(`Error importing ${row.Counties}:`, error)
+                    console.error(`Error importing ${row.LocalityName}:`, error)
                 }
             }
 

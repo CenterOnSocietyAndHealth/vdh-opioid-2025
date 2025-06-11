@@ -49,9 +49,9 @@ export default function ChoroplethMap({
   const indicatorDisplayNames: Record<CostsMapIndicator, string> = {
     'Total': 'Total',
     'Labor': 'Lost Labor',
-    'HealthCare': 'Health Care',
-    'Crime_Other': 'Crime / Other',
-    'Household': 'Household',
+    'HealthCare': 'Healthcare',
+    'Crime_Other': 'Criminal Justice',
+    'Household': 'Child Services & K-12',
   };
 
   // Get field path for accessing data
@@ -244,23 +244,49 @@ export default function ChoroplethMap({
           .attr("fill", (d: any) => {
             // Find matching locality by FIPS code or name
             // GeoJSON files can have different property names for FIPS codes
-            let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
-                           d.properties.id || d.id;
+            let fipsCode = d.properties?.FIPS || d.properties?.fips || d.properties?.GEOID || 
+                           d.properties?.id || d.id;
             
-            // Sometimes FIPS codes might need a prefix (e.g., "51" for Virginia)
-            if (fipsCode && typeof fipsCode === 'string' && !fipsCode.startsWith('51') && fipsCode.length === 3) {
-              fipsCode = `51${fipsCode}`;
+            // Get county name from properties
+            const countyName = d.properties?.NAME || d.properties?.name || d.properties?.NAMELSAD;
+            
+            // Clean up FIPS code format
+            if (fipsCode) {
+              // Remove any non-numeric characters
+              fipsCode = fipsCode.toString().replace(/\D/g, '');
+              // Ensure it's 5 digits (add leading zeros if needed)
+              fipsCode = fipsCode.padStart(3, '0');
+              // Add state prefix if not present
+              if (fipsCode.length === 3) {
+                fipsCode = `51${fipsCode}`;
+              }
             }
             
             // Try to find a matching locality by FIPS or name
-            const locality = localities.find(loc => 
-              (fipsCode && loc.fips === fipsCode) || 
-              (d.properties.NAME && loc.counties === d.properties.NAME) ||
-              (d.properties.name && loc.counties === d.properties.name)
-            );
+            const locality = localities.find(loc => {
+              // Clean up locality FIPS code for comparison
+              let locFips = loc.fips;
+              
+              if (locFips) {
+                // Remove 'us-va-' prefix if present
+                locFips = locFips.replace('us-va-', '');
+                // Remove any remaining non-numeric characters
+                locFips = locFips.toString().replace(/\D/g, '');
+                // Ensure it's 5 digits
+                locFips = locFips.padStart(3, '0');
+                // Add state prefix if not present
+                if (locFips.length === 3) {
+                  locFips = `51${locFips}`;
+                }
+              }
+              
+              const nameMatch = countyName && loc.counties === countyName;
+              const fipsMatch = fipsCode && locFips === fipsCode;
+              
+              return fipsMatch || nameMatch;
+            });
             
             if (!locality) {
-              console.log(`No match found for: ${d.properties.NAME || d.properties.name}, FIPS: ${fipsCode}`);
               return "#ccc";
             }
             
@@ -282,7 +308,7 @@ export default function ChoroplethMap({
                            d.properties.id || d.id;
                            
             // Add prefix if needed
-            if (fipsCode && typeof fipsCode === 'string' && !fipsCode.startsWith('51') && fipsCode.length === 3) {
+            if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
               fipsCode = `51${fipsCode}`;
             }
             
@@ -301,7 +327,7 @@ export default function ChoroplethMap({
                           d.properties.id || d.id;
             
             // Add prefix if needed
-            if (fipsCode && typeof fipsCode === 'string' && !fipsCode.startsWith('51') && fipsCode.length === 3) {
+            if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
               fipsCode = `51${fipsCode}`;
             }
             
@@ -325,7 +351,7 @@ export default function ChoroplethMap({
                           d.properties.id || d.id;
             
             // Add prefix if needed
-            if (fipsCode && typeof fipsCode === 'string' && !fipsCode.startsWith('51') && fipsCode.length === 3) {
+            if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
               fipsCode = `51${fipsCode}`;
             }
             
@@ -445,23 +471,27 @@ export default function ChoroplethMap({
           .attr("y", 70)
           .attr("font-size", isMobile ? "16px" : "23px")
           .text(() => {
-            // Calculate total based on indicator
+            // Find Virginia record (FIPS 51999)
+            const virginiaRecord = localities.find(loc => loc.fips === 'us-va-999');
+            if (!virginiaRecord) return formatNumber(0, "$");
+
+            // Get the total value based on indicator
             let total = 0;
             switch (indicator) {
               case 'Total':
-                total = localities.reduce((sum, loc) => sum + getValueFromPath(loc, 'opioidMetrics.totalTotal'), 0);
+                total = getValueFromPath(virginiaRecord, 'opioidMetrics.totalTotal');
                 break;
               case 'Labor':
-                total = localities.reduce((sum, loc) => sum + getValueFromPath(loc, 'opioidMetrics.laborTotal'), 0);
+                total = getValueFromPath(virginiaRecord, 'opioidMetrics.laborTotal');
                 break;
               case 'HealthCare':
-                total = localities.reduce((sum, loc) => sum + getValueFromPath(loc, 'opioidMetrics.healthcareTotal'), 0);
+                total = getValueFromPath(virginiaRecord, 'opioidMetrics.healthcareTotal');
                 break;
               case 'Crime_Other':
-                total = localities.reduce((sum, loc) => sum + getValueFromPath(loc, 'opioidMetrics.crimeOtherTotal'), 0);
+                total = getValueFromPath(virginiaRecord, 'opioidMetrics.crimeOtherTotal');
                 break;
               case 'Household':
-                total = localities.reduce((sum, loc) => sum + getValueFromPath(loc, 'opioidMetrics.householdTotal'), 0);
+                total = getValueFromPath(virginiaRecord, 'opioidMetrics.householdTotal');
                 break;
             }
             return formatNumber(total, "$");
@@ -486,7 +516,7 @@ export default function ChoroplethMap({
           .attr("y", 113)
           .attr("font-size", "12px")
           .attr("font-weight", "400")
-          .text("Locality in Virginia, 2021");
+          .text("Locality in Virginia, 2023");
         
         // If a locality is selected, add an annotation
         if (selectedLocality) {
@@ -497,7 +527,7 @@ export default function ChoroplethMap({
                           f.properties.id || f.id;
             
             // Add prefix if needed
-            if (fipsCode && typeof fipsCode === 'string' && !fipsCode.startsWith('51') && fipsCode.length === 3) {
+            if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
               fipsCode = `51${fipsCode}`;
             }
             

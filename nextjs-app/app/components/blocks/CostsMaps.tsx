@@ -6,6 +6,7 @@ import { useLocality } from '@/app/contexts/LocalityContext';
 import dynamic from 'next/dynamic';
 import { Locality } from '@/app/types/locality';
 import { PortableText } from '@portabletext/react';
+import topojson from 'topojson-client';
 
 // Define the ChoroplethMap props type to match what we'll pass to the dynamic component
 interface ChoroplethMapProps {
@@ -55,9 +56,9 @@ const colorSchemes = [
 const tabIndicatorMapping = {
   'Total': 'Total',
   'Labor': 'Lost Labor',
-  'HealthCare': 'Health Care',
-  'Crime_Other': 'Crime / Other',
-  'Household': 'Household',
+  'HealthCare': 'Healthcare',
+  'Crime_Other': 'Criminal Justice',
+  'Household': 'Child Services & K-12',
 };
 
 // Tooltip contents for each indicator
