@@ -31,7 +31,7 @@ export default async function Header() {
       role="banner" 
       className="w-full p-4 flex items-center justify-between bg-[#FFFDF8]"
     >
-      <div className="container max-w-[1288px] px-1 mx-auto flex items-center justify-between">
+      <div className="container max-w-[1311px] px-1 mx-auto flex items-center justify-between">
         <div className="logo h-[70px]">
           {logoUrl ? (
             <Link href="/">

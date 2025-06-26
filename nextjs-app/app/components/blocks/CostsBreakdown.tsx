@@ -40,6 +40,8 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   const chartRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [chartWidth, setChartWidth] = useState(0);
+  const [hoveredTooltipIndex, setHoveredTooltipIndex] = useState<number | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState<{left: number, top: number} | null>(null);
   
   useEffect(() => {
     if (!chartRef.current) return;
@@ -126,27 +128,45 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         .style('min-width', containerWidth < 768 ? `${blockWidth}px` : '0')
         .style('cursor', 'pointer')
         .style('position', 'relative')
-        .on('mouseenter', () => setActiveIndex(i))
-        .on('mouseleave', () => setActiveIndex(null));
+        .on('mouseenter', function() {
+          if (sector.showLabelAsTooltip) {
+            const rect = (this as HTMLElement).getBoundingClientRect();
+            const parentRect = chartRef.current?.getBoundingClientRect();
+            setTooltipPosition({
+              left: rect.left - (parentRect?.left || 0) + rect.width / 2,
+              top: rect.top - (parentRect?.top || 0),
+            });
+            setHoveredTooltipIndex(i);
+          }
+          setActiveIndex(i)
+        })
+        .on('mouseleave', function() {
+          if (sector.showLabelAsTooltip) {
+            setHoveredTooltipIndex(null);
+            setTooltipPosition(null);
+          }
+          setActiveIndex(null)
+        });
       
-      // Add value with scaled font size
-      block.append('div')
-        .attr('class', containerWidth < 640 ? 'text-[16px] font-bold mb-1' : 'text-[16px] font-bold mb-2')
-        .style('white-space', 'nowrap')
-        .style('overflow', 'hidden')
-        .style('text-overflow', 'ellipsis')
-        .text(formatCostAbbr(sector.value));
-        
+      // Add value with scaled font size only if not showLabelAsTooltip
+      if (!sector.showLabelAsTooltip) {
+        block.append('div')
+          .attr('class', 'font-bold mb-2')
+          .style('font-size', '18px')
+          .style('white-space', 'nowrap')
+          .style('overflow', 'hidden')
+          .style('text-overflow', 'ellipsis')
+          .text(formatCostAbbr(sector.value));
+      }
+      
       // Add title and subtitle with possibly smaller text on mobile, or as tooltip only
-      if (sector.showLabelAsTooltip) {
-        block.attr('title', `${sector.title}${sector.subtitle ? ' - ' + sector.subtitle : ''}`);
-      } else {
+      if (!sector.showLabelAsTooltip) {
         block.append('div')
           .style('white-space', 'normal')
           .style('word-wrap', 'break-word')
           .attr('class', containerWidth < 640 ? 'text-sm' : '')
           .html(`
-            <div class="font-medium">${sector.title}</div>
+            <div class="text-[18px]">${sector.title}</div>
             ${sector.subtitle ? `<div class="text-sm opacity-80">(${sector.subtitle})</div>` : ''}
           `);
       }
@@ -156,13 +176,55 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   const totalValue = d3.sum(costSectors, d => d.value);
   return (
     <div>
-      <div ref={chartRef} className="w-full h-auto"></div>
+      <div ref={chartRef} className="w-full h-auto" style={{position: 'relative'}}>
+        {/* Custom Tooltip for blocks with showLabelAsTooltip */}
+        {hoveredTooltipIndex !== null && tooltipPosition && costSectors[hoveredTooltipIndex] && costSectors[hoveredTooltipIndex].showLabelAsTooltip && (
+          <div
+            style={{
+              position: 'absolute',
+              left: tooltipPosition.left,
+              top: tooltipPosition.top + 5, // adjust as needed
+              transform: 'translate(-50%, -100%)',
+              zIndex: 50,
+              pointerEvents: 'none',
+            }}
+          >
+            <div style={{
+              background: '#fff',
+              borderRadius: 0,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              padding: '12px 16px',
+              minWidth: 120,
+              textAlign: 'left',
+              fontSize: 16,
+              fontWeight: 400,
+            }}>
+              <div style={{fontWeight: 700, fontSize: 20, marginBottom: 4}}>{formatCostAbbr(costSectors[hoveredTooltipIndex].value)}</div>
+              <div style={{fontWeight: 500, fontSize: 16}}>{costSectors[hoveredTooltipIndex].title}</div>
+              {costSectors[hoveredTooltipIndex].subtitle && (
+                <div style={{fontSize: 14, color: '#444', marginTop: 2}}>{costSectors[hoveredTooltipIndex].subtitle}</div>
+              )}
+            </div>
+            {/* Arrow */}
+            <div style={{
+              width: 0,
+              height: 0,
+              borderLeft: '12px solid transparent',
+              borderRight: '12px solid transparent',
+              borderTop: '12px solid #fff',
+              margin: '0 auto',
+              marginTop: -2,
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.10))',
+            }} />
+          </div>
+        )}
+      </div>
       
       {/* Render all sector descriptions and aside in a grid */}
-      <div className="mt-8 grid gap-8 md:grid-cols-3">
+      <div className="mt-6 grid gap-8 md:grid-cols-3 mb-12">
         {/* Breakdown descriptions in a nested 2-col grid */}
         <div className="md:col-span-2">
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="grid gap-12 md:grid-cols-2 mr-4">
             {costSectors.map((sector, i) => {
               const percentOfTotal = sector.value / totalValue;
               // For mini-graph: build an array of widths/colors for all sectors
@@ -187,15 +249,15 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
                 return segment;
               });
               return (
-                <div key={i} className="mb-8">
+                <div key={i} className="mb-0">
                   {/* Title */}
-                  <h3 className="text-lg font-bold mb-2">{sector.title} - {formatCostAbbr(sector.value)}</h3>
+                  <h3 className="text-lg font-bold mb-2 mt-0">{sector.title} - {formatCostAbbr(sector.value)}</h3>
                   {/* Mini-graph bar */}
                   <div className="mb-2 w-full h-2 flex overflow-hidden" style={{minWidth: 80}}>
                     {miniBarSegments}
                   </div>
                   {/* Description as plain text */}
-                  <div className="text-base">{sector.description}</div>
+                  <div className="font-[400] text-[16px] mt-3">{sector.description}</div>
                 </div>
               );
             })}
@@ -203,7 +265,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         </div>
         {/* Aside (1/3 column on desktop, below on mobile) */}
         {block.aside && (
-          <div className="bg-[#F3F2EC] p-6 h-full">
+          <div className="bg-[#F3F2EC] p-6 pt-8 pr-8 h-full aside-container">
             <PortableText value={block.aside} />
           </div>
         )}
