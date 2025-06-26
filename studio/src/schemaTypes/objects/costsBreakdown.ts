@@ -77,6 +77,13 @@ export const costsBreakdown = defineType({
               title: 'Description',
               type: 'string',
             }),
+            defineField({
+              name: 'showLabelAsTooltip',
+              title: 'Show Label as Tooltip Only',
+              type: 'boolean',
+              initialValue: false,
+              description: 'If true, the label will only appear as a tooltip on the chart.',
+            }),
           ],
           preview: {
             select: {

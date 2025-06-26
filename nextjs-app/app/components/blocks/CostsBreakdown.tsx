@@ -17,6 +17,18 @@ const marginBottomMap = {
   large: 'mb-16',
 };
 
+// Helper to format cost values as $3.41B, $891M, etc.
+function formatCostAbbr(value: number): string {
+  if (value >= 1_000_000_000) {
+    return `$${(value / 1_000_000_000).toPrecision(3)}B`;
+  } else if (value >= 1_000_000) {
+    return `$${(value / 1_000_000).toPrecision(3)}M`;
+  } else if (value >= 1_000) {
+    return `$${(value / 1_000).toPrecision(3)}K`;
+  }
+  return `$${value}`;
+}
+
 export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   const { 
     totalCost, 
@@ -76,7 +88,10 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       .style('border-bottom', '1px solid #ccc')
       .style('margin-bottom', '20px')
       .html(`
-        <div class="text-4xl font-bold">${totalCost}</div>
+        <div class="text-4xl font-bold">${(() => {
+          const num = typeof totalCost === 'string' ? Number(totalCost.replace(/[^\d.]/g, '')) : totalCost;
+          return !isNaN(num) && num > 0 ? formatCostAbbr(num) : totalCost;
+        })()}</div>
         <div class="text-lg">${totalCostSubtitle || 'Annual Cost'}</div>
       `);
       
@@ -120,17 +135,21 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         .style('white-space', 'nowrap')
         .style('overflow', 'hidden')
         .style('text-overflow', 'ellipsis')
-        .text(`$${sector.value.toLocaleString('en-US', { maximumFractionDigits: 0 })}`);
+        .text(formatCostAbbr(sector.value));
         
-      // Add title and subtitle with possibly smaller text on mobile
-      block.append('div')
-        .style('white-space', 'normal')
-        .style('word-wrap', 'break-word')
-        .attr('class', containerWidth < 640 ? 'text-sm' : '')
-        .html(`
-          <div class="font-medium">${sector.title}</div>
-          ${sector.subtitle ? `<div class="text-sm opacity-80">(${sector.subtitle})</div>` : ''}
-        `);
+      // Add title and subtitle with possibly smaller text on mobile, or as tooltip only
+      if (sector.showLabelAsTooltip) {
+        block.attr('title', `${sector.title}${sector.subtitle ? ' - ' + sector.subtitle : ''}`);
+      } else {
+        block.append('div')
+          .style('white-space', 'normal')
+          .style('word-wrap', 'break-word')
+          .attr('class', containerWidth < 640 ? 'text-sm' : '')
+          .html(`
+            <div class="font-medium">${sector.title}</div>
+            ${sector.subtitle ? `<div class="text-sm opacity-80">(${sector.subtitle})</div>` : ''}
+          `);
+      }
     });
   }, [costSectors, chartWidth, totalCost, totalCostSubtitle]);
   
@@ -139,53 +158,55 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
     <div>
       <div ref={chartRef} className="w-full h-auto"></div>
       
-      {/* Render aside/sidebar if present */}
-      {block.aside && (
-        <div className="mt-8 bg-gray-50 p-6 rounded-lg">
-          <PortableText value={block.aside} />
+      {/* Render all sector descriptions and aside in a grid */}
+      <div className="mt-8 grid gap-8 md:grid-cols-3">
+        {/* Breakdown descriptions in a nested 2-col grid */}
+        <div className="md:col-span-2">
+          <div className="grid gap-8 md:grid-cols-2">
+            {costSectors.map((sector, i) => {
+              const percentOfTotal = sector.value / totalValue;
+              // For mini-graph: build an array of widths/colors for all sectors
+              let accumulated = 0;
+              const miniBarSegments = costSectors.map((s, idx) => {
+                const width = (s.value / totalValue) * 100;
+                const color = idx === i ? sector.color : '#E3E2D8';
+                const segment = (
+                  <div
+                    key={idx}
+                    style={{
+                      width: `${width}%`,
+                      backgroundColor: color,
+                      height: '100%',
+                      display: 'inline-block',
+                      borderRadius: '0px',
+                      marginLeft: idx !== 0 ? 4 : 0,
+                    }}
+                  />
+                );
+                accumulated += width;
+                return segment;
+              });
+              return (
+                <div key={i} className="mb-8">
+                  {/* Title */}
+                  <h3 className="text-lg font-bold mb-2">{sector.title} - {formatCostAbbr(sector.value)}</h3>
+                  {/* Mini-graph bar */}
+                  <div className="mb-2 w-full h-2 flex overflow-hidden" style={{minWidth: 80}}>
+                    {miniBarSegments}
+                  </div>
+                  {/* Description as plain text */}
+                  <div className="text-base">{sector.description}</div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      )}
-      
-      {/* Render all sector descriptions below the chart */}
-      <div className="mt-8 grid gap-8 md:grid-cols-2">
-        {costSectors.map((sector, i) => {
-          const percentOfTotal = sector.value / totalValue;
-          // For mini-graph: build an array of widths/colors for all sectors
-          let accumulated = 0;
-          const miniBarSegments = costSectors.map((s, idx) => {
-            const width = (s.value / totalValue) * 100;
-            const color = idx === i ? sector.color : '#E3E2D8';
-            const segment = (
-              <div
-                key={idx}
-                style={{
-                  width: `${width}%`,
-                  backgroundColor: color,
-                  height: '100%',
-                  display: 'inline-block',
-                  borderTopLeftRadius: idx === 0 ? 4 : 0,
-                  borderBottomLeftRadius: idx === 0 ? 4 : 0,
-                  borderTopRightRadius: idx === costSectors.length - 1 ? 4 : 0,
-                  borderBottomRightRadius: idx === costSectors.length - 1 ? 4 : 0,
-                }}
-              />
-            );
-            accumulated += width;
-            return segment;
-          });
-          return (
-            <div key={i} className="mb-8">
-              {/* Mini-graph bar */}
-              <div className="mb-2 w-full h-2 flex rounded overflow-hidden" style={{minWidth: 80, maxWidth: 240}}>
-                {miniBarSegments}
-              </div>
-              {/* Title */}
-              <h3 className="text-lg font-bold mb-2">{sector.title} - ${sector.value.toLocaleString('en-US', { maximumFractionDigits: 0 })}</h3>
-              {/* Description */}
-              <div className="text-base">{sector.description && <PortableText value={sector.description} />}</div>
-            </div>
-          );
-        })}
+        {/* Aside (1/3 column on desktop, below on mobile) */}
+        {block.aside && (
+          <div className="bg-[#F3F2EC] p-6 h-full">
+            <PortableText value={block.aside} />
+          </div>
+        )}
       </div>
       
       {source && (

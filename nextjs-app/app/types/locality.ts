@@ -83,6 +83,7 @@ export type CostsBreakdownProps = {
       color: string;
       textColor?: string;
       description?: any[];
+      showLabelAsTooltip?: boolean;
     }>;
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
