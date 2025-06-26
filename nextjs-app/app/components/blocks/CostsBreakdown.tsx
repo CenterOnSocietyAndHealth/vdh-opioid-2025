@@ -20,6 +20,18 @@ const marginBottomMap = {
 // Helper to format cost values as $3.41B, $891M, etc.
 function formatCostAbbr(value: number): string {
   if (value >= 1_000_000_000) {
+    return `$${(value / 1_000_000_000).toPrecision(3)} Billion`;
+  } else if (value >= 1_000_000) {
+    return `$${(value / 1_000_000).toPrecision(3)} Million`;
+  } else if (value >= 1_000) {
+    return `$${(value / 1_000).toPrecision(3)} Thousand`;
+  }
+  return `$${value}`;
+}
+
+// Helper to format cost values as $3.41B, $891M, etc. (short form)
+function formatCostShort(value: number): string {
+  if (value >= 1_000_000_000) {
     return `$${(value / 1_000_000_000).toPrecision(3)}B`;
   } else if (value >= 1_000_000) {
     return `$${(value / 1_000_000).toPrecision(3)}M`;
@@ -85,24 +97,28 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
     // Create top header with total cost line
     container.append('div')
       .style('display', 'flex')
-      .style('justify-content', 'space-between')
-      .style('padding', '0 10px')
-      .style('border-bottom', '1px solid #ccc')
+      .style('flex-direction', 'column')
+      .style('align-items', 'center')
+      .style('padding', '0')
       .style('margin-bottom', '20px')
       .html(`
-        <div class="text-4xl font-bold">${(() => {
-          const num = typeof totalCost === 'string' ? Number(totalCost.replace(/[^\d.]/g, '')) : totalCost;
-          return !isNaN(num) && num > 0 ? formatCostAbbr(num) : totalCost;
-        })()}</div>
-        <div class="text-lg">${totalCostSubtitle || 'Annual Cost'}</div>
+        <div class="text-[24px] font-normal mb-4">${totalCostSubtitle || 'Annual Cost'}</div>
+        <div style="display: flex; align-items: center; width: 100%;">
+          <span style="flex: 1; height: 20px; border-top: 1px solid #000; border-left: 1px solid #000; margin-right: 36px; margin-top: 20px;"></span>
+          <span class="text-[24px]" style="white-space: nowrap; font-weight: 700;">
+            ${(() => {
+              const num = typeof totalCost === 'string' ? Number(totalCost.replace(/[^\d.]/g, '')) : totalCost;
+              return !isNaN(num) && num > 0 ? formatCostAbbr(num) : totalCost;
+            })()}
+          </span>
+          <span style="flex: 1; height: 20px; border-top: 1px solid #000; border-right: 1px solid #000; margin-left: 36px; margin-top: 20px;"></span>
+        </div>
       `);
       
     // Create blocks container with horizontal scroll for small screens
     const blocksContainer = container.append('div')
       .style('display', 'flex')
-      .style('gap', '5px')
       .style('width', '100%')
-      .style('overflow-x', 'auto') // Allow horizontal scroll if needed
       .style('padding-bottom', '10px'); // Space for scrollbar
     
     // Calculate total for percentage calculation
@@ -121,13 +137,17 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         .style('background-color', sector.color)
         .style('color', sector.textColor || '#fff')
         .style('border-radius', '0px')
-        .style('padding', containerWidth < 640 ? '8px' : '8px')
-        .style('flex', containerWidth < 768 ? 
-               `0 0 ${blockWidth}px` : // Fixed min-width on mobile
-               `0 0 ${Math.max(percentOfTotal * 98.5, 0)}%`) // Percentage-based on desktop
+        .style('padding', containerWidth < 640 ? '20px 10px' : '20px 10px')
+        .style('flex', containerWidth < 768
+          ? `0 0 ${blockWidth}px`
+          : (i === costSectors.length - 1
+              ? '1 1 0%'
+              : `0 0 ${(percentOfTotal * 100).toFixed(4)}%`)
+        )
         .style('min-width', containerWidth < 768 ? `${blockWidth}px` : '0')
         .style('cursor', 'pointer')
         .style('position', 'relative')
+        .style('margin-right', i !== costSectors.length - 1 ? '5px' : '0')
         .on('mouseenter', function() {
           if (sector.showLabelAsTooltip) {
             const rect = (this as HTMLElement).getBoundingClientRect();
@@ -156,7 +176,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
           .style('white-space', 'nowrap')
           .style('overflow', 'hidden')
           .style('text-overflow', 'ellipsis')
-          .text(formatCostAbbr(sector.value));
+          .text(formatCostShort(sector.value));
       }
       
       // Add title and subtitle with possibly smaller text on mobile, or as tooltip only
@@ -193,8 +213,8 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
               background: '#fff',
               borderRadius: 0,
               boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-              padding: '12px 16px',
-              minWidth: 120,
+              padding: '16px 16px',
+              minWidth: 150,
               textAlign: 'left',
               fontSize: 16,
               fontWeight: 400,
@@ -251,7 +271,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
               return (
                 <div key={i} className="mb-0">
                   {/* Title */}
-                  <h3 className="text-lg font-bold mb-2 mt-0">{sector.title} - {formatCostAbbr(sector.value)}</h3>
+                  <h3 className="text-lg font-bold mb-2 mt-0">{sector.title} - {formatCostShort(sector.value)}</h3>
                   {/* Mini-graph bar */}
                   <div className="mb-2 w-full h-2 flex overflow-hidden" style={{minWidth: 80}}>
                     {miniBarSegments}
