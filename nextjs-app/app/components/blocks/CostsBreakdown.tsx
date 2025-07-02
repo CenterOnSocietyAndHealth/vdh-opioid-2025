@@ -214,13 +214,13 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
               borderRadius: 0,
               boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
               padding: '16px 16px',
-              minWidth: 150,
+              minWidth: 170,
               textAlign: 'left',
               fontSize: 16,
               fontWeight: 400,
             }}>
-              <div style={{fontWeight: 700, fontSize: 20, marginBottom: 4}}>{formatCostAbbr(costSectors[hoveredTooltipIndex].value)}</div>
-              <div style={{fontWeight: 500, fontSize: 16}}>{costSectors[hoveredTooltipIndex].title}</div>
+              <div style={{fontWeight: 700, fontSize: 18, marginBottom: 4}}>{formatCostAbbr(costSectors[hoveredTooltipIndex].value)}</div>
+              <div style={{fontWeight: 500, fontSize: 18}}>{costSectors[hoveredTooltipIndex].title}</div>
               {costSectors[hoveredTooltipIndex].subtitle && (
                 <div style={{fontSize: 14, color: '#444', marginTop: 2}}>{costSectors[hoveredTooltipIndex].subtitle}</div>
               )}
