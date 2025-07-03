@@ -58,7 +58,7 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
     }
   }, [])
 
-  console.log(selectedLocality)
+  console.log(content)
   
   return (
     <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
