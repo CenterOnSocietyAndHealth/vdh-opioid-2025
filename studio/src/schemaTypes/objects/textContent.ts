@@ -38,7 +38,7 @@ export const textContent = defineType({
       name: 'backgroundColor',
       title: 'Background Color',
       type: 'string',
-      initialValue: '#b7e3d6',
+      initialValue: '#f0f0f0',
       hidden: ({parent}) => !parent?.isAside,
     }),
     defineField({

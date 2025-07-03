@@ -38,7 +38,7 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
     marginTop = 'medium', 
     marginBottom = 'medium', 
     isAside = false, 
-    backgroundColor = '#b7e3d6',
+    backgroundColor = '#f0f0f0',
     textAlignment = 'left',
     maxWidth
   } = block
@@ -63,7 +63,7 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
   return (
     <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
       <div 
-        className={`${isAside ? 'p-[35px_30px] aside' : ''} ${textAlignment && alignmentMap[textAlignment as keyof typeof alignmentMap] || 'text-left'}`} 
+        className={`content-container ${isAside ? 'p-[35px_30px] aside' : ''} ${textAlignment && alignmentMap[textAlignment as keyof typeof alignmentMap] || 'text-left'}`} 
         style={{
           ...(isAside ? { backgroundColor } : {}),
           ...(maxWidth ? { maxWidth: `${maxWidth}px`, marginLeft: 'auto', marginRight: 'auto' } : {})

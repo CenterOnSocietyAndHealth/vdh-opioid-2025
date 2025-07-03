@@ -47,23 +47,22 @@ h1 {
 }
 
 h2 {
-    width: 47%;
-    margin-bottom: 27px;
-    margin-top: 45px;
-    line-height: 1.2;
-    font-size: 29px;
+    color: #000;
+    font-family: "DM Sans";
+    font-size: 30px;
     font-style: normal;
-    font-weight: 900;
-    color: #00245d;
+    font-weight: 600;
+    line-height: 130%;
+    letter-spacing: -0.66px;
 }
 h3 {
-    font-family: var(--font-lato), sans-serif;
     color: #000;
-    font-weight: 700;
-    font-size: 29px;
-    line-height: 1.1;
-    font-size: 25px;
-    margin: 22px 0;
+    font-family: "DM Sans";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    letter-spacing: -0.528px;
 }
 h4 {
     margin-top: 45px;
@@ -87,6 +86,24 @@ h4 {
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+}
+
+/* Content Container List Styles */
+.content-container ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.content-container ul li {
+    margin-bottom: 0.5rem;
+    line-height: 130%;
+}
+
+.content-container ul ul {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 /* Cost Maps Component Styles */
