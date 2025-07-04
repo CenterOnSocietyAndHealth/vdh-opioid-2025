@@ -32,6 +32,13 @@ const getNestedValue = (obj: any, path: string) => {
   return path.split('.').reduce((acc, part) => acc && acc[part], obj)
 }
 
+// Function to clean corrupted string values by removing invisible Unicode characters
+const cleanString = (str: string | undefined): string | undefined => {
+  if (typeof str !== 'string') return str
+  // Remove invisible Unicode characters that might be causing corruption
+  return str.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim()
+}
+
 export default function TextContent({ block, selectedLocality }: TextContentProps) {
   const { 
     content, 
@@ -43,16 +50,22 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
     maxWidth
   } = block
 
+  // Clean corrupted string values
+  const cleanMarginTop = cleanString(marginTop)
+  const cleanMarginBottom = cleanString(marginBottom)
+  const cleanTextAlignment = cleanString(textAlignment)
+  const cleanBackgroundColor = cleanString(backgroundColor)
+
   // Validate and sanitize backgroundColor to prevent corruption
-  const sanitizedBackgroundColor = typeof backgroundColor === 'string' && 
-    backgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? backgroundColor : '#f0f0f0'
+  const sanitizedBackgroundColor = typeof cleanBackgroundColor === 'string' && 
+    cleanBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? cleanBackgroundColor : '#f0f0f0'
   
   // Validate margin values to prevent undefined classes
-  const validMarginTop = marginTop && marginMap[marginTop] ? marginTop : 'none'
-  const validMarginBottom = marginBottom && marginBottomMap[marginBottom] ? marginBottom : 'none'
+  const validMarginTop = cleanMarginTop && marginMap[cleanMarginTop as keyof typeof marginMap] ? cleanMarginTop : 'none'
+  const validMarginBottom = cleanMarginBottom && marginBottomMap[cleanMarginBottom as keyof typeof marginBottomMap] ? cleanMarginBottom : 'none'
   
   // Validate text alignment to prevent undefined classes
-  const validTextAlignment = textAlignment && alignmentMap[textAlignment as keyof typeof alignmentMap] ? textAlignment : 'left'
+  const validTextAlignment = cleanTextAlignment && alignmentMap[cleanTextAlignment as keyof typeof alignmentMap] ? cleanTextAlignment : 'left'
   const [isUpdating, setIsUpdating] = useState(false)
 
   // Listen for locality updates
@@ -70,20 +83,27 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
   }, [])
 
   console.log('TextContent block:', { marginTop, marginBottom, isAside, backgroundColor, textAlignment, maxWidth })
+  console.log('Cleaned values:', { 
+    cleanMarginTop, 
+    cleanMarginBottom, 
+    cleanTextAlignment, 
+    cleanBackgroundColor 
+  })
   console.log('Margin classes:', { 
-    topClass: marginMap[validMarginTop], 
-    bottomClass: marginBottomMap[validMarginBottom] 
+    topClass: marginMap[validMarginTop as keyof typeof marginMap], 
+    bottomClass: marginBottomMap[validMarginBottom as keyof typeof marginBottomMap] 
   })
   console.log('Text alignment:', { 
     original: textAlignment, 
+    cleaned: cleanTextAlignment,
     valid: validTextAlignment, 
-    class: alignmentMap[validTextAlignment] 
+    class: alignmentMap[validTextAlignment as keyof typeof alignmentMap] 
   })
   
   return (
-    <div className={`${marginMap[validMarginTop]} ${marginBottomMap[validMarginBottom]}`}>
+    <div className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
       <div 
-        className={`content-container ${isAside ? 'p-[35px_30px] aside' : ''} ${alignmentMap[validTextAlignment]}`} 
+        className={`content-container ${isAside ? 'p-[35px_30px] aside' : ''} ${alignmentMap[validTextAlignment as keyof typeof alignmentMap]}`} 
         style={{
           ...(isAside ? { backgroundColor: sanitizedBackgroundColor } : {}),
           ...(maxWidth ? { maxWidth: `${maxWidth}px`, marginLeft: 'auto', marginRight: 'auto' } : {})
