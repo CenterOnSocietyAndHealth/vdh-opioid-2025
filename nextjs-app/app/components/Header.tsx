@@ -36,10 +36,10 @@ export default async function Header() {
           {logoUrl ? (
             <Link href="/">
               <Image 
-                src={logoUrl} 
+                src={urlForImage(settings.logo).width(590).url()} 
                 alt={settings.logo.alt || "Virginia Opioid Cost Data Tool"}
-                width={295}
-                height={102}
+                width={590}
+                height={204}
                 style={{ maxHeight: '70px', width: 'auto', height: '100%' }}
               />
             </Link>
