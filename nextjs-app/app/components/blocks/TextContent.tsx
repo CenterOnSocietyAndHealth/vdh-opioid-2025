@@ -50,6 +50,9 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
   // Validate margin values to prevent undefined classes
   const validMarginTop = marginTop && marginMap[marginTop] ? marginTop : 'none'
   const validMarginBottom = marginBottom && marginBottomMap[marginBottom] ? marginBottom : 'none'
+  
+  // Validate text alignment to prevent undefined classes
+  const validTextAlignment = textAlignment && alignmentMap[textAlignment as keyof typeof alignmentMap] ? textAlignment : 'left'
   const [isUpdating, setIsUpdating] = useState(false)
 
   // Listen for locality updates
@@ -68,14 +71,19 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
 
   console.log('TextContent block:', { marginTop, marginBottom, isAside, backgroundColor, textAlignment, maxWidth })
   console.log('Margin classes:', { 
-    topClass: marginMap[marginTop] || 'mt-8', 
-    bottomClass: marginBottomMap[marginBottom] || 'mb-8' 
+    topClass: marginMap[validMarginTop], 
+    bottomClass: marginBottomMap[validMarginBottom] 
+  })
+  console.log('Text alignment:', { 
+    original: textAlignment, 
+    valid: validTextAlignment, 
+    class: alignmentMap[validTextAlignment] 
   })
   
   return (
     <div className={`${marginMap[validMarginTop]} ${marginBottomMap[validMarginBottom]}`}>
       <div 
-        className={`content-container ${isAside ? 'p-[35px_30px] aside' : ''} ${textAlignment && alignmentMap[textAlignment as keyof typeof alignmentMap] || 'text-left'}`} 
+        className={`content-container ${isAside ? 'p-[35px_30px] aside' : ''} ${alignmentMap[validTextAlignment]}`} 
         style={{
           ...(isAside ? { backgroundColor: sanitizedBackgroundColor } : {}),
           ...(maxWidth ? { maxWidth: `${maxWidth}px`, marginLeft: 'auto', marginRight: 'auto' } : {})
