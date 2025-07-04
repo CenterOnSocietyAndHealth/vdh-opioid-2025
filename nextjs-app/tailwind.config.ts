@@ -3,6 +3,13 @@ import typography from "@tailwindcss/typography";
 
 export default {
   content: ["./app/**/*.{ts,tsx}", "./sanity/**/*.{ts,tsx}"],
+  safelist: [
+    'mt-0', 'mt-4', 'mt-8', 'mt-16',
+    'mb-0', 'mb-4', 'mb-8', 'mb-16',
+    'text-left', 'text-center', 'text-right',
+    'p-[35px_30px]',
+    'animate-pulse'
+  ],
   theme: {
     container: {
       center: true,

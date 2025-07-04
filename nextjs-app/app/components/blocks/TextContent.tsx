@@ -35,13 +35,21 @@ const getNestedValue = (obj: any, path: string) => {
 export default function TextContent({ block, selectedLocality }: TextContentProps) {
   const { 
     content, 
-    marginTop = 'medium', 
-    marginBottom = 'medium', 
+    marginTop = 'none', 
+    marginBottom = 'none', 
     isAside = false, 
     backgroundColor = '#f0f0f0',
     textAlignment = 'left',
     maxWidth
   } = block
+
+  // Validate and sanitize backgroundColor to prevent corruption
+  const sanitizedBackgroundColor = typeof backgroundColor === 'string' && 
+    backgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? backgroundColor : '#f0f0f0'
+  
+  // Validate margin values to prevent undefined classes
+  const validMarginTop = marginTop && marginMap[marginTop] ? marginTop : 'none'
+  const validMarginBottom = marginBottom && marginBottomMap[marginBottom] ? marginBottom : 'none'
   const [isUpdating, setIsUpdating] = useState(false)
 
   // Listen for locality updates
@@ -58,14 +66,18 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
     }
   }, [])
 
-  console.log(content)
+  console.log('TextContent block:', { marginTop, marginBottom, isAside, backgroundColor, textAlignment, maxWidth })
+  console.log('Margin classes:', { 
+    topClass: marginMap[marginTop] || 'mt-8', 
+    bottomClass: marginBottomMap[marginBottom] || 'mb-8' 
+  })
   
   return (
-    <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+    <div className={`${marginMap[validMarginTop]} ${marginBottomMap[validMarginBottom]}`}>
       <div 
         className={`content-container ${isAside ? 'p-[35px_30px] aside' : ''} ${textAlignment && alignmentMap[textAlignment as keyof typeof alignmentMap] || 'text-left'}`} 
         style={{
-          ...(isAside ? { backgroundColor } : {}),
+          ...(isAside ? { backgroundColor: sanitizedBackgroundColor } : {}),
           ...(maxWidth ? { maxWidth: `${maxWidth}px`, marginLeft: 'auto', marginRight: 'auto' } : {})
         }}
       >
