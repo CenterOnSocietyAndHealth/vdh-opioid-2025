@@ -76,6 +76,7 @@ export const getPageQuery = defineQuery(`
       defined(selectedLocality) => selectedLocality->{
         _id,
         counties,
+        fips,
         demographics,
         regions,
         classification,

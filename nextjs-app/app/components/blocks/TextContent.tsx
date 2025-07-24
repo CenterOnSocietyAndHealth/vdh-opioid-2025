@@ -4,6 +4,7 @@ import { client } from '@/sanity/lib/client'
 import { useEffect, useState } from 'react'
 import { TextContentProps } from '@/app/types/locality'
 import DefinitionPopup from '@/app/components/DefinitionPopup'
+import Image from 'next/image'
 
 const urlForImage = (source: any) => {
   return imageUrlBuilder(client).image(source)
@@ -119,10 +120,13 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                   return null
                 }
                 return (
-                  <img
+                  <Image
                     src={urlForImage(value).url()}
                     alt={value.alt || ' '}
-                    loading="lazy"
+                    width={800}
+                    height={600}
+                    style={{ width: 'auto', height: 'auto' }}
+                    priority={false}
                   />
                 )
               },

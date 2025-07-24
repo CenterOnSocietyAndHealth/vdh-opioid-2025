@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { Locality } from '@/app/types/locality';
@@ -46,13 +46,13 @@ export default function ChoroplethMap({
   }
 
   // Indicator display names
-  const indicatorDisplayNames: Record<CostsMapIndicator, string> = {
+  const indicatorDisplayNames = useMemo<Record<CostsMapIndicator, string>>(() => ({
     'Total': 'Total',
     'Labor': 'Lost Labor',
     'HealthCare': 'Healthcare',
     'Crime_Other': 'Criminal Justice',
     'Household': 'Child Services & K-12',
-  };
+  }), []);
 
   // Get field path for accessing data
   const getFieldPath = (locality: Locality, indicator: CostsMapIndicator, type: DisplayType) => {
@@ -603,7 +603,7 @@ export default function ChoroplethMap({
     };
 
     drawMap();
-  }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue]);
+  }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue, indicatorDisplayNames, onLocalityClick]);
 
   return (
     <div className="relative">

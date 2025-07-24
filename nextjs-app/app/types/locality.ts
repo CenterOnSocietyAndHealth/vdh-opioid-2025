@@ -1,47 +1,47 @@
 export type OpioidMetrics = {
-  totalPerCapita: number;
-  totalTotal: number;
-  laborPerCapita: number;
-  laborTotal: number;
-  healthcarePerCapita: number;
-  healthcareTotal: number;
-  crimeOtherPerCapita: number;
-  crimeOtherTotal: number;
-  householdPerCapita: number;
-  householdTotal: number;
-  totalTotalPercentile: number;
-  totalTotalComparison: string;
-  totalPerCapitaPercentile: number;
-  totalPerCapitaComparison: string;
+  totalPerCapita: number | null;
+  totalTotal: number | null;
+  laborPerCapita: number | null;
+  laborTotal: number | null;
+  healthcarePerCapita: number | null;
+  healthcareTotal: number | null;
+  crimeOtherPerCapita: number | null;
+  crimeOtherTotal: number | null;
+  householdPerCapita: number | null;
+  householdTotal: number | null;
+  totalTotalPercentile: number | null;
+  totalTotalComparison: string | null;
+  totalPerCapitaPercentile: number | null;
+  totalPerCapitaComparison: string | null;
 };
 
 export type Demographics = {
-  totalPopulation: number;
-  medianAge: number;
-  medianIncome: number;
-  povertyPct: number;
+  totalPopulation?: number;
+  medianAge?: number;
+  medianIncome?: number;
+  povertyPct?: number;
 };
 
 export type Regions = {
-  healthDistrict: string;
-  healthRegion: string;
-  cooperCtrRegion: string;
+  healthDistrict?: string;
+  healthRegion?: string;
+  cooperCtrRegion?: string;
 };
 
 export type Classification = {
-  category: string;
-  urbanRural: string;
-  metroNonMetro: string;
+  category?: string;
+  urbanRural?: string;
+  metroNonMetro?: string;
 };
 
 export type Locality = {
   _id: string;
   counties: string;
   fips: string;
-  demographics: Demographics;
-  regions: Regions;
-  classification: Classification;
-  opioidMetrics: OpioidMetrics;
+  demographics: Demographics | null;
+  regions: Regions | null;
+  classification: Classification | null;
+  opioidMetrics: OpioidMetrics | null;
 };
 
 // Type for the locality selector component props
