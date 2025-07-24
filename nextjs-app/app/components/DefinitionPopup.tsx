@@ -14,7 +14,13 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
   const [position, setPosition] = useState({ top: 0, left: 0, placement: 'top' as 'top' | 'bottom' })
   const triggerRef = useRef<HTMLSpanElement>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
+  const positionRef = useRef(position)
   const [mounted, setMounted] = useState(false)
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    positionRef.current = position
+  }, [position])
 
   useEffect(() => {
     setMounted(true)
@@ -95,10 +101,11 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
       const actualWidth = tooltipRect.width
       const actualHeight = tooltipRect.height
       
-      // Get current position without using the state
-      const currentTop = position.top
-      const currentLeft = position.left
-      const currentPlacement = position.placement
+      // Get current position from ref to avoid dependency issues
+      const currentPosition = positionRef.current
+      const currentTop = currentPosition.top
+      const currentLeft = currentPosition.left
+      const currentPlacement = currentPosition.placement
       
       // Recalculate with actual dimensions
       const verticalOffset = 12
@@ -129,7 +136,7 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
         setPosition({ top: newTop, left: newLeft, placement: currentPlacement })
       }
     }
-  }, [isVisible]) // Removed position from dependencies
+  }, [isVisible, definition.length]) // Removed position dependencies
 
   return (
     <>
