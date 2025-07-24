@@ -50,6 +50,11 @@ export default defineConfig({
   projectId,
   dataset,
 
+  // Custom CSS for Studio styling
+  customCss: [
+    {css: 'static/studio.css'}
+  ],
+
   plugins: [
     // Presentation tool configuration for Visual Editing
     presentationTool({

@@ -75,6 +75,10 @@ export async function fetchPage(slug: string) {
                 _type == "link" => {
                   "page": page->slug.current,
                   "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
                 }
               }
             }

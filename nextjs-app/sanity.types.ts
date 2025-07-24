@@ -13,72 +13,555 @@
  */
 
 // Source: schema.json
-export type SanityImagePaletteSwatch = {
-  _type: 'sanity.imagePaletteSwatch';
-  background?: string;
-  foreground?: string;
-  population?: number;
+export type CostsBreakdown = {
+  _type: 'costsBreakdown';
+  totalCost: string;
+  totalCostSubtitle?: string;
+  source?: string;
+  updatedLast?: string;
+  aside?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: 'span';
+      _key: string;
+    }>;
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    listItem?: 'bullet' | 'number';
+    markDefs?: Array<
+      | {
+          linkType?: 'href' | 'page';
+          href?: string;
+          page?: {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'page';
+          };
+          openInNewTab?: boolean;
+          _type: 'link';
+          _key: string;
+        }
+      | {
+          term: string;
+          definition: string;
+          _type: 'definition';
+          _key: string;
+        }
+      | {
+          fieldPath:
+            | 'counties'
+            | 'demographics.totalPopulation'
+            | 'demographics.medianAge'
+            | 'demographics.medianIncome'
+            | 'demographics.povertyPct'
+            | 'regions.healthDistrict'
+            | 'regions.healthRegion'
+            | 'regions.cooperCtrRegion'
+            | 'classification.category'
+            | 'classification.urbanRural'
+            | 'classification.metroNonMetro'
+            | 'opioidMetrics.totalPerCapita'
+            | 'opioidMetrics.totalTotal'
+            | 'opioidMetrics.laborPerCapita'
+            | 'opioidMetrics.laborTotal'
+            | 'opioidMetrics.healthcarePerCapita'
+            | 'opioidMetrics.healthcareTotal'
+            | 'opioidMetrics.crimeOtherPerCapita'
+            | 'opioidMetrics.crimeOtherTotal'
+            | 'opioidMetrics.householdPerCapita'
+            | 'opioidMetrics.householdTotal'
+            | 'opioidMetrics.totalTotalPercentile'
+            | 'opioidMetrics.totalTotalComparison'
+            | 'opioidMetrics.totalPerCapitaPercentile'
+            | 'opioidMetrics.totalPerCapitaComparison';
+          addArticle?: boolean;
+          textCase?: 'default' | 'capitalize' | 'lowercase';
+          _type: 'localityField';
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: 'block';
+    _key: string;
+  }>;
+  costSectors: Array<{
+    title: string;
+    subtitle?: string;
+    value: number;
+    color: string;
+    textColor?: string;
+    description?: string;
+    showLabelAsTooltip?: boolean;
+    _key: string;
+  }>;
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+};
+
+export type CostsMaps = {
+  _type: 'costsMaps';
   title?: string;
+  defaultIndicator?:
+    | 'Total'
+    | 'Labor'
+    | 'HealthCare'
+    | 'Crime_Other'
+    | 'Household';
+  type?: 'PerCapita' | 'Total';
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  totalDescription?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: 'span';
+      _key: string;
+    }>;
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    listItem?: 'bullet' | 'number';
+    markDefs?: Array<
+      | {
+          linkType?: 'href' | 'page';
+          href?: string;
+          page?: {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'page';
+          };
+          openInNewTab?: boolean;
+          _type: 'link';
+          _key: string;
+        }
+      | {
+          term: string;
+          definition: string;
+          _type: 'definition';
+          _key: string;
+        }
+      | {
+          fieldPath:
+            | 'counties'
+            | 'demographics.totalPopulation'
+            | 'demographics.medianAge'
+            | 'demographics.medianIncome'
+            | 'demographics.povertyPct'
+            | 'regions.healthDistrict'
+            | 'regions.healthRegion'
+            | 'regions.cooperCtrRegion'
+            | 'classification.category'
+            | 'classification.urbanRural'
+            | 'classification.metroNonMetro'
+            | 'opioidMetrics.totalPerCapita'
+            | 'opioidMetrics.totalTotal'
+            | 'opioidMetrics.laborPerCapita'
+            | 'opioidMetrics.laborTotal'
+            | 'opioidMetrics.healthcarePerCapita'
+            | 'opioidMetrics.healthcareTotal'
+            | 'opioidMetrics.crimeOtherPerCapita'
+            | 'opioidMetrics.crimeOtherTotal'
+            | 'opioidMetrics.householdPerCapita'
+            | 'opioidMetrics.householdTotal'
+            | 'opioidMetrics.totalTotalPercentile'
+            | 'opioidMetrics.totalTotalComparison'
+            | 'opioidMetrics.totalPerCapitaPercentile'
+            | 'opioidMetrics.totalPerCapitaComparison';
+          addArticle?: boolean;
+          textCase?: 'default' | 'capitalize' | 'lowercase';
+          _type: 'localityField';
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: 'block';
+    _key: string;
+  }>;
+  laborDescription?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: 'span';
+      _key: string;
+    }>;
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    listItem?: 'bullet' | 'number';
+    markDefs?: Array<
+      | {
+          linkType?: 'href' | 'page';
+          href?: string;
+          page?: {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'page';
+          };
+          openInNewTab?: boolean;
+          _type: 'link';
+          _key: string;
+        }
+      | {
+          term: string;
+          definition: string;
+          _type: 'definition';
+          _key: string;
+        }
+      | {
+          fieldPath:
+            | 'counties'
+            | 'demographics.totalPopulation'
+            | 'demographics.medianAge'
+            | 'demographics.medianIncome'
+            | 'demographics.povertyPct'
+            | 'regions.healthDistrict'
+            | 'regions.healthRegion'
+            | 'regions.cooperCtrRegion'
+            | 'classification.category'
+            | 'classification.urbanRural'
+            | 'classification.metroNonMetro'
+            | 'opioidMetrics.totalPerCapita'
+            | 'opioidMetrics.totalTotal'
+            | 'opioidMetrics.laborPerCapita'
+            | 'opioidMetrics.laborTotal'
+            | 'opioidMetrics.healthcarePerCapita'
+            | 'opioidMetrics.healthcareTotal'
+            | 'opioidMetrics.crimeOtherPerCapita'
+            | 'opioidMetrics.crimeOtherTotal'
+            | 'opioidMetrics.householdPerCapita'
+            | 'opioidMetrics.householdTotal'
+            | 'opioidMetrics.totalTotalPercentile'
+            | 'opioidMetrics.totalTotalComparison'
+            | 'opioidMetrics.totalPerCapitaPercentile'
+            | 'opioidMetrics.totalPerCapitaComparison';
+          addArticle?: boolean;
+          textCase?: 'default' | 'capitalize' | 'lowercase';
+          _type: 'localityField';
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: 'block';
+    _key: string;
+  }>;
+  healthcareDescription?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: 'span';
+      _key: string;
+    }>;
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    listItem?: 'bullet' | 'number';
+    markDefs?: Array<
+      | {
+          linkType?: 'href' | 'page';
+          href?: string;
+          page?: {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'page';
+          };
+          openInNewTab?: boolean;
+          _type: 'link';
+          _key: string;
+        }
+      | {
+          term: string;
+          definition: string;
+          _type: 'definition';
+          _key: string;
+        }
+      | {
+          fieldPath:
+            | 'counties'
+            | 'demographics.totalPopulation'
+            | 'demographics.medianAge'
+            | 'demographics.medianIncome'
+            | 'demographics.povertyPct'
+            | 'regions.healthDistrict'
+            | 'regions.healthRegion'
+            | 'regions.cooperCtrRegion'
+            | 'classification.category'
+            | 'classification.urbanRural'
+            | 'classification.metroNonMetro'
+            | 'opioidMetrics.totalPerCapita'
+            | 'opioidMetrics.totalTotal'
+            | 'opioidMetrics.laborPerCapita'
+            | 'opioidMetrics.laborTotal'
+            | 'opioidMetrics.healthcarePerCapita'
+            | 'opioidMetrics.healthcareTotal'
+            | 'opioidMetrics.crimeOtherPerCapita'
+            | 'opioidMetrics.crimeOtherTotal'
+            | 'opioidMetrics.householdPerCapita'
+            | 'opioidMetrics.householdTotal'
+            | 'opioidMetrics.totalTotalPercentile'
+            | 'opioidMetrics.totalTotalComparison'
+            | 'opioidMetrics.totalPerCapitaPercentile'
+            | 'opioidMetrics.totalPerCapitaComparison';
+          addArticle?: boolean;
+          textCase?: 'default' | 'capitalize' | 'lowercase';
+          _type: 'localityField';
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: 'block';
+    _key: string;
+  }>;
+  crimeOtherDescription?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: 'span';
+      _key: string;
+    }>;
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    listItem?: 'bullet' | 'number';
+    markDefs?: Array<
+      | {
+          linkType?: 'href' | 'page';
+          href?: string;
+          page?: {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'page';
+          };
+          openInNewTab?: boolean;
+          _type: 'link';
+          _key: string;
+        }
+      | {
+          term: string;
+          definition: string;
+          _type: 'definition';
+          _key: string;
+        }
+      | {
+          fieldPath:
+            | 'counties'
+            | 'demographics.totalPopulation'
+            | 'demographics.medianAge'
+            | 'demographics.medianIncome'
+            | 'demographics.povertyPct'
+            | 'regions.healthDistrict'
+            | 'regions.healthRegion'
+            | 'regions.cooperCtrRegion'
+            | 'classification.category'
+            | 'classification.urbanRural'
+            | 'classification.metroNonMetro'
+            | 'opioidMetrics.totalPerCapita'
+            | 'opioidMetrics.totalTotal'
+            | 'opioidMetrics.laborPerCapita'
+            | 'opioidMetrics.laborTotal'
+            | 'opioidMetrics.healthcarePerCapita'
+            | 'opioidMetrics.healthcareTotal'
+            | 'opioidMetrics.crimeOtherPerCapita'
+            | 'opioidMetrics.crimeOtherTotal'
+            | 'opioidMetrics.householdPerCapita'
+            | 'opioidMetrics.householdTotal'
+            | 'opioidMetrics.totalTotalPercentile'
+            | 'opioidMetrics.totalTotalComparison'
+            | 'opioidMetrics.totalPerCapitaPercentile'
+            | 'opioidMetrics.totalPerCapitaComparison';
+          addArticle?: boolean;
+          textCase?: 'default' | 'capitalize' | 'lowercase';
+          _type: 'localityField';
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: 'block';
+    _key: string;
+  }>;
+  householdDescription?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: 'span';
+      _key: string;
+    }>;
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    listItem?: 'bullet' | 'number';
+    markDefs?: Array<
+      | {
+          linkType?: 'href' | 'page';
+          href?: string;
+          page?: {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'page';
+          };
+          openInNewTab?: boolean;
+          _type: 'link';
+          _key: string;
+        }
+      | {
+          term: string;
+          definition: string;
+          _type: 'definition';
+          _key: string;
+        }
+      | {
+          fieldPath:
+            | 'counties'
+            | 'demographics.totalPopulation'
+            | 'demographics.medianAge'
+            | 'demographics.medianIncome'
+            | 'demographics.povertyPct'
+            | 'regions.healthDistrict'
+            | 'regions.healthRegion'
+            | 'regions.cooperCtrRegion'
+            | 'classification.category'
+            | 'classification.urbanRural'
+            | 'classification.metroNonMetro'
+            | 'opioidMetrics.totalPerCapita'
+            | 'opioidMetrics.totalTotal'
+            | 'opioidMetrics.laborPerCapita'
+            | 'opioidMetrics.laborTotal'
+            | 'opioidMetrics.healthcarePerCapita'
+            | 'opioidMetrics.healthcareTotal'
+            | 'opioidMetrics.crimeOtherPerCapita'
+            | 'opioidMetrics.crimeOtherTotal'
+            | 'opioidMetrics.householdPerCapita'
+            | 'opioidMetrics.householdTotal'
+            | 'opioidMetrics.totalTotalPercentile'
+            | 'opioidMetrics.totalTotalComparison'
+            | 'opioidMetrics.totalPerCapitaPercentile'
+            | 'opioidMetrics.totalPerCapitaComparison';
+          addArticle?: boolean;
+          textCase?: 'default' | 'capitalize' | 'lowercase';
+          _type: 'localityField';
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: 'block';
+    _key: string;
+  }>;
 };
 
-export type SanityImagePalette = {
-  _type: 'sanity.imagePalette';
-  darkMuted?: SanityImagePaletteSwatch;
-  lightVibrant?: SanityImagePaletteSwatch;
-  darkVibrant?: SanityImagePaletteSwatch;
-  vibrant?: SanityImagePaletteSwatch;
-  dominant?: SanityImagePaletteSwatch;
-  lightMuted?: SanityImagePaletteSwatch;
-  muted?: SanityImagePaletteSwatch;
+export type ColumnLayout = {
+  _type: 'columnLayout';
+  columns?: 2 | 3;
+  column1?: Array<
+    | ({
+        _key: string;
+      } & TextContent)
+    | ({
+        _key: string;
+      } & LocalitySelector)
+  >;
+  column2?: Array<
+    | ({
+        _key: string;
+      } & TextContent)
+    | ({
+        _key: string;
+      } & LocalitySelector)
+  >;
+  column3?: Array<
+    | ({
+        _key: string;
+      } & TextContent)
+    | ({
+        _key: string;
+      } & LocalitySelector)
+  >;
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  maxWidth?: number;
 };
 
-export type SanityImageDimensions = {
-  _type: 'sanity.imageDimensions';
-  height?: number;
-  width?: number;
-  aspectRatio?: number;
+export type LocalitySelector = {
+  _type: 'localitySelector';
+  heading?: string;
+  subheading?: string;
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
 };
 
-export type SanityFileAsset = {
-  _id: string;
-  _type: 'sanity.fileAsset';
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  originalFilename?: string;
-  label?: string;
-  title?: string;
-  description?: string;
-  altText?: string;
-  sha1hash?: string;
-  extension?: string;
-  mimeType?: string;
-  size?: number;
-  assetId?: string;
-  uploadId?: string;
-  path?: string;
-  url?: string;
-  source?: SanityAssetSourceData;
-};
-
-export type Geopoint = {
-  _type: 'geopoint';
-  lat?: number;
-  lng?: number;
-  alt?: number;
-};
-
-export type CallToAction = {
-  _type: 'callToAction';
-  heading: string;
-  text?: string;
-  buttonText?: string;
-  link?: Link;
+export type TextContent = {
+  _type: 'textContent';
+  content: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: 'span';
+      _key: string;
+    }>;
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    listItem?: 'bullet' | 'number';
+    markDefs?: Array<
+      | {
+          linkType?: 'href' | 'page';
+          href?: string;
+          page?: {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'page';
+          };
+          openInNewTab?: boolean;
+          _type: 'link';
+          _key: string;
+        }
+      | {
+          term: string;
+          definition: string;
+          _type: 'definition';
+          _key: string;
+        }
+      | {
+          fieldPath:
+            | 'counties'
+            | 'demographics.totalPopulation'
+            | 'demographics.medianAge'
+            | 'demographics.medianIncome'
+            | 'demographics.povertyPct'
+            | 'regions.healthDistrict'
+            | 'regions.healthRegion'
+            | 'regions.cooperCtrRegion'
+            | 'classification.category'
+            | 'classification.urbanRural'
+            | 'classification.metroNonMetro'
+            | 'opioidMetrics.totalPerCapita'
+            | 'opioidMetrics.totalTotal'
+            | 'opioidMetrics.laborPerCapita'
+            | 'opioidMetrics.laborTotal'
+            | 'opioidMetrics.healthcarePerCapita'
+            | 'opioidMetrics.healthcareTotal'
+            | 'opioidMetrics.crimeOtherPerCapita'
+            | 'opioidMetrics.crimeOtherTotal'
+            | 'opioidMetrics.householdPerCapita'
+            | 'opioidMetrics.householdTotal'
+            | 'opioidMetrics.totalTotalPercentile'
+            | 'opioidMetrics.totalTotalComparison'
+            | 'opioidMetrics.totalPerCapitaPercentile'
+            | 'opioidMetrics.totalPerCapitaComparison';
+          addArticle?: boolean;
+          textCase?: 'default' | 'capitalize' | 'lowercase';
+          _type: 'localityField';
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: 'block';
+    _key: string;
+  }>;
+  textAlignment?: 'left' | 'center' | 'right';
+  isAside?: boolean;
+  backgroundColor?: string;
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  maxWidth?: number;
 };
 
 export type Link = {
   _type: 'link';
-  linkType?: 'href' | 'page' | 'post';
+  linkType?: 'href' | 'page';
   href?: string;
   page?: {
     _ref: string;
@@ -86,51 +569,7 @@ export type Link = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: 'page';
   };
-  post?: {
-    _ref: string;
-    _type: 'reference';
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: 'post';
-  };
   openInNewTab?: boolean;
-};
-
-export type InfoSection = {
-  _type: 'infoSection';
-  heading?: string;
-  subheading?: string;
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: 'span';
-      _key: string;
-    }>;
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote';
-    listItem?: 'bullet' | 'number';
-    markDefs?: Array<{
-      linkType?: 'href' | 'page' | 'post';
-      href?: string;
-      page?: {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'page';
-      };
-      post?: {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'post';
-      };
-      openInNewTab?: boolean;
-      _type: 'link';
-      _key: string;
-    }>;
-    level?: number;
-    _type: 'block';
-    _key: string;
-  }>;
 };
 
 export type BlockContent = Array<{
@@ -140,110 +579,65 @@ export type BlockContent = Array<{
     _type: 'span';
     _key: string;
   }>;
-  style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote';
+  style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
   listItem?: 'bullet' | 'number';
-  markDefs?: Array<{
-    linkType?: 'href' | 'page' | 'post';
-    href?: string;
-    page?: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'page';
-    };
-    post?: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'post';
-    };
-    openInNewTab?: boolean;
-    _type: 'link';
-    _key: string;
-  }>;
+  markDefs?: Array<
+    | {
+        linkType?: 'href' | 'page';
+        href?: string;
+        page?: {
+          _ref: string;
+          _type: 'reference';
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: 'page';
+        };
+        openInNewTab?: boolean;
+        _type: 'link';
+        _key: string;
+      }
+    | {
+        term: string;
+        definition: string;
+        _type: 'definition';
+        _key: string;
+      }
+    | {
+        fieldPath:
+          | 'counties'
+          | 'demographics.totalPopulation'
+          | 'demographics.medianAge'
+          | 'demographics.medianIncome'
+          | 'demographics.povertyPct'
+          | 'regions.healthDistrict'
+          | 'regions.healthRegion'
+          | 'regions.cooperCtrRegion'
+          | 'classification.category'
+          | 'classification.urbanRural'
+          | 'classification.metroNonMetro'
+          | 'opioidMetrics.totalPerCapita'
+          | 'opioidMetrics.totalTotal'
+          | 'opioidMetrics.laborPerCapita'
+          | 'opioidMetrics.laborTotal'
+          | 'opioidMetrics.healthcarePerCapita'
+          | 'opioidMetrics.healthcareTotal'
+          | 'opioidMetrics.crimeOtherPerCapita'
+          | 'opioidMetrics.crimeOtherTotal'
+          | 'opioidMetrics.householdPerCapita'
+          | 'opioidMetrics.householdTotal'
+          | 'opioidMetrics.totalTotalPercentile'
+          | 'opioidMetrics.totalTotalComparison'
+          | 'opioidMetrics.totalPerCapitaPercentile'
+          | 'opioidMetrics.totalPerCapitaComparison';
+        addArticle?: boolean;
+        textCase?: 'default' | 'capitalize' | 'lowercase';
+        _type: 'localityField';
+        _key: string;
+      }
+  >;
   level?: number;
   _type: 'block';
   _key: string;
 }>;
-
-export type Page = {
-  _id: string;
-  _type: 'page';
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name: string;
-  slug: Slug;
-  heading: string;
-  subheading?: string;
-  pageBuilder?: Array<
-    | ({
-        _key: string;
-      } & CallToAction)
-    | ({
-        _key: string;
-      } & InfoSection)
-  >;
-};
-
-export type Post = {
-  _id: string;
-  _type: 'post';
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  content?: BlockContent;
-  excerpt?: string;
-  coverImage: {
-    asset?: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: 'image';
-  };
-  date?: string;
-  author?: {
-    _ref: string;
-    _type: 'reference';
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: 'person';
-  };
-};
-
-export type Person = {
-  _id: string;
-  _type: 'person';
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  firstName: string;
-  lastName: string;
-  picture: {
-    asset?: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: 'image';
-  };
-};
-
-export type Slug = {
-  _type: 'slug';
-  current: string;
-  source?: string;
-};
 
 export type Settings = {
   _id: string;
@@ -277,69 +671,127 @@ export type Settings = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
     metadataBase?: string;
     _type: 'image';
   };
+  logo: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: 'image';
+  };
+  navigation?: Array<{
+    title: string;
+    linkType: 'internal' | 'external';
+    internalLink?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'page';
+    };
+    externalLink?: string;
+    _type: 'menuItem';
+    _key: string;
+  }>;
 };
 
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop';
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot';
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type SanityImageAsset = {
+export type Page = {
   _id: string;
-  _type: 'sanity.imageAsset';
+  _type: 'page';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  originalFilename?: string;
-  label?: string;
-  title?: string;
-  description?: string;
-  altText?: string;
-  sha1hash?: string;
-  extension?: string;
-  mimeType?: string;
-  size?: number;
-  assetId?: string;
-  uploadId?: string;
-  path?: string;
-  url?: string;
-  metadata?: SanityImageMetadata;
-  source?: SanityAssetSourceData;
+  name: string;
+  slug: Slug;
+  selectedLocality?: {
+    _ref: string;
+    _type: 'reference';
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: 'locality';
+  };
+  pageBuilder?: Array<
+    | ({
+        _key: string;
+      } & TextContent)
+    | ({
+        _key: string;
+      } & LocalitySelector)
+    | ({
+        _key: string;
+      } & ColumnLayout)
+    | ({
+        _key: string;
+      } & CostsMaps)
+    | ({
+        _key: string;
+      } & CostsBreakdown)
+  >;
 };
 
-export type SanityAssetSourceData = {
-  _type: 'sanity.assetSourceData';
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
-export type SanityImageMetadata = {
-  _type: 'sanity.imageMetadata';
-  location?: Geopoint;
-  dimensions?: SanityImageDimensions;
-  palette?: SanityImagePalette;
-  lqip?: string;
-  blurHash?: string;
-  hasAlpha?: boolean;
-  isOpaque?: boolean;
+export type Locality = {
+  _id: string;
+  _type: 'locality';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  counties: string;
+  fips: string;
+  Total_PerCapita?: number;
+  Labor_PerCapita?: number;
+  HealthCare_PerCapita?: number;
+  Crime_Other_PerCapita?: number;
+  Household_PerCapita?: number;
+  opioidMetrics?: {
+    totalPerCapita?: number;
+    totalTotal?: number;
+    laborPerCapita?: number;
+    laborTotal?: number;
+    healthcarePerCapita?: number;
+    healthcareTotal?: number;
+    crimeOtherPerCapita?: number;
+    crimeOtherTotal?: number;
+    householdPerCapita?: number;
+    householdTotal?: number;
+    totalTotalPercentile?: number;
+    totalTotalComparison?: string;
+    totalPerCapitaPercentile?: number;
+    totalPerCapitaComparison?: string;
+  };
+  demographics?: {
+    totalPopulation?: number;
+    medianAge?: number;
+    medianIncome?: number;
+    povertyPct?: number;
+  };
+  regions?: {
+    healthDistrict?: string;
+    healthRegion?: string;
+    cooperCtrRegion?: string;
+  };
+  classification?: {
+    category?: string;
+    categoryDescription?: string;
+    urbanRural?: string;
+    metroNonMetro?: string;
+  };
+  stateComparisons?: {
+    hhmiState?: string;
+    hhmiQuartile?: string;
+    povertyRateState?: string;
+    povertyRateQuartile?: string;
+    hhmiQuartileProse?: string;
+  };
 };
 
 export type SanityAssistInstructionTask = {
@@ -477,26 +929,135 @@ export type SanityAssistSchemaTypeField = {
   >;
 };
 
+export type SanityImagePaletteSwatch = {
+  _type: 'sanity.imagePaletteSwatch';
+  background?: string;
+  foreground?: string;
+  population?: number;
+  title?: string;
+};
+
+export type SanityImagePalette = {
+  _type: 'sanity.imagePalette';
+  darkMuted?: SanityImagePaletteSwatch;
+  lightVibrant?: SanityImagePaletteSwatch;
+  darkVibrant?: SanityImagePaletteSwatch;
+  vibrant?: SanityImagePaletteSwatch;
+  dominant?: SanityImagePaletteSwatch;
+  lightMuted?: SanityImagePaletteSwatch;
+  muted?: SanityImagePaletteSwatch;
+};
+
+export type SanityImageDimensions = {
+  _type: 'sanity.imageDimensions';
+  height?: number;
+  width?: number;
+  aspectRatio?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot';
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop';
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityFileAsset = {
+  _id: string;
+  _type: 'sanity.fileAsset';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  originalFilename?: string;
+  label?: string;
+  title?: string;
+  description?: string;
+  altText?: string;
+  sha1hash?: string;
+  extension?: string;
+  mimeType?: string;
+  size?: number;
+  assetId?: string;
+  uploadId?: string;
+  path?: string;
+  url?: string;
+  source?: SanityAssetSourceData;
+};
+
+export type SanityImageAsset = {
+  _id: string;
+  _type: 'sanity.imageAsset';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  originalFilename?: string;
+  label?: string;
+  title?: string;
+  description?: string;
+  altText?: string;
+  sha1hash?: string;
+  extension?: string;
+  mimeType?: string;
+  size?: number;
+  assetId?: string;
+  uploadId?: string;
+  path?: string;
+  url?: string;
+  metadata?: SanityImageMetadata;
+  source?: SanityAssetSourceData;
+};
+
+export type SanityImageMetadata = {
+  _type: 'sanity.imageMetadata';
+  location?: Geopoint;
+  dimensions?: SanityImageDimensions;
+  palette?: SanityImagePalette;
+  lqip?: string;
+  blurHash?: string;
+  hasAlpha?: boolean;
+  isOpaque?: boolean;
+};
+
+export type Geopoint = {
+  _type: 'geopoint';
+  lat?: number;
+  lng?: number;
+  alt?: number;
+};
+
+export type Slug = {
+  _type: 'slug';
+  current: string;
+  source?: string;
+};
+
+export type SanityAssetSourceData = {
+  _type: 'sanity.assetSourceData';
+  name?: string;
+  id?: string;
+  url?: string;
+};
+
 export type AllSanitySchemaTypes =
-  | SanityImagePaletteSwatch
-  | SanityImagePalette
-  | SanityImageDimensions
-  | SanityFileAsset
-  | Geopoint
-  | CallToAction
+  | CostsBreakdown
+  | CostsMaps
+  | ColumnLayout
+  | LocalitySelector
+  | TextContent
   | Link
-  | InfoSection
   | BlockContent
-  | Page
-  | Post
-  | Person
-  | Slug
   | Settings
-  | SanityImageCrop
-  | SanityImageHotspot
-  | SanityImageAsset
-  | SanityAssetSourceData
-  | SanityImageMetadata
+  | Page
+  | Locality
   | SanityAssistInstructionTask
   | SanityAssistTaskStatus
   | SanityAssistSchemaTypeAnnotations
@@ -508,7 +1069,18 @@ export type AllSanitySchemaTypes =
   | SanityAssistInstructionPrompt
   | SanityAssistInstructionFieldRef
   | SanityAssistInstruction
-  | SanityAssistSchemaTypeField;
+  | SanityAssistSchemaTypeField
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageHotspot
+  | SanityImageCrop
+  | SanityFileAsset
+  | SanityImageAsset
+  | SanityImageMetadata
+  | Geopoint
+  | Slug
+  | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -545,48 +1117,589 @@ export type SettingsQueryResult = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
     metadataBase?: string;
     _type: 'image';
   };
+  logo: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: 'image';
+  };
+  navigation?: Array<{
+    title: string;
+    linkType: 'external' | 'internal';
+    internalLink?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'page';
+    };
+    externalLink?: string;
+    _type: 'menuItem';
+    _key: string;
+  }>;
 } | null;
 // Variable: localitiesQuery
 // Query: *[_type == "locality"] | order(counties asc) {    _id,    counties,    fips,    opioidMetrics {      totalPerCapita,      totalTotal,      laborPerCapita,      laborTotal,      healthcarePerCapita,      healthcareTotal,      crimeOtherPerCapita,      crimeOtherTotal,      householdPerCapita,      householdTotal,      totalTotalPercentile,      totalTotalComparison,      totalPerCapitaPercentile,      totalPerCapitaComparison    }  }
-export type LocalitiesQueryResult = Array<never>;
+export type LocalitiesQueryResult = Array<{
+  _id: string;
+  counties: string;
+  fips: string;
+  opioidMetrics: {
+    totalPerCapita: number | null;
+    totalTotal: number | null;
+    laborPerCapita: number | null;
+    laborTotal: number | null;
+    healthcarePerCapita: number | null;
+    healthcareTotal: number | null;
+    crimeOtherPerCapita: number | null;
+    crimeOtherTotal: number | null;
+    householdPerCapita: number | null;
+    householdTotal: number | null;
+    totalTotalPercentile: number | null;
+    totalTotalComparison: string | null;
+    totalPerCapitaPercentile: number | null;
+    totalPerCapitaComparison: string | null;
+  } | null;
+}>;
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "rawSelectedLocality": selectedLocality,    "selectedLocality": select(      defined(selectedLocality) => selectedLocality->{        _id,        counties,        demographics,        regions,        classification,        opioidMetrics {          totalPerCapita,          totalTotal,          laborPerCapita,          laborTotal,          healthcarePerCapita,          healthcareTotal,          crimeOtherPerCapita,          crimeOtherTotal,          householdPerCapita,          householdTotal,          totalTotalPercentile,          totalTotalComparison,          totalPerCapitaPercentile,          totalPerCapitaComparison        }      },      null    ),    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }      },      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }          }        }      },    },  }
+// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "rawSelectedLocality": selectedLocality,    "selectedLocality": select(      defined(selectedLocality) => selectedLocality->{        _id,        counties,        demographics,        regions,        classification,        opioidMetrics {          totalPerCapita,          totalTotal,          laborPerCapita,          laborTotal,          healthcarePerCapita,          healthcareTotal,          crimeOtherPerCapita,          crimeOtherTotal,          householdPerCapita,          householdTotal,          totalTotalPercentile,          totalTotalComparison,          totalPerCapitaPercentile,          totalPerCapitaComparison        }      },      null    ),    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }      },      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        }      },    },  }
 export type GetPageQueryResult = {
   _id: string;
   _type: 'page';
   name: string;
   slug: Slug;
-  heading: string;
-  subheading: string | null;
-  rawSelectedLocality: null;
-  selectedLocality: null;
+  heading: null;
+  subheading: null;
+  rawSelectedLocality: {
+    _ref: string;
+    _type: 'reference';
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: 'locality';
+  } | null;
+  selectedLocality: {
+    _id: string;
+    counties: string;
+    demographics: {
+      totalPopulation?: number;
+      medianAge?: number;
+      medianIncome?: number;
+      povertyPct?: number;
+    } | null;
+    regions: {
+      healthDistrict?: string;
+      healthRegion?: string;
+      cooperCtrRegion?: string;
+    } | null;
+    classification: {
+      category?: string;
+      categoryDescription?: string;
+      urbanRural?: string;
+      metroNonMetro?: string;
+    } | null;
+    opioidMetrics: {
+      totalPerCapita: number | null;
+      totalTotal: number | null;
+      laborPerCapita: number | null;
+      laborTotal: number | null;
+      healthcarePerCapita: number | null;
+      healthcareTotal: number | null;
+      crimeOtherPerCapita: number | null;
+      crimeOtherTotal: number | null;
+      householdPerCapita: number | null;
+      householdTotal: number | null;
+      totalTotalPercentile: number | null;
+      totalTotalComparison: string | null;
+      totalPerCapitaPercentile: number | null;
+      totalPerCapitaComparison: string | null;
+    } | null;
+  } | null;
   pageBuilder: Array<
     | {
         _key: string;
-        _type: 'callToAction';
-        heading: string;
-        text?: string;
-        buttonText?: string;
-        link: {
-          _type: 'link';
-          linkType?: 'href' | 'page' | 'post';
-          href?: string;
-          page: string | null;
-          post: string | null;
-          openInNewTab?: boolean;
-        } | null;
+        _type: 'columnLayout';
+        columns?: 2 | 3;
+        column1?: Array<
+          | ({
+              _key: string;
+            } & LocalitySelector)
+          | ({
+              _key: string;
+            } & TextContent)
+        >;
+        column2?: Array<
+          | ({
+              _key: string;
+            } & LocalitySelector)
+          | ({
+              _key: string;
+            } & TextContent)
+        >;
+        column3?: Array<
+          | ({
+              _key: string;
+            } & LocalitySelector)
+          | ({
+              _key: string;
+            } & TextContent)
+        >;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+        maxWidth?: number;
       }
     | {
         _key: string;
-        _type: 'infoSection';
+        _type: 'costsBreakdown';
+        totalCost: string;
+        totalCostSubtitle?: string;
+        source?: string;
+        updatedLast?: string;
+        aside?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: 'span';
+            _key: string;
+          }>;
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          listItem?: 'bullet' | 'number';
+          markDefs?: Array<
+            | {
+                term: string;
+                definition: string;
+                _type: 'definition';
+                _key: string;
+              }
+            | {
+                linkType?: 'href' | 'page';
+                href?: string;
+                page?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'page';
+                };
+                openInNewTab?: boolean;
+                _type: 'link';
+                _key: string;
+              }
+            | {
+                fieldPath:
+                  | 'classification.category'
+                  | 'classification.metroNonMetro'
+                  | 'classification.urbanRural'
+                  | 'counties'
+                  | 'demographics.medianAge'
+                  | 'demographics.medianIncome'
+                  | 'demographics.povertyPct'
+                  | 'demographics.totalPopulation'
+                  | 'opioidMetrics.crimeOtherPerCapita'
+                  | 'opioidMetrics.crimeOtherTotal'
+                  | 'opioidMetrics.healthcarePerCapita'
+                  | 'opioidMetrics.healthcareTotal'
+                  | 'opioidMetrics.householdPerCapita'
+                  | 'opioidMetrics.householdTotal'
+                  | 'opioidMetrics.laborPerCapita'
+                  | 'opioidMetrics.laborTotal'
+                  | 'opioidMetrics.totalPerCapita'
+                  | 'opioidMetrics.totalPerCapitaComparison'
+                  | 'opioidMetrics.totalPerCapitaPercentile'
+                  | 'opioidMetrics.totalTotal'
+                  | 'opioidMetrics.totalTotalComparison'
+                  | 'opioidMetrics.totalTotalPercentile'
+                  | 'regions.cooperCtrRegion'
+                  | 'regions.healthDistrict'
+                  | 'regions.healthRegion';
+                addArticle?: boolean;
+                textCase?: 'capitalize' | 'default' | 'lowercase';
+                _type: 'localityField';
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: 'block';
+          _key: string;
+        }>;
+        costSectors: Array<{
+          title: string;
+          subtitle?: string;
+          value: number;
+          color: string;
+          textColor?: string;
+          description?: string;
+          showLabelAsTooltip?: boolean;
+          _key: string;
+        }>;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+      }
+    | {
+        _key: string;
+        _type: 'costsMaps';
+        title?: string;
+        defaultIndicator?:
+          | 'Crime_Other'
+          | 'HealthCare'
+          | 'Household'
+          | 'Labor'
+          | 'Total';
+        type?: 'PerCapita' | 'Total';
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+        totalDescription?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: 'span';
+            _key: string;
+          }>;
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          listItem?: 'bullet' | 'number';
+          markDefs?: Array<
+            | {
+                term: string;
+                definition: string;
+                _type: 'definition';
+                _key: string;
+              }
+            | {
+                linkType?: 'href' | 'page';
+                href?: string;
+                page?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'page';
+                };
+                openInNewTab?: boolean;
+                _type: 'link';
+                _key: string;
+              }
+            | {
+                fieldPath:
+                  | 'classification.category'
+                  | 'classification.metroNonMetro'
+                  | 'classification.urbanRural'
+                  | 'counties'
+                  | 'demographics.medianAge'
+                  | 'demographics.medianIncome'
+                  | 'demographics.povertyPct'
+                  | 'demographics.totalPopulation'
+                  | 'opioidMetrics.crimeOtherPerCapita'
+                  | 'opioidMetrics.crimeOtherTotal'
+                  | 'opioidMetrics.healthcarePerCapita'
+                  | 'opioidMetrics.healthcareTotal'
+                  | 'opioidMetrics.householdPerCapita'
+                  | 'opioidMetrics.householdTotal'
+                  | 'opioidMetrics.laborPerCapita'
+                  | 'opioidMetrics.laborTotal'
+                  | 'opioidMetrics.totalPerCapita'
+                  | 'opioidMetrics.totalPerCapitaComparison'
+                  | 'opioidMetrics.totalPerCapitaPercentile'
+                  | 'opioidMetrics.totalTotal'
+                  | 'opioidMetrics.totalTotalComparison'
+                  | 'opioidMetrics.totalTotalPercentile'
+                  | 'regions.cooperCtrRegion'
+                  | 'regions.healthDistrict'
+                  | 'regions.healthRegion';
+                addArticle?: boolean;
+                textCase?: 'capitalize' | 'default' | 'lowercase';
+                _type: 'localityField';
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: 'block';
+          _key: string;
+        }>;
+        laborDescription?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: 'span';
+            _key: string;
+          }>;
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          listItem?: 'bullet' | 'number';
+          markDefs?: Array<
+            | {
+                term: string;
+                definition: string;
+                _type: 'definition';
+                _key: string;
+              }
+            | {
+                linkType?: 'href' | 'page';
+                href?: string;
+                page?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'page';
+                };
+                openInNewTab?: boolean;
+                _type: 'link';
+                _key: string;
+              }
+            | {
+                fieldPath:
+                  | 'classification.category'
+                  | 'classification.metroNonMetro'
+                  | 'classification.urbanRural'
+                  | 'counties'
+                  | 'demographics.medianAge'
+                  | 'demographics.medianIncome'
+                  | 'demographics.povertyPct'
+                  | 'demographics.totalPopulation'
+                  | 'opioidMetrics.crimeOtherPerCapita'
+                  | 'opioidMetrics.crimeOtherTotal'
+                  | 'opioidMetrics.healthcarePerCapita'
+                  | 'opioidMetrics.healthcareTotal'
+                  | 'opioidMetrics.householdPerCapita'
+                  | 'opioidMetrics.householdTotal'
+                  | 'opioidMetrics.laborPerCapita'
+                  | 'opioidMetrics.laborTotal'
+                  | 'opioidMetrics.totalPerCapita'
+                  | 'opioidMetrics.totalPerCapitaComparison'
+                  | 'opioidMetrics.totalPerCapitaPercentile'
+                  | 'opioidMetrics.totalTotal'
+                  | 'opioidMetrics.totalTotalComparison'
+                  | 'opioidMetrics.totalTotalPercentile'
+                  | 'regions.cooperCtrRegion'
+                  | 'regions.healthDistrict'
+                  | 'regions.healthRegion';
+                addArticle?: boolean;
+                textCase?: 'capitalize' | 'default' | 'lowercase';
+                _type: 'localityField';
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: 'block';
+          _key: string;
+        }>;
+        healthcareDescription?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: 'span';
+            _key: string;
+          }>;
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          listItem?: 'bullet' | 'number';
+          markDefs?: Array<
+            | {
+                term: string;
+                definition: string;
+                _type: 'definition';
+                _key: string;
+              }
+            | {
+                linkType?: 'href' | 'page';
+                href?: string;
+                page?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'page';
+                };
+                openInNewTab?: boolean;
+                _type: 'link';
+                _key: string;
+              }
+            | {
+                fieldPath:
+                  | 'classification.category'
+                  | 'classification.metroNonMetro'
+                  | 'classification.urbanRural'
+                  | 'counties'
+                  | 'demographics.medianAge'
+                  | 'demographics.medianIncome'
+                  | 'demographics.povertyPct'
+                  | 'demographics.totalPopulation'
+                  | 'opioidMetrics.crimeOtherPerCapita'
+                  | 'opioidMetrics.crimeOtherTotal'
+                  | 'opioidMetrics.healthcarePerCapita'
+                  | 'opioidMetrics.healthcareTotal'
+                  | 'opioidMetrics.householdPerCapita'
+                  | 'opioidMetrics.householdTotal'
+                  | 'opioidMetrics.laborPerCapita'
+                  | 'opioidMetrics.laborTotal'
+                  | 'opioidMetrics.totalPerCapita'
+                  | 'opioidMetrics.totalPerCapitaComparison'
+                  | 'opioidMetrics.totalPerCapitaPercentile'
+                  | 'opioidMetrics.totalTotal'
+                  | 'opioidMetrics.totalTotalComparison'
+                  | 'opioidMetrics.totalTotalPercentile'
+                  | 'regions.cooperCtrRegion'
+                  | 'regions.healthDistrict'
+                  | 'regions.healthRegion';
+                addArticle?: boolean;
+                textCase?: 'capitalize' | 'default' | 'lowercase';
+                _type: 'localityField';
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: 'block';
+          _key: string;
+        }>;
+        crimeOtherDescription?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: 'span';
+            _key: string;
+          }>;
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          listItem?: 'bullet' | 'number';
+          markDefs?: Array<
+            | {
+                term: string;
+                definition: string;
+                _type: 'definition';
+                _key: string;
+              }
+            | {
+                linkType?: 'href' | 'page';
+                href?: string;
+                page?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'page';
+                };
+                openInNewTab?: boolean;
+                _type: 'link';
+                _key: string;
+              }
+            | {
+                fieldPath:
+                  | 'classification.category'
+                  | 'classification.metroNonMetro'
+                  | 'classification.urbanRural'
+                  | 'counties'
+                  | 'demographics.medianAge'
+                  | 'demographics.medianIncome'
+                  | 'demographics.povertyPct'
+                  | 'demographics.totalPopulation'
+                  | 'opioidMetrics.crimeOtherPerCapita'
+                  | 'opioidMetrics.crimeOtherTotal'
+                  | 'opioidMetrics.healthcarePerCapita'
+                  | 'opioidMetrics.healthcareTotal'
+                  | 'opioidMetrics.householdPerCapita'
+                  | 'opioidMetrics.householdTotal'
+                  | 'opioidMetrics.laborPerCapita'
+                  | 'opioidMetrics.laborTotal'
+                  | 'opioidMetrics.totalPerCapita'
+                  | 'opioidMetrics.totalPerCapitaComparison'
+                  | 'opioidMetrics.totalPerCapitaPercentile'
+                  | 'opioidMetrics.totalTotal'
+                  | 'opioidMetrics.totalTotalComparison'
+                  | 'opioidMetrics.totalTotalPercentile'
+                  | 'regions.cooperCtrRegion'
+                  | 'regions.healthDistrict'
+                  | 'regions.healthRegion';
+                addArticle?: boolean;
+                textCase?: 'capitalize' | 'default' | 'lowercase';
+                _type: 'localityField';
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: 'block';
+          _key: string;
+        }>;
+        householdDescription?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: 'span';
+            _key: string;
+          }>;
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          listItem?: 'bullet' | 'number';
+          markDefs?: Array<
+            | {
+                term: string;
+                definition: string;
+                _type: 'definition';
+                _key: string;
+              }
+            | {
+                linkType?: 'href' | 'page';
+                href?: string;
+                page?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'page';
+                };
+                openInNewTab?: boolean;
+                _type: 'link';
+                _key: string;
+              }
+            | {
+                fieldPath:
+                  | 'classification.category'
+                  | 'classification.metroNonMetro'
+                  | 'classification.urbanRural'
+                  | 'counties'
+                  | 'demographics.medianAge'
+                  | 'demographics.medianIncome'
+                  | 'demographics.povertyPct'
+                  | 'demographics.totalPopulation'
+                  | 'opioidMetrics.crimeOtherPerCapita'
+                  | 'opioidMetrics.crimeOtherTotal'
+                  | 'opioidMetrics.healthcarePerCapita'
+                  | 'opioidMetrics.healthcareTotal'
+                  | 'opioidMetrics.householdPerCapita'
+                  | 'opioidMetrics.householdTotal'
+                  | 'opioidMetrics.laborPerCapita'
+                  | 'opioidMetrics.laborTotal'
+                  | 'opioidMetrics.totalPerCapita'
+                  | 'opioidMetrics.totalPerCapitaComparison'
+                  | 'opioidMetrics.totalPerCapitaPercentile'
+                  | 'opioidMetrics.totalTotal'
+                  | 'opioidMetrics.totalTotalComparison'
+                  | 'opioidMetrics.totalTotalPercentile'
+                  | 'regions.cooperCtrRegion'
+                  | 'regions.healthDistrict'
+                  | 'regions.healthRegion';
+                addArticle?: boolean;
+                textCase?: 'capitalize' | 'default' | 'lowercase';
+                _type: 'localityField';
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: 'block';
+          _key: string;
+        }>;
+      }
+    | {
+        _key: string;
+        _type: 'localitySelector';
         heading?: string;
         subheading?: string;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+      }
+    | {
+        _key: string;
+        _type: 'textContent';
         content: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -594,187 +1707,93 @@ export type GetPageQueryResult = {
             _type: 'span';
             _key: string;
           }>;
-          style?:
-            | 'blockquote'
-            | 'h1'
-            | 'h2'
-            | 'h3'
-            | 'h4'
-            | 'h5'
-            | 'h6'
-            | 'normal';
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
           listItem?: 'bullet' | 'number';
-          markDefs: Array<{
-            linkType?: 'href' | 'page' | 'post';
-            href?: string;
-            page: string | null;
-            post: string | null;
-            openInNewTab?: boolean;
-            _type: 'link';
-            _key: string;
-          }> | null;
+          markDefs?: Array<
+            | {
+                term: string;
+                definition: string;
+                _type: 'definition';
+                _key: string;
+              }
+            | {
+                linkType?: 'href' | 'page';
+                href?: string;
+                page?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'page';
+                };
+                openInNewTab?: boolean;
+                _type: 'link';
+                _key: string;
+              }
+            | {
+                fieldPath:
+                  | 'classification.category'
+                  | 'classification.metroNonMetro'
+                  | 'classification.urbanRural'
+                  | 'counties'
+                  | 'demographics.medianAge'
+                  | 'demographics.medianIncome'
+                  | 'demographics.povertyPct'
+                  | 'demographics.totalPopulation'
+                  | 'opioidMetrics.crimeOtherPerCapita'
+                  | 'opioidMetrics.crimeOtherTotal'
+                  | 'opioidMetrics.healthcarePerCapita'
+                  | 'opioidMetrics.healthcareTotal'
+                  | 'opioidMetrics.householdPerCapita'
+                  | 'opioidMetrics.householdTotal'
+                  | 'opioidMetrics.laborPerCapita'
+                  | 'opioidMetrics.laborTotal'
+                  | 'opioidMetrics.totalPerCapita'
+                  | 'opioidMetrics.totalPerCapitaComparison'
+                  | 'opioidMetrics.totalPerCapitaPercentile'
+                  | 'opioidMetrics.totalTotal'
+                  | 'opioidMetrics.totalTotalComparison'
+                  | 'opioidMetrics.totalTotalPercentile'
+                  | 'regions.cooperCtrRegion'
+                  | 'regions.healthDistrict'
+                  | 'regions.healthRegion';
+                addArticle?: boolean;
+                textCase?: 'capitalize' | 'default' | 'lowercase';
+                _type: 'localityField';
+                _key: string;
+              }
+          >;
           level?: number;
           _type: 'block';
           _key: string;
-        }> | null;
+        }>;
+        textAlignment?: 'center' | 'left' | 'right';
+        isAside?: boolean;
+        backgroundColor?: string;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+        maxWidth?: number;
       }
   > | null;
 } | null;
 // Variable: sitemapData
 // Query: *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {    "slug": slug.current,    _type,    _updatedAt,  }
-export type SitemapDataResult = Array<
-  | {
-      slug: string;
-      _type: 'page';
-      _updatedAt: string;
-    }
-  | {
-      slug: string;
-      _type: 'post';
-      _updatedAt: string;
-    }
->;
+export type SitemapDataResult = Array<{
+  slug: string;
+  _type: 'page';
+  _updatedAt: string;
+}>;
 // Variable: allPostsQuery
 // Query: *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
-export type AllPostsQueryResult = Array<{
-  _id: string;
-  status: 'draft' | 'published';
-  title: string;
-  slug: string;
-  excerpt: string | null;
-  coverImage: {
-    asset?: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: 'image';
-  };
-  date: string;
-  author: {
-    firstName: string;
-    lastName: string;
-    picture: {
-      asset?: {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-      };
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: 'image';
-    };
-  } | null;
-}>;
+export type AllPostsQueryResult = Array<never>;
 // Variable: morePostsQuery
 // Query: *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
-export type MorePostsQueryResult = Array<{
-  _id: string;
-  status: 'draft' | 'published';
-  title: string;
-  slug: string;
-  excerpt: string | null;
-  coverImage: {
-    asset?: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: 'image';
-  };
-  date: string;
-  author: {
-    firstName: string;
-    lastName: string;
-    picture: {
-      asset?: {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-      };
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: 'image';
-    };
-  } | null;
-}>;
+export type MorePostsQueryResult = Array<never>;
 // Variable: postQuery
-// Query: *[_type == "post" && slug.current == $slug] [0] {    content[]{    ...,    markDefs[]{      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }    }  },      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
-export type PostQueryResult = {
-  content: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: 'span';
-      _key: string;
-    }>;
-    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
-    listItem?: 'bullet' | 'number';
-    markDefs: Array<{
-      linkType?: 'href' | 'page' | 'post';
-      href?: string;
-      page: string | null;
-      post: string | null;
-      openInNewTab?: boolean;
-      _type: 'link';
-      _key: string;
-    }> | null;
-    level?: number;
-    _type: 'block';
-    _key: string;
-  }> | null;
-  _id: string;
-  status: 'draft' | 'published';
-  title: string;
-  slug: string;
-  excerpt: string | null;
-  coverImage: {
-    asset?: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: 'image';
-  };
-  date: string;
-  author: {
-    firstName: string;
-    lastName: string;
-    picture: {
-      asset?: {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-      };
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: 'image';
-    };
-  } | null;
-} | null;
+// Query: *[_type == "post" && slug.current == $slug] [0] {    content[]{    ...,    markDefs[]{      ...,          _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }    }  },      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
+export type PostQueryResult = null;
 // Variable: postPagesSlugs
 // Query: *[_type == "post" && defined(slug.current)]  {"slug": slug.current}
-export type PostPagesSlugsResult = Array<{
-  slug: string;
-}>;
+export type PostPagesSlugsResult = Array<never>;
 // Variable: pagesSlugs
 // Query: *[_type == "page" && defined(slug.current)]  {"slug": slug.current}
 export type PagesSlugsResult = Array<{
@@ -787,11 +1806,11 @@ declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult;
     '\n  *[_type == "locality"] | order(counties asc) {\n    _id,\n    counties,\n    fips,\n    opioidMetrics {\n      totalPerCapita,\n      totalTotal,\n      laborPerCapita,\n      laborTotal,\n      healthcarePerCapita,\n      healthcareTotal,\n      crimeOtherPerCapita,\n      crimeOtherTotal,\n      householdPerCapita,\n      householdTotal,\n      totalTotalPercentile,\n      totalTotalComparison,\n      totalPerCapitaPercentile,\n      totalPerCapitaComparison\n    }\n  }\n': LocalitiesQueryResult;
-    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "rawSelectedLocality": selectedLocality,\n    "selectedLocality": select(\n      defined(selectedLocality) => selectedLocality->{\n        _id,\n        counties,\n        demographics,\n        regions,\n        classification,\n        opioidMetrics {\n          totalPerCapita,\n          totalTotal,\n          laborPerCapita,\n          laborTotal,\n          healthcarePerCapita,\n          healthcareTotal,\n          crimeOtherPerCapita,\n          crimeOtherTotal,\n          householdPerCapita,\n          householdTotal,\n          totalTotalPercentile,\n          totalTotalComparison,\n          totalPerCapitaPercentile,\n          totalPerCapitaComparison\n        }\n      },\n      null\n    ),\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult;
+    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "rawSelectedLocality": selectedLocality,\n    "selectedLocality": select(\n      defined(selectedLocality) => selectedLocality->{\n        _id,\n        counties,\n        demographics,\n        regions,\n        classification,\n        opioidMetrics {\n          totalPerCapita,\n          totalTotal,\n          laborPerCapita,\n          laborTotal,\n          healthcarePerCapita,\n          healthcareTotal,\n          crimeOtherPerCapita,\n          crimeOtherTotal,\n          householdPerCapita,\n          householdTotal,\n          totalTotalPercentile,\n          totalTotalComparison,\n          totalPerCapitaPercentile,\n          totalPerCapitaComparison\n        }\n      },\n      null\n    ),\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult;
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult;
     '\n  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': AllPostsQueryResult;
     '\n  *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': MorePostsQueryResult;
-    '\n  *[_type == "post" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': PostQueryResult;
+    '\n  *[_type == "post" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': PostQueryResult;
     '\n  *[_type == "post" && defined(slug.current)]\n  {"slug": slug.current}\n': PostPagesSlugsResult;
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult;
   }

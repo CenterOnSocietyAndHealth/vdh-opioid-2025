@@ -19,6 +19,14 @@ export const blockContent = defineType({
   of: [
     defineArrayMember({
       type: 'block',
+      styles: [
+        {title: 'Normal', value: 'normal'},
+        {title: 'H1', value: 'h1'},
+        {title: 'H2', value: 'h2'},
+        {title: 'H3', value: 'h3'},
+        {title: 'H4', value: 'h4'},
+        {title: 'Large Value', value: 'largeValue'},
+      ],
       marks: {
         decorators: [
           {title: 'Strong', value: 'strong'},
@@ -76,6 +84,44 @@ export const blockContent = defineType({
                 title: 'Open in new tab',
                 type: 'boolean',
                 initialValue: false,
+              }),
+            ],
+          },
+          {
+            name: 'definition',
+            type: 'object',
+            title: 'Definition',
+            icon: () => (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <path d="M12 17h.01" />
+              </svg>
+            ),
+            fields: [
+              defineField({
+                name: 'term',
+                title: 'Term',
+                type: 'string',
+                description: 'The term being defined (auto-filled from selected text)',
+                validation: (Rule) => Rule.required(),
+              }),
+              defineField({
+                name: 'definition',
+                title: 'Definition',
+                type: 'text',
+                description: 'The definition of the term',
+                validation: (Rule) => Rule.required(),
               }),
             ],
           },

@@ -3,6 +3,7 @@ import imageUrlBuilder from '@sanity/image-url'
 import { client } from '@/sanity/lib/client'
 import { useEffect, useState } from 'react'
 import { TextContentProps } from '@/app/types/locality'
+import DefinitionPopup from '@/app/components/DefinitionPopup'
 
 const urlForImage = (source: any) => {
   return imageUrlBuilder(client).image(source)
@@ -126,6 +127,19 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                 )
               },
             },
+            block: {
+              largeValue: ({ children }) => (
+                <div style={{
+                  fontFamily: 'Inter',
+                  fontSize: '48px',
+                  fontStyle: 'normal',
+                  fontWeight: 700,
+                  lineHeight: '150%',
+                }}>
+                  {children}
+                </div>
+              ),
+            },
             marks: {
               smallGrayText: ({ children }) => (
                 <span style={{
@@ -140,6 +154,25 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                   {children}
                 </span>
               ),
+              definition: ({ children, value }) => {
+                try {
+                  if (!value?.term || !value?.definition) {
+                    return children
+                  }
+                  
+                  return (
+                    <DefinitionPopup 
+                      term={value.term} 
+                      definition={value.definition}
+                    >
+                      {children}
+                    </DefinitionPopup>
+                  )
+                } catch (error) {
+                  console.warn('Error rendering definition:', error)
+                  return children
+                }
+              },
               localityField: ({ children, value }) => {
                 if (!selectedLocality || !value.fieldPath) {
                   return children

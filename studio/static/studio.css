@@ -1,0 +1,87 @@
+/* Custom styling for Sanity Studio */
+
+/* Large Value text style in the rich text editor - comprehensive selectors */
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*="largeValue"],
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='"style":"largeValue"'],
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='largeValue'],
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='style":"largeValue"'],
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='style":"largeValue"'],
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='style":"largeValue"'] {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 48px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: 150% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Target all child elements */
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*="largeValue"] *,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='"style":"largeValue"'] *,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='largeValue'] *,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='style":"largeValue"'] * {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 48px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: 150% !important;
+}
+
+/* Target specific child elements */
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*="largeValue"] span,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='"style":"largeValue"'] span,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='largeValue'] span,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='style":"largeValue"'] span,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*="largeValue"] div,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='"style":"largeValue"'] div,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='largeValue'] div,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='style":"largeValue"'] div,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*="largeValue"] p,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='"style":"largeValue"'] p,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='largeValue'] p,
+[data-slate-editor] [data-slate-node="element"][data-slate-attributes*='style":"largeValue"'] p {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 48px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: 150% !important;
+}
+
+/* More aggressive selectors for different Sanity versions */
+[data-slate-editor] *[data-slate-attributes*="largeValue"],
+[data-slate-editor] *[data-slate-attributes*='"style":"largeValue"'] {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 48px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: 150% !important;
+}
+
+/* Target any element with largeValue in its attributes */
+[data-slate-attributes*="largeValue"] {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 48px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: 150% !important;
+}
+
+/* Alternative approach - target by style attribute directly */
+[style*="largeValue"] {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 48px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: 150% !important;
+}
+
+/* Target elements within the editor that might have the style */
+[data-slate-editor] [style*="largeValue"],
+[data-slate-editor] [style*='largeValue'] {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 48px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: 150% !important;
+} 

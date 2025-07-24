@@ -20,6 +20,18 @@ const linkReference = /* groq */ `
   }
 `;
 
+const definitionReference = /* groq */ `
+  _type == "definition" => {
+    term,
+    definition
+  }
+`;
+
+const markDefsReference = /* groq */ `
+  ${linkReference},
+  ${definitionReference}
+`;
+
 const linkFields = /* groq */ `
   link {
       ...,
@@ -96,7 +108,7 @@ export const getPageQuery = defineQuery(`
           ...,
           markDefs[]{
             ...,
-            ${linkReference}
+            ${markDefsReference}
           }
         }
       },
@@ -130,7 +142,7 @@ export const postQuery = defineQuery(`
     ...,
     markDefs[]{
       ...,
-      ${linkReference}
+      ${markDefsReference}
     }
   },
     ${postFields}

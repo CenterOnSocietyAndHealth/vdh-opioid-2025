@@ -124,6 +124,14 @@ export const columnLayout = defineType({
       },
       initialValue: 'none',
     }),
+    defineField({
+      name: 'maxWidth',
+      title: 'Maximum Width',
+      type: 'number',
+      description: 'Maximum width in pixels. Leave empty for full width.',
+      validation: (Rule) => Rule.min(100).max(2000),
+      initialValue: undefined,
+    }),
   ],
   preview: {
     select: {

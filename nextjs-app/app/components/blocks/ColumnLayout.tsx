@@ -10,6 +10,7 @@ type ColumnLayoutProps = {
     column3?: any[];
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
+    maxWidth?: number;
   };
   pageId: string;
   pageType: string;
@@ -37,12 +38,14 @@ const columnWidthMap = {
 };
 
 export default function ColumnLayout({ block, pageId, pageType, localities, path }: ColumnLayoutProps) {
-  const { columns, column1, column2, column3, marginTop = 'medium', marginBottom = 'medium' } = block;
+  const { columns, column1, column2, column3, marginTop = 'medium', marginBottom = 'medium', maxWidth } = block;
   const columnWidth = columnWidthMap[columns];
+
+  const containerStyle = maxWidth ? { maxWidth: `${maxWidth}px`, margin: '0 auto' } : {};
 
   return (
     <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
-      <div className="flex flex-wrap -mx-4">
+      <div className="flex flex-wrap -mx-4" style={containerStyle}>
         <div className={`px-4 ${columnWidth}`}>
           {column1?.map((childBlock: any, index: number) => (
             <BlockRenderer
@@ -87,4 +90,4 @@ export default function ColumnLayout({ block, pageId, pageType, localities, path
       </div>
     </div>
   );
-} 
+}
