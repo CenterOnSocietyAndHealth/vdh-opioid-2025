@@ -5,6 +5,7 @@ import LocalitySelector from "./blocks/LocalitySelector";
 import ColumnLayout from "./blocks/ColumnLayout";
 import CostsMaps from "./blocks/CostsMaps";
 import CostsBreakdown from "./blocks/CostsBreakdown";
+import Accordion from "./blocks/Accordion";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -26,6 +27,7 @@ const Blocks: BlocksType = {
   columnLayout: ColumnLayout,
   costsMaps: CostsMaps,
   costsBreakdown: CostsBreakdown,
+  accordion: Accordion,
 };
 
 /**

@@ -1,0 +1,20 @@
+<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="120" fill="#f5f5f5" rx="8"/>
+  
+  <!-- Accordion container -->
+  <rect x="20" y="30" width="160" height="60" fill="#e5e5e5" rx="4"/>
+  
+  <!-- Bullet point -->
+  <circle cx="35" cy="50" r="3" fill="#000000"/>
+  
+  <!-- Title text -->
+  <rect x="45" y="45" width="80" height="4" fill="#000000" rx="2"/>
+  <rect x="45" y="52" width="60" height="3" fill="#000000" rx="1.5"/>
+  
+  <!-- Chevron icon -->
+  <path d="M170 45L175 50L170 55" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Divider line -->
+  <line x1="30" y1="75" x2="170" y2="75" stroke="#d1d5db" stroke-width="1"/>
+</svg> 

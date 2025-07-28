@@ -158,6 +158,13 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                   {children}
                 </span>
               ),
+              smallBlackText: ({ children }) => (
+                <span style={{
+                  marginTop: '-15px',
+                }}>
+                  {children}
+                </span>
+              ),
               definition: ({ children, value }) => {
                 try {
                   if (!value?.term || !value?.definition) {

@@ -4,7 +4,7 @@ import CSHlogo from '@/public/csh-logo.svg'
 
 export default function Footer() {
   return (
-    <footer className="pb-10">
+    <footer className="pb-10 bg-[#F3F2EC]">
       <hr className="my-10"></hr>
       <div className="footer-container flex justify-between items-center max-w-[1280px] mx-auto">
         <div className="footer-left">

@@ -29,7 +29,7 @@ export default async function Header() {
   return (
     <header 
       role="banner" 
-      className="w-full p-4 flex items-center justify-between bg-[#FFFDF8]"
+      className="w-full p-4 flex items-center justify-between bg-[#F3F2EC]"
     >
       <div className="container max-w-[1311px] px-1 mx-auto flex items-center justify-between">
         <div className="logo h-[70px]">

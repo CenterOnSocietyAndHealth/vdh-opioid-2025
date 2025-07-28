@@ -89,4 +89,14 @@ export type CostsBreakdownProps = {
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
     aside?: any[];
   };
+};
+
+// Type for the accordion component props
+export type AccordionProps = {
+  block: {
+    title: string;
+    content: any[];
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  };
 }; 

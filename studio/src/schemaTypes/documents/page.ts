@@ -46,6 +46,7 @@ export const page = defineType({
         { type: 'columnLayout' },
         { type: 'costsMaps' },
         { type: 'costsBreakdown' },
+        { type: 'accordion' },
       ],
       options: {
         insertMenu: {
