@@ -26,6 +26,7 @@ export const blockContent = defineType({
         {title: 'H3', value: 'h3'},
         {title: 'H4', value: 'h4'},
         {title: 'Large Value', value: 'largeValue'},
+        {title: 'Quote', value: 'quote'},
       ],
       marks: {
         decorators: [
