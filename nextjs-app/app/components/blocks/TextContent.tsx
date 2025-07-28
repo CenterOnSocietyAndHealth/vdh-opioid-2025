@@ -143,6 +143,19 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                   {children}
                 </div>
               ),
+              quote: ({ children }) => (
+                <div style={{
+                  color: '#1E1E1E',
+                  textAlign: 'center',
+                  fontFamily: 'Merriweather',
+                  fontSize: '20px',
+                  fontStyle: 'normal',
+                  fontWeight: 300,
+                  lineHeight: '30px',
+                }}>
+                  {children}
+                </div>
+              ),
             },
             marks: {
               smallGrayText: ({ children }) => (
@@ -154,13 +167,6 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                   fontWeight: 500,
                   lineHeight: '130%',
                   letterSpacing: '-0.266px',
-                }}>
-                  {children}
-                </span>
-              ),
-              smallBlackText: ({ children }) => (
-                <span style={{
-                  marginTop: '-15px',
                 }}>
                   {children}
                 </span>
