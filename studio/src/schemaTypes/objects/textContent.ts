@@ -28,19 +28,7 @@ export const textContent = defineType({
       },
       initialValue: 'left',
     }),
-    defineField({
-      name: 'isAside',
-      title: 'Display as Aside',
-      type: 'boolean',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'backgroundColor',
-      title: 'Background Color',
-      type: 'string',
-      initialValue: '#f0f0f0',
-      hidden: ({parent}) => !parent?.isAside,
-    }),
+
     defineField({
       name: 'marginTop',
       title: 'Margin Top',
@@ -78,10 +66,9 @@ export const textContent = defineType({
   ],
   preview: {
     select: {
-      content: 'content',
-      isAside: 'isAside'
+      content: 'content'
     },
-    prepare({ content, isAside }) {
+    prepare({ content }) {
       // Find the first block that is a heading of any type
       const firstHeading = content?.find((block: any) => 
         block._type === 'block' && 
@@ -90,8 +77,7 @@ export const textContent = defineType({
       
       if (firstHeading) {
         return {
-          title: firstHeading.children?.[0]?.text || 'Text Content',
-          subtitle: isAside ? 'Aside' : undefined
+          title: firstHeading.children?.[0]?.text || 'Text Content'
         }
       }
 
@@ -100,14 +86,12 @@ export const textContent = defineType({
       if (firstParagraph) {
         const text = firstParagraph.children?.[0]?.text || ''
         return {
-          title: text.length > 50 ? text.substring(0, 50) + '...' : text || 'Text Content',
-          subtitle: isAside ? 'Aside' : undefined
+          title: text.length > 50 ? text.substring(0, 50) + '...' : text || 'Text Content'
         }
       }
 
       return {
         title: 'Text Content',
-        subtitle: isAside ? 'Aside' : undefined,
         media: LuLetterText
       }
     },

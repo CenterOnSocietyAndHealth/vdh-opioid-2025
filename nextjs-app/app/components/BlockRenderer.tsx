@@ -6,6 +6,7 @@ import ColumnLayout from "./blocks/ColumnLayout";
 import CostsMaps from "./blocks/CostsMaps";
 import CostsBreakdown from "./blocks/CostsBreakdown";
 import Accordion from "./blocks/Accordion";
+import ContentWrapper from "./blocks/ContentWrapper";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -28,6 +29,7 @@ const Blocks: BlocksType = {
   costsMaps: CostsMaps,
   costsBreakdown: CostsBreakdown,
   accordion: Accordion,
+  contentWrapper: ContentWrapper,
 };
 
 /**

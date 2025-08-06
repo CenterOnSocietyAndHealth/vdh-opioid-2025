@@ -62,8 +62,6 @@ export type TextContentProps = {
     content: any[];
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
-    isAside?: boolean;
-    backgroundColor?: string;
     textAlignment?: 'left' | 'center' | 'right';
     maxWidth?: number;
   };
@@ -99,4 +97,24 @@ export type AccordionProps = {
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
   };
+};
+
+// Type for the content wrapper component props
+export type ContentWrapperProps = {
+  block: {
+    _key: string;
+    content: any[];
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+    backgroundColor?: string;
+    customBackgroundColor?: string;
+    backgroundWidth?: 'full' | 'container' | 'narrow';
+    contentWidth?: 'full' | 'container' | 'narrow' | 'custom';
+    customContentWidth?: number;
+    padding?: 'none' | 'small' | 'medium' | 'large';
+  };
+  selectedLocality?: Locality;
+  localities?: Array<Locality>;
+  pageId: string;
+  pageType: string;
 }; 
