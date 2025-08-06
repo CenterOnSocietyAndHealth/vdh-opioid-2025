@@ -51,14 +51,28 @@ The Content Wrapper component is a new addition to the page builder that allows 
 - Use different background colors to visually separate sections
 - Combine with margins to create clear section breaks
 
+## Background Color Options
+
+You now have two ways to add background colors:
+
+### 1. TextContent Background Color
+- Individual text blocks can have their own background color
+- Choose from predefined colors or enter a custom hex color
+- Automatically adds padding when a background is applied
+- Good for highlighting individual text sections
+
+### 2. Content Wrapper Background Color
+- Wraps multiple content blocks with a shared background
+- More control over width and layout
+- Better for creating section dividers or aside-like content areas
+
 ## Migration from Aside TextContent
 
-The old `isAside` functionality in TextContent has been removed. To recreate aside-like styling:
+The old `isAside` functionality has been replaced with a more flexible background color system. You can now:
 
-1. Use a Content Wrapper instead
-2. Set the background color as desired
-3. Add TextContent blocks inside the wrapper
-4. Configure the width settings to achieve the desired layout
+1. **For single text blocks**: Use the Background Color field in TextContent
+2. **For multiple blocks**: Use a Content Wrapper to group them with a shared background
+3. **For complex layouts**: Combine both approaches as needed
 
 ## Technical Details
 

@@ -28,6 +28,31 @@ export const textContent = defineType({
       },
       initialValue: 'left',
     }),
+    defineField({
+      name: 'backgroundColor',
+      title: 'Background Color',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'None', value: 'transparent'},
+          {title: 'Light Gray', value: '#f0f0f0'},
+          {title: 'White', value: '#ffffff'},
+          {title: 'Light Blue', value: '#e6f3ff'},
+          {title: 'Light Green', value: '#f0f8f0'},
+          {title: 'Light Yellow', value: '#fffbf0'},
+          {title: 'Custom', value: 'custom'},
+        ],
+      },
+      initialValue: 'transparent',
+    }),
+    defineField({
+      name: 'customBackgroundColor',
+      title: 'Custom Background Color',
+      type: 'string',
+      description: 'Enter a hex color code (e.g., #ff0000)',
+      hidden: ({parent}) => parent?.backgroundColor !== 'custom',
+      validation: (Rule) => Rule.regex(/^#[0-9A-Fa-f]{6}$/).warning('Please enter a valid hex color code'),
+    }),
 
     defineField({
       name: 'marginTop',

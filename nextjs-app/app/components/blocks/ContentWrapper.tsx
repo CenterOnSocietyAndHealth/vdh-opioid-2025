@@ -26,13 +26,13 @@ const paddingMap = {
 const backgroundWidthMap = {
   full: 'w-full',
   container: 'max-w-7xl mx-auto',
-  narrow: 'max-w-4xl mx-auto',
+  narrow: 'max-w-3xl mx-auto',
 }
 
 const contentWidthMap = {
   full: 'w-full',
   container: 'max-w-7xl mx-auto',
-  narrow: 'max-w-4xl mx-auto',
+  narrow: 'max-w-3xl mx-auto',
 }
 
 const getNestedValue = (obj: any, path: string) => {

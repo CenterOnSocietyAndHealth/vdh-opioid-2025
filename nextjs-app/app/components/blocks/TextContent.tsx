@@ -47,6 +47,8 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
     marginTop = 'none', 
     marginBottom = 'none', 
     textAlignment = 'left',
+    backgroundColor = 'transparent',
+    customBackgroundColor,
     maxWidth
   } = block
 
@@ -54,6 +56,12 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
   const cleanMarginTop = cleanString(marginTop)
   const cleanMarginBottom = cleanString(marginBottom)
   const cleanTextAlignment = cleanString(textAlignment)
+  const cleanBackgroundColor = cleanString(backgroundColor)
+
+  // Validate and sanitize backgroundColor
+  const finalBackgroundColor = cleanBackgroundColor === 'custom' && customBackgroundColor 
+    ? (typeof customBackgroundColor === 'string' && customBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? customBackgroundColor : 'transparent')
+    : (cleanBackgroundColor === 'transparent' ? 'transparent' : (typeof cleanBackgroundColor === 'string' && cleanBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? cleanBackgroundColor : 'transparent'))
   
   // Validate margin values to prevent undefined classes
   const validMarginTop = cleanMarginTop && marginMap[cleanMarginTop as keyof typeof marginMap] ? cleanMarginTop : 'none'
@@ -77,11 +85,12 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
     }
   }, [])
 
-  console.log('TextContent block:', { marginTop, marginBottom, textAlignment, maxWidth })
+  console.log('TextContent block:', { marginTop, marginBottom, textAlignment, backgroundColor, customBackgroundColor, maxWidth })
   console.log('Cleaned values:', { 
     cleanMarginTop, 
     cleanMarginBottom, 
-    cleanTextAlignment
+    cleanTextAlignment,
+    cleanBackgroundColor
   })
   console.log('Margin classes:', { 
     topClass: marginMap[validMarginTop as keyof typeof marginMap], 
@@ -97,8 +106,9 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
   return (
     <div className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
       <div 
-        className={`content-container ${alignmentMap[validTextAlignment as keyof typeof alignmentMap]}`} 
+        className={`content-container ${alignmentMap[validTextAlignment as keyof typeof alignmentMap]} ${finalBackgroundColor !== 'transparent' ? 'p-[20px_15px]' : ''}`} 
         style={{
+          ...(finalBackgroundColor !== 'transparent' ? { backgroundColor: finalBackgroundColor } : {}),
           ...(maxWidth ? { maxWidth: `${maxWidth}px`, marginLeft: 'auto', marginRight: 'auto' } : {})
         }}
       >

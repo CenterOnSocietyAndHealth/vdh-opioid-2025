@@ -63,6 +63,8 @@ export type TextContentProps = {
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
     textAlignment?: 'left' | 'center' | 'right';
+    backgroundColor?: string;
+    customBackgroundColor?: string;
     maxWidth?: number;
   };
   selectedLocality?: Locality;
