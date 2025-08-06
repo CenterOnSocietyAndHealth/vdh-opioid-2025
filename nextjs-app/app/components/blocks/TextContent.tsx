@@ -12,16 +12,16 @@ const urlForImage = (source: any) => {
 
 const marginMap = {
   none: 'mt-0',
-  small: 'mt-4',
-  medium: 'mt-8',
-  large: 'mt-16',
+  small: 'mt-[20px]',
+  medium: 'mt-[40px]',
+  large: 'mt-[60px]',
 }
 
 const marginBottomMap = {
   none: 'mb-0',
-  small: 'mb-4',
-  medium: 'mb-8',
-  large: 'mb-16',
+  small: 'mb-[20px]',
+  medium: 'mb-[40px]',
+  large: 'mb-[60px]',
 }
 
 const alignmentMap = {
