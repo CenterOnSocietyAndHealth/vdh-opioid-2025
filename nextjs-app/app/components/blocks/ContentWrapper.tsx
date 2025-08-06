@@ -51,7 +51,7 @@ export default function ContentWrapper({ block, selectedLocality, localities, pa
     content, 
     marginTop = 'none', 
     marginBottom = 'none', 
-    backgroundColor = '#f0f0f0',
+    backgroundColor = '#ffffff',
     customBackgroundColor,
     backgroundWidth = 'container',
     contentWidth = 'container',
@@ -69,8 +69,8 @@ export default function ContentWrapper({ block, selectedLocality, localities, pa
 
   // Validate and sanitize backgroundColor
   const finalBackgroundColor = cleanBackgroundColor === 'custom' && customBackgroundColor 
-    ? (typeof customBackgroundColor === 'string' && customBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? customBackgroundColor : '#f0f0f0')
-    : (typeof cleanBackgroundColor === 'string' && cleanBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? cleanBackgroundColor : '#f0f0f0')
+    ? (typeof customBackgroundColor === 'string' && customBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? customBackgroundColor : '#ffffff')
+    : (typeof cleanBackgroundColor === 'string' && cleanBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? cleanBackgroundColor : '#ffffff')
   
   // Validate margin values to prevent undefined classes
   const validMarginTop = cleanMarginTop && marginMap[cleanMarginTop as keyof typeof marginMap] ? cleanMarginTop : 'none'
