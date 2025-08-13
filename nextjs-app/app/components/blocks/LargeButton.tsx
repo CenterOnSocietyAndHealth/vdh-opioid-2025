@@ -101,7 +101,6 @@ export default function LargeButton({ block }: LargeButtonProps) {
           style={{
             backgroundColor: buttonColor,
             color: textColor,
-            boxShadow: `0 4px 6px -1px ${buttonColor}40, 0 2px 4px -1px ${buttonColor}20`,
           }}
           disabled={!url}
         >

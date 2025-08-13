@@ -104,7 +104,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
           </div>
 
             <div
-                      className="absolute -top-10 left-0 h-8 flex items-center justify-center text-[#1E1E1E] font-medium text-sm px-2 rounded"
+                      className="absolute -top-10 left-0 h-8 flex items-center justify-center text-[#1E1E1E] font-medium text-[18px] px-2 rounded"
                 style={{
                     left: `${familiesBusinessesPercent}%`,
                     width: `${governmentPercent}%`,
