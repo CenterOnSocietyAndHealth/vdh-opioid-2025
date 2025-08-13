@@ -1,0 +1,17 @@
+<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="120" fill="#F5F5F0"/>
+  <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Large Button</text>
+  
+  <!-- Button background -->
+  <rect x="50" y="40" width="100" height="40" rx="20" fill="#4682B4" stroke="#1E1E1E" stroke-width="1"/>
+  
+  <!-- Download icon -->
+  <path d="M70 55 L75 60 L80 55 M75 60 L75 70" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="70" y1="70" x2="80" y2="70" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Button text -->
+  <text x="100" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">Download Report</text>
+  
+  <!-- Locality text -->
+  <text x="100" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">for Charlottesville City</text>
+</svg>

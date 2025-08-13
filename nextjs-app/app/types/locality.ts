@@ -151,4 +151,18 @@ export type PayerBreakdownProps = {
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
   };
+};
+
+// Type for the large button component props
+export type LargeButtonProps = {
+  block: {
+    buttonText: string;
+    buttonColor: string;
+    textColor: string;
+    action: 'download' | 'view' | 'open' | 'custom';
+    customAction?: string;
+    url?: string;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  };
 }; 

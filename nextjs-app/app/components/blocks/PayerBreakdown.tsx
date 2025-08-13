@@ -88,17 +88,17 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
           >
             {/* Top horizontal line */}
             <div 
-              className="absolute top-0 left-0 w-full h-0.5 bg-[#1E1E1E]"
+              className="absolute top-0 left-0 w-full h-[1px] bg-[#1E1E1E]"
               style={{ backgroundColor: '#1E1E1E' }}
             ></div>
             {/* Left vertical line */}
             <div 
-              className="absolute top-0 left-0 w-0.5 h-4 bg-[#1E1E1E]"
+              className="absolute top-0 left-0 w-[1px] h-4 bg-[#1E1E1E]"
               style={{ backgroundColor: '#1E1E1E' }}
             ></div>
             {/* Right vertical line */}
             <div 
-              className="absolute top-0 right-0 w-0.5 h-4 bg-[#1E1E1E]"
+              className="absolute top-0 right-0 w-[1px] h-4 bg-[#1E1E1E]"
               style={{ backgroundColor: '#1E1E1E' }}
             ></div>
           </div>

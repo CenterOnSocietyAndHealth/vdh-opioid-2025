@@ -133,6 +133,18 @@ export type Accordion = {
   marginBottom?: 'none' | 'small' | 'medium' | 'large';
 };
 
+export type LargeButton = {
+  _type: 'largeButton';
+  buttonText: string;
+  buttonColor: string;
+  textColor: string;
+  action?: 'download' | 'view' | 'open' | 'custom';
+  customAction?: string;
+  url?: string;
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+};
+
 export type PayerBreakdown = {
   _type: 'payerBreakdown';
   title: string;
@@ -886,6 +898,9 @@ export type Page = {
       } & PayerBreakdown)
     | ({
         _key: string;
+      } & LargeButton)
+    | ({
+        _key: string;
       } & Accordion)
     | ({
         _key: string;
@@ -1208,6 +1223,7 @@ export type AllSanitySchemaTypes =
   | OnThisPage
   | ContentWrapper
   | Accordion
+  | LargeButton
   | PayerBreakdown
   | CostsBreakdown
   | CostsMaps
@@ -1958,6 +1974,18 @@ export type GetPageQueryResult = {
           _type: 'block';
           _key: string;
         }>;
+      }
+    | {
+        _key: string;
+        _type: 'largeButton';
+        buttonText: string;
+        buttonColor: string;
+        textColor: string;
+        action?: 'custom' | 'download' | 'open' | 'view';
+        customAction?: string;
+        url?: string;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
       }
     | {
         _key: string;

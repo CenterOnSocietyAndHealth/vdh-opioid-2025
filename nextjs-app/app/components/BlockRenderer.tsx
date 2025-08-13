@@ -9,6 +9,7 @@ import Accordion from "./blocks/Accordion";
 import ContentWrapper from "./blocks/ContentWrapper";
 import OnThisPage from "./blocks/OnThisPage";
 import PayerBreakdown from "./blocks/PayerBreakdown";
+import LargeButton from "./blocks/LargeButton";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -34,6 +35,7 @@ const Blocks: BlocksType = {
   contentWrapper: ContentWrapper,
   onThisPage: OnThisPage,
   payerBreakdown: PayerBreakdown,
+  largeButton: LargeButton,
 };
 
 /**

@@ -47,6 +47,7 @@ export const page = defineType({
         { type: 'costsMaps' },
         { type: 'costsBreakdown' },
         { type: 'payerBreakdown' },
+        { type: 'largeButton' },
         { type: 'accordion' },
         { type: 'contentWrapper' },
         { type: 'onThisPage' },
