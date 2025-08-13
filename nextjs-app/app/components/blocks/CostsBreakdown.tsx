@@ -195,7 +195,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   
   const totalValue = d3.sum(costSectors, d => d.value);
   return (
-    <div>
+    <div className="max-w-[1311px] mx-auto">
       <div ref={chartRef} className="w-full h-auto" style={{position: 'relative'}}>
         {/* Custom Tooltip for blocks with showLabelAsTooltip */}
         {hoveredTooltipIndex !== null && tooltipPosition && costSectors[hoveredTooltipIndex] && costSectors[hoveredTooltipIndex].showLabelAsTooltip && (

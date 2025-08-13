@@ -16,6 +16,13 @@ export const textContent = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'sectionId',
+      title: 'Section ID',
+      type: 'string',
+      description: 'Optional: Add an ID to this section for on-page navigation links (e.g., "section-1", "overview")',
+      validation: (Rule) => Rule.regex(/^[a-zA-Z0-9-_]+$/).warning('Please use only letters, numbers, hyphens, and underscores'),
+    }),
+    defineField({
       name: 'textAlignment',
       title: 'Text Alignment',
       type: 'string',
@@ -91,32 +98,31 @@ export const textContent = defineType({
   ],
   preview: {
     select: {
-      content: 'content'
+      content: 'content',
+      sectionId: 'sectionId'
     },
-    prepare({ content }) {
+    prepare({ content, sectionId }) {
       // Find the first block that is a heading of any type
       const firstHeading = content?.find((block: any) => 
         block._type === 'block' && 
         (block.style === 'h1' || block.style === 'h2' || block.style === 'h3' || block.style === 'h4')
       )
       
+      let title = 'Text Content'
       if (firstHeading) {
-        return {
-          title: firstHeading.children?.[0]?.text || 'Text Content'
-        }
-      }
-
-      // If no heading found, get first paragraph
-      const firstParagraph = content?.find((block: any) => block._type === 'block' && block.style === 'normal')
-      if (firstParagraph) {
-        const text = firstParagraph.children?.[0]?.text || ''
-        return {
-          title: text.length > 50 ? text.substring(0, 50) + '...' : text || 'Text Content'
+        title = firstHeading.children?.[0]?.text || 'Text Content'
+      } else {
+        // If no heading found, get first paragraph
+        const firstParagraph = content?.find((block: any) => block._type === 'block' && block.style === 'normal')
+        if (firstParagraph) {
+          const text = firstParagraph.children?.[0]?.text || ''
+          title = text.length > 50 ? text.substring(0, 50) + '...' : text || 'Text Content'
         }
       }
 
       return {
-        title: 'Text Content',
+        title: title,
+        subtitle: sectionId ? `ID: ${sectionId}` : undefined,
         media: LuLetterText
       }
     },

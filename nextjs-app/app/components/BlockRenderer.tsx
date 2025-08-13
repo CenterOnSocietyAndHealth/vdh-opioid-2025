@@ -7,6 +7,8 @@ import CostsMaps from "./blocks/CostsMaps";
 import CostsBreakdown from "./blocks/CostsBreakdown";
 import Accordion from "./blocks/Accordion";
 import ContentWrapper from "./blocks/ContentWrapper";
+import OnThisPage from "./blocks/OnThisPage";
+import PayerBreakdown from "./blocks/PayerBreakdown";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -30,6 +32,8 @@ const Blocks: BlocksType = {
   costsBreakdown: CostsBreakdown,
   accordion: Accordion,
   contentWrapper: ContentWrapper,
+  onThisPage: OnThisPage,
+  payerBreakdown: PayerBreakdown,
 };
 
 /**

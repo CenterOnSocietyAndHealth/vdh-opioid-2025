@@ -46,8 +46,10 @@ export const page = defineType({
         { type: 'columnLayout' },
         { type: 'costsMaps' },
         { type: 'costsBreakdown' },
+        { type: 'payerBreakdown' },
         { type: 'accordion' },
         { type: 'contentWrapper' },
+        { type: 'onThisPage' },
       ],
       options: {
         insertMenu: {
@@ -55,8 +57,10 @@ export const page = defineType({
           views: [
             {
               name: 'grid',
-              previewImageUrl: (schemaTypeName) =>
-                `/static/page-builder-thumbnails/${schemaTypeName}.webp`,
+              previewImageUrl: (schemaTypeName) => {
+                // Try WebP first, fall back to SVG if WebP doesn't exist
+                return `/static/page-builder-thumbnails/${schemaTypeName}.webp`;
+              },
             },
           ],
         },

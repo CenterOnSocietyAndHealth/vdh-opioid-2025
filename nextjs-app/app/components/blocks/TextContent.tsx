@@ -44,6 +44,7 @@ const cleanString = (str: string | undefined): string | undefined => {
 export default function TextContent({ block, selectedLocality }: TextContentProps) {
   const { 
     content, 
+    sectionId,
     marginTop = 'none', 
     marginBottom = 'none', 
     textAlignment = 'left',
@@ -106,6 +107,7 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
   return (
     <div className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
       <div 
+        id={sectionId}
         className={`content-container ${alignmentMap[validTextAlignment as keyof typeof alignmentMap]} ${finalBackgroundColor !== 'transparent' ? 'p-[20px_15px]' : ''}`} 
         style={{
           ...(finalBackgroundColor !== 'transparent' ? { backgroundColor: finalBackgroundColor } : {}),

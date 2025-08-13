@@ -8,8 +8,10 @@ import {localitySelector} from './objects/localitySelector'
 import {columnLayout} from './objects/columnLayout'
 import {costsMaps} from './objects/costsMaps'
 import {costsBreakdown} from './objects/costsBreakdown'
+import {payerBreakdown} from './objects/payerBreakdown'
 import {accordion} from './objects/accordion'
 import {contentWrapper} from './objects/contentWrapper'
+import {onThisPage} from './objects/onThisPage'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -27,6 +29,8 @@ export const schemaTypes = [
   columnLayout,
   costsMaps,
   costsBreakdown,
+  payerBreakdown,
   accordion,
   contentWrapper,
+  onThisPage,
 ]

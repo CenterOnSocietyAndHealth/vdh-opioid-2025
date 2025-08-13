@@ -67,7 +67,7 @@ export default async function Page(props: Props) {
   });
 
   return (
-    <div className="max-w-[1311px] px-1 mx-auto">
+    <div className="px-1 mx-auto">
       <PageBuilderPage page={page as GetPageQueryResult} localities={localities} />
     </div>
   );

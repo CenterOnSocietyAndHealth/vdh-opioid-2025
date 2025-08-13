@@ -60,6 +60,7 @@ export type LocalitySelectorProps = {
 export type TextContentProps = {
   block: {
     content: any[];
+    sectionId?: string;
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
     textAlignment?: 'left' | 'center' | 'right';
@@ -119,4 +120,35 @@ export type ContentWrapperProps = {
   localities?: Array<Locality>;
   pageId: string;
   pageType: string;
+};
+
+// Type for the on this page component props
+export type OnThisPageProps = {
+  block: {
+    links: Array<{
+      title: string;
+      destinationId: string;
+    }>;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  };
+};
+
+// Type for the payer breakdown component props
+export type PayerBreakdownProps = {
+  block: {
+    title: string;
+    subtitle: string;
+    familiesBusinessesValue: number;
+    familiesBusinessesColor: string;
+    familiesBusinessesTextColor: string;
+    federalValue: number;
+    federalColor: string;
+    federalTextColor: string;
+    stateLocalValue: number;
+    stateLocalColor: string;
+    stateLocalTextColor: string;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  };
 }; 

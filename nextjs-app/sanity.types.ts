@@ -13,6 +13,143 @@
  */
 
 // Source: schema.json
+export type OnThisPage = {
+  _type: 'onThisPage';
+  links: Array<{
+    title: string;
+    destinationId: string;
+    _type: 'pageLink';
+    _key: string;
+  }>;
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+};
+
+export type ContentWrapper = {
+  _type: 'contentWrapper';
+  backgroundColor?:
+    | '#f0f0f0'
+    | '#ffffff'
+    | '#EDF4FA'
+    | '#F3F2EC'
+    | '#fffbf0'
+    | 'custom';
+  customBackgroundColor?: string;
+  backgroundWidth?: 'full' | 'container' | 'narrow';
+  contentWidth?: 'full' | 'container' | 'narrow' | 'custom';
+  customContentWidth?: number;
+  padding?: 'none' | 'small' | 'medium' | 'large';
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  content: Array<
+    | ({
+        _key: string;
+      } & TextContent)
+    | ({
+        _key: string;
+      } & LocalitySelector)
+    | ({
+        _key: string;
+      } & CostsMaps)
+    | ({
+        _key: string;
+      } & CostsBreakdown)
+    | ({
+        _key: string;
+      } & Accordion)
+  >;
+};
+
+export type Accordion = {
+  _type: 'accordion';
+  title: string;
+  content: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: 'span';
+      _key: string;
+    }>;
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'quote';
+    listItem?: 'bullet' | 'number';
+    markDefs?: Array<
+      | {
+          linkType?: 'href' | 'page';
+          href?: string;
+          page?: {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'page';
+          };
+          openInNewTab?: boolean;
+          _type: 'link';
+          _key: string;
+        }
+      | {
+          term: string;
+          definition: string;
+          _type: 'definition';
+          _key: string;
+        }
+      | {
+          fieldPath:
+            | 'counties'
+            | 'demographics.totalPopulation'
+            | 'demographics.medianAge'
+            | 'demographics.medianIncome'
+            | 'demographics.povertyPct'
+            | 'regions.healthDistrict'
+            | 'regions.healthRegion'
+            | 'regions.cooperCtrRegion'
+            | 'classification.category'
+            | 'classification.urbanRural'
+            | 'classification.metroNonMetro'
+            | 'opioidMetrics.totalPerCapita'
+            | 'opioidMetrics.totalTotal'
+            | 'opioidMetrics.laborPerCapita'
+            | 'opioidMetrics.laborTotal'
+            | 'opioidMetrics.healthcarePerCapita'
+            | 'opioidMetrics.healthcareTotal'
+            | 'opioidMetrics.crimeOtherPerCapita'
+            | 'opioidMetrics.crimeOtherTotal'
+            | 'opioidMetrics.householdPerCapita'
+            | 'opioidMetrics.householdTotal'
+            | 'opioidMetrics.totalTotalPercentile'
+            | 'opioidMetrics.totalTotalComparison'
+            | 'opioidMetrics.totalPerCapitaPercentile'
+            | 'opioidMetrics.totalPerCapitaComparison';
+          addArticle?: boolean;
+          textCase?: 'default' | 'capitalize' | 'lowercase';
+          _type: 'localityField';
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: 'block';
+    _key: string;
+  }>;
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+};
+
+export type PayerBreakdown = {
+  _type: 'payerBreakdown';
+  title: string;
+  subtitle: string;
+  familiesBusinessesValue: number;
+  familiesBusinessesColor: string;
+  familiesBusinessesTextColor: string;
+  federalValue: number;
+  federalColor: string;
+  federalTextColor: string;
+  stateLocalValue: number;
+  stateLocalColor: string;
+  stateLocalTextColor: string;
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+};
+
 export type CostsBreakdown = {
   _type: 'costsBreakdown';
   totalCost: string;
@@ -26,7 +163,7 @@ export type CostsBreakdown = {
       _type: 'span';
       _key: string;
     }>;
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'quote';
     listItem?: 'bullet' | 'number';
     markDefs?: Array<
       | {
@@ -118,7 +255,7 @@ export type CostsMaps = {
       _type: 'span';
       _key: string;
     }>;
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'quote';
     listItem?: 'bullet' | 'number';
     markDefs?: Array<
       | {
@@ -184,7 +321,7 @@ export type CostsMaps = {
       _type: 'span';
       _key: string;
     }>;
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'quote';
     listItem?: 'bullet' | 'number';
     markDefs?: Array<
       | {
@@ -250,7 +387,7 @@ export type CostsMaps = {
       _type: 'span';
       _key: string;
     }>;
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'quote';
     listItem?: 'bullet' | 'number';
     markDefs?: Array<
       | {
@@ -316,7 +453,7 @@ export type CostsMaps = {
       _type: 'span';
       _key: string;
     }>;
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'quote';
     listItem?: 'bullet' | 'number';
     markDefs?: Array<
       | {
@@ -382,7 +519,7 @@ export type CostsMaps = {
       _type: 'span';
       _key: string;
     }>;
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'quote';
     listItem?: 'bullet' | 'number';
     markDefs?: Array<
       | {
@@ -492,7 +629,7 @@ export type TextContent = {
       _type: 'span';
       _key: string;
     }>;
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'quote';
     listItem?: 'bullet' | 'number';
     markDefs?: Array<
       | {
@@ -551,9 +688,17 @@ export type TextContent = {
     _type: 'block';
     _key: string;
   }>;
+  sectionId?: string;
   textAlignment?: 'left' | 'center' | 'right';
-  isAside?: boolean;
-  backgroundColor?: string;
+  backgroundColor?:
+    | 'transparent'
+    | '#f0f0f0'
+    | '#ffffff'
+    | '#e6f3ff'
+    | '#f0f8f0'
+    | '#fffbf0'
+    | 'custom';
+  customBackgroundColor?: string;
   marginTop?: 'none' | 'small' | 'medium' | 'large';
   marginBottom?: 'none' | 'small' | 'medium' | 'large';
   maxWidth?: number;
@@ -579,7 +724,7 @@ export type BlockContent = Array<{
     _type: 'span';
     _key: string;
   }>;
-  style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue';
+  style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'quote';
   listItem?: 'bullet' | 'number';
   markDefs?: Array<
     | {
@@ -736,6 +881,18 @@ export type Page = {
     | ({
         _key: string;
       } & CostsBreakdown)
+    | ({
+        _key: string;
+      } & PayerBreakdown)
+    | ({
+        _key: string;
+      } & Accordion)
+    | ({
+        _key: string;
+      } & ContentWrapper)
+    | ({
+        _key: string;
+      } & OnThisPage)
   >;
 };
 
@@ -1048,6 +1205,10 @@ export type SanityAssetSourceData = {
 };
 
 export type AllSanitySchemaTypes =
+  | OnThisPage
+  | ContentWrapper
+  | Accordion
+  | PayerBreakdown
   | CostsBreakdown
   | CostsMaps
   | ColumnLayout
@@ -1230,6 +1391,79 @@ export type GetPageQueryResult = {
   pageBuilder: Array<
     | {
         _key: string;
+        _type: 'accordion';
+        title: string;
+        content: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: 'span';
+            _key: string;
+          }>;
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal' | 'quote';
+          listItem?: 'bullet' | 'number';
+          markDefs?: Array<
+            | {
+                term: string;
+                definition: string;
+                _type: 'definition';
+                _key: string;
+              }
+            | {
+                linkType?: 'href' | 'page';
+                href?: string;
+                page?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'page';
+                };
+                openInNewTab?: boolean;
+                _type: 'link';
+                _key: string;
+              }
+            | {
+                fieldPath:
+                  | 'classification.category'
+                  | 'classification.metroNonMetro'
+                  | 'classification.urbanRural'
+                  | 'counties'
+                  | 'demographics.medianAge'
+                  | 'demographics.medianIncome'
+                  | 'demographics.povertyPct'
+                  | 'demographics.totalPopulation'
+                  | 'opioidMetrics.crimeOtherPerCapita'
+                  | 'opioidMetrics.crimeOtherTotal'
+                  | 'opioidMetrics.healthcarePerCapita'
+                  | 'opioidMetrics.healthcareTotal'
+                  | 'opioidMetrics.householdPerCapita'
+                  | 'opioidMetrics.householdTotal'
+                  | 'opioidMetrics.laborPerCapita'
+                  | 'opioidMetrics.laborTotal'
+                  | 'opioidMetrics.totalPerCapita'
+                  | 'opioidMetrics.totalPerCapitaComparison'
+                  | 'opioidMetrics.totalPerCapitaPercentile'
+                  | 'opioidMetrics.totalTotal'
+                  | 'opioidMetrics.totalTotalComparison'
+                  | 'opioidMetrics.totalTotalPercentile'
+                  | 'regions.cooperCtrRegion'
+                  | 'regions.healthDistrict'
+                  | 'regions.healthRegion';
+                addArticle?: boolean;
+                textCase?: 'capitalize' | 'default' | 'lowercase';
+                _type: 'localityField';
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: 'block';
+          _key: string;
+        }>;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+      }
+    | {
+        _key: string;
         _type: 'columnLayout';
         columns?: 2 | 3;
         column1?: Array<
@@ -1262,6 +1496,41 @@ export type GetPageQueryResult = {
       }
     | {
         _key: string;
+        _type: 'contentWrapper';
+        backgroundColor?:
+          | '#EDF4FA'
+          | '#f0f0f0'
+          | '#F3F2EC'
+          | '#fffbf0'
+          | '#ffffff'
+          | 'custom';
+        customBackgroundColor?: string;
+        backgroundWidth?: 'container' | 'full' | 'narrow';
+        contentWidth?: 'container' | 'custom' | 'full' | 'narrow';
+        customContentWidth?: number;
+        padding?: 'large' | 'medium' | 'none' | 'small';
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+        content: Array<
+          | ({
+              _key: string;
+            } & Accordion)
+          | ({
+              _key: string;
+            } & CostsBreakdown)
+          | ({
+              _key: string;
+            } & CostsMaps)
+          | ({
+              _key: string;
+            } & LocalitySelector)
+          | ({
+              _key: string;
+            } & TextContent)
+        >;
+      }
+    | {
+        _key: string;
         _type: 'costsBreakdown';
         totalCost: string;
         totalCostSubtitle?: string;
@@ -1274,7 +1543,7 @@ export type GetPageQueryResult = {
             _type: 'span';
             _key: string;
           }>;
-          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal' | 'quote';
           listItem?: 'bullet' | 'number';
           markDefs?: Array<
             | {
@@ -1366,7 +1635,7 @@ export type GetPageQueryResult = {
             _type: 'span';
             _key: string;
           }>;
-          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal' | 'quote';
           listItem?: 'bullet' | 'number';
           markDefs?: Array<
             | {
@@ -1432,7 +1701,7 @@ export type GetPageQueryResult = {
             _type: 'span';
             _key: string;
           }>;
-          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal' | 'quote';
           listItem?: 'bullet' | 'number';
           markDefs?: Array<
             | {
@@ -1498,7 +1767,7 @@ export type GetPageQueryResult = {
             _type: 'span';
             _key: string;
           }>;
-          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal' | 'quote';
           listItem?: 'bullet' | 'number';
           markDefs?: Array<
             | {
@@ -1564,7 +1833,7 @@ export type GetPageQueryResult = {
             _type: 'span';
             _key: string;
           }>;
-          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal' | 'quote';
           listItem?: 'bullet' | 'number';
           markDefs?: Array<
             | {
@@ -1630,7 +1899,7 @@ export type GetPageQueryResult = {
             _type: 'span';
             _key: string;
           }>;
-          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal' | 'quote';
           listItem?: 'bullet' | 'number';
           markDefs?: Array<
             | {
@@ -1700,6 +1969,35 @@ export type GetPageQueryResult = {
       }
     | {
         _key: string;
+        _type: 'onThisPage';
+        links: Array<{
+          title: string;
+          destinationId: string;
+          _type: 'pageLink';
+          _key: string;
+        }>;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+      }
+    | {
+        _key: string;
+        _type: 'payerBreakdown';
+        title: string;
+        subtitle: string;
+        familiesBusinessesValue: number;
+        familiesBusinessesColor: string;
+        familiesBusinessesTextColor: string;
+        federalValue: number;
+        federalColor: string;
+        federalTextColor: string;
+        stateLocalValue: number;
+        stateLocalColor: string;
+        stateLocalTextColor: string;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+      }
+    | {
+        _key: string;
         _type: 'textContent';
         content: Array<{
           children?: Array<{
@@ -1708,7 +2006,7 @@ export type GetPageQueryResult = {
             _type: 'span';
             _key: string;
           }>;
-          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal';
+          style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal' | 'quote';
           listItem?: 'bullet' | 'number';
           markDefs?: Array<
             | {
@@ -1767,9 +2065,17 @@ export type GetPageQueryResult = {
           _type: 'block';
           _key: string;
         }>;
+        sectionId?: string;
         textAlignment?: 'center' | 'left' | 'right';
-        isAside?: boolean;
-        backgroundColor?: string;
+        backgroundColor?:
+          | '#e6f3ff'
+          | '#f0f0f0'
+          | '#f0f8f0'
+          | '#fffbf0'
+          | '#ffffff'
+          | 'custom'
+          | 'transparent';
+        customBackgroundColor?: string;
         marginTop?: 'large' | 'medium' | 'none' | 'small';
         marginBottom?: 'large' | 'medium' | 'none' | 'small';
         maxWidth?: number;
