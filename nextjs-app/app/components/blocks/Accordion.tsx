@@ -26,15 +26,27 @@ export default function Accordion({ block }: AccordionProps) {
 
   return (
     <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
-      <div className="bg-gray-100 rounded-lg">
+      <div className="">
         {/* Accordion Header */}
         <button
           onClick={toggleAccordion}
           className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-200 transition-colors duration-200"
         >
           <div className="flex items-center space-x-3">
-            {/* Bullet point */}
-            <div className="w-2 h-2 bg-black rounded-full flex-shrink-0"></div>
+            {/* Plus/Minus icon */}
+            <svg 
+              className="w-5 h-5 text-black flex-shrink-0 transition-transform duration-200"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {isExpanded ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              )}
+            </svg>
             {/* Title */}
             <span className="font-medium text-black">{title}</span>
           </div>
