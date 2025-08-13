@@ -68,7 +68,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
       {/* Header */}
       <div className="text-center mb-12 max-w-[600px] mx-auto">
         <h2 className="text-2xl font-normal mb-2">{title}</h2>
-        <p className="text-lg text-gray-600">{subtitle}</p>
+              <h3 className="text-lg text-[#1E1E1E]">{subtitle}</h3>
       </div>
       
       {/* Main Chart */}

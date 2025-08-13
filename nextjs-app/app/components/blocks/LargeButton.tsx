@@ -57,8 +57,6 @@ const DownloadIcon = () => (
 export default function LargeButton({ block }: LargeButtonProps) {
   const { 
     buttonText, 
-    buttonColor, 
-    textColor, 
     action, 
     customAction, 
     url,
@@ -97,10 +95,17 @@ export default function LargeButton({ block }: LargeButtonProps) {
       <div className="flex justify-center">
         <button
           onClick={handleClick}
-          className="inline-flex items-center justify-center px-16 py-4 rounded-full font-medium text-lg transition-all duration-200 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-opacity-50"
+          className="inline-flex items-center justify-center px-16 py-4 rounded-full font-medium text-lg transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-opacity-50"
           style={{
-            backgroundColor: buttonColor,
-            color: textColor,
+            backgroundColor: '#4783B5',
+            color: '#FFFFFF',
+            border: '1px solid #417A90',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#3B6D97';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#4783B5';
           }}
           disabled={!url}
         >

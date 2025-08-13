@@ -157,8 +157,6 @@ export type PayerBreakdownProps = {
 export type LargeButtonProps = {
   block: {
     buttonText: string;
-    buttonColor: string;
-    textColor: string;
     action: 'download' | 'view' | 'open' | 'custom';
     customAction?: string;
     url?: string;

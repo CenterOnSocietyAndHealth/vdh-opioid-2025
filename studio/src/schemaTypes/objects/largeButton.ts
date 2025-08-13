@@ -17,22 +17,6 @@ export const largeButton = defineType({
     }),
 
     defineField({
-      name: 'buttonColor',
-      title: 'Button Color',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-      initialValue: '#4682B4',
-      description: 'Background color for the button (hex code)',
-    }),
-    defineField({
-      name: 'textColor',
-      title: 'Text Color',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-      initialValue: '#FFFFFF',
-      description: 'Color for the button text and icon (hex code)',
-    }),
-    defineField({
       name: 'action',
       title: 'Action',
       type: 'string',
