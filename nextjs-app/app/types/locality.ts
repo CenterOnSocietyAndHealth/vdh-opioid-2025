@@ -96,6 +96,7 @@ export type CostsBreakdownProps = {
 export type AccordionProps = {
   block: {
     title: string;
+    headingLevel?: 'span' | 'h2' | 'h3' | 'h4';
     content: any[];
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';

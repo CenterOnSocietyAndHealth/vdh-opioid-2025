@@ -63,6 +63,7 @@ export type ContentWrapper = {
 export type Accordion = {
   _type: 'accordion';
   title: string;
+  headingLevel?: 'span' | 'h2' | 'h3' | 'h4';
   content: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -136,8 +137,6 @@ export type Accordion = {
 export type LargeButton = {
   _type: 'largeButton';
   buttonText: string;
-  buttonColor: string;
-  textColor: string;
   action?: 'download' | 'view' | 'open' | 'custom';
   customAction?: string;
   url?: string;
@@ -1409,6 +1408,7 @@ export type GetPageQueryResult = {
         _key: string;
         _type: 'accordion';
         title: string;
+        headingLevel?: 'h2' | 'h3' | 'h4' | 'span';
         content: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -1979,8 +1979,6 @@ export type GetPageQueryResult = {
         _key: string;
         _type: 'largeButton';
         buttonText: string;
-        buttonColor: string;
-        textColor: string;
         action?: 'custom' | 'download' | 'open' | 'view';
         customAction?: string;
         url?: string;

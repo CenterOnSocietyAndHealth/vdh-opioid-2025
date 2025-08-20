@@ -17,11 +17,26 @@ const marginBottomMap = {
 }
 
 export default function Accordion({ block }: AccordionProps) {
-  const { title, content, marginTop = 'none', marginBottom = 'none' } = block
+  const { title, content, headingLevel = 'span', marginTop = 'none', marginBottom = 'none' } = block
   const [isExpanded, setIsExpanded] = useState(false)
 
   const toggleAccordion = () => {
     setIsExpanded(!isExpanded)
+  }
+
+  const renderTitle = () => {
+    const titleContent = <span className="font-medium text-black">{title}</span>
+    
+    switch (headingLevel) {
+      case 'h2':
+        return <h2 className="font-medium text-black">{title}</h2>
+      case 'h3':
+        return <h3 className="font-medium text-black">{title}</h3>
+      case 'h4':
+        return <h4 className="font-medium text-black">{title}</h4>
+      default:
+        return titleContent
+    }
   }
 
   return (
@@ -48,7 +63,7 @@ export default function Accordion({ block }: AccordionProps) {
               )}
             </svg>
             {/* Title */}
-            <span className="font-medium text-black">{title}</span>
+            {renderTitle()}
           </div>
           {/* Chevron icon */}
           <svg 

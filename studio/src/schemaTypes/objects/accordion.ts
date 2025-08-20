@@ -14,6 +14,20 @@ export const accordion = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'headingLevel',
+      title: 'Heading Level',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Span (default)', value: 'span'},
+          {title: 'Heading 2 (H2)', value: 'h2'},
+          {title: 'Heading 3 (H3)', value: 'h3'},
+          {title: 'Heading 4 (H4)', value: 'h4'},
+        ],
+      },
+      initialValue: 'span',
+    }),
+    defineField({
       name: 'content',
       title: 'Accordion Content',
       type: 'blockContent',
