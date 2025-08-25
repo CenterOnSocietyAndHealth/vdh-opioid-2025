@@ -1,6 +1,7 @@
 import React from 'react'
 import { ContentWrapperProps } from '@/app/types/locality'
 import BlockRenderer from '@/app/components/BlockRenderer'
+import { useSector } from '@/app/contexts/SectorContext'
 
 const marginMap = {
   none: 'mt-0',
@@ -47,6 +48,7 @@ const cleanString = (str: string | undefined): string | undefined => {
 }
 
 export default function ContentWrapper({ block, selectedLocality, localities, pageId, pageType }: ContentWrapperProps) {
+  const { selectedSector } = useSector();
   const { 
     content, 
     marginTop = 'none', 
@@ -93,6 +95,7 @@ export default function ContentWrapper({ block, selectedLocality, localities, pa
     customContentWidth,
     padding 
   })
+  console.log('ContentWrapper sector context:', { selectedSector })
   console.log('Cleaned values:', { 
     cleanMarginTop, 
     cleanMarginBottom, 

@@ -5,6 +5,7 @@ import {link} from './objects/link'
 import {blockContent} from './objects/blockContent'
 import {textContent} from './objects/textContent'
 import {localitySelector} from './objects/localitySelector'
+import {sectorSelector} from './objects/sectorSelector'
 import {columnLayout} from './objects/columnLayout'
 import {costsMaps} from './objects/costsMaps'
 import {costsBreakdown} from './objects/costsBreakdown'
@@ -27,6 +28,7 @@ export const schemaTypes = [
   link,
   textContent,
   localitySelector,
+  sectorSelector,
   columnLayout,
   costsMaps,
   costsBreakdown,

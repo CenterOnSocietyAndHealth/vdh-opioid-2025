@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { CostsMapProps, CostsMapIndicator, DisplayType } from '@/app/types/costsMaps';
 import { useLocality } from '@/app/contexts/LocalityContext';
+import { useSector } from '@/app/contexts/SectorContext';
 import dynamic from 'next/dynamic';
 import { Locality } from '@/app/types/locality';
 import { PortableText } from '@portabletext/react';
@@ -72,6 +73,7 @@ const tooltipContents = {
 
 export default function CostsMaps({ block, localities, pageId }: CostsMapProps) {
   const { selectedLocality, setSelectedLocality } = useLocality();
+  const { selectedSector } = useSector();
   const [indicatorTab, setIndicatorTab] = useState<CostsMapIndicator>(block.defaultIndicator || 'Total');
   const [tooltipOpen, setTooltipOpen] = useState<Record<string, boolean>>({});
   const [mounted, setMounted] = useState(false);
@@ -95,6 +97,9 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
     const scheme = colorSchemes.find(scheme => scheme.name === indicator);
     return scheme ? scheme.colors : colorSchemes[0].colors;
   }
+
+  // Log sector context
+  console.log('CostsMaps sector context:', { selectedSector });
 
   // Calculate total for the current indicator (across all localities)
   const calculateTotal = (indicator: string) => {

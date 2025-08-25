@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { TextContentProps } from '@/app/types/locality'
 import DefinitionPopup from '@/app/components/DefinitionPopup'
 import Image from 'next/image'
+import { useSector } from '@/app/contexts/SectorContext'
 
 const urlForImage = (source: any) => {
   return imageUrlBuilder(client).image(source)
@@ -42,6 +43,7 @@ const cleanString = (str: string | undefined): string | undefined => {
 }
 
 export default function TextContent({ block, selectedLocality }: TextContentProps) {
+  const { selectedSector } = useSector();
   const { 
     content, 
     sectionId,
@@ -87,6 +89,7 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
   }, [])
 
   console.log('TextContent block:', { marginTop, marginBottom, textAlignment, backgroundColor, customBackgroundColor, maxWidth })
+  console.log('TextContent sector context:', { selectedSector })
   console.log('Cleaned values:', { 
     cleanMarginTop, 
     cleanMarginBottom, 

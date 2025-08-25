@@ -9,6 +9,7 @@ import { GetPageQueryResult } from "@/sanity.types";
 import { dataAttr } from "@/sanity/lib/utils";
 import { studioUrl } from "@/sanity/lib/api";
 import { LocalityProvider } from "@/app/contexts/LocalityContext";
+import { SectorProvider } from "@/app/contexts/SectorContext";
 
 type PageBuilderPageProps = {
   page: GetPageQueryResult;
@@ -112,25 +113,27 @@ export default function PageBuilder({ page, localities }: PageBuilderPageProps) 
   }
 
   return (
-    <LocalityProvider initialLocality={page.selectedLocality}>
-      <div
-        data-sanity={dataAttr({
-          id: page._id,
-          type: page._type,
-          path: `pageBuilder`,
-        }).toString()}
-      >
-        {pageBuilderSections.map((block: any, index: number) => (
-          <BlockRenderer
-            key={block._key}
-            index={index}
-            block={block}
-            pageId={page._id}
-            pageType={page._type}
-            localities={localities}
-          />
-        ))}
-      </div>
-    </LocalityProvider>
+    <SectorProvider>
+      <LocalityProvider initialLocality={page.selectedLocality}>
+        <div
+          data-sanity={dataAttr({
+            id: page._id,
+            type: page._type,
+            path: `pageBuilder`,
+          }).toString()}
+        >
+          {pageBuilderSections.map((block: any, index: number) => (
+            <BlockRenderer
+              key={block._key}
+              index={index}
+              block={block}
+              pageId={page._id}
+              pageType={page._type}
+              localities={localities}
+            />
+          ))}
+        </div>
+      </LocalityProvider>
+    </SectorProvider>
   );
 }

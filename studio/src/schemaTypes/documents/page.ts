@@ -51,6 +51,7 @@ export const page = defineType({
         { type: 'accordion' },
         { type: 'contentWrapper' },
         { type: 'onThisPage' },
+        { type: 'sectorSelector' },
       ],
       options: {
         insertMenu: {

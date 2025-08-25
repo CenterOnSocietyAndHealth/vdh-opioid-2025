@@ -94,8 +94,8 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
   // Don't render anything until the component is mounted on the client
   if (!mounted || !Select) {
     return (
-      <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
-        <div className="relative mx-auto">
+      <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]} flex justify-center items-center`}>
+        <div className="relative text-center">
           <label className="inline-block mb-3 font-bold font-lato text-base">
             {heading}
           </label>
@@ -113,14 +113,11 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
   }
 
   return (
-    <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
-      <div className="relative mx-auto">
-        <label className="inline-block mb-3 font-bold font-lato text-base">
-          {heading}
-        </label>
-        <span className="relative inline-block font-light ml-2 mb-3 text-lg">
+    <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]} flex justify-center items-center`}>
+      <div className="relative text-center">
+        <h3 className="relative inline-block ml-2 mb-3">
           {subheading}
-        </span>
+        </h3>
         <div className="flex">
           <Select
             options={options}
@@ -131,16 +128,16 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
             styles={{
               control: (base: any) => ({
                 ...base,
-                borderColor: 'black',
+                border: 'none',
+                borderBottom: '1px solid black',
+                borderRadius: 0,
                 flex: 1,
                 height: 60,
                 width: 400,
-                borderRadius: 0,
-                borderWidth: 0.5,
                 cursor: isUpdating ? "not-allowed" : "pointer",
                 opacity: isUpdating ? 0.7 : 1,
                 '&:hover': {
-                  borderColor: 'black',
+                  borderBottom: '1px solid black',
                 },
               }),
               valueContainer: (base: any) => ({
@@ -155,13 +152,26 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 ...base,
                 margin: 0,
                 padding: 0,
-                fontFamily: 'Lato, sans-serif',
+                color: '#1E1E1E',
+                textAlign: 'center',
+                fontFamily: '"DM Sans"',
+                fontSize: '25px',
+                fontStyle: 'normal',
+                fontWeight: 700,
+                lineHeight: '150%',
+                letterSpacing: '-0.475px',
               }),
               placeholder: (base: any) => ({
                 ...base,
                 margin: 0,
-                fontWeight: 300,
-                fontFamily: 'Lato, sans-serif',
+                color: '#1E1E1E',
+                textAlign: 'center',
+                fontFamily: '"DM Sans"',
+                fontSize: '25px',
+                fontStyle: 'normal',
+                fontWeight: 700,
+                lineHeight: '150%',
+                letterSpacing: '-0.475px',
               }),
               menu: (base: any) => ({
                 ...base,
