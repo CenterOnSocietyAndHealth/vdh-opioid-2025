@@ -182,8 +182,8 @@ export default function ChoroplethMap({
         
         // Set up dimensions
         const isMobile = windowWidth <= 768;
-        const width = isMobile ? windowWidth - 40 : 800;
-        const height = isMobile ? 500 : 400;
+        const width = isMobile ? windowWidth - 40 : 1000;
+        const height = isMobile ? 500 : 500;
         
         // Create a color scale based on values from all localities
         const values = localities.map(locality => 
@@ -219,9 +219,9 @@ export default function ChoroplethMap({
         
         // Create projection with initial position settings
         const projection = d3.geoAlbers()
-          .scale(isMobile ? 4000 : 6500)
+          .scale(isMobile ? 4000 : 8500)
           .rotate([78, 0, 0])
-          .center([-1.8, 37.9])
+          .center([-1.6, 38])
           .translate([width / 2, height / 2]);
         
         // Create path generator
@@ -565,7 +565,7 @@ export default function ChoroplethMap({
         const spacing = isMobile ? 30 : 20;
         
         const legend = svg.append("g")
-          .attr("transform", `translate(${isMobile ? 20 : 50}, ${isMobile ? height - legendHeight - 20 : 50})`);
+          .attr("transform", `translate(${isMobile ? 20 : 150}, ${isMobile ? height - legendHeight - 20 : 100})`);
         
         legend.append("rect")
           .attr("width", legendWidth)
