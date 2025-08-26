@@ -63,6 +63,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
     if (!selectedOption || isUpdating) return;
 
     const localityId = selectedOption.value;
+    console.log('LocalitySelector: handleSetLocality called with:', selectedOption);
     setIsUpdating(true);
     
     // Dispatch update start event
@@ -73,13 +74,17 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
       const newLocality = localityId === "State" ? null : 
         localities?.find(l => l._id === localityId) || null;
       
+      console.log('LocalitySelector: Found locality:', newLocality);
+      
       // Make sure we have all the required fields
       if (newLocality && !newLocality.opioidMetrics?.totalTotalPercentile) {
         console.error('Locality data is missing required fields:', newLocality);
         return;
       }
       
+      console.log('LocalitySelector: Calling setSelectedLocality with:', newLocality);
       setSelectedLocality(newLocality);
+      console.log('LocalitySelector: setSelectedLocality called');
     } catch (error) {
       console.error('Error updating selected locality:', error);
     } finally {

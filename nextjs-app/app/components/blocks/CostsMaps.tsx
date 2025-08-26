@@ -101,6 +101,11 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
     }
   }, [selectedSector]);
 
+  // Debug: Monitor changes to selectedLocality
+  useEffect(() => {
+    console.log('CostsMaps: selectedLocality changed to:', selectedLocality);
+  }, [selectedLocality]);
+
   // Get the display type from block props
   const displayType = block.type || 'PerCapita';
   const marginTop = block.marginTop || 'none';
@@ -139,7 +144,10 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
 
   // Handle locality click
   const handleLocalityClick = (locality: Locality) => {
+    console.log('CostsMaps: handleLocalityClick called with:', locality);
+    console.log('Current selectedLocality before update:', selectedLocality);
     setSelectedLocality(locality);
+    console.log('setSelectedLocality called, new locality should be:', locality);
   };
 
   // Get the description for the current tab
@@ -208,14 +216,14 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
       )}
       <div className="relative mx-auto max-w-[1200px]">
         {/* Map Container */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white p-4">
           <div 
             className="min-h-[400px]"
             role="region"
             aria-label={`${tabIndicatorMapping[indicatorTab]} Costs Map`}
           >
             <ChoroplethMap 
-              key={`${indicatorTab}-${displayType}`}
+              key={`${indicatorTab}-${displayType}-${selectedLocality?._id || 'state'}`}
               indicator={indicatorTab}
               displayType={displayType}
               selectedLocality={selectedLocality}

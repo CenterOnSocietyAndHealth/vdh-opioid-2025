@@ -22,6 +22,11 @@ export function LocalityProvider({
   const [selectedLocality, setSelectedLocality] = useState<Locality | null>(initialLocality);
   const [isUpdating, setIsUpdating] = useState(false);
 
+  // Debug: Monitor changes to selectedLocality
+  React.useEffect(() => {
+    console.log('LocalityContext: selectedLocality changed to:', selectedLocality);
+  }, [selectedLocality]);
+
   return (
     <LocalityContext.Provider value={{ 
       selectedLocality, 

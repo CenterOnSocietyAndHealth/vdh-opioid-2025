@@ -91,10 +91,17 @@ export default function ChoroplethMap({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Debug: Monitor changes to selectedLocality prop
+  useEffect(() => {
+    console.log('ChoroplethMap: selectedLocality prop changed to:', selectedLocality);
+  }, [selectedLocality]);
+
   // Drawing the map
   useEffect(() => {
     // Skip if SVG ref isn't available or localities aren't loaded
     if (!svgRef.current || localities.length === 0) return;
+
+    console.log('ChoroplethMap: Drawing map with selectedLocality:', selectedLocality);
 
     const drawMap = async () => {
       try {
@@ -213,25 +220,9 @@ export default function ChoroplethMap({
         // Store reference to the map group for use in zoom/pan functions
         mapGroupRef.current = mapGroup.node();
         
-        // Create zoom behavior
-        const zoom = d3.zoom<SVGSVGElement, unknown>()
-          .scaleExtent([1, 8])
-          .on("zoom", (event) => {
-            if (mapGroupRef.current) {
-              const newTransform = event.transform;
-              setTransform(newTransform);
-              mapGroup.attr("transform", newTransform.toString());
-            }
-          });
-        
-        // Apply zoom behavior to SVG
-        svg.call(zoom as any)
-          .call((zoom as any).transform, d3.zoomIdentity)
-          .append("title")
-          .text("Drag to pan, scroll to zoom");
-        
-        // Add cursor styles to indicate the map is interactive
-        svg.style("cursor", "grab");
+        // Add a simple title for accessibility
+        svg.append("title")
+          .text("Virginia counties map");
         
         // Draw counties in the map group
         const counties = mapGroup.append("g")
@@ -312,10 +303,29 @@ export default function ChoroplethMap({
               fipsCode = `51${fipsCode}`;
             }
             
-            // Check for match by FIPS or name
-            if ((fipsCode && selectedLocality.fips === fipsCode) || 
-                (d.properties.NAME && selectedLocality.counties === d.properties.NAME) ||
-                (d.properties.name && selectedLocality.counties === d.properties.name)) {
+            // Get locality name
+            const countyName = d.properties.NAME || d.properties.name;
+            
+            // Clean up locality FIPS code for comparison
+            let locFips = selectedLocality.fips;
+            
+            if (locFips) {
+              // Remove 'us-va-' prefix if present
+              locFips = locFips.replace('us-va-', '');
+              // Remove any remaining non-numeric characters
+              locFips = locFips.toString().replace(/\D/g, '');
+              // Ensure it's 5 digits
+              locFips = locFips.padStart(3, '0');
+              // Add state prefix if not present
+              if (locFips.length === 3) {
+                locFips = `51${locFips}`;
+              }
+            }
+            
+            const fipsMatch = fipsCode && locFips === fipsCode;
+            const nameMatch = countyName && selectedLocality.counties === countyName;
+            
+            if (fipsMatch || nameMatch) {
               return 3;
             }
             return 0.5;
@@ -334,14 +344,42 @@ export default function ChoroplethMap({
             // Get locality name
             const countyName = d.properties.NAME || d.properties.name;
             
+            console.log('Map click - FIPS:', fipsCode, 'County:', countyName);
+            console.log('Available localities:', localities.map(l => ({ id: l._id, name: l.counties, fips: l.fips })));
+            
             // Try to find matching locality
-            const locality = localities.find(loc => 
-              (fipsCode && loc.fips === fipsCode) || 
-              (countyName && loc.counties === countyName)
-            );
+            const locality = localities.find(loc => {
+              // Clean up locality FIPS code for comparison
+              let locFips = loc.fips;
+              
+              if (locFips) {
+                // Remove 'us-va-' prefix if present
+                locFips = locFips.replace('us-va-', '');
+                // Remove any remaining non-numeric characters
+                locFips = locFips.toString().replace(/\D/g, '');
+                // Ensure it's 5 digits
+                locFips = locFips.padStart(3, '0');
+                // Add state prefix if not present
+                if (locFips.length === 3) {
+                  locFips = `51${locFips}`;
+                }
+              }
+              
+              const fipsMatch = fipsCode && locFips === fipsCode;
+              const nameMatch = countyName && loc.counties === countyName;
+              
+              console.log(`Comparing: ${loc.counties} - FIPS: ${locFips} vs ${fipsCode} (${fipsMatch}), Name: ${loc.counties} vs ${countyName} (${nameMatch})`);
+              
+              return fipsMatch || nameMatch;
+            });
+            
+            console.log('Matched locality:', locality);
             
             if (locality && onLocalityClick) {
+              console.log('Calling onLocalityClick with:', locality);
               onLocalityClick(locality);
+            } else {
+              console.log('No locality found or no onLocalityClick handler');
             }
           })
           .on("mouseover", (event: any, d: any) => {
@@ -359,10 +397,28 @@ export default function ChoroplethMap({
             const countyName = d.properties.NAME || d.properties.name;
             
             // Try to find matching locality
-            const locality = localities.find(loc => 
-              (fipsCode && loc.fips === fipsCode) || 
-              (countyName && loc.counties === countyName)
-            );
+            const locality = localities.find(loc => {
+              // Clean up locality FIPS code for comparison
+              let locFips = loc.fips;
+              
+              if (locFips) {
+                // Remove 'us-va-' prefix if present
+                locFips = locFips.replace('us-va-', '');
+                // Remove any remaining non-numeric characters
+                locFips = locFips.toString().replace(/\D/g, '');
+                // Ensure it's 5 digits
+                locFips = locFips.padStart(3, '0');
+                // Add state prefix if not present
+                if (locFips.length === 3) {
+                  locFips = `51${locFips}`;
+                }
+              }
+              
+              const fipsMatch = fipsCode && locFips === fipsCode;
+              const nameMatch = countyName && loc.counties === countyName;
+              
+              return fipsMatch || nameMatch;
+            });
             
             if (locality) {
               const perCapitaValue = getValueFromPath(
@@ -393,13 +449,7 @@ export default function ChoroplethMap({
             setTooltipVisible(false);
           });
           
-        // Update cursor style on mousedown/mouseup to indicate grabbing action
-        svg.on("mousedown", function() {
-          d3.select(this).style("cursor", "grabbing");
-        })
-        .on("mouseup", function() {
-          d3.select(this).style("cursor", "grab");
-        });
+        // No panning or zoom interactions enabled
         
         // Create legend and UI elements outside of the map group so they don't get transformed
         // These are fixed elements that shouldn't move with the map
@@ -461,6 +511,8 @@ export default function ChoroplethMap({
         
         // If a locality is selected, add an annotation
         if (selectedLocality) {
+          console.log('Adding annotation for selected locality:', selectedLocality);
+          
           // Find the corresponding feature in the geo data
           const feature = geoData.features.find((f: any) => {
             // Get FIPS code using various property names
@@ -475,10 +527,31 @@ export default function ChoroplethMap({
             // Get locality name
             const countyName = f.properties.NAME || f.properties.name;
             
-            // Check for match by FIPS or name
-            return (fipsCode && selectedLocality.fips === fipsCode) || 
-                   (countyName && selectedLocality.counties === countyName);
+            // Clean up locality FIPS code for comparison
+            let locFips = selectedLocality.fips;
+            
+            if (locFips) {
+              // Remove 'us-va-' prefix if present
+              locFips = locFips.replace('us-va-', '');
+              // Remove any remaining non-numeric characters
+              locFips = locFips.toString().replace(/\D/g, '');
+              // Ensure it's 5 digits
+              locFips = locFips.padStart(3, '0');
+              // Add state prefix if not present
+              if (locFips.length === 3) {
+                locFips = `51${locFips}`;
+              }
+            }
+            
+            const fipsMatch = fipsCode && locFips === fipsCode;
+            const nameMatch = countyName && selectedLocality.counties === countyName;
+            
+            console.log(`Annotation matching: ${selectedLocality.counties} - FIPS: ${locFips} vs ${fipsCode} (${fipsMatch}), Name: ${selectedLocality.counties} vs ${countyName} (${nameMatch})`);
+            
+            return fipsMatch || nameMatch;
           });
+          
+          console.log('Found feature for annotation:', feature);
           
           if (feature) {
             // Calculate the centroid of the locality
