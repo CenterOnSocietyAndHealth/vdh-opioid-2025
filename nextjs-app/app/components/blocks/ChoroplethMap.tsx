@@ -570,7 +570,7 @@ export default function ChoroplethMap({
         legend.append("rect")
           .attr("width", legendWidth)
           .attr("height", legendHeight + 10)
-          .attr("fill", "white")
+          .attr("fill", "none")
           .attr("stroke", "#ddd")
           .attr("stroke-width", 0);
         
@@ -757,7 +757,7 @@ export default function ChoroplethMap({
       />
       
       {!mapLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-60">
+        <div className="absolute inset-0 flex items-center justify-center">
           
         </div>
       )}

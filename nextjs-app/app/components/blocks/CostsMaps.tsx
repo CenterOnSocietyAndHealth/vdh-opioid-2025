@@ -231,7 +231,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
       )}
       <div className="relative mx-auto max-w-[1200px]">
         {/* Map Container */}
-        <div className="bg-white p-4">
+        <div className="p-4">
           <div 
             className="min-h-[400px]"
             role="region"
