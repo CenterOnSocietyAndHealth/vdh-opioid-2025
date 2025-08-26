@@ -182,7 +182,7 @@ export default function ChoroplethMap({
         
         // Set up dimensions
         const isMobile = windowWidth <= 768;
-        const width = isMobile ? windowWidth - 40 : 1000;
+        const width = isMobile ? windowWidth - 40 : 1050;
         const height = isMobile ? 500 : 500;
         
         // Create a color scale based on values from all localities
@@ -219,9 +219,9 @@ export default function ChoroplethMap({
         
         // Create projection with initial position settings
         const projection = d3.geoAlbers()
-          .scale(isMobile ? 4000 : 8500)
+          .scale(isMobile ? 4000 : 9000)
           .rotate([78, 0, 0])
-          .center([-1.6, 38])
+          .center([-1.6, 38.1])
           .translate([width / 2, height / 2]);
         
         // Create path generator
@@ -758,7 +758,7 @@ export default function ChoroplethMap({
       
       {!mapLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-60">
-          <p>Loading map...</p>
+          
         </div>
       )}
       
