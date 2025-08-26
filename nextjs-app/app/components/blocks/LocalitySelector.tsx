@@ -139,6 +139,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 flex: 1,
                 height: 60,
                 width: 400,
+                backgroundColor: '#FAF9F8',
                 cursor: isUpdating ? "not-allowed" : "pointer",
                 opacity: isUpdating ? 0.7 : 1,
                 '&:hover': {
