@@ -117,6 +117,7 @@ export const contentWrapper = defineType({
         { type: 'costsMaps' },
         { type: 'costsBreakdown' },
         { type: 'accordion' },
+        { type: 'sectorSelector' },
       ],
       validation: (Rule) => Rule.required().min(1),
     }),
