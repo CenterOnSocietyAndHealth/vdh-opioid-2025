@@ -16,6 +16,7 @@ interface ChoroplethMapProps {
   selectedLocality: Locality | null;
   localities: Locality[];
   colors: string[];
+  strokeColor: string;
   totalValue: number;
   onLocalityClick?: (locality: Locality) => void;
 }
@@ -46,11 +47,20 @@ const marginBottomMap: Record<string, string> = {
 
 // Color schemes for different indicators
 const colorSchemes = [
-  { name: "Total", colors: ["#f3dfc4", "#d38ab0", "#be58a4", "#782774"] },
-  { name: "Labor", colors: ["#dfecc4", "#8bb8b4", "#5898a8", "#315674"] },
-  { name: "HealthCare", colors: ["#e9e3cc", "#ae9ad1", "#886dd5", "#473a96"] },
-  { name: "Crime_Other", colors: ["#faecd4", "#f1b89a", "#c6482e", "#520002"] },
-  { name: "Household", colors: ["#fcf2d7", "#e9a164", "#dd7739", "#a2331c"] }
+  { name: "Total", colors: ["#EDD2F1", "#C874D9", "#A732B6", "#4C1854"] },
+  { name: "Labor", colors: ["#D0E4F6", "#94C5E2", "#4783B5", "#1A4F72"] },
+  { name: "HealthCare", colors: ["#F3F0C5", "#ECE089", "#C4B664", "#5B531E"] },
+  { name: "Crime_Other", colors: ["#F9D1DB", "#F27BA5", "#DB4577", "#6E1634"] },
+  { name: "Household", colors: ["#D4ECE7", "#7DC5B8", "#439788", "#1E4D46"] }
+];
+
+// Stroke colors for each indicator
+const strokeColors = [
+  { name: "Total", strokeColor: "#6C5172" },
+  { name: "Labor", strokeColor: "#5D99C1" },
+  { name: "HealthCare", strokeColor: "#998E56" },
+  { name: "Crime_Other", strokeColor: "#3F8779" },
+  { name: "Household", strokeColor: "#863C59" }
 ];
 
 // Mapping between tab names and corresponding display names
@@ -114,6 +124,11 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
   function getColorsByIndicator(indicator: CostsMapIndicator) {
     const scheme = colorSchemes.find(scheme => scheme.name === indicator);
     return scheme ? scheme.colors : colorSchemes[0].colors;
+  }
+
+  function getStrokeColorByIndicator(indicator: CostsMapIndicator) {
+    const strokeScheme = strokeColors.find(scheme => scheme.name === indicator);
+    return strokeScheme ? strokeScheme.strokeColor : strokeColors[0].strokeColor;
   }
 
   // Log sector context
@@ -229,6 +244,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
               selectedLocality={selectedLocality}
               localities={localities || []}
               colors={getColorsByIndicator(indicatorTab)}
+              strokeColor={getStrokeColorByIndicator(indicatorTab)}
               totalValue={calculateTotal(`${indicatorTab}`)}
               onLocalityClick={handleLocalityClick}
             />

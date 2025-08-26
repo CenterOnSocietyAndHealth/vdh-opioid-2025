@@ -12,6 +12,7 @@ type ChoroplethMapProps = {
   selectedLocality: Locality | null;
   localities: Locality[];
   colors: string[];
+  strokeColor: string;
   totalValue: number;
   onLocalityClick?: (locality: Locality) => void;
 };
@@ -22,6 +23,7 @@ export default function ChoroplethMap({
   selectedLocality, 
   localities, 
   colors,
+  strokeColor,
   totalValue,
   onLocalityClick
 }: ChoroplethMapProps) {
@@ -288,7 +290,46 @@ export default function ChoroplethMap({
             
             return value ? colorScale(value) : "#ccc";
           })
-          .attr("stroke", "#000")
+          .attr("stroke", (d: any) => {
+            // Check if this is the selected locality
+            if (!selectedLocality) return strokeColor; // Use strokeColor prop
+            
+            // Check different property variations for FIPS code match
+            let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
+                           d.properties.id || d.id;
+                           
+            // Add prefix if needed
+            if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
+              fipsCode = `51${fipsCode}`;
+            }
+            
+            // Get locality name
+            const countyName = d.properties.NAME || d.properties.name;
+            
+            // Clean up locality FIPS code for comparison
+            let locFips = selectedLocality.fips;
+            
+            if (locFips) {
+              // Remove 'us-va-' prefix if present
+              locFips = locFips.replace('us-va-', '');
+              // Remove any remaining non-numeric characters
+              locFips = locFips.toString().replace(/\D/g, '');
+              // Ensure it's 5 digits
+              locFips = locFips.padStart(3, '0');
+              // Add state prefix if not present
+              if (locFips.length === 3) {
+                locFips = `51${locFips}`;
+              }
+            }
+            
+            const fipsMatch = fipsCode && locFips === fipsCode;
+            const nameMatch = countyName && selectedLocality.counties === countyName;
+            
+            if (fipsMatch || nameMatch) {
+              return "#FFD900"; // Selected locality gets gold stroke
+            }
+            return strokeColor; // Other localities get strokeColor prop
+          })
           .attr("stroke-opacity", 1)
           .attr("stroke-width", (d: any) => {
             // Highlight selected locality
@@ -617,7 +658,7 @@ export default function ChoroplethMap({
     };
 
     drawMap();
-  }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue, indicatorDisplayNames, onLocalityClick]);
+  }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue, indicatorDisplayNames, onLocalityClick, strokeColor]);
 
   return (
     <div className="relative">
