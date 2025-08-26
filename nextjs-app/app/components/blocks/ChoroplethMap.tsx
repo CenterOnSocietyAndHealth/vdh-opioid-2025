@@ -204,6 +204,19 @@ export default function ChoroplethMap({
           .attr("viewBox", [0, 0, width, height].join(" "))
           .attr("style", "max-width: 100%; height: auto;");
         
+        // Add drop shadow filter
+        const defs = svg.append("defs");
+        const filter = defs.append("filter")
+          .attr("id", "drop-shadow");
+        
+        // Very simple drop shadow
+        filter.append("feDropShadow")
+          .attr("dx", "0")
+          .attr("dy", "2")
+          .attr("stdDeviation", "2")
+          .attr("flood-color", "black")
+          .attr("flood-opacity", "0.3");
+        
         // Create projection with initial position settings
         const projection = d3.geoAlbers()
           .scale(isMobile ? 4000 : 6500)
@@ -529,7 +542,7 @@ export default function ChoroplethMap({
               
               setTooltipPosition({ 
                 x: event.pageX, 
-                y: event.pageY - 80 
+                y: event.pageY
               });
               
               setTooltipVisible(true);
@@ -672,17 +685,20 @@ export default function ChoroplethMap({
               // Add tooltip background
               annotation.append("rect")
                 .attr("x", -80)
-                .attr("y", -100)
+                .attr("y", -80)
                 .attr("width", 160)
                 .attr("height", 70)
                 .attr("fill", "white")
-                .attr("stroke", "black")
-                .attr("stroke-width", 0.5);
+                .attr("rx", 4)
+                .attr("ry", 4)
+                .attr("stroke", "#E6E6E6")
+                .attr("stroke-width", 1)
+                .attr("filter", "url(#drop-shadow)");
                 
               // Add locality name
               annotation.append("text")
                 .attr("x", 0)
-                .attr("y", -80)
+                .attr("y", -60)
                 .attr("text-anchor", "middle")
                 .attr("font-size", "12px")
                 .attr("font-family", "Inter")
@@ -693,24 +709,31 @@ export default function ChoroplethMap({
               // Add per capita value
               annotation.append("text")
                 .attr("x", 0)
-                .attr("y", -60)
-                .attr("text-anchor", "middle")
-                .attr("font-size", "12px")
-                .attr("font-family", "Inter")
-                .attr("font-weight", "400")
-                .attr("fill", "#1E1E1E")
-                .text(`$${formatNumber(perCapitaValue, '', ' per person')}`);
-                
-              // Add total value
-              annotation.append("text")
-                .attr("x", 0)
                 .attr("y", -40)
                 .attr("text-anchor", "middle")
                 .attr("font-size", "12px")
                 .attr("font-family", "Inter")
                 .attr("font-weight", "400")
                 .attr("fill", "#1E1E1E")
-                .text(`$${formatNumber(totalValue, '', ' total costs')}`);
+                .text(`${formatNumber(perCapitaValue, '$', ' per person')}`);
+                
+              // Add total value
+              annotation.append("text")
+                .attr("x", 0)
+                .attr("y", -20)
+                .attr("text-anchor", "middle")
+                .attr("font-size", "12px")
+                .attr("font-family", "Inter")
+                .attr("font-weight", "400")
+                .attr("fill", "#1E1E1E")
+                .text(`${formatNumber(totalValue, '$', ' total costs')}`);
+
+              // Add triangular arrow pointing down
+              annotation.append("polygon")
+                .attr("points", "-12,-11 12,-11 0,1")
+                .attr("fill", "white")
+                .attr("stroke", "white") 
+                .attr("stroke-width", 0.5)
             }
           }
         }
