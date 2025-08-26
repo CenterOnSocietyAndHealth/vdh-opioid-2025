@@ -41,8 +41,8 @@ export default function ChoroplethMap({
   function formatNumber(num: number, prefix = "", suffix = "") {
     if (num === undefined || num === null) return "N/A";
     const value = Number(num.toPrecision(3));
-    if (value >= 1e9) return `${prefix}` + (value / 1e9).toFixed(2) + ' Billion' + `${suffix}`;
-    if (value >= 1e6) return `${prefix}` + (value / 1e6).toFixed(0) + ' Million' + `${suffix}`;
+    if (value >= 1e9) return `${prefix}` + (value / 1e9).toFixed(2) + 'B' + `${suffix}`;
+    if (value >= 1e6) return `${prefix}` + (value / 1e6).toFixed(0) + 'M' + `${suffix}`;
     if (value >= 1e3) return `${prefix}` + (value / 1e3).toFixed(1) + 'K' + `${suffix}`;
     return `${prefix}` + Math.round(value) + `${suffix}`;
   }
@@ -206,9 +206,9 @@ export default function ChoroplethMap({
         
         // Create projection with initial position settings
         const projection = d3.geoAlbers()
-          .scale(isMobile ? 4000 : 5700)
+          .scale(isMobile ? 4000 : 6500)
           .rotate([78, 0, 0])
-          .center([-2.3, 37.7])
+          .center([-1.8, 37.9])
           .translate([width / 2, height / 2]);
         
         // Create path generator
@@ -520,9 +520,11 @@ export default function ChoroplethMap({
               );
               
               setTooltipContent(`
-                <strong>${locality.counties}</strong><br/>
-                $${Math.round(perCapitaValue).toLocaleString()} per capita<br/>
-                $${Math.round(totalValue).toLocaleString()} total
+                <div style="font-family: Inter; font-size: 12px; line-height: 180%; letter-spacing: -0.228px;">
+                  <div style="color: #1E1E1E; font-weight: 700;">${locality.counties}</div>
+                  <div style="color: #1E1E1E; font-weight: 400;"><span style="font-weight: 700;">$${formatNumber(perCapitaValue, '', ' per capita')}</span></div>
+                  <div style="color: #1E1E1E; font-weight: 400;"><span style="font-weight: 700;">$${formatNumber(totalValue, '', ' total')}</span></div>
+                </div>
               `);
               
               setTooltipPosition({ 
@@ -545,11 +547,12 @@ export default function ChoroplethMap({
         // Create legend
         const legendWidth = isMobile ? width : 165;
         const legendHeight = isMobile ? 40 : 85;
-        const boxSize = isMobile ? 24 : 12;
+        const boxSize = 18; // Fixed width
+        const boxHeight = 20; // Fixed height
         const spacing = isMobile ? 30 : 20;
         
         const legend = svg.append("g")
-          .attr("transform", `translate(${isMobile ? 20 : 5}, ${isMobile ? height - legendHeight - 20 : 50})`);
+          .attr("transform", `translate(${isMobile ? 20 : 50}, ${isMobile ? height - legendHeight - 20 : 50})`);
         
         legend.append("rect")
           .attr("width", legendWidth)
@@ -560,26 +563,28 @@ export default function ChoroplethMap({
         
         // Add sector name label above the legend
         legend.append("text")
-          .attr("x", 0)
+          .attr("x", 10)
           .attr("y", -10)
           .attr("text-anchor", "start")
-          .attr("font-family", "Lato, sans-serif")
-          .attr("font-weight", "700")
-          .attr("font-size", isMobile ? "14px" : "16px")
-          .attr("fill", "#333")
+          .attr("font-family", "Inter")
+          .attr("font-weight", "400")
+          .attr("font-size", "14px")
+          .attr("fill", "#1E1E1E")
+          .attr("line-height", "170%")
+          .attr("letter-spacing", "-0.266px")
           .text(`${indicatorDisplayNames[indicator]} Costs`);
         
         // Add colored boxes for each color in the scale
         colors.forEach((color, i) => {
           // For mobile, create a two-column grid
           const x = isMobile ? (i % 2) * (legendWidth / 2 - 10) : 10;
-          const y = isMobile ? 10 + Math.floor(i / 2) * spacing : 10 + i * spacing;
+          const y = isMobile ? 10 + Math.floor(i / 2) * (spacing + 3) : 10 + i * (spacing + 3);
           
           legend.append("rect")
             .attr("x", x)
             .attr("y", y)
             .attr("width", boxSize)
-            .attr("height", boxSize)
+            .attr("height", boxHeight)
             .attr("fill", color);
             
           // Add labels
@@ -588,10 +593,13 @@ export default function ChoroplethMap({
           
           legend.append("text")
             .attr("x", x + boxSize + 5)
-            .attr("y", y + boxSize / 2 + 5)
-            .attr("font-size", isMobile ? "12px" : "10px")
-            .attr("letter-spacing", "0.5px")
-            .attr("font-weight", "700")
+            .attr("y", y + boxHeight / 2 + 5)
+            .attr("font-size", "14px")
+            .attr("font-family", "Inter")
+            .attr("font-weight", "400")
+            .attr("fill", "#1E1E1E")
+            .attr("line-height", "170%")
+            .attr("letter-spacing", "-0.266px")
             .text(`$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()} per person`);
         });
         
@@ -663,10 +671,10 @@ export default function ChoroplethMap({
               
               // Add tooltip background
               annotation.append("rect")
-                .attr("x", -60)
-                .attr("y", -80)
-                .attr("width", 120)
-                .attr("height", 60)
+                .attr("x", -80)
+                .attr("y", -100)
+                .attr("width", 160)
+                .attr("height", 70)
                 .attr("fill", "white")
                 .attr("stroke", "black")
                 .attr("stroke-width", 0.5);
@@ -674,26 +682,35 @@ export default function ChoroplethMap({
               // Add locality name
               annotation.append("text")
                 .attr("x", 0)
+                .attr("y", -80)
+                .attr("text-anchor", "middle")
+                .attr("font-size", "12px")
+                .attr("font-family", "Inter")
+                .attr("font-weight", "700")
+                .attr("fill", "#1E1E1E")
+                .text(selectedLocality.counties);
+                
+              // Add per capita value
+              annotation.append("text")
+                .attr("x", 0)
                 .attr("y", -60)
                 .attr("text-anchor", "middle")
                 .attr("font-size", "12px")
-                .attr("font-weight", "bold")
-                .text(selectedLocality.counties);
+                .attr("font-family", "Inter")
+                .attr("font-weight", "400")
+                .attr("fill", "#1E1E1E")
+                .text(`$${formatNumber(perCapitaValue, '', ' per person')}`);
                 
-              // Add values
+              // Add total value
               annotation.append("text")
                 .attr("x", 0)
-                .attr("y", -45)
+                .attr("y", -40)
                 .attr("text-anchor", "middle")
-                .attr("font-size", "10px")
-                .text(`$${Math.round(perCapitaValue).toLocaleString()} per capita`);
-                
-              annotation.append("text")
-                .attr("x", 0)
-                .attr("y", -30)
-                .attr("text-anchor", "middle")
-                .attr("font-size", "10px")
-                .text(`$${Math.round(totalValue).toLocaleString()} total`);
+                .attr("font-size", "12px")
+                .attr("font-family", "Inter")
+                .attr("font-weight", "400")
+                .attr("fill", "#1E1E1E")
+                .text(`$${formatNumber(totalValue, '', ' total costs')}`);
             }
           }
         }
