@@ -62,6 +62,15 @@ const tabIndicatorMapping = {
   'Household': 'Child Services & K-12',
 };
 
+// Mapping between SectorSelector sectors and CostsMaps tabs
+const sectorToTabMapping: Record<string, CostsMapIndicator> = {
+  'All Sectors': 'Total',
+  'Lost Labor': 'Labor',
+  'Healthcare': 'HealthCare',
+  'Child Services & K12': 'Household',
+  'Criminal Justice': 'Crime_Other',
+};
+
 // Tooltip contents for each indicator
 const tooltipContents = {
   'Total': 'Total cost includes costs of lost labor, healthcare, and public services related to opioids, spanning local, state, and federal governments, as well as household and private sector expenses.',
@@ -75,18 +84,22 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
   const { selectedLocality, setSelectedLocality } = useLocality();
   const { selectedSector } = useSector();
   const [indicatorTab, setIndicatorTab] = useState<CostsMapIndicator>(block.defaultIndicator || 'Total');
-  const [tooltipOpen, setTooltipOpen] = useState<Record<string, boolean>>({});
   const [mounted, setMounted] = useState(false);
   const [showDetailedDescription, setShowDetailedDescription] = useState(false);
 
-  // Arrow positions for the tabs (in percentage)
-  const arrowPositions = ['62%', '56%', '50%', '44%', '38%'];
-  const tabs: CostsMapIndicator[] = ['Total', 'Labor', 'HealthCare', 'Crime_Other', 'Household'];
+
 
   // Set mounted state once component is mounted on client
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Watch for changes in selectedSector and update indicatorTab accordingly
+  useEffect(() => {
+    if (selectedSector && sectorToTabMapping[selectedSector]) {
+      setIndicatorTab(sectorToTabMapping[selectedSector]);
+    }
+  }, [selectedSector]);
 
   // Get the display type from block props
   const displayType = block.type || 'PerCapita';
@@ -193,90 +206,11 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
           </div>
         </div>
       )}
-      <div className="relative mx-auto">
-        {/* Tab Navigation */}
-        <div className="bg-[#F3F3F3] border border-black m-0">
-          <div className="tab-section">
-            <div className="flex box-border border-b border-black text-base">
-              <div className={`w-4/5 text-center py-2.5 px-[38px] font-bold border-r-[0.5px] border-black ${
-                indicatorTab === 'Household' ? 'bg-[#F3F3F4]' : 'bg-[#D3D8E2]'
-              }`}>BY SECTOR</div>
-              <div className={`w-1/5 text-center py-2.5 px-2.5 font-bold border-l-[0.5px] border-black ${
-                indicatorTab === 'Household' ? 'bg-[#D3D8E2]' : 'bg-[#F3F3F4]'
-              }`}>BY PAYER</div>
-            </div>
-            
-            <div role="tablist" className="flex mb-0">
-              {tabs.map((tab, index) => {
-                const isActiveTab = indicatorTab === tab;
-                
-                return (
-                  <div
-                    key={tab}
-                    role="tab"
-                    tabIndex={isActiveTab ? 0 : -1}
-                    aria-label={tabIndicatorMapping[tab]}
-                    {...isActiveTab ? {'aria-selected': 'true'} : {'aria-selected': 'false'}}
-                    onClick={() => {
-                      setIndicatorTab(tab);
-                      const newTooltipState = Object.keys(tooltipOpen).reduce((acc, key) => {
-                        acc[key] = false;
-                        return acc;
-                      }, {} as Record<string, boolean>);
-                      setTooltipOpen(newTooltipState);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'ArrowRight') {
-                        const nextIndex = (index + 1) % tabs.length;
-                        setIndicatorTab(tabs[nextIndex]);
-                      } else if (e.key === 'ArrowLeft') {
-                        const prevIndex = (index - 1 + tabs.length) % tabs.length;
-                        setIndicatorTab(tabs[prevIndex]);
-                      }
-                    }}
-                    className={`flex-1 p-5 cursor-pointer relative text-center text-[21px] font-[300] z-[${5 - index}] ${
-                      index === tabs.length - 1 ? '' : 'border-r-[0.5px] border-black'
-                    } ${
-                      index === 0 ? '' : 'border-l-[0.5px] border-black'
-                    } border-b border-black ${
-                      isActiveTab ? 'bg-[#082459] text-white' : 'bg-[#EAEAEA] text-black'
-                    }`}
-                  >
-                    {tabIndicatorMapping[tab]}
-                    <button
-                      className="info ml-[7px] -translate-y-0.5 w-[15px] h-[15px] border rounded-full inline-flex items-center justify-center p-0 bg-transparent cursor-pointer"
-                      tabIndex={0}
-                      aria-label={`${tabIndicatorMapping[tab]} information`}
-                      title={tooltipContents[tab]}
-                      style={{
-                        borderColor: isActiveTab ? 'white' : 'black'
-                      }}
-                    >
-                      <span aria-hidden="true" className="text-xs">i</span>
-                    </button>
-                    
-                    {isActiveTab && (
-                      <div
-                        className="tabArrow absolute -bottom-4 left-1/2 -translate-x-1/2 z-10"
-                        style={{
-                          content: '""',
-                          width: 0,
-                          height: 0,
-                          borderLeft: '16px solid transparent',
-                          borderRight: '16px solid transparent',
-                          borderTop: '16px solid #082459'
-                        }}
-                      />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          
-          {/* Map Container */}
+      <div className="relative mx-auto max-w-[1200px]">
+        {/* Map Container */}
+        <div className="bg-white border border-gray-200 rounded-lg p-4">
           <div 
-            className="bg-white p-0 min-h-[400px]"
+            className="min-h-[400px]"
             role="region"
             aria-label={`${tabIndicatorMapping[indicatorTab]} Costs Map`}
           >
@@ -291,50 +225,6 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
               onLocalityClick={handleLocalityClick}
             />
           </div>
-        </div>
-        
-
-        
-        {/* Data Summary */}
-        <div className="mt-6 p-4 border border-gray-300">
-          <h3 className="text-xl font-bold mb-3">{selectedLocality ? selectedLocality.counties : 'Virginia'} Data Summary</h3>
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="p-2 text-left border">Cost Category</th>
-                <th className="p-2 text-left border">Per Capita Cost</th>
-                <th className="p-2 text-left border">Total Cost</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tabs.map((tab) => {
-                // Get per capita and total values
-                const perCapitaKey = `opioidMetrics.${tab.toLowerCase()}PerCapita`;
-                const totalKey = `opioidMetrics.${tab.toLowerCase()}Total`;
-                
-                // Access nested values using safe property access
-                const getNestedValue = (obj: any, path: string) => {
-                  return path.split('.').reduce((o, key) => o?.[key], obj) || 0;
-                };
-                
-                const perCapitaValue = selectedLocality ? 
-                  getNestedValue(selectedLocality, perCapitaKey) : 
-                  calculateTotal(`${tab}PerCapita`) / (localities?.length || 1);
-                
-                const totalValue = selectedLocality ? 
-                  getNestedValue(selectedLocality, totalKey) : 
-                  calculateTotal(`${tab}Total`);
-                
-                return (
-                  <tr key={tab} className={tab === indicatorTab ? "bg-blue-50" : ""}>
-                    <td className="p-2 border font-medium">{tabIndicatorMapping[tab]}</td>
-                    <td className="p-2 border">${Math.round(perCapitaValue).toLocaleString()}</td>
-                    <td className="p-2 border">${Math.round(totalValue).toLocaleString()}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
         </div>
       </div>
     </div>

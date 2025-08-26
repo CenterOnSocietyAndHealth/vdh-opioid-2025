@@ -411,7 +411,7 @@ export default function ChoroplethMap({
         const spacing = isMobile ? 30 : 20;
         
         const legend = svg.append("g")
-          .attr("transform", `translate(${isMobile ? 20 : 5}, ${isMobile ? height - legendHeight - 20 : 150})`);
+          .attr("transform", `translate(${isMobile ? 20 : 5}, ${isMobile ? height - legendHeight - 20 : 50})`);
         
         legend.append("rect")
           .attr("width", legendWidth)
@@ -419,6 +419,17 @@ export default function ChoroplethMap({
           .attr("fill", "white")
           .attr("stroke", "#ddd")
           .attr("stroke-width", 0);
+        
+        // Add sector name label above the legend
+        legend.append("text")
+          .attr("x", 0)
+          .attr("y", -10)
+          .attr("text-anchor", "start")
+          .attr("font-family", "Lato, sans-serif")
+          .attr("font-weight", "700")
+          .attr("font-size", isMobile ? "14px" : "16px")
+          .attr("fill", "#333")
+          .text(`${indicatorDisplayNames[indicator]} Costs`);
         
         // Add colored boxes for each color in the scale
         colors.forEach((color, i) => {
@@ -446,77 +457,7 @@ export default function ChoroplethMap({
             .text(`$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()} per person`);
         });
         
-        // Add title
-        const title = svg.append("g")
-          .attr("transform", `translate(${isMobile ? 0 : 15}, ${isMobile ? 50 : 30})`);
-        
-        title.append("text")
-          .attr("x", 0)
-          .attr("y", 20)
-          .attr("font-family", "Lato, sans-serif")
-          .attr("font-weight", "800")
-          .attr("font-size", "23px")
-          .text(`${indicatorDisplayNames[indicator]} Costs`);
-          
-        title.append("text")
-          .attr("x", 0)
-          .attr("y", 45)
-          .attr("font-family", "Lato, sans-serif")
-          .attr("font-weight", "800")
-          .attr("font-size", "23px")
-          .text("in Virginia");
-        
-        title.append("text")
-          .attr("x", 0)
-          .attr("y", 70)
-          .attr("font-size", isMobile ? "16px" : "23px")
-          .text(() => {
-            // Find Virginia record (FIPS 51999)
-            const virginiaRecord = localities.find(loc => loc.fips === 'us-va-999');
-            if (!virginiaRecord) return formatNumber(0, "$");
 
-            // Get the total value based on indicator
-            let total = 0;
-            switch (indicator) {
-              case 'Total':
-                total = getValueFromPath(virginiaRecord, 'opioidMetrics.totalTotal');
-                break;
-              case 'Labor':
-                total = getValueFromPath(virginiaRecord, 'opioidMetrics.laborTotal');
-                break;
-              case 'HealthCare':
-                total = getValueFromPath(virginiaRecord, 'opioidMetrics.healthcareTotal');
-                break;
-              case 'Crime_Other':
-                total = getValueFromPath(virginiaRecord, 'opioidMetrics.crimeOtherTotal');
-                break;
-              case 'Household':
-                total = getValueFromPath(virginiaRecord, 'opioidMetrics.householdTotal');
-                break;
-            }
-            return formatNumber(total, "$");
-          });
-          
-        title.append("text")
-          .attr("x", 0)
-          .attr("y", 87)
-          .attr("font-size", "12px")
-          .attr("font-weight", "400")
-          .text("Annual Economic Burden");
-          
-        title.append("text")
-          .attr("x", 0)
-          .attr("y", 100)
-          .attr("font-size", "12px")
-          .attr("font-weight", "400")
-          .text("of Opioids Per Person by");
-          
-        title.append("text")
-          .attr("x", 0)
-          .attr("y", 113)
-          .attr("font-size", "12px")
-          .attr("font-weight", "400")
-          .text("Locality in Virginia, 2023");
         
         // If a locality is selected, add an annotation
         if (selectedLocality) {
