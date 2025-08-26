@@ -50,8 +50,8 @@ const colorSchemes = [
   { name: "Total", colors: ["#EDD2F1", "#C874D9", "#A732B6", "#4C1854"] },
   { name: "Labor", colors: ["#D0E4F6", "#94C5E2", "#4783B5", "#1A4F72"] },
   { name: "HealthCare", colors: ["#F3F0C5", "#ECE089", "#C4B664", "#5B531E"] },
-  { name: "Crime_Other", colors: ["#F9D1DB", "#F27BA5", "#DB4577", "#6E1634"] },
-  { name: "Household", colors: ["#D4ECE7", "#7DC5B8", "#439788", "#1E4D46"] }
+  { name: "Crime_Other", colors: ["#D4ECE7", "#7DC5B8", "#439788", "#1E4D46"] },
+  { name: "Household", colors: ["#F9D1DB", "#F27BA5", "#DB4577", "#6E1634"] }
 ];
 
 // Stroke colors for each indicator

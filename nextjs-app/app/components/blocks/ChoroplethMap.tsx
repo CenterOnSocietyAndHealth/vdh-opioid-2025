@@ -230,7 +230,54 @@ export default function ChoroplethMap({
         const counties = mapGroup.append("g")
           .attr("class", "counties")
           .selectAll("path")
-          .data(geoData.features)
+          .data(() => {
+            // Reorder features so selected locality is drawn last (on top)
+            if (!selectedLocality) return geoData.features;
+            
+            const sortedFeatures = [...geoData.features];
+            const selectedIndex = sortedFeatures.findIndex((f: any) => {
+              // Get FIPS code using various property names
+              let fipsCode = f.properties.FIPS || f.properties.fips || f.properties.GEOID || 
+                            f.properties.id || f.id;
+              
+              // Add prefix if needed
+              if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
+                fipsCode = `51${fipsCode}`;
+              }
+              
+              // Get locality name
+              const countyName = f.properties.NAME || f.properties.name;
+              
+              // Clean up locality FIPS code for comparison
+              let locFips = selectedLocality.fips;
+              
+              if (locFips) {
+                // Remove 'us-va-' prefix if present
+                locFips = locFips.replace('us-va-', '');
+                // Remove any remaining non-numeric characters
+                locFips = locFips.toString().replace(/\D/g, '');
+                // Ensure it's 5 digits
+                locFips = locFips.padStart(3, '0');
+                // Add state prefix if not present
+                if (locFips.length === 3) {
+                  locFips = `51${locFips}`;
+                }
+              }
+              
+              const fipsMatch = fipsCode && locFips === fipsCode;
+              const nameMatch = countyName && selectedLocality.counties === countyName;
+              
+              return fipsMatch || nameMatch;
+            });
+            
+            if (selectedIndex !== -1) {
+              // Move selected locality to the end
+              const [selectedFeature] = sortedFeatures.splice(selectedIndex, 1);
+              sortedFeatures.push(selectedFeature);
+            }
+            
+            return sortedFeatures;
+          })
           .enter()
           .append("path")
           .attr("d", path as any)
@@ -367,7 +414,7 @@ export default function ChoroplethMap({
             const nameMatch = countyName && selectedLocality.counties === countyName;
             
             if (fipsMatch || nameMatch) {
-              return 3;
+              return 2;
             }
             return 0.5;
           })
