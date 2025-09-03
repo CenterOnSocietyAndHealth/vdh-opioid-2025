@@ -16,14 +16,14 @@ const urlForImage = (source: any) => {
 const marginMap = {
   none: 'mt-0',
   small: 'mt-[20px]',
-  medium: 'mt-[40px]',
+  medium: 'mt-[30px]',
   large: 'mt-[60px]',
 }
 
 const marginBottomMap = {
   none: 'mb-0',
   small: 'mb-[20px]',
-  medium: 'mb-[40px]',
+  medium: 'mb-[30px]',
   large: 'mb-[60px]',
 }
 
