@@ -1,6 +1,7 @@
 import React from "react";
 import { dataAttr } from "@/sanity/lib/utils";
 import TextContent from "./blocks/TextContent";
+import ImageBlock from "./blocks/Image";
 import LocalitySelector from "./blocks/LocalitySelector";
 import SectorSelector from "./blocks/SectorSelector";
 import ColumnLayout from "./blocks/ColumnLayout";
@@ -28,6 +29,7 @@ type BlockProps = {
 
 const Blocks: BlocksType = {
   textContent: TextContent,
+  imageBlock: ImageBlock,
   localitySelector: LocalitySelector,
   sectorSelector: SectorSelector,
   columnLayout: ColumnLayout,

@@ -42,6 +42,7 @@ export const page = defineType({
       type: 'array',
       of: [
         { type: 'textContent' },
+        { type: 'imageBlock' },
         { type: 'localitySelector' },
         { type: 'columnLayout' },
         { type: 'costsMaps' },

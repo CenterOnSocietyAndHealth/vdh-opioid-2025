@@ -164,4 +164,26 @@ export type LargeButtonProps = {
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
   };
+};
+
+// Type for the image component props
+export type ImageProps = {
+  block: {
+    image: {
+      asset: {
+        _ref: string;
+      };
+      alt: string;
+      caption?: string;
+    };
+    sectionId?: string;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+    imageAlignment?: 'left' | 'center' | 'right';
+    backgroundColor?: string;
+    customBackgroundColor?: string;
+    maxWidth?: number;
+    imageSize?: 'small' | 'medium' | 'large' | 'full' | 'custom';
+    customImageWidth?: number;
+  };
 }; 

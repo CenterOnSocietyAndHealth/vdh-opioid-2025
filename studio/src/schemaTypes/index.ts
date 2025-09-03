@@ -4,6 +4,7 @@ import {settings} from './singletons/settings'
 import {link} from './objects/link'
 import {blockContent} from './objects/blockContent'
 import {textContent} from './objects/textContent'
+import {imageBlock} from './objects/image'
 import {localitySelector} from './objects/localitySelector'
 import {sectorSelector} from './objects/sectorSelector'
 import {columnLayout} from './objects/columnLayout'
@@ -27,6 +28,7 @@ export const schemaTypes = [
   blockContent,
   link,
   textContent,
+  imageBlock,
   localitySelector,
   sectorSelector,
   columnLayout,
