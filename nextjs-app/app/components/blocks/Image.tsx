@@ -106,10 +106,10 @@ export default function ImageBlock({ block }: ImageProps) {
             width={imageWidth || 800}
             height={imageWidth ? (imageWidth * 0.75) : 600} // Assume 4:3 aspect ratio
             priority={false}
-            className={`rounded-lg ${imageWidth ? '' : 'w-auto h-auto'} max-w-full`}
+            className={`${imageWidth ? '' : 'w-auto h-auto'} max-w-full`}
           />
           {image.caption && (
-            <p className="mt-2 text-sm text-gray-600 italic text-center">
+            <p className="mt-4 max-w-[600px] mx-auto text-[14px] text-[#000] text-left font-normal">
               {image.caption}
             </p>
           )}
