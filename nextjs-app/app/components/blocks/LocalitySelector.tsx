@@ -120,7 +120,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
   return (
     <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]} flex justify-center items-center`}>
       <div className="relative text-center">
-        <h3 className="relative inline-block ml-2 mb-3">
+        <h3 className="relative inline-block ml-2 mb-1">
           {subheading}
         </h3>
         <div className="flex">
