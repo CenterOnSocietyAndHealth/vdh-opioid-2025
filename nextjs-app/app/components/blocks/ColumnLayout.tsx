@@ -8,6 +8,9 @@ type ColumnLayoutProps = {
     column1: any[];
     column2: any[];
     column3?: any[];
+    column1Width?: number;
+    column2Width?: number;
+    column3Width?: number;
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
     maxWidth?: number;
@@ -32,21 +35,39 @@ const marginBottomMap = {
   large: 'mb-16',
 };
 
-const columnWidthMap = {
-  2: 'w-1/2',
-  3: 'w-1/3',
-};
-
 export default function ColumnLayout({ block, pageId, pageType, localities, path }: ColumnLayoutProps) {
-  const { columns, column1, column2, column3, marginTop = 'medium', marginBottom = 'medium', maxWidth } = block;
-  const columnWidth = columnWidthMap[columns];
+  const { 
+    columns, 
+    column1, 
+    column2, 
+    column3, 
+    column1Width, 
+    column2Width, 
+    column3Width,
+    marginTop = 'medium', 
+    marginBottom = 'medium', 
+    maxWidth 
+  } = block;
+
+  // Calculate column widths - use custom widths if provided, otherwise equal distribution
+  const getColumnWidth = (columnIndex: number, customWidth?: number) => {
+    if (customWidth) {
+      return `${customWidth}%`;
+    }
+    // Default to equal distribution
+    return `${100 / columns}%`;
+  };
+
+  const column1Style = { width: getColumnWidth(1, column1Width) };
+  const column2Style = { width: getColumnWidth(2, column2Width) };
+  const column3Style = columns === 3 ? { width: getColumnWidth(3, column3Width) } : {};
 
   const containerStyle = maxWidth ? { maxWidth: `${maxWidth}px`, margin: '0 auto' } : {};
 
   return (
     <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
       <div className="flex flex-wrap -mx-4" style={containerStyle}>
-        <div className={`px-4 ${columnWidth}`}>
+        <div className="px-4" style={column1Style}>
           {column1?.map((childBlock: any, index: number) => (
             <BlockRenderer
               key={childBlock._key}
@@ -59,7 +80,7 @@ export default function ColumnLayout({ block, pageId, pageType, localities, path
             />
           ))}
         </div>
-        <div className={`px-4 ${columnWidth}`}>
+        <div className="px-4" style={column2Style}>
           {column2?.map((childBlock: any, index: number) => (
             <BlockRenderer
               key={childBlock._key}
@@ -73,7 +94,7 @@ export default function ColumnLayout({ block, pageId, pageType, localities, path
           ))}
         </div>
         {columns === 3 && column3 && (
-          <div className={`px-4 ${columnWidth}`}>
+          <div className="px-4" style={column3Style}>
             {column3.map((childBlock: any, index: number) => (
               <BlockRenderer
                 key={childBlock._key}

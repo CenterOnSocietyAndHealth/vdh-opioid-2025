@@ -21,6 +21,14 @@ export const columnLayout = defineType({
       initialValue: 2,
     }),
     defineField({
+      name: 'column1Width',
+      title: 'Column 1 Width (%)',
+      type: 'number',
+      description: 'Width percentage for column 1 (defaults to equal distribution)',
+      validation: (Rule) => Rule.min(10).max(90).warning('Width should be between 10% and 90%'),
+      initialValue: undefined,
+    }),
+    defineField({
       name: 'column1',
       title: 'Column 1',
       type: 'array',
@@ -43,7 +51,24 @@ export const columnLayout = defineType({
             }
           }
         },
+        {
+          type: 'imageBlock',
+          options: {
+            modal: {
+              type: 'dialog',
+              width: 'auto'
+            }
+          }
+        },
       ],
+    }),
+    defineField({
+      name: 'column2Width',
+      title: 'Column 2 Width (%)',
+      type: 'number',
+      description: 'Width percentage for column 2 (defaults to equal distribution)',
+      validation: (Rule) => Rule.min(10).max(90).warning('Width should be between 10% and 90%'),
+      initialValue: undefined,
     }),
     defineField({
       name: 'column2',
@@ -68,7 +93,25 @@ export const columnLayout = defineType({
             }
           }
         },
+        {
+          type: 'imageBlock',
+          options: {
+            modal: {
+              type: 'dialog',
+              width: 'auto'
+            }
+          }
+        },
       ],
+    }),
+    defineField({
+      name: 'column3Width',
+      title: 'Column 3 Width (%)',
+      type: 'number',
+      description: 'Width percentage for column 3 (defaults to equal distribution)',
+      validation: (Rule) => Rule.min(10).max(90).warning('Width should be between 10% and 90%'),
+      initialValue: undefined,
+      hidden: ({parent}) => parent?.columns !== 3,
     }),
     defineField({
       name: 'column3',
@@ -90,6 +133,15 @@ export const columnLayout = defineType({
             modal: {
               type: 'dialog',
               width: 'large'
+            }
+          }
+        },
+        {
+          type: 'imageBlock',
+          options: {
+            modal: {
+              type: 'dialog',
+              width: 'auto'
             }
           }
         },
