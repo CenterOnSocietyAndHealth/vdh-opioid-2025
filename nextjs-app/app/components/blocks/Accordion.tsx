@@ -108,16 +108,72 @@ export default function Accordion({ block }: AccordionProps) {
                   ),
                 },
                 marks: {
-                  link: ({ children, value }) => (
-                    <a 
-                      href={value?.href} 
-                      className="text-blue-600 hover:text-blue-800 underline"
-                      target={value?.blank ? '_blank' : undefined}
-                      rel={value?.blank ? 'noopener noreferrer' : undefined}
-                    >
-                      {children}
-                    </a>
-                  ),
+                  link: ({ children, value }) => {
+                    // Debug: log the value to see what we're getting
+                    console.log('Link mark value:', value)
+                    
+                    // Handle citation links
+                    if (value?.citationId) {
+                      return (
+                        <a
+                          href={`#${value.citationId}`}
+                          className="text-blue-600 hover:text-blue-800 no-underline cursor-pointer font-medium"
+                          style={{ 
+                            fontSize: '0.75em',
+                            verticalAlign: 'super',
+                            textDecoration: 'none'
+                          }}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            // Dispatch custom event to open sources accordion
+                            const event = new CustomEvent('openSourcesAccordion', {
+                              detail: { citationId: value.citationId }
+                            })
+                            window.dispatchEvent(event)
+                          }}
+                        >
+                          {children}
+                        </a>
+                      )
+                    }
+                    // Handle regular links
+                    return (
+                      <a 
+                        href={value?.href} 
+                        className="text-blue-600 hover:text-blue-800 underline"
+                        target={value?.blank ? '_blank' : undefined}
+                        rel={value?.blank ? 'noopener noreferrer' : undefined}
+                      >
+                        {children}
+                      </a>
+                    )
+                  },
+                  citation: ({ children, value }) => {
+                    // Debug: log the citation value
+                    console.log('Citation mark value:', value)
+                    
+                    return (
+                      <a
+                        href={`#${value?.citationId || 'source-01'}`}
+                        className="text-blue-600 hover:text-blue-800 no-underline cursor-pointer font-medium"
+                        style={{ 
+                          fontSize: '0.75em',
+                          verticalAlign: 'super',
+                          textDecoration: 'none'
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          // Dispatch custom event to open sources accordion
+                          const event = new CustomEvent('openSourcesAccordion', {
+                            detail: { citationId: value?.citationId || 'source-01' }
+                          })
+                          window.dispatchEvent(event)
+                        }}
+                      >
+                        {children}
+                      </a>
+                    )
+                  },
                   strong: ({ children }) => (
                     <strong className="font-bold">{children}</strong>
                   ),

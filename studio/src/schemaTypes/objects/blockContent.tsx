@@ -81,7 +81,7 @@ export const blockContent = defineType({
                   }),
               }),
               defineField({
-                name: 'openInNewTab',
+                name: 'blank',
                 title: 'Open in new tab',
                 type: 'boolean',
                 initialValue: false,
@@ -231,15 +231,11 @@ export const blockContent = defineType({
                 name: 'citationId',
                 title: 'Citation ID',
                 type: 'string',
-                description: 'Auto-generated from selected text (e.g., "2" becomes "source-02")',
-                readOnly: true,
+                description: 'Citation reference (e.g., "source-01", "source-02")',
                 validation: (Rule) => Rule.required(),
                 initialValue: 'source-01',
               }),
             ],
-            initialValue: {
-              citationId: 'source-01'
-            },
           },
         ],
       },
