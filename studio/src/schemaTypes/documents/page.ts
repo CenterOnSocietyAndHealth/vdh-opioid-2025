@@ -53,6 +53,7 @@ export const page = defineType({
         { type: 'contentWrapper' },
         { type: 'onThisPage' },
         { type: 'sectorSelector' },
+        { type: 'sources' },
       ],
       options: {
         insertMenu: {

@@ -57,6 +57,12 @@ export type ContentWrapper = {
     | ({
         _key: string;
       } & Accordion)
+    | ({
+        _key: string;
+      } & SectorSelector)
+    | ({
+        _key: string;
+      } & ColumnLayout)
   >;
 };
 
@@ -623,12 +629,52 @@ export type ColumnLayout = {
   maxWidth?: number;
 };
 
+export type SectorSelector = {
+  _type: 'sectorSelector';
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+};
+
 export type LocalitySelector = {
   _type: 'localitySelector';
   heading?: string;
   subheading?: string;
   marginTop?: 'none' | 'small' | 'medium' | 'large';
   marginBottom?: 'none' | 'small' | 'medium' | 'large';
+};
+
+export type ImageBlock = {
+  _type: 'imageBlock';
+  image: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    caption?: string;
+    _type: 'image';
+  };
+  sectionId?: string;
+  imageAlignment?: 'left' | 'center' | 'right';
+  backgroundColor?:
+    | 'transparent'
+    | '#f0f0f0'
+    | '#ffffff'
+    | '#e6f3ff'
+    | '#f0f8f0'
+    | '#fffbf0'
+    | 'custom';
+  customBackgroundColor?: string;
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  maxWidth?: number;
+  imageSize?: 'small' | 'medium' | 'large' | 'full' | 'custom';
+  customImageWidth?: number;
 };
 
 export type TextContent = {
@@ -882,6 +928,9 @@ export type Page = {
       } & TextContent)
     | ({
         _key: string;
+      } & ImageBlock)
+    | ({
+        _key: string;
       } & LocalitySelector)
     | ({
         _key: string;
@@ -907,6 +956,9 @@ export type Page = {
     | ({
         _key: string;
       } & OnThisPage)
+    | ({
+        _key: string;
+      } & SectorSelector)
   >;
 };
 
@@ -1227,7 +1279,9 @@ export type AllSanitySchemaTypes =
   | CostsBreakdown
   | CostsMaps
   | ColumnLayout
+  | SectorSelector
   | LocalitySelector
+  | ImageBlock
   | TextContent
   | Link
   | BlockContent
@@ -1533,6 +1587,9 @@ export type GetPageQueryResult = {
             } & Accordion)
           | ({
               _key: string;
+            } & ColumnLayout)
+          | ({
+              _key: string;
             } & CostsBreakdown)
           | ({
               _key: string;
@@ -1540,6 +1597,9 @@ export type GetPageQueryResult = {
           | ({
               _key: string;
             } & LocalitySelector)
+          | ({
+              _key: string;
+            } & SectorSelector)
           | ({
               _key: string;
             } & TextContent)
@@ -1977,6 +2037,40 @@ export type GetPageQueryResult = {
       }
     | {
         _key: string;
+        _type: 'imageBlock';
+        image: {
+          asset?: {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt: string;
+          caption?: string;
+          _type: 'image';
+        };
+        sectionId?: string;
+        imageAlignment?: 'center' | 'left' | 'right';
+        backgroundColor?:
+          | '#e6f3ff'
+          | '#f0f0f0'
+          | '#f0f8f0'
+          | '#fffbf0'
+          | '#ffffff'
+          | 'custom'
+          | 'transparent';
+        customBackgroundColor?: string;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+        maxWidth?: number;
+        imageSize?: 'custom' | 'full' | 'large' | 'medium' | 'small';
+        customImageWidth?: number;
+      }
+    | {
+        _key: string;
         _type: 'largeButton';
         buttonText: string;
         action?: 'custom' | 'download' | 'open' | 'view';
@@ -2019,6 +2113,12 @@ export type GetPageQueryResult = {
         stateLocalValue: number;
         stateLocalColor: string;
         stateLocalTextColor: string;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+      }
+    | {
+        _key: string;
+        _type: 'sectorSelector';
         marginTop?: 'large' | 'medium' | 'none' | 'small';
         marginBottom?: 'large' | 'medium' | 'none' | 'small';
       }

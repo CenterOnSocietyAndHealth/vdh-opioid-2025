@@ -256,6 +256,51 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                   </span>
                 )
               },
+              citation: ({ children, value }) => {
+                // Auto-generate citation ID from the selected text
+                const selectedText = children?.toString() || ''
+                const number = parseInt(selectedText, 10)
+                
+                // Generate citation ID based on the selected number
+                const citationId = isNaN(number) ? 'source-01' : `source-${String(number).padStart(2, '0')}`
+                
+                const handleCitationClick = (e: React.MouseEvent) => {
+                  e.preventDefault()
+                  
+                  // Set the hash to trigger the Sources accordion to open
+                  window.location.hash = citationId
+                  
+                  // Find the Sources accordion and open it
+                  const sourcesAccordion = document.querySelector('[data-sources-accordion]')
+                  if (sourcesAccordion) {
+                    // Trigger a custom event to open the accordion
+                    const openEvent = new CustomEvent('openSourcesAccordion', { 
+                      detail: { citationId } 
+                    })
+                    window.dispatchEvent(openEvent)
+                  }
+                  
+                  // Scroll to the citation after a short delay
+                  setTimeout(() => {
+                    const element = document.querySelector(`#${citationId}`)
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                    }
+                  }, 400)
+                }
+                
+                return (
+                  <a
+                    href={`#${citationId}`}
+                    onClick={handleCitationClick}
+                    className="text-blue-600 hover:text-blue-800 underline text-sm font-medium align-super cursor-pointer"
+                    title="View source"
+                    style={{ fontSize: '0.75em', verticalAlign: 'super' }}
+                  >
+                    {children}
+                  </a>
+                )
+              },
             },
           }}
         />

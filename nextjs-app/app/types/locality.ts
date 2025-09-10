@@ -186,4 +186,16 @@ export type ImageProps = {
     imageSize?: 'small' | 'medium' | 'large' | 'full' | 'custom';
     customImageWidth?: number;
   };
+};
+
+// Type for the sources component props
+export type SourcesProps = {
+  block: {
+    citations: Array<{
+      text: any[]; // Rich text content (blockContent)
+    }>;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+    width?: number;
+  };
 }; 

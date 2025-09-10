@@ -205,6 +205,42 @@ export const blockContent = defineType({
               }),
             ],
           },
+          {
+            name: 'citation',
+            type: 'object',
+            title: 'Citation Link',
+            icon: () => (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 12l2 2 4-4" />
+                <path d="M21 12c.552 0 1-.448 1-1V5c0-.552-.448-1-1-1H3c-.552 0-1 .448-1 1v6c0 .552.448 1 1 1h18z" />
+                <path d="M3 12v6c0 .552.448 1 1 1h16c.552 0 1-.448 1-1v-6" />
+              </svg>
+            ),
+            fields: [
+              defineField({
+                name: 'citationId',
+                title: 'Citation ID',
+                type: 'string',
+                description: 'Auto-generated from selected text (e.g., "2" becomes "source-02")',
+                readOnly: true,
+                validation: (Rule) => Rule.required(),
+                initialValue: 'source-01',
+              }),
+            ],
+            initialValue: {
+              citationId: 'source-01'
+            },
+          },
         ],
       },
     }),

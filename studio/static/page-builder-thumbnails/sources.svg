@@ -1,0 +1,26 @@
+<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="120" fill="#F8F9FA"/>
+  <rect x="20" y="20" width="160" height="80" fill="white" stroke="#E5E7EB" stroke-width="1"/>
+  
+  <!-- Sources header -->
+  <rect x="30" y="30" width="140" height="20" fill="#F3F4F6" rx="2"/>
+  <text x="35" y="42" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#374151">Sources:</text>
+  
+  <!-- Chevron arrow -->
+  <path d="M155 35 L165 40 L155 45" stroke="#6B7280" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Citation list -->
+  <g transform="translate(30, 55)">
+    <!-- Citation 1 -->
+    <circle cx="8" cy="8" r="6" fill="#E5E7EB"/>
+    <text x="8" y="12" font-family="Arial, sans-serif" font-size="8" font-weight="600" text-anchor="middle" fill="#6B7280">1</text>
+    <rect x="20" y="2" width="120" height="12" fill="#F9FAFB" rx="1"/>
+    <text x="25" y="10" font-family="Arial, sans-serif" font-size="8" fill="#374151">Smith, J. (2024). Study on opioid costs...</text>
+    
+    <!-- Citation 2 -->
+    <circle cx="8" cy="25" r="6" fill="#E5E7EB"/>
+    <text x="8" y="29" font-family="Arial, sans-serif" font-size="8" font-weight="600" text-anchor="middle" fill="#6B7280">2</text>
+    <rect x="20" y="19" width="120" height="12" fill="#F9FAFB" rx="1"/>
+    <text x="25" y="27" font-family="Arial, sans-serif" font-size="8" fill="#374151">Johnson, M. (2024). Economic impact...</text>
+  </g>
+</svg>

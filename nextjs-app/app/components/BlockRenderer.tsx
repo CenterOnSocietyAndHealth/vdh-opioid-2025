@@ -12,6 +12,7 @@ import ContentWrapper from "./blocks/ContentWrapper";
 import OnThisPage from "./blocks/OnThisPage";
 import PayerBreakdown from "./blocks/PayerBreakdown";
 import LargeButton from "./blocks/LargeButton";
+import Sources from "./blocks/Sources";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -40,6 +41,7 @@ const Blocks: BlocksType = {
   onThisPage: OnThisPage,
   payerBreakdown: PayerBreakdown,
   largeButton: LargeButton,
+  sources: Sources,
 };
 
 /**
