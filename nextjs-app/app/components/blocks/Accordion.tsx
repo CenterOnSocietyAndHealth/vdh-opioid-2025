@@ -107,6 +107,22 @@ export default function Accordion({ block }: AccordionProps) {
                     <p className="mb-3 leading-relaxed">{children}</p>
                   ),
                 },
+                list: {
+                  bullet: ({ children }) => (
+                    <ul className="list-disc list-inside mb-4 space-y-1 ml-4">{children}</ul>
+                  ),
+                  number: ({ children }) => (
+                    <ol className="list-decimal list-inside mb-4 space-y-1 ml-4">{children}</ol>
+                  ),
+                },
+                listItem: {
+                  bullet: ({ children }) => (
+                    <li className="leading-relaxed">{children}</li>
+                  ),
+                  number: ({ children }) => (
+                    <li className="leading-relaxed">{children}</li>
+                  ),
+                },
                 marks: {
                   link: ({ children, value }) => {
                     // Debug: log the value to see what we're getting
