@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import CitationItem from '../../components/CitationItem'
 
 export const sources = defineType({
   name: 'sources',
@@ -22,6 +23,7 @@ export const sources = defineType({
               description: 'The citation text with optional links (e.g., "Smith, J. (2024). Study on opioid costs. Journal of Health Economics.")',
               validation: (Rule) => Rule.required(),
             }),
+            
           ],
           preview: {
             select: {
@@ -30,8 +32,11 @@ export const sources = defineType({
             prepare({ text }) {
               // Extract plain text from block content for preview
               const plainText = text?.find((block: any) => block._type === 'block' && block.style === 'normal')?.children?.[0]?.text || ''
+              
+              const displayText = plainText ? (plainText.length > 60 ? plainText.substring(0, 60) + '...' : plainText) : 'Citation'
+              
               return {
-                title: plainText ? (plainText.length > 60 ? plainText.substring(0, 60) + '...' : plainText) : 'Citation',
+                title: displayText,
                 subtitle: 'Rich text citation',
               }
             },
@@ -39,6 +44,12 @@ export const sources = defineType({
         },
       ],
       validation: (Rule) => Rule.required().min(1).error('At least one citation is required'),
+      options: {
+        sortable: true,
+      },
+      components: {
+        item: CitationItem
+      }
     }),
     defineField({
       name: 'marginTop',
