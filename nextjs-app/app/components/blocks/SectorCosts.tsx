@@ -35,7 +35,10 @@ const alignmentMap = {
 }
 
 const getNestedValue = (obj: any, path: string) => {
-  return path.split('.').reduce((acc, part) => acc && acc[part], obj)
+  return path.split('.').reduce((acc, part) => {
+    if (acc === null || acc === undefined) return undefined;
+    return acc[part];
+  }, obj)
 }
 
 // Function to clean corrupted string values by removing invisible Unicode characters

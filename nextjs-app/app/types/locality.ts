@@ -83,16 +83,16 @@ export type Locality = {
   HealthCare_PerCapita?: number;
   Crime_Other_PerCapita?: number;
   Household_PerCapita?: number;
-  demographics?: Demographics;
-  regions?: Regions;
-  classification?: Classification;
-  stateComparisons?: StateComparisons;
-  opioidMetrics?: OpioidMetrics;
-  opioidCases?: OpioidCases;
-  laborBreakdown?: LaborBreakdown;
-  healthcareBreakdown?: HealthcareBreakdown;
-  childFamilyBreakdown?: ChildFamilyBreakdown;
-  sectorBreakdown?: SectorBreakdown;
+  demographics?: Demographics | null;
+  regions?: Regions | null;
+  classification?: Classification | null;
+  stateComparisons?: StateComparisons | null;
+  opioidMetrics?: OpioidMetrics | null;
+  opioidCases?: OpioidCases | null;
+  laborBreakdown?: LaborBreakdown | null;
+  healthcareBreakdown?: HealthcareBreakdown | null;
+  childFamilyBreakdown?: ChildFamilyBreakdown | null;
+  sectorBreakdown?: SectorBreakdown | null;
 };
 
 // Type for the locality selector component props
