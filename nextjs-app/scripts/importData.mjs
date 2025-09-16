@@ -56,7 +56,7 @@ const importData = async () => {
     const results = []
 
     // Read CSV file
-    fs.createReadStream('nextjs-app/public/AllOpioidData2021f.csv')
+    fs.createReadStream('./public/AllOpioidData2021f.csv')
         .pipe(csv())
         .on('data', (data) => results.push(data))
         .on('end', async () => {
@@ -81,6 +81,8 @@ const importData = async () => {
                     _type: 'locality',
                     counties: row.LocalityName,
                     fips: row.FIPS,
+                    countyFips: row.CountyFIPS,
+                    marcCountyId: row.Marc_CountyID1,
                     // Add top-level fields
                     Total_PerCapita: totalPerCapita,
                     Labor_PerCapita: cleanCurrencyValue(row.Labor_PerCapita),
@@ -105,9 +107,9 @@ const importData = async () => {
                         totalPerCapitaComparison
                     },
                     demographics: {
-                        totalPopulation: parseInt(row.Population2023),
+                        totalPopulation: parseInt(row.Population2023.replace(/,/g, '')),
                         medianAge: parseFloat(row.MedianAgeYrs),
-                        medianIncome: parseInt(row.MedianHHIncome),
+                        medianIncome: parseInt(row.MedianHHIncome.replace(/,/g, '')),
                         povertyPct: parseFloat(row.PovertyPct)
                     },
                     regions: {
@@ -127,6 +129,30 @@ const importData = async () => {
                         povertyRateState: row.PovertyRate_State,
                         povertyRateQuartile: row.PovertyRate_Quartile,
                         hhmiQuartileProse: row.HHMI_quartileProse
+                    },
+                    opioidCases: {
+                        oudDeaths2023: parseInt(row.OUD_Deaths2023) || 0,
+                        oudCases2023: parseInt(row.OUDCases_2023) || 0
+                    },
+                    laborBreakdown: {
+                        laborFatal: cleanCurrencyValue(row.Labor_Fatal),
+                        laborOUD: cleanCurrencyValue(row.Labor_OUD),
+                        laborIncarceration: cleanCurrencyValue(row.Labor_Incarceration)
+                    },
+                    healthcareBreakdown: {
+                        healthED: cleanCurrencyValue(row.Health_ED),
+                        healthHosp: cleanCurrencyValue(row.Health_Hosp),
+                        healthAmbulanceNalax: cleanCurrencyValue(row.Health_AmbulanceNalax),
+                        healthIndirect: cleanCurrencyValue(row.Health_Indirect)
+                    },
+                    childFamilyBreakdown: {
+                        childFamilyAssistance: cleanCurrencyValue(row['ChildFamily _Assistance']),
+                        childFamilyK12Ed: cleanCurrencyValue(row.ChildFamily_K12Ed)
+                    },
+                    sectorBreakdown: {
+                        householdSectorTotal: cleanCurrencyValue(row.HouseholdSector_Total),
+                        fedGovtSectorTotal: cleanCurrencyValue(row.FedGovtSector_Total),
+                        stateLocalSectorTotal: cleanCurrencyValue(row.StateLocalSector_Total)
                     }
                 }
 

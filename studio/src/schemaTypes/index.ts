@@ -16,6 +16,7 @@ import {accordion} from './objects/accordion'
 import {contentWrapper} from './objects/contentWrapper'
 import {onThisPage} from './objects/onThisPage'
 import {sources} from './objects/sources'
+import {sectorCosts} from './objects/sectorCosts'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -41,4 +42,5 @@ export const schemaTypes = [
   contentWrapper,
   onThisPage,
   sources,
+  sectorCosts,
 ]

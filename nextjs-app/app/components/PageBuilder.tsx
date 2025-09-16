@@ -114,7 +114,7 @@ export default function PageBuilder({ page, localities }: PageBuilderPageProps) 
 
   return (
     <SectorProvider>
-      <LocalityProvider initialLocality={page.selectedLocality}>
+      <LocalityProvider initialLocality={page.selectedLocality} localities={localities}>
         <div
           data-sanity={dataAttr({
             id: page._id,

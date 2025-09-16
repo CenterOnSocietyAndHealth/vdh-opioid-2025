@@ -4,10 +4,11 @@ import { PortableText } from '@portabletext/react'
 import imageUrlBuilder from '@sanity/image-url'
 import { client } from '@/sanity/lib/client'
 import { useEffect, useState } from 'react'
-import { TextContentProps } from '@/app/types/locality'
+import { SectorCostsProps } from '@/app/types/locality'
 import DefinitionPopup from '@/app/components/DefinitionPopup'
 import Image from 'next/image'
 import { useSector } from '@/app/contexts/SectorContext'
+import { useLocality } from '@/app/contexts/LocalityContext'
 
 const urlForImage = (source: any) => {
   return imageUrlBuilder(client).image(source)
@@ -44,10 +45,18 @@ const cleanString = (str: string | undefined): string | undefined => {
   return str.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim()
 }
 
-export default function TextContent({ block, selectedLocality }: TextContentProps) {
+export default function SectorCosts({ block, selectedLocality: propSelectedLocality }: SectorCostsProps) {
   const { selectedSector } = useSector();
+  const { selectedLocality: contextSelectedLocality } = useLocality();
+  
+  // Use context selectedLocality if available, otherwise fall back to prop
+  const selectedLocality = contextSelectedLocality || propSelectedLocality;
   const { 
-    content, 
+    allSectorsContent,
+    lostLaborContent,
+    healthcareContent,
+    childServicesContent,
+    criminalJusticeContent,
     sectionId,
     marginTop = 'none', 
     marginBottom = 'none', 
@@ -90,24 +99,30 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
     }
   }, [])
 
-  console.log('TextContent block:', { marginTop, marginBottom, textAlignment, backgroundColor, customBackgroundColor, maxWidth })
-  console.log('TextContent sector context:', { selectedSector })
-  console.log('Cleaned values:', { 
-    cleanMarginTop, 
-    cleanMarginBottom, 
-    cleanTextAlignment,
-    cleanBackgroundColor
-  })
-  console.log('Margin classes:', { 
-    topClass: marginMap[validMarginTop as keyof typeof marginMap], 
-    bottomClass: marginBottomMap[validMarginBottom as keyof typeof marginBottomMap] 
-  })
-  console.log('Text alignment:', { 
-    original: textAlignment, 
-    cleaned: cleanTextAlignment,
-    valid: validTextAlignment, 
-    class: alignmentMap[validTextAlignment as keyof typeof alignmentMap] 
-  })
+  // Get the content based on selected sector
+  const getContentForSector = () => {
+    switch (selectedSector) {
+      case 'Lost Labor':
+        return lostLaborContent || []
+      case 'Healthcare':
+        return healthcareContent || []
+      case 'Child Services & K12':
+        return childServicesContent || []
+      case 'Criminal Justice':
+        return criminalJusticeContent || []
+      case 'All Sectors':
+      default:
+        return allSectorsContent || []
+    }
+  }
+
+  const currentContent = getContentForSector()
+
+  // Debug logging (can be removed in production)
+  // console.log('SectorCosts block:', { selectedSector, marginTop, marginBottom, textAlignment, backgroundColor, customBackgroundColor, maxWidth })
+  // console.log('SectorCosts sector context:', { selectedSector })
+  // console.log('SectorCosts selectedLocality:', { contextSelectedLocality, propSelectedLocality, finalSelectedLocality: selectedLocality })
+  // console.log('Current content for sector:', currentContent)
   
   return (
     <div className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
@@ -120,7 +135,7 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
         }}
       >
         <PortableText
-          value={content}
+          value={currentContent}
           components={{
             types: {
               image: ({ value }) => {
@@ -384,4 +399,4 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
       </div>
     </div>
   )
-} 
+}

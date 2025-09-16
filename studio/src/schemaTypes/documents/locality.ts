@@ -1,11 +1,10 @@
 import { defineField, defineType } from 'sanity'
-import { IoLocationOutline } from "react-icons/io5";
 
 export const locality = defineType({
     name: 'locality',
     title: 'Locality',
     type: 'document',
-    icon: IoLocationOutline,
+    icon: () => '📍',
     fields: [
         defineField({
             name: 'counties',
@@ -18,6 +17,18 @@ export const locality = defineType({
             title: 'FIPS Code',
             type: 'string',
             validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+            name: 'countyFips',
+            title: 'County FIPS Code',
+            type: 'string',
+            description: 'Numeric county FIPS code',
+        }),
+        defineField({
+            name: 'marcCountyId',
+            title: 'Marc County ID',
+            type: 'string',
+            description: 'Marc County identifier',
         }),
         defineField({
             name: 'Total_PerCapita',
@@ -87,6 +98,125 @@ export const locality = defineType({
                     title: 'Total Per Capita Comparison', 
                     type: 'string',
                     description: 'Human-readable comparison phrase for per capita cost (e.g., "higher than 75%")'
+                })
+            ]
+        }),
+        defineField({
+            name: 'opioidCases',
+            title: 'Opioid Cases and Deaths',
+            type: 'object',
+            fields: [
+                defineField({ 
+                    name: 'oudDeaths2023', 
+                    title: 'OUD Deaths 2023', 
+                    type: 'number',
+                    description: 'Number of opioid use disorder deaths in 2023'
+                }),
+                defineField({ 
+                    name: 'oudCases2023', 
+                    title: 'OUD Cases 2023', 
+                    type: 'number',
+                    description: 'Number of opioid use disorder cases in 2023'
+                })
+            ]
+        }),
+        defineField({
+            name: 'laborBreakdown',
+            title: 'Labor Cost Breakdown',
+            type: 'object',
+            fields: [
+                defineField({ 
+                    name: 'laborFatal', 
+                    title: 'Labor Fatal Costs', 
+                    type: 'number',
+                    description: 'Labor costs from fatal opioid cases'
+                }),
+                defineField({ 
+                    name: 'laborOUD', 
+                    title: 'Labor OUD Costs', 
+                    type: 'number',
+                    description: 'Labor costs from opioid use disorder cases'
+                }),
+                defineField({ 
+                    name: 'laborIncarceration', 
+                    title: 'Labor Incarceration Costs', 
+                    type: 'number',
+                    description: 'Labor costs from opioid-related incarcerations'
+                })
+            ]
+        }),
+        defineField({
+            name: 'healthcareBreakdown',
+            title: 'Healthcare Cost Breakdown',
+            type: 'object',
+            fields: [
+                defineField({ 
+                    name: 'healthED', 
+                    title: 'Emergency Department Costs', 
+                    type: 'number',
+                    description: 'Healthcare costs from emergency department visits'
+                }),
+                defineField({ 
+                    name: 'healthHosp', 
+                    title: 'Hospitalization Costs', 
+                    type: 'number',
+                    description: 'Healthcare costs from hospitalizations'
+                }),
+                defineField({ 
+                    name: 'healthAmbulanceNalax', 
+                    title: 'Ambulance/Naloxone Costs', 
+                    type: 'number',
+                    description: 'Healthcare costs from ambulance and naloxone services'
+                }),
+                defineField({ 
+                    name: 'healthIndirect', 
+                    title: 'Indirect Healthcare Costs', 
+                    type: 'number',
+                    description: 'Indirect healthcare costs related to opioid use'
+                })
+            ]
+        }),
+        defineField({
+            name: 'childFamilyBreakdown',
+            title: 'Child/Family Cost Breakdown',
+            type: 'object',
+            fields: [
+                defineField({ 
+                    name: 'childFamilyAssistance', 
+                    title: 'Child/Family Assistance Costs', 
+                    type: 'number',
+                    description: 'Costs for child and family assistance programs'
+                }),
+                defineField({ 
+                    name: 'childFamilyK12Ed', 
+                    title: 'K-12 Education Costs', 
+                    type: 'number',
+                    description: 'K-12 education costs related to opioid impact'
+                })
+            ]
+        }),
+        defineField({
+            name: 'sectorBreakdown',
+            title: 'Sector Cost Breakdown',
+            type: 'object',
+            fields: [
+                defineField({ 
+                    name: 'householdSectorTotal', 
+                    title: 'Household Sector Total', 
+                    type: 'number',
+                    description: 'Total costs borne by household sector'
+                }),
+                defineField({ 
+                    name: 'fedGovtSectorTotal', 
+                    title: 'Federal Government Sector Total', 
+                    type: 'number',
+                    description: 'Total costs borne by federal government sector'
+                }),
+                defineField({ 
+                    name: 'stateLocalSectorTotal', 
+                    title: 'State/Local Government Sector Total', 
+                    type: 'number',
+                    description: 'Total costs borne by state and local government sector'
                 })
             ]
         }),

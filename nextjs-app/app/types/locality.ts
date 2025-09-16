@@ -30,18 +30,69 @@ export type Regions = {
 
 export type Classification = {
   category?: string;
+  categoryDescription?: string;
   urbanRural?: string;
   metroNonMetro?: string;
+};
+
+export type StateComparisons = {
+  hhmiState?: string;
+  hhmiQuartile?: string;
+  povertyRateState?: string;
+  povertyRateQuartile?: string;
+  hhmiQuartileProse?: string;
+};
+
+export type OpioidCases = {
+  oudDeaths2023?: number;
+  oudCases2023?: number;
+};
+
+export type LaborBreakdown = {
+  laborFatal?: number;
+  laborOUD?: number;
+  laborIncarceration?: number;
+};
+
+export type HealthcareBreakdown = {
+  healthED?: number;
+  healthHosp?: number;
+  healthAmbulanceNalax?: number;
+  healthIndirect?: number;
+};
+
+export type ChildFamilyBreakdown = {
+  childFamilyAssistance?: number;
+  childFamilyK12Ed?: number;
+};
+
+export type SectorBreakdown = {
+  householdSectorTotal?: number;
+  fedGovtSectorTotal?: number;
+  stateLocalSectorTotal?: number;
 };
 
 export type Locality = {
   _id: string;
   counties: string;
   fips: string;
-  demographics: Demographics | null;
-  regions: Regions | null;
-  classification: Classification | null;
-  opioidMetrics: OpioidMetrics | null;
+  countyFips?: string;
+  marcCountyId?: string;
+  Total_PerCapita?: number;
+  Labor_PerCapita?: number;
+  HealthCare_PerCapita?: number;
+  Crime_Other_PerCapita?: number;
+  Household_PerCapita?: number;
+  demographics?: Demographics;
+  regions?: Regions;
+  classification?: Classification;
+  stateComparisons?: StateComparisons;
+  opioidMetrics?: OpioidMetrics;
+  opioidCases?: OpioidCases;
+  laborBreakdown?: LaborBreakdown;
+  healthcareBreakdown?: HealthcareBreakdown;
+  childFamilyBreakdown?: ChildFamilyBreakdown;
+  sectorBreakdown?: SectorBreakdown;
 };
 
 // Type for the locality selector component props
@@ -198,4 +249,23 @@ export type SourcesProps = {
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
     width?: number;
   };
+};
+
+// Type for the sector costs component props
+export type SectorCostsProps = {
+  block: {
+    allSectorsContent: any[];
+    lostLaborContent: any[];
+    healthcareContent: any[];
+    childServicesContent: any[];
+    criminalJusticeContent: any[];
+    sectionId?: string;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+    textAlignment?: 'left' | 'center' | 'right';
+    backgroundColor?: string;
+    customBackgroundColor?: string;
+    maxWidth?: number;
+  };
+  selectedLocality?: Locality;
 }; 

@@ -13,6 +13,7 @@ import OnThisPage from "./blocks/OnThisPage";
 import PayerBreakdown from "./blocks/PayerBreakdown";
 import LargeButton from "./blocks/LargeButton";
 import Sources from "./blocks/Sources";
+import SectorCosts from "./blocks/SectorCosts";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -42,6 +43,7 @@ const Blocks: BlocksType = {
   payerBreakdown: PayerBreakdown,
   largeButton: LargeButton,
   sources: Sources,
+  sectorCosts: SectorCosts,
 };
 
 /**

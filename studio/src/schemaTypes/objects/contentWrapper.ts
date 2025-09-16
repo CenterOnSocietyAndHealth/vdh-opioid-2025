@@ -119,6 +119,7 @@ export const contentWrapper = defineType({
         { type: 'accordion' },
         { type: 'sectorSelector' },
         { type: 'columnLayout' },
+        { type: 'sectorCosts' },
       ],
       validation: (Rule) => Rule.required().min(1),
     }),
