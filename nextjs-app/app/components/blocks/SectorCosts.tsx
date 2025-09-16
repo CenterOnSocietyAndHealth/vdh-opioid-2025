@@ -339,7 +339,7 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
 
                 // Make possessive if requested
                 if (value.makePossessive && typeof displayValue === 'string') {
-                  displayValue = `${displayValue}'s`
+                  displayValue = `${displayValue.trim()}'s`
                 }
 
                 return (

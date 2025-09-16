@@ -324,7 +324,7 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
 
                 // Make possessive if requested
                 if (value.makePossessive && typeof displayValue === 'string') {
-                  displayValue = `${displayValue}'s`
+                  displayValue = `${displayValue.trim()}'s`
                 }
 
                 return (
