@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import VDHlogo from '@/public/vdh.png'
-import CSHlogo from '@/public/csh-logo.svg'
+import CSHlogo from '@/public/csh-logo.png'
 import Navigation from './Navigation'
 import { client } from "@/sanity/lib/client";
 import { groq } from "next-sanity";
@@ -64,7 +64,7 @@ export default async function Footer() {
       </div>
       
       {/* Existing logo section */}
-      <div className="footer-container flex justify-between items-center max-w-[1280px] mx-auto">
+      <div className="footer-container flex justify-between items-center max-w-[880px] mx-auto">
         <div className="footer-left">
           <a href="https://www.vdh.virginia.gov/" target="_blank" rel="noopener noreferrer">
             <Image src={VDHlogo} alt='VDH Logo' className="h-[50px] w-auto" />

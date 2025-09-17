@@ -9,6 +9,7 @@ import DefinitionPopup from '@/app/components/DefinitionPopup'
 import Image from 'next/image'
 import { useSector } from '@/app/contexts/SectorContext'
 import { useLocality } from '@/app/contexts/LocalityContext'
+import ResolvedLink from '@/app/components/ResolvedLink'
 
 const urlForImage = (source: any) => {
   return imageUrlBuilder(client).image(source)
@@ -184,6 +185,9 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
               ),
             },
             marks: {
+              link: ({ children, value: link }) => {
+                return <ResolvedLink link={link}>{children}</ResolvedLink>;
+              },
               smallGrayText: ({ children }) => (
                 <span style={{
                   color: '#747474',

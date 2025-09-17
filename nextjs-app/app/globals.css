@@ -50,6 +50,7 @@ a[style*="vertical-align: super"],
 a.align-super {
     line-height: 0;
     position: relative;
+    margin-left: 2px;
 }
 
 p {
@@ -59,6 +60,10 @@ p {
 a {
     color: #1E1E1E;
     text-decoration: underline;
+}
+
+a:hover {
+    background-color: #F3E7B9;
 }
 
 h1 {

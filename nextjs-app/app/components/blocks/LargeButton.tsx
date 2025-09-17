@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { LargeButtonProps } from '@/app/types/locality';
 
 const marginMap = {
@@ -55,11 +56,15 @@ const DownloadIcon = () => (
 );
 
 export default function LargeButton({ block }: LargeButtonProps) {
+  const router = useRouter();
   const { 
     buttonText, 
     action, 
     customAction, 
+    linkType = 'url',
     url,
+    page,
+    openInNewTab = false,
     marginTop = 'medium',
     marginBottom = 'medium'
   } = block;
@@ -74,7 +79,7 @@ export default function LargeButton({ block }: LargeButtonProps) {
 
   // Handle button click
   const handleClick = () => {
-    if (url) {
+    if (linkType === 'url' && url) {
       if (action === 'download') {
         // Create a temporary link element for download
         const link = document.createElement('a');
@@ -84,42 +89,70 @@ export default function LargeButton({ block }: LargeButtonProps) {
         link.click();
         document.body.removeChild(link);
       } else {
-        // Open in new tab for other actions
-        window.open(url, '_blank');
+        // Open URL - respect new tab setting
+        if (openInNewTab) {
+          window.open(url, '_blank');
+        } else {
+          window.location.href = url;
+        }
+      }
+    } else if (linkType === 'page' && page?.slug?.current) {
+      // Navigate to internal page
+      if (openInNewTab) {
+        // Open internal page in new tab
+        window.open(`/${page.slug.current}`, '_blank');
+      } else {
+        // Navigate to internal page using Next.js router
+        router.push(`/${page.slug.current}`);
       }
     }
   };
+
+  // Button styles
+  const buttonStyles = {
+    backgroundColor: '#4783B5',
+    color: '#FFFFFF',
+    border: '1px solid #417A90',
+  };
+
+  const buttonClassName = "inline-flex items-center justify-center px-16 py-4 rounded-full font-medium text-lg transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-opacity-50";
+
+  // Button content
+  const buttonContent = (
+    <>
+      {action === 'download' && <DownloadIcon />}
+      <span className="whitespace-nowrap">
+        {buttonText}
+      </span>
+    </>
+  );
+
+  // Determine if button should be disabled
+  const isDisabled = linkType === 'url' ? !url : !page?.slug?.current;
 
   return (
     <div className={`max-w-[1311px] mx-auto ${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
       <div className="flex justify-center">
         <button
           onClick={handleClick}
-          className="inline-flex items-center justify-center px-16 py-4 rounded-full font-medium text-lg transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-opacity-50"
-          style={{
-            backgroundColor: '#4783B5',
-            color: '#FFFFFF',
-            border: '1px solid #417A90',
-          }}
+          className={buttonClassName}
+          style={buttonStyles}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = '#3B6D97';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = '#4783B5';
           }}
-          disabled={!url}
+          disabled={isDisabled}
         >
-          {action === 'download' && <DownloadIcon />}
-          <span className="whitespace-nowrap">
-            {buttonText}
-          </span>
+          {buttonContent}
         </button>
       </div>
       
-      {!url && (
+      {isDisabled && (
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-500">
-            ⚠️ URL not configured. Please add a URL in the CMS to enable this button.
+            ⚠️ {linkType === 'url' ? 'URL' : 'Page'} not configured. Please add a {linkType === 'url' ? 'URL' : 'page'} in the CMS to enable this button.
           </p>
         </div>
       )}

@@ -8,6 +8,7 @@ import { TextContentProps } from '@/app/types/locality'
 import DefinitionPopup from '@/app/components/DefinitionPopup'
 import Image from 'next/image'
 import { useSector } from '@/app/contexts/SectorContext'
+import ResolvedLink from '@/app/components/ResolvedLink'
 
 const urlForImage = (source: any) => {
   return imageUrlBuilder(client).image(source)
@@ -169,6 +170,9 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
               ),
             },
             marks: {
+              link: ({ children, value: link }) => {
+                return <ResolvedLink link={link}>{children}</ResolvedLink>;
+              },
               smallGrayText: ({ children }) => (
                 <span style={{
                   color: '#747474',
@@ -378,7 +382,7 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                   <a
                     href={`#${citationId}`}
                     onClick={handleCitationClick}
-                    className="text-blue-600 hover:text-blue-800 underline text-sm font-medium align-super cursor-pointer"
+                    className="hover:bg-[#F3E7B9] underline text-sm font-medium align-super cursor-pointer"
                     title="View source"
                     style={{ fontSize: '0.75em', verticalAlign: 'super' }}
                   >

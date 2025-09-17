@@ -21,6 +21,7 @@ const marginBottomMap = {
 export default function Sources({ block }: SourcesProps) {
   const { citations = [], marginTop = 'none', marginBottom = 'none', width = 672 } = block
   const [isExpanded, setIsExpanded] = useState(false)
+  const [highlightedSource, setHighlightedSource] = useState<string | null>(null)
 
   const toggleSources = () => {
     setIsExpanded(!isExpanded)
@@ -31,14 +32,30 @@ export default function Sources({ block }: SourcesProps) {
     const handleHashChange = () => {
       const hash = window.location.hash
       if (hash && hash.startsWith('#source-')) {
+        const sourceId = hash.substring(1) // Remove the # symbol
         setIsExpanded(true)
+        setHighlightedSource(sourceId)
+        
         // Scroll to the citation after a short delay to ensure accordion is open
         setTimeout(() => {
           const element = document.querySelector(hash)
           if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            // Calculate the element's position and scroll to center it smoothly
+            const elementRect = element.getBoundingClientRect()
+            const absoluteElementTop = elementRect.top + window.pageYOffset
+            const center = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2)
+            
+            window.scrollTo({
+              top: center,
+              behavior: 'smooth'
+            })
           }
         }, 350) // Slightly longer than the accordion transition duration
+        
+        // Remove highlighting after 3 seconds
+        setTimeout(() => {
+          setHighlightedSource(null)
+        }, 3000)
       }
     }
 
@@ -46,13 +63,69 @@ export default function Sources({ block }: SourcesProps) {
       setIsExpanded(true)
       const { citationId } = event.detail
       if (citationId) {
+        setHighlightedSource(citationId)
+        
         // Scroll to the citation after a short delay
         setTimeout(() => {
           const element = document.querySelector(`#${citationId}`)
           if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            // Calculate the element's position and scroll to center it smoothly
+            const elementRect = element.getBoundingClientRect()
+            const absoluteElementTop = elementRect.top + window.pageYOffset
+            const center = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2)
+            
+            window.scrollTo({
+              top: center,
+              behavior: 'smooth'
+            })
           }
         }, 350)
+        
+        // Remove highlighting after 3 seconds
+        setTimeout(() => {
+          setHighlightedSource(null)
+        }, 3000)
+      }
+    }
+
+    // Handle clicks on citation links to prevent default behavior
+    const handleCitationClick = (event: Event) => {
+      const target = event.target as HTMLElement
+      const link = target.closest('a[href^="#source-"]') as HTMLAnchorElement
+      
+      if (link) {
+        event.preventDefault()
+        const hash = link.getAttribute('href')
+        if (hash) {
+          // Update the URL without triggering a page jump
+          window.history.pushState(null, '', hash)
+          
+          // Handle the navigation ourselves
+          const sourceId = hash.substring(1)
+          setIsExpanded(true)
+          setHighlightedSource(sourceId)
+          
+          // Scroll to the citation after a short delay to ensure accordion is open
+          setTimeout(() => {
+            const element = document.querySelector(hash)
+            if (element) {
+              // Calculate the element's position and scroll to center it smoothly
+              const elementRect = element.getBoundingClientRect()
+              const absoluteElementTop = elementRect.top + window.pageYOffset
+              const center = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2)
+              
+              window.scrollTo({
+                top: center,
+                behavior: 'smooth'
+              })
+            }
+          }, 350)
+          
+          // Remove highlighting after 3 seconds
+          setTimeout(() => {
+            setHighlightedSource(null)
+          }, 3000)
+        }
       }
     }
 
@@ -64,10 +137,14 @@ export default function Sources({ block }: SourcesProps) {
     
     // Listen for custom event to open accordion
     window.addEventListener('openSourcesAccordion', handleOpenSourcesAccordion as EventListener)
+    
+    // Listen for clicks on citation links
+    document.addEventListener('click', handleCitationClick)
 
     return () => {
       window.removeEventListener('hashchange', handleHashChange)
       window.removeEventListener('openSourcesAccordion', handleOpenSourcesAccordion as EventListener)
+      document.removeEventListener('click', handleCitationClick)
     }
   }, [])
 
@@ -114,8 +191,15 @@ export default function Sources({ block }: SourcesProps) {
             <ol className="space-y-3">
               {citations.map((citation, index) => {
                 const citationId = generateCitationId(index)
+                const isHighlighted = highlightedSource === citationId
                 return (
-                  <li key={citationId} id={citationId} className="flex">
+                  <li 
+                    key={citationId} 
+                    id={citationId} 
+                    className={`flex transition-colors duration-300 ${
+                      isHighlighted ? 'bg-[#F3E7B9] rounded-lg' : ''
+                    }`}
+                  >
                     <span className="flex-shrink-0 w-6 h-6 bg-gray-100 text-gray-700 text-sm font-medium rounded-full flex items-center justify-center mr-3 mt-0.5">
                       {index + 1}
                     </span>

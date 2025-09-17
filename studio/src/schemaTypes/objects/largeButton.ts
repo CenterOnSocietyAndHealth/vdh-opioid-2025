@@ -5,7 +5,7 @@ export const largeButton = defineType({
   name: 'largeButton',
   title: 'Large Button',
   type: 'object',
-  icon: DownloadIcon,
+  icon: 'button',
   fields: [
     defineField({
       name: 'buttonText',
@@ -39,10 +39,39 @@ export const largeButton = defineType({
       hidden: ({parent}) => parent?.action !== 'custom',
     }),
     defineField({
+      name: 'linkType',
+      title: 'Link Type',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'External URL', value: 'url'},
+          {title: 'Internal Page', value: 'page'},
+        ],
+      },
+      initialValue: 'url',
+      description: 'Choose whether to link to an external URL or an internal page',
+    }),
+    defineField({
       name: 'url',
       title: 'URL',
       type: 'url',
-      description: 'The URL the button will link to or download from',
+      description: 'The external URL the button will link to or download from',
+      hidden: ({parent}) => parent?.linkType !== 'url',
+    }),
+    defineField({
+      name: 'page',
+      title: 'Page',
+      type: 'reference',
+      to: [{type: 'page'}],
+      description: 'The internal page the button will link to',
+      hidden: ({parent}) => parent?.linkType !== 'page',
+    }),
+    defineField({
+      name: 'openInNewTab',
+      title: 'Open in New Tab',
+      type: 'boolean',
+      description: 'Open the link in a new tab/window',
+      initialValue: false,
     }),
     defineField({
       name: 'marginTop',
@@ -83,7 +112,7 @@ export const largeButton = defineType({
       return {
         title: 'Large Button',
         subtitle: `${actionText}: ${buttonText}`,
-        media: DownloadIcon
+        media: 'button'
       }
     },
   },

@@ -211,7 +211,15 @@ export type LargeButtonProps = {
     buttonText: string;
     action: 'download' | 'view' | 'open' | 'custom';
     customAction?: string;
+    linkType?: 'url' | 'page';
     url?: string;
+    page?: {
+      _ref: string;
+      slug?: {
+        current: string;
+      };
+    };
+    openInNewTab?: boolean;
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
   };
