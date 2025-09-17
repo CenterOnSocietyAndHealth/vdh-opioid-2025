@@ -131,8 +131,8 @@ const importData = async () => {
                         hhmiQuartileProse: row.HHMI_quartileProse
                     },
                     opioidCases: {
-                        oudDeaths2023: parseInt(row.OUD_Deaths2023) || 0,
-                        oudCases2023: parseInt(row.OUDCases_2023) || 0
+                        oudDeaths2023: parseInt(row.OUD_Deaths2023.toString().trim()) || 0,
+                        oudCases2023: parseInt(row.OUDCases_2023.toString().trim()) || 0
                     },
                     laborBreakdown: {
                         laborFatal: cleanCurrencyValue(row.Labor_Fatal),

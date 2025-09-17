@@ -224,6 +224,31 @@ export const blockContent = defineType({
                 initialValue: false,
                 description: "Adds 's to the end of the value to make it possessive",
               }),
+              defineField({
+                name: 'numberFormat',
+                title: 'Number Format',
+                type: 'string',
+                options: {
+                  list: [
+                    {title: 'Default', value: 'default'},
+                    {title: 'Currency (with $)', value: 'currency'},
+                    {title: 'Auto Scale (K/M/B)', value: 'autoScale'},
+                    {title: 'Auto Scale Currency ($X K/M/B)', value: 'autoScaleCurrency'},
+                    {title: 'Percentage', value: 'percentage'},
+                    {title: 'Comma Separated', value: 'comma'},
+                  ],
+                },
+                initialValue: 'default',
+                description: 'Format the number display (only applies to numeric values)',
+              }),
+              defineField({
+                name: 'decimalPlaces',
+                title: 'Decimal Places',
+                type: 'number',
+                initialValue: 2,
+                description: 'Number of decimal places to show (0-4)',
+                validation: (Rule) => Rule.min(0).max(4).integer(),
+              }),
             ],
           },
           {

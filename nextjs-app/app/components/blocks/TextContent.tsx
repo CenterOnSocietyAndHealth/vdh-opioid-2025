@@ -213,94 +213,99 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                 // Format the value based on the field type
                 let displayValue = fieldValue
                 
+                // Helper function to format numbers based on numberFormat option
+                const formatNumber = (num: number, format: string, decimalPlaces: number = 2) => {
+                  switch (format) {
+                    case 'currency':
+                      return `$${num.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                    case 'autoScale':
+                      // Auto-determine scale (K/M/B) based on magnitude
+                      if (Math.abs(num) >= 1000000000) {
+                        return `${(num / 1000000000).toFixed(decimalPlaces)}B`
+                      } else if (Math.abs(num) >= 1000000) {
+                        return `${(num / 1000000).toFixed(decimalPlaces)}M`
+                      } else if (Math.abs(num) >= 1000) {
+                        return `${Math.round(num / 1000)}K`
+                      } else {
+                        return num.toFixed(decimalPlaces)
+                      }
+                    case 'autoScaleCurrency':
+                      // Auto-determine scale with currency symbol
+                      if (Math.abs(num) >= 1000000000) {
+                        return `$${(num / 1000000000).toFixed(decimalPlaces)}B`
+                      } else if (Math.abs(num) >= 1000000) {
+                        return `$${(num / 1000000).toFixed(decimalPlaces)}M`
+                      } else if (Math.abs(num) >= 1000) {
+                        return `$${Math.round(num / 1000)}K`
+                      } else {
+                        return `$${num.toFixed(decimalPlaces)}`
+                      }
+                    case 'percentage':
+                      return `${num.toFixed(decimalPlaces)}%`
+                    case 'comma':
+                      return num.toLocaleString()
+                    case 'default':
+                    default:
+                      return num.toLocaleString()
+                  }
+                }
+                
                 // Handle both numbers and strings
                 if (typeof fieldValue === 'number') {
-                  if (value.fieldPath.includes('PerCapita')) {
-                    displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-                  } else if (value.fieldPath.includes('Total')) {
-                    displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-                  } else if (value.fieldPath.includes('Pct')) {
-                    displayValue = `${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
-                  } else if (value.fieldPath.includes('Population')) {
-                    displayValue = fieldValue.toLocaleString()
-                  } else if (value.fieldPath.includes('Income')) {
-                    displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-                  } else if (value.fieldPath.includes('Percentile')) {
-                    displayValue = `${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
-                  } else if (value.fieldPath.includes('Comparison')) {
-                    displayValue = `${fieldValue}`
+                  // Use custom numberFormat if specified, otherwise use field-based defaults
+                  if (value.numberFormat && value.numberFormat !== 'default') {
+                    displayValue = formatNumber(fieldValue, value.numberFormat, value.decimalPlaces || 2)
                   } else {
-                    displayValue = fieldValue.toLocaleString()
+                    // Default field-based formatting
+                    if (value.fieldPath.includes('PerCapita')) {
+                      displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                    } else if (value.fieldPath.includes('Total')) {
+                      displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                    } else if (value.fieldPath.includes('Pct')) {
+                      displayValue = `${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
+                    } else if (value.fieldPath.includes('Population')) {
+                      displayValue = fieldValue.toLocaleString()
+                    } else if (value.fieldPath.includes('Income')) {
+                      displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                    } else if (value.fieldPath.includes('Percentile')) {
+                      displayValue = `${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
+                    } else if (value.fieldPath.includes('Comparison')) {
+                      displayValue = `${fieldValue}`
+                    } else {
+                      displayValue = fieldValue.toLocaleString()
+                    }
                   }
                 } else if (typeof fieldValue === 'string') {
                   // Handle string values - they might already be formatted
-                  if (value.fieldPath.includes('PerCapita')) {
-                    // Remove any existing formatting and re-format as currency
-                    const numValue = parseFloat(fieldValue.replace(/[,$]/g, ''))
-                    if (!isNaN(numValue)) {
-                      displayValue = `$${numValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                  const numValue = parseFloat(fieldValue.replace(/[,$%]/g, ''))
+                  
+                  if (!isNaN(numValue)) {
+                    // Use custom numberFormat if specified, otherwise use field-based defaults
+                    if (value.numberFormat && value.numberFormat !== 'default') {
+                      displayValue = formatNumber(numValue, value.numberFormat, value.decimalPlaces || 2)
                     } else {
-                      displayValue = fieldValue
-                    }
-                  } else if (value.fieldPath.includes('Total')) {
-                    // Remove any existing formatting and re-format as currency
-                    const numValue = parseFloat(fieldValue.replace(/[,$]/g, ''))
-                    if (!isNaN(numValue)) {
-                      displayValue = `$${numValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-                    } else {
-                      displayValue = fieldValue
-                    }
-                  } else if (value.fieldPath.includes('Pct')) {
-                    // Remove any existing formatting and re-format as percentage
-                    const numValue = parseFloat(fieldValue.replace(/[%]/g, ''))
-                    if (!isNaN(numValue)) {
-                      displayValue = `${numValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
-                    } else {
-                      displayValue = fieldValue
-                    }
-                  } else if (value.fieldPath.includes('Population')) {
-                    // For population, if it's already formatted with commas, keep it as is
-                    // Otherwise, try to format it
-                    if (fieldValue.includes(',')) {
-                      displayValue = fieldValue
-                    } else {
-                      const numValue = parseFloat(fieldValue)
-                      if (!isNaN(numValue)) {
+                      // Default field-based formatting
+                      if (value.fieldPath.includes('PerCapita')) {
+                        displayValue = `$${numValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                      } else if (value.fieldPath.includes('Total')) {
+                        displayValue = `$${numValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                      } else if (value.fieldPath.includes('Pct')) {
+                        displayValue = `${numValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
+                      } else if (value.fieldPath.includes('Population')) {
                         displayValue = numValue.toLocaleString()
-                      } else {
+                      } else if (value.fieldPath.includes('Income')) {
+                        displayValue = `$${numValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                      } else if (value.fieldPath.includes('Percentile')) {
+                        displayValue = `${numValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
+                      } else if (value.fieldPath.includes('Comparison')) {
                         displayValue = fieldValue
+                      } else {
+                        displayValue = numValue.toLocaleString()
                       }
                     }
-                  } else if (value.fieldPath.includes('Income')) {
-                    // Remove any existing formatting and re-format as currency
-                    const numValue = parseFloat(fieldValue.replace(/[,$]/g, ''))
-                    if (!isNaN(numValue)) {
-                      displayValue = `$${numValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-                    } else {
-                      displayValue = fieldValue
-                    }
-                  } else if (value.fieldPath.includes('Percentile')) {
-                    // Remove any existing formatting and re-format as percentage
-                    const numValue = parseFloat(fieldValue.replace(/[%]/g, ''))
-                    if (!isNaN(numValue)) {
-                      displayValue = `${numValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
-                    } else {
-                      displayValue = fieldValue
-                    }
-                  } else if (value.fieldPath.includes('Comparison')) {
-                    displayValue = fieldValue
                   } else {
-                    // For other fields, if it's already formatted with commas, keep it as is
-                    if (fieldValue.includes(',')) {
-                      displayValue = fieldValue
-                    } else {
-                      const numValue = parseFloat(fieldValue)
-                      if (!isNaN(numValue)) {
-                        displayValue = numValue.toLocaleString()
-                      } else {
-                        displayValue = fieldValue
-                      }
-                    }
+                    // If it's not a number, keep the original string
+                    displayValue = fieldValue
                   }
                 }
 
