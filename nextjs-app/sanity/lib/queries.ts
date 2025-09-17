@@ -113,6 +113,13 @@ export const getPageQuery = defineQuery(`
           }
         }
       },
+      _type == "largeButton" => {
+        ...,
+        page->{
+          _id,
+          "slug": slug.current
+        }
+      },
     },
   }
 `);

@@ -96,14 +96,14 @@ export default function LargeButton({ block }: LargeButtonProps) {
           window.location.href = url;
         }
       }
-    } else if (linkType === 'page' && page?.slug?.current) {
+    } else if (linkType === 'page' && page?.slug) {
       // Navigate to internal page
       if (openInNewTab) {
         // Open internal page in new tab
-        window.open(`/${page.slug.current}`, '_blank');
+        window.open(`/${page.slug}`, '_blank');
       } else {
         // Navigate to internal page using Next.js router
-        router.push(`/${page.slug.current}`);
+        router.push(`/${page.slug}`);
       }
     }
   };
@@ -128,7 +128,7 @@ export default function LargeButton({ block }: LargeButtonProps) {
   );
 
   // Determine if button should be disabled
-  const isDisabled = linkType === 'url' ? !url : !page?.slug?.current;
+  const isDisabled = linkType === 'url' ? !url : !page?.slug;
 
   return (
     <div className={`max-w-[1311px] mx-auto ${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>

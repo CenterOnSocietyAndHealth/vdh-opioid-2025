@@ -214,10 +214,8 @@ export type LargeButtonProps = {
     linkType?: 'url' | 'page';
     url?: string;
     page?: {
-      _ref: string;
-      slug?: {
-        current: string;
-      };
+      _id: string;
+      slug: string;
     };
     openInNewTab?: boolean;
     marginTop?: 'none' | 'small' | 'medium' | 'large';

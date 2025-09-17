@@ -82,6 +82,13 @@ export async function fetchPage(slug: string) {
                 }
               }
             }
+          },
+          _type == "largeButton" => {
+            ...,
+            page->{
+              _id,
+              "slug": slug.current
+            }
           }
         }
       }`,
