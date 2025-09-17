@@ -15,6 +15,7 @@ type ChoroplethMapProps = {
   strokeColor: string;
   totalValue: number;
   onLocalityClick?: (locality: Locality) => void;
+  onResetToVirginia?: () => void;
 };
 
 export default function ChoroplethMap({ 
@@ -25,7 +26,8 @@ export default function ChoroplethMap({
   colors,
   strokeColor,
   totalValue,
-  onLocalityClick
+  onLocalityClick,
+  onResetToVirginia
 }: ChoroplethMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -235,6 +237,19 @@ export default function ChoroplethMap({
         // Store reference to the map group for use in zoom/pan functions
         mapGroupRef.current = mapGroup.node();
         
+        // Add background click handler to reset to Virginia when clicking outside counties
+        svg.on("click", (event) => {
+          // Check if the click was on a county path
+          const target = event.target as SVGElement;
+          const isCountyClick = target.closest('.counties path');
+          
+          // If not clicking on a county and reset function is provided, reset to Virginia
+          if (!isCountyClick && onResetToVirginia) {
+            console.log('Background clicked - resetting to Virginia');
+            onResetToVirginia();
+          }
+        });
+        
         // Add a simple title for accessibility
         svg.append("title")
           .text("Virginia counties map");
@@ -433,6 +448,9 @@ export default function ChoroplethMap({
           })
           .style("cursor", "pointer")
           .on("click", (event: any, d: any) => {
+            // Stop event propagation to prevent background click handler from firing
+            event.stopPropagation();
+            
             // Get FIPS code using various property names
             let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
                           d.properties.id || d.id;
@@ -745,7 +763,7 @@ export default function ChoroplethMap({
     };
 
     drawMap();
-  }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue, indicatorDisplayNames, onLocalityClick, strokeColor]);
+  }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue, indicatorDisplayNames, onLocalityClick, onResetToVirginia, strokeColor]);
 
   return (
     <div className="relative">

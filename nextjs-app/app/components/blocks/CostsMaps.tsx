@@ -19,6 +19,7 @@ interface ChoroplethMapProps {
   strokeColor: string;
   totalValue: number;
   onLocalityClick?: (locality: Locality) => void;
+  onResetToVirginia?: () => void;
 }
 
 // Dynamic import for ChoroplethMap to avoid server-side rendering issues with D3
@@ -165,6 +166,29 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
     console.log('setSelectedLocality called, new locality should be:', locality);
   };
 
+  // Handle reset to Virginia Total
+  const handleResetToVirginia = () => {
+    console.log('CostsMaps: Resetting to Virginia Total');
+    if (localities) {
+      // Find Virginia Total in the localities array
+      const virginia = localities.find(loc => 
+        loc.counties === 'Virginia Total' || 
+        loc.fips === 'us-va-999' ||
+        loc.marcCountyId === '999'
+      );
+      if (virginia) {
+        console.log('Found Virginia Total locality:', virginia);
+        setSelectedLocality(virginia);
+      } else {
+        console.log('Virginia Total locality not found, setting to null');
+        setSelectedLocality(null);
+      }
+    } else {
+      console.log('No localities available, setting to null');
+      setSelectedLocality(null);
+    }
+  };
+
   // Get the description for the current tab
   const getCurrentDescription = () => {
     switch (indicatorTab) {
@@ -247,6 +271,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
               strokeColor={getStrokeColorByIndicator(indicatorTab)}
               totalValue={calculateTotal(`${indicatorTab}`)}
               onLocalityClick={handleLocalityClick}
+              onResetToVirginia={handleResetToVirginia}
             />
           </div>
         </div>

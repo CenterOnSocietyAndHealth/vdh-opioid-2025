@@ -38,6 +38,20 @@ strong {
     font-weight: 700;
 }
 
+sup {
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+    font-size: 0.75em;
+}
+
+/* Fix line spacing for citation links that use vertical-align: super */
+a[style*="vertical-align: super"],
+a.align-super {
+    line-height: 0;
+    position: relative;
+}
+
 p {
     margin-bottom: 20px;
 }

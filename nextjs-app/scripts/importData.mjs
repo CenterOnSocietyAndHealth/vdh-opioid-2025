@@ -131,8 +131,28 @@ const importData = async () => {
                         hhmiQuartileProse: row.HHMI_quartileProse
                     },
                     opioidCases: {
-                        oudDeaths2023: parseInt(row.OUD_Deaths2023.toString().trim()) || 0,
-                        oudCases2023: parseInt(row.OUDCases_2023.toString().trim()) || 0
+                        oudDeaths2023: (() => {
+                            const rawValue = row.OUD_Deaths2023;
+                            if (!rawValue) return 0;
+                            const cleanedValue = rawValue.toString().trim();
+                            // Handle dashes and other non-numeric values
+                            if (cleanedValue === '-' || cleanedValue === '' || cleanedValue === 'N/A') {
+                                return 0;
+                            }
+                            const parsedValue = parseInt(cleanedValue);
+                            return isNaN(parsedValue) ? 0 : parsedValue;
+                        })(),
+                        oudCases2023: (() => {
+                            const rawValue = row.OUDCases_2023;
+                            if (!rawValue) return 0;
+                            const cleanedValue = rawValue.toString().trim();
+                            // Handle dashes and other non-numeric values
+                            if (cleanedValue === '-' || cleanedValue === '' || cleanedValue === 'N/A') {
+                                return 0;
+                            }
+                            const parsedValue = parseInt(cleanedValue);
+                            return isNaN(parsedValue) ? 0 : parsedValue;
+                        })()
                     },
                     laborBreakdown: {
                         laborFatal: cleanCurrencyValue(row.Labor_Fatal),
