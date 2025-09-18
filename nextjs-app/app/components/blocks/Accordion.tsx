@@ -1,6 +1,13 @@
 import { PortableText } from '@portabletext/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AccordionProps } from '@/app/types/locality'
+import imageUrlBuilder from '@sanity/image-url'
+import { client } from '@/sanity/lib/client'
+import DefinitionPopup from '@/app/components/DefinitionPopup'
+import Image from 'next/image'
+import { useSector } from '@/app/contexts/SectorContext'
+import { useLocality } from '@/app/contexts/LocalityContext'
+import ResolvedLink from '@/app/components/ResolvedLink'
 
 const marginMap = {
   none: 'mt-0',
@@ -16,9 +23,37 @@ const marginBottomMap = {
   large: 'mb-16',
 }
 
+const urlForImage = (source: any) => {
+  return imageUrlBuilder(client).image(source)
+}
+
+const getNestedValue = (obj: any, path: string) => {
+  return path.split('.').reduce((acc, part) => {
+    if (acc === null || acc === undefined) return undefined;
+    return acc[part];
+  }, obj)
+}
+
 export default function Accordion({ block }: AccordionProps) {
   const { title, content, headingLevel = 'span', marginTop = 'none', marginBottom = 'none' } = block
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
+  const { selectedSector } = useSector()
+  const { selectedLocality } = useLocality()
+
+  // Listen for locality updates
+  useEffect(() => {
+    const handleUpdateStart = () => setIsUpdating(true)
+    const handleUpdateEnd = () => setIsUpdating(false)
+
+    window.addEventListener('localityUpdateStart', handleUpdateStart)
+    window.addEventListener('localityUpdateEnd', handleUpdateEnd)
+
+    return () => {
+      window.removeEventListener('localityUpdateStart', handleUpdateStart)
+      window.removeEventListener('localityUpdateEnd', handleUpdateEnd)
+    }
+  }, [])
 
   const toggleAccordion = () => {
     setIsExpanded(!isExpanded)
@@ -83,13 +118,14 @@ export default function Accordion({ block }: AccordionProps) {
                       return null
                     }
                     return (
-                      <div className="my-4">
-                        <img
-                          src={`https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${value.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}`}
-                          alt={value.alt || ''}
-                          className="max-w-full h-auto"
-                        />
-                      </div>
+                      <Image
+                        src={urlForImage(value).url()}
+                        alt={value.alt || ' '}
+                        width={800}
+                        height={600}
+                        style={{ width: 'auto', height: 'auto' }}
+                        priority={false}
+                      />
                     )
                   },
                 },
@@ -105,6 +141,30 @@ export default function Accordion({ block }: AccordionProps) {
                   ),
                   normal: ({ children }) => (
                     <p className="mb-3 leading-relaxed">{children}</p>
+                  ),
+                  largeValue: ({ children }) => (
+                    <div style={{
+                      fontFamily: 'Inter',
+                      fontSize: '48px',
+                      fontStyle: 'normal',
+                      fontWeight: 700,
+                      lineHeight: '150%',
+                    }}>
+                      {children}
+                    </div>
+                  ),
+                  quote: ({ children }) => (
+                    <div style={{
+                      color: '#1E1E1E',
+                      textAlign: 'center',
+                      fontFamily: 'Merriweather',
+                      fontSize: '20px',
+                      fontStyle: 'normal',
+                      fontWeight: 300,
+                      lineHeight: '30px',
+                    }}>
+                      {children}
+                    </div>
                   ),
                 },
                 list: {
@@ -124,67 +184,221 @@ export default function Accordion({ block }: AccordionProps) {
                   ),
                 },
                 marks: {
-                  link: ({ children, value }) => {
-                    // Debug: log the value to see what we're getting
-                    console.log('Link mark value:', value)
-                    
-                    // Handle citation links
-                    if (value?.citationId) {
+                  link: ({ children, value: link }) => {
+                    return <ResolvedLink link={link}>{children}</ResolvedLink>;
+                  },
+                  smallGrayText: ({ children }) => (
+                    <span style={{
+                      color: '#747474',
+                      fontFamily: 'Inter',
+                      fontSize: '14px',
+                      fontStyle: 'normal',
+                      fontWeight: 500,
+                      lineHeight: '130%',
+                      letterSpacing: '-0.266px',
+                    }}>
+                      {children}
+                    </span>
+                  ),
+                  definition: ({ children, value }) => {
+                    try {
+                      if (!value?.term || !value?.definition) {
+                        return children
+                      }
+                      
                       return (
-                        <a
-                          href={`#${value.citationId}`}
-                          className="text-blue-600 hover:text-blue-800 no-underline cursor-pointer font-medium"
-                          style={{ 
-                            fontSize: '0.75em',
-                            verticalAlign: 'super',
-                            textDecoration: 'none'
-                          }}
-                          onClick={(e) => {
-                            e.preventDefault()
-                            // Dispatch custom event to open sources accordion
-                            const event = new CustomEvent('openSourcesAccordion', {
-                              detail: { citationId: value.citationId }
-                            })
-                            window.dispatchEvent(event)
-                          }}
+                        <DefinitionPopup 
+                          term={value.term} 
+                          definition={value.definition}
                         >
                           {children}
-                        </a>
+                        </DefinitionPopup>
                       )
+                    } catch (error) {
+                      console.warn('Error rendering definition:', error)
+                      return children
                     }
-                    // Handle regular links
+                  },
+                  localityField: ({ children, value }) => {
+                    if (!selectedLocality || !value.fieldPath) {
+                      return children
+                    }
+                    const fieldValue = getNestedValue(selectedLocality, value.fieldPath)
+                    if (fieldValue === undefined) {
+                      return children
+                    }
+
+                    // Format the value based on the field type
+                    let displayValue = fieldValue
+                    
+                    // Helper function to format numbers based on numberFormat option
+                    const formatNumber = (num: number, format: string, decimalPlaces: number = 2) => {
+                      switch (format) {
+                        case 'currency':
+                          return `$${num.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                        case 'autoScale':
+                          // Auto-determine scale (K/M/B) based on magnitude
+                          if (Math.abs(num) >= 1000000000) {
+                            return `${(num / 1000000000).toFixed(decimalPlaces)}B`
+                          } else if (Math.abs(num) >= 1000000) {
+                            return `${(num / 1000000).toFixed(decimalPlaces)}M`
+                          } else if (Math.abs(num) >= 1000) {
+                            return `${Math.round(num / 1000)}K`
+                          } else {
+                            return num.toFixed(decimalPlaces)
+                          }
+                        case 'autoScaleCurrency':
+                          // Auto-determine scale with currency symbol
+                          if (Math.abs(num) >= 1000000000) {
+                            return `$${(num / 1000000000).toFixed(decimalPlaces)}B`
+                          } else if (Math.abs(num) >= 1000000) {
+                            return `$${(num / 1000000).toFixed(decimalPlaces)}M`
+                          } else if (Math.abs(num) >= 1000) {
+                            return `$${Math.round(num / 1000)}K`
+                          } else {
+                            return `$${num.toFixed(decimalPlaces)}`
+                          }
+                        case 'percentage':
+                          return `${num.toFixed(decimalPlaces)}%`
+                        case 'comma':
+                          return num.toLocaleString()
+                        case 'default':
+                        default:
+                          return num.toLocaleString()
+                      }
+                    }
+                    
+                    // Handle both numbers and strings
+                    if (typeof fieldValue === 'number') {
+                      // Use custom numberFormat if specified, otherwise use field-based defaults
+                      if (value.numberFormat && value.numberFormat !== 'default') {
+                        displayValue = formatNumber(fieldValue, value.numberFormat, value.decimalPlaces || 2)
+                      } else {
+                        // Default field-based formatting
+                        if (value.fieldPath.includes('PerCapita')) {
+                          displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                        } else if (value.fieldPath.includes('Total')) {
+                          displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                        } else if (value.fieldPath.includes('Pct')) {
+                          displayValue = `${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
+                        } else if (value.fieldPath.includes('Population')) {
+                          displayValue = fieldValue.toLocaleString()
+                        } else if (value.fieldPath.includes('Income')) {
+                          displayValue = `$${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                        } else if (value.fieldPath.includes('Percentile')) {
+                          displayValue = `${fieldValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
+                        } else if (value.fieldPath.includes('Comparison')) {
+                          displayValue = `${fieldValue}`
+                        } else {
+                          displayValue = fieldValue.toLocaleString()
+                        }
+                      }
+                    } else if (typeof fieldValue === 'string') {
+                      // Handle string values - they might already be formatted
+                      const numValue = parseFloat(fieldValue.replace(/[,$%]/g, ''))
+                      
+                      if (!isNaN(numValue)) {
+                        // Use custom numberFormat if specified, otherwise use field-based defaults
+                        if (value.numberFormat && value.numberFormat !== 'default') {
+                          displayValue = formatNumber(numValue, value.numberFormat, value.decimalPlaces || 2)
+                        } else {
+                          // Default field-based formatting
+                          if (value.fieldPath.includes('PerCapita')) {
+                            displayValue = `$${numValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                          } else if (value.fieldPath.includes('Total')) {
+                            displayValue = `$${numValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                          } else if (value.fieldPath.includes('Pct')) {
+                            displayValue = `${numValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
+                          } else if (value.fieldPath.includes('Population')) {
+                            displayValue = numValue.toLocaleString()
+                          } else if (value.fieldPath.includes('Income')) {
+                            displayValue = `$${numValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                          } else if (value.fieldPath.includes('Percentile')) {
+                            displayValue = `${numValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`
+                          } else if (value.fieldPath.includes('Comparison')) {
+                            displayValue = fieldValue
+                          } else {
+                            displayValue = numValue.toLocaleString()
+                          }
+                        }
+                      } else {
+                        // If it's not a number, keep the original string
+                        displayValue = fieldValue
+                      }
+                    }
+
+                    // Transform text case if specified
+                    if (typeof displayValue === 'string' && value.textCase) {
+                      switch (value.textCase) {
+                        case 'capitalize':
+                          displayValue = displayValue.split(' ').map(word => 
+                            word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+                          ).join(' ')
+                          break
+                        case 'lowercase':
+                          displayValue = displayValue.toLowerCase()
+                          break
+                      }
+                    }
+
+                    // Add article if requested
+                    if (value.addArticle && typeof displayValue === 'string') {
+                      const firstChar = displayValue.toLowerCase().charAt(0)
+                      const article = ['a', 'e', 'i', 'o', 'u'].includes(firstChar) ? 'an' : 'a'
+                      displayValue = `${article} ${displayValue}`
+                    }
+
+                    // Make possessive if requested
+                    if (value.makePossessive && typeof displayValue === 'string') {
+                      displayValue = `${displayValue.trim()}'s`
+                    }
+
                     return (
-                      <a 
-                        href={value?.href} 
-                        className="text-blue-600 hover:text-blue-800 underline"
-                        target={value?.blank ? '_blank' : undefined}
-                        rel={value?.blank ? 'noopener noreferrer' : undefined}
-                      >
-                        {children}
-                      </a>
+                      <span className={`${isUpdating ? 'animate-pulse' : ''}`}>
+                        {isUpdating ? '...' : displayValue}
+                      </span>
                     )
                   },
                   citation: ({ children, value }) => {
-                    // Debug: log the citation value
-                    console.log('Citation mark value:', value)
+                    // Auto-generate citation ID from the selected text
+                    const selectedText = children?.toString() || ''
+                    const number = parseInt(selectedText, 10)
+                    
+                    // Generate citation ID based on the selected number
+                    const citationId = isNaN(number) ? 'source-01' : `source-${String(number).padStart(2, '0')}`
+                    
+                    const handleCitationClick = (e: React.MouseEvent) => {
+                      e.preventDefault()
+                      
+                      // Set the hash to trigger the Sources accordion to open
+                      window.location.hash = citationId
+                      
+                      // Find the Sources accordion and open it
+                      const sourcesAccordion = document.querySelector('[data-sources-accordion]')
+                      if (sourcesAccordion) {
+                        // Trigger a custom event to open the accordion
+                        const openEvent = new CustomEvent('openSourcesAccordion', { 
+                          detail: { citationId } 
+                        })
+                        window.dispatchEvent(openEvent)
+                      }
+                      
+                      // Scroll to the citation after a short delay
+                      setTimeout(() => {
+                        const element = document.querySelector(`#${citationId}`)
+                        if (element) {
+                          element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                        }
+                      }, 400)
+                    }
                     
                     return (
                       <a
-                        href={`#${value?.citationId || 'source-01'}`}
-                        className="text-blue-600 hover:text-blue-800 no-underline cursor-pointer font-medium"
-                        style={{ 
-                          fontSize: '0.75em',
-                          verticalAlign: 'super',
-                          textDecoration: 'none'
-                        }}
-                        onClick={(e) => {
-                          e.preventDefault()
-                          // Dispatch custom event to open sources accordion
-                          const event = new CustomEvent('openSourcesAccordion', {
-                            detail: { citationId: value?.citationId || 'source-01' }
-                          })
-                          window.dispatchEvent(event)
-                        }}
+                        href={`#${citationId}`}
+                        onClick={handleCitationClick}
+                        className="hover:bg-[#F3E7B9] underline text-sm font-medium align-super cursor-pointer"
+                        title="View source"
+                        style={{ fontSize: '0.75em', verticalAlign: 'super' }}
                       >
                         {children}
                       </a>

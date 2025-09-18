@@ -167,7 +167,12 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
             pointerEvents: 'none'
           }}
         >
-          <span className="font-bold text-[16px] text-black mb-1 block">{term}:</span>
+          <span className="font-bold text-[16px] text-black mb-1 flex items-center gap-2">
+            <span className="inline-flex items-center justify-center w-5 h-5 bg-black text-white rounded-full text-xs font-bold">
+              ?
+            </span>
+            {term}:
+          </span>
           <span className="text-sm text-gray-800 block">{definition}</span>
           
           {/* Arrow */}

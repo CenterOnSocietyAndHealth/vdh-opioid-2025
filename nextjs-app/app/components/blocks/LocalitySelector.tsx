@@ -152,6 +152,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 padding: '0 12px',
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'center',
                 cursor: isUpdating ? "not-allowed" : "pointer",
               }),
               singleValue: (base: any) => ({
@@ -185,6 +186,11 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 fontWeight: 300,
                 fontFamily: 'Lato, sans-serif',
                 marginTop: 2,
+                textAlign: 'center',
+              }),
+              menuList: (base: any) => ({
+                ...base,
+                textAlign: 'center',
               }),
               option: (base: any, state: any) => ({
                 ...base,
@@ -192,6 +198,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 backgroundColor: state.isFocused ? '#f3f4f6' : 'white',
                 color: 'black',
                 cursor: 'pointer',
+                textAlign: 'center',
                 '&:active': {
                   backgroundColor: '#e5e7eb',
                 },

@@ -99,6 +99,12 @@ export async function fetchPage(slug: string) {
         _id,
         counties,
         fips,
+        countyFips,
+        sectorBreakdown {
+          householdSectorTotal,
+          fedGovtSectorTotal,
+          stateLocalSectorTotal
+        },
         demographics {
           totalPopulation,
           medianAge,

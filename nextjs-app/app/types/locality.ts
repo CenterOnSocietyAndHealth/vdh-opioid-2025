@@ -16,73 +16,73 @@ export type OpioidMetrics = {
 };
 
 export type Demographics = {
-  totalPopulation?: number;
-  medianAge?: number;
-  medianIncome?: number;
-  povertyPct?: number;
+  totalPopulation?: number | null;
+  medianAge?: number | null;
+  medianIncome?: number | null;
+  povertyPct?: number | null;
 };
 
 export type Regions = {
-  healthDistrict?: string;
-  healthRegion?: string;
-  cooperCtrRegion?: string;
+  healthDistrict?: string | null;
+  healthRegion?: string | null;
+  cooperCtrRegion?: string | null;
 };
 
 export type Classification = {
-  category?: string;
-  categoryDescription?: string;
-  urbanRural?: string;
-  metroNonMetro?: string;
+  category?: string | null;
+  categoryDescription?: string | null;
+  urbanRural?: string | null;
+  metroNonMetro?: string | null;
 };
 
 export type StateComparisons = {
-  hhmiState?: string;
-  hhmiQuartile?: string;
-  povertyRateState?: string;
-  povertyRateQuartile?: string;
-  hhmiQuartileProse?: string;
+  hhmiState?: string | null;
+  hhmiQuartile?: string | null;
+  povertyRateState?: string | null;
+  povertyRateQuartile?: string | null;
+  hhmiQuartileProse?: string | null;
 };
 
 export type OpioidCases = {
-  oudDeaths2023?: number;
-  oudCases2023?: number;
+  oudDeaths2023?: number | null;
+  oudCases2023?: number | null;
 };
 
 export type LaborBreakdown = {
-  laborFatal?: number;
-  laborOUD?: number;
-  laborIncarceration?: number;
+  laborFatal?: number | null;
+  laborOUD?: number | null;
+  laborIncarceration?: number | null;
 };
 
 export type HealthcareBreakdown = {
-  healthED?: number;
-  healthHosp?: number;
-  healthAmbulanceNalax?: number;
-  healthIndirect?: number;
+  healthED?: number | null;
+  healthHosp?: number | null;
+  healthAmbulanceNalax?: number | null;
+  healthIndirect?: number | null;
 };
 
 export type ChildFamilyBreakdown = {
-  childFamilyAssistance?: number;
-  childFamilyK12Ed?: number;
+  childFamilyAssistance?: number | null;
+  childFamilyK12Ed?: number | null;
 };
 
 export type SectorBreakdown = {
-  householdSectorTotal?: number;
-  fedGovtSectorTotal?: number;
-  stateLocalSectorTotal?: number;
+  householdSectorTotal?: number | null | undefined;
+  fedGovtSectorTotal?: number | null | undefined;
+  stateLocalSectorTotal?: number | null | undefined;
 };
 
 export type Locality = {
   _id: string;
   counties: string;
   fips: string;
-  countyFips?: string;
-  marcCountyId?: string;
-  Total_PerCapita?: number;
-  Labor_PerCapita?: number;
-  HealthCare_PerCapita?: number;
-  Crime_Other_PerCapita?: number;
-  Household_PerCapita?: number;
+  countyFips?: string | null;
+  marcCountyId?: string | null;
+  Total_PerCapita?: number | null;
+  Labor_PerCapita?: number | null;
+  HealthCare_PerCapita?: number | null;
+  Crime_Other_PerCapita?: number | null;
+  Household_PerCapita?: number | null;
   demographics?: Demographics | null;
   regions?: Regions | null;
   classification?: Classification | null;
@@ -274,4 +274,15 @@ export type SectorCostsProps = {
     maxWidth?: number;
   };
   selectedLocality?: Locality;
+};
+
+// Type for the locality payor breakdown component props
+export type LocalityPayorBreakdownProps = {
+  block: {
+    title: string;
+    maxWidth?: number;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  };
+  localities: Locality[];
 }; 

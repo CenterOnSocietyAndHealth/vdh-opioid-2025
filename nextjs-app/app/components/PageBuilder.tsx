@@ -17,6 +17,12 @@ type PageBuilderPageProps = {
     _id: string;
     counties: string;
     fips: string;
+    countyFips?: string | null;
+    sectorBreakdown?: {
+      householdSectorTotal?: number | null;
+      fedGovtSectorTotal?: number | null;
+      stateLocalSectorTotal?: number | null;
+    } | null;
     opioidMetrics: {
       totalPerCapita: number;
       totalTotal: number;

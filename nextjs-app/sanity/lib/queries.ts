@@ -44,6 +44,12 @@ export const localitiesQuery = defineQuery(`
     _id,
     counties,
     fips,
+    countyFips,
+    sectorBreakdown {
+      householdSectorTotal,
+      fedGovtSectorTotal,
+      stateLocalSectorTotal
+    },
     opioidMetrics {
       totalPerCapita,
       totalTotal,
@@ -77,6 +83,12 @@ export const getPageQuery = defineQuery(`
         _id,
         counties,
         fips,
+        countyFips,
+        sectorBreakdown {
+          householdSectorTotal,
+          fedGovtSectorTotal,
+          stateLocalSectorTotal
+        },
         demographics,
         regions,
         classification,

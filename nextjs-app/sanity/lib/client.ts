@@ -6,7 +6,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  useCdn: false, // Temporarily disable CDN to get fresh data
   perspective: "published",
   token: process.env.SANITY_API_READ_TOKEN, // Required if you have a private dataset
   stega: {

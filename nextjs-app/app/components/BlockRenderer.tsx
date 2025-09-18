@@ -14,6 +14,7 @@ import PayerBreakdown from "./blocks/PayerBreakdown";
 import LargeButton from "./blocks/LargeButton";
 import Sources from "./blocks/Sources";
 import SectorCosts from "./blocks/SectorCosts";
+import LocalityPayorBreakdown from "./blocks/LocalityPayorBreakdown";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -44,6 +45,7 @@ const Blocks: BlocksType = {
   largeButton: LargeButton,
   sources: Sources,
   sectorCosts: SectorCosts,
+  localityPayorBreakdown: LocalityPayorBreakdown,
 };
 
 /**
