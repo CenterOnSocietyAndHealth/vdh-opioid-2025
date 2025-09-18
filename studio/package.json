@@ -11,7 +11,8 @@
     "build": "sanity build",
     "deploy": "sanity deploy",
     "extract-types": "sanity schema extract --enforce-required-fields",
-    "migrate-costs": "ts-node migrations/move-costs-data.ts"
+    "migrate-costs": "ts-node migrations/move-costs-data.ts",
+    "migrate-citation-links": "node migrations/update-citation-links.js"
   },
   "keywords": [
     "sanity"

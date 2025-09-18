@@ -59,7 +59,7 @@ export const link = defineType({
       name: 'openInNewTab',
       title: 'Open in new tab',
       type: 'boolean',
-      initialValue: false,
+      initialValue: true,
     }),
   ],
 })

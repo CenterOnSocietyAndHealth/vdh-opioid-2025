@@ -20,8 +20,8 @@ export default function ResolvedLink({
     return (
       <Link
         href={resolvedLink}
-        target={link?.blank ? "_blank" : undefined}
-        rel={link?.blank ? "noopener noreferrer" : undefined}
+        target={link?.openInNewTab || link?.blank ? "_blank" : undefined}
+        rel={link?.openInNewTab || link?.blank ? "noopener noreferrer" : undefined}
         className={className}
       >
         {children}

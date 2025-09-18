@@ -84,7 +84,7 @@ export const blockContent = defineType({
                 name: 'blank',
                 title: 'Open in new tab',
                 type: 'boolean',
-                initialValue: false,
+                initialValue: true,
               }),
             ],
           },
