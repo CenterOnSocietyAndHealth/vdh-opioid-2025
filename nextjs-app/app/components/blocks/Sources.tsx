@@ -169,7 +169,7 @@ export default function Sources({ block }: SourcesProps) {
             <span className="text-lg font-medium">Sources:</span>
             {/* Chevron icon */}
             <svg
-                className={`w-4 h-4 text-black flex-shrink-0 transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}
+                className={`w-4 h-4 text-black flex-shrink-0 transition-transform duration-200 ${isExpanded ? '-rotate-90' : 'rotate-90'}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

@@ -93,7 +93,7 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Enter locality name..."
-            className="px-3 py-2 border border-gray-300 rounded-[3px] text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white placeholder:text-xs"
+                      className="px-1 py-1 border border-[#D7D7D7] rounded-[3px] text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white placeholder:text-xs"
           />
         </div>
       </div>
