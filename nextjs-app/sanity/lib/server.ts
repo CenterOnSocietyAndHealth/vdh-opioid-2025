@@ -52,6 +52,10 @@ export async function fetchPage(slug: string) {
               totalTotalComparison,
               totalPerCapitaPercentile,
               totalPerCapitaComparison
+            },
+            opioidCases {
+              oudDeaths2023,
+              oudCases2023
             }
           },
           null
@@ -136,6 +140,10 @@ export async function fetchPage(slug: string) {
           totalTotalComparison,
           totalPerCapitaPercentile,
           totalPerCapitaComparison
+        },
+        opioidCases {
+          oudDeaths2023,
+          oudCases2023
         }
       }`
     )

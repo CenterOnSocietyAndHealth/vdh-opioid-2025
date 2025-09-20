@@ -26,6 +26,7 @@ const marginBottomMap = {
 export default function LocalitySelector({ block, localities, pageId }: LocalitySelectorProps) {
   const [mounted, setMounted] = useState(false);
   const [Select, setSelect] = useState<any>(null);
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
   const { selectedLocality, setSelectedLocality, isUpdating, setIsUpdating } = useLocality();
 
   useEffect(() => {
@@ -130,8 +131,10 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
             value={currentValue}
             isDisabled={isUpdating}
             placeholder="County or Independent City"
+            onMenuOpen={() => setMenuIsOpen(true)}
+            onMenuClose={() => setMenuIsOpen(false)}
             styles={{
-              control: (base: any) => ({
+              control: (base: any, state: any) => ({
                 ...base,
                 border: 'none',
                 borderBottom: '1px solid black',
@@ -145,8 +148,12 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 '&:hover': {
                   borderBottom: '1px solid black',
                 },
+                boxShadow: state.isFocused ? 'none' : 'none',
+                '&:focus-within': {
+                  boxShadow: 'none',
+                },
               }),
-              valueContainer: (base: any) => ({
+              valueContainer: (base: any, state: any) => ({
                 ...base,
                 height: '100%',
                 padding: '0 12px',
@@ -154,8 +161,13 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: isUpdating ? "not-allowed" : "pointer",
+                width: '100%',
+                // Force positioning to prevent jumping
+                position: 'relative',
+                top: '0',
+                transform: 'none',
               }),
-              singleValue: (base: any) => ({
+              singleValue: (base: any, state: any) => ({
                 ...base,
                 margin: 0,
                 padding: 0,
@@ -167,10 +179,21 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 fontWeight: 700,
                 lineHeight: '150%',
                 letterSpacing: '-0.475px',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                // Prevent any movement when focused
+                position: 'relative',
+                top: '0',
+                left: '0',
+                transform: 'none',
+                transition: 'none',
               }),
               placeholder: (base: any) => ({
                 ...base,
                 margin: 0,
+                padding: 0,
                 color: '#1E1E1E',
                 textAlign: 'center',
                 fontFamily: '"DM Sans"',
@@ -179,6 +202,16 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 fontWeight: 700,
                 lineHeight: '150%',
                 letterSpacing: '-0.475px',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                // Prevent any movement
+                position: 'relative',
+                top: '0',
+                left: '0',
+                transform: 'none',
+                transition: 'none',
               }),
               menu: (base: any) => ({
                 ...base,
@@ -194,11 +227,15 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
               }),
               option: (base: any, state: any) => ({
                 ...base,
-                padding: '12px',
+                padding: '12px 12px 8px 12px',
                 backgroundColor: state.isFocused ? '#f3f4f6' : 'white',
                 color: 'black',
                 cursor: 'pointer',
                 textAlign: 'center',
+                display: 'flex',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+                height: '40px',
                 '&:active': {
                   backgroundColor: '#e5e7eb',
                 },
@@ -217,6 +254,19 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 height: 60,
                 width: 45,
                 cursor: isUpdating ? "not-allowed" : "pointer",
+              }),
+              input: (base: any) => ({
+                ...base,
+                margin: 0,
+                padding: 0,
+                color: 'transparent',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                opacity: 0,
+                pointerEvents: 'none',
               }),
             }}
           />

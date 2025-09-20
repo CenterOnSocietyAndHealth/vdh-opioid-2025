@@ -285,4 +285,17 @@ export type LocalityPayorBreakdownProps = {
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
   };
   localities: Locality[];
+};
+
+// Type for the locality demographics component props
+export type LocalityDemographicsProps = {
+  block: {
+    sectionId?: string;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+    textAlignment?: 'left' | 'center' | 'right';
+    backgroundColor?: string;
+    customBackgroundColor?: string;
+    maxWidth?: number;
+  };
 }; 

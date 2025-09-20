@@ -18,6 +18,7 @@ import {onThisPage} from './objects/onThisPage'
 import {sources} from './objects/sources'
 import {sectorCosts} from './objects/sectorCosts'
 import {localityPayorBreakdown} from './objects/localityPayorBreakdown'
+import {localityDemographics} from './objects/localityDemographics'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -45,4 +46,5 @@ export const schemaTypes = [
   sources,
   sectorCosts,
   localityPayorBreakdown,
+  localityDemographics,
 ]

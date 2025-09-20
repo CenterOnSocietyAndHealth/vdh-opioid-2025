@@ -120,6 +120,7 @@ export const contentWrapper = defineType({
         { type: 'sectorSelector' },
         { type: 'columnLayout' },
         { type: 'sectorCosts' },
+        { type: 'localityDemographics' },
       ],
       validation: (Rule) => Rule.required().min(1),
     }),

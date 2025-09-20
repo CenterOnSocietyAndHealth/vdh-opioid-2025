@@ -139,7 +139,9 @@ const importData = async () => {
                             if (cleanedValue === '-' || cleanedValue === '' || cleanedValue === 'N/A') {
                                 return 0;
                             }
-                            const parsedValue = parseInt(cleanedValue);
+                            // Remove commas and parse as integer
+                            const numericValue = cleanedValue.replace(/,/g, '');
+                            const parsedValue = parseInt(numericValue);
                             return isNaN(parsedValue) ? 0 : parsedValue;
                         })(),
                         oudCases2023: (() => {
@@ -150,7 +152,9 @@ const importData = async () => {
                             if (cleanedValue === '-' || cleanedValue === '' || cleanedValue === 'N/A') {
                                 return 0;
                             }
-                            const parsedValue = parseInt(cleanedValue);
+                            // Remove commas and parse as integer
+                            const numericValue = cleanedValue.replace(/,/g, '');
+                            const parsedValue = parseInt(numericValue);
                             return isNaN(parsedValue) ? 0 : parsedValue;
                         })()
                     },

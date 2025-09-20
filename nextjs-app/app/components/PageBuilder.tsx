@@ -10,36 +10,11 @@ import { dataAttr } from "@/sanity/lib/utils";
 import { studioUrl } from "@/sanity/lib/api";
 import { LocalityProvider } from "@/app/contexts/LocalityContext";
 import { SectorProvider } from "@/app/contexts/SectorContext";
+import { Locality } from "@/app/types/locality";
 
 type PageBuilderPageProps = {
   page: GetPageQueryResult;
-  localities?: Array<{
-    _id: string;
-    counties: string;
-    fips: string;
-    countyFips?: string | null;
-    sectorBreakdown?: {
-      householdSectorTotal?: number | null;
-      fedGovtSectorTotal?: number | null;
-      stateLocalSectorTotal?: number | null;
-    } | null;
-    opioidMetrics: {
-      totalPerCapita: number;
-      totalTotal: number;
-      laborPerCapita: number;
-      laborTotal: number;
-      healthcarePerCapita: number;
-      healthcareTotal: number;
-      crimeOtherPerCapita: number;
-      crimeOtherTotal: number;
-      householdPerCapita: number;
-      householdTotal: number;
-      totalTotalPercentile: number;
-      totalTotalComparison: string;
-      totalPerCapitaPercentile: number;
-      totalPerCapitaComparison: string;
-    };
-  }>;
+  localities?: Locality[];
 };
 
 type PageBuilderSection = {

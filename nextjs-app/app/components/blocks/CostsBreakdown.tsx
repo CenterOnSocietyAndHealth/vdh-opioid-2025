@@ -18,25 +18,25 @@ const marginBottomMap = {
 };
 
 // Helper to format cost values as $3.41B, $891M, etc.
-function formatCostAbbr(value: number): string {
+function formatCostAbbr(value: number, precision: number = 3): string {
   if (value >= 1_000_000_000) {
-    return `$${(value / 1_000_000_000).toPrecision(3)} Billion`;
+    return `$${(value / 1_000_000_000).toPrecision(precision)} Billion`;
   } else if (value >= 1_000_000) {
-    return `$${(value / 1_000_000).toPrecision(3)} Million`;
+    return `$${(value / 1_000_000).toPrecision(precision)} Million`;
   } else if (value >= 1_000) {
-    return `$${(value / 1_000).toPrecision(3)} Thousand`;
+    return `$${(value / 1_000).toPrecision(precision)} Thousand`;
   }
   return `$${value}`;
 }
 
 // Helper to format cost values as $3.41B, $891M, etc. (short form)
-function formatCostShort(value: number): string {
+function formatCostShort(value: number, precision: number = 3): string {
   if (value >= 1_000_000_000) {
-    return `$${(value / 1_000_000_000).toPrecision(3)}B`;
+    return `$${(value / 1_000_000_000).toPrecision(precision)}B`;
   } else if (value >= 1_000_000) {
-    return `$${(value / 1_000_000).toPrecision(3)}M`;
+    return `$${(value / 1_000_000).toPrecision(precision)}M`;
   } else if (value >= 1_000) {
-    return `$${(value / 1_000).toPrecision(3)}K`;
+    return `$${(value / 1_000).toPrecision(precision)}K`;
   }
   return `$${value}`;
 }
@@ -108,7 +108,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
           <span class="text-[24px]" style="white-space: nowrap; font-weight: 700;">
             ${(() => {
               const num = typeof totalCost === 'string' ? Number(totalCost.replace(/[^\d.]/g, '')) : totalCost;
-              return !isNaN(num) && num > 0 ? formatCostAbbr(num) : totalCost;
+              return !isNaN(num) && num > 0 ? formatCostAbbr(num, 2) : totalCost;
             })()}
           </span>
           <span style="flex: 1; height: 20px; border-top: 1px solid #000; border-right: 1px solid #000; margin-left: 36px; margin-top: 20px;"></span>

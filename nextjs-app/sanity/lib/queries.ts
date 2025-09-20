@@ -50,6 +50,7 @@ export const localitiesQuery = defineQuery(`
       fedGovtSectorTotal,
       stateLocalSectorTotal
     },
+    demographics,
     opioidMetrics {
       totalPerCapita,
       totalTotal,
@@ -65,6 +66,10 @@ export const localitiesQuery = defineQuery(`
       totalTotalComparison,
       totalPerCapitaPercentile,
       totalPerCapitaComparison
+    },
+    opioidCases {
+      oudDeaths2023,
+      oudCases2023
     }
   }
 `);
@@ -107,6 +112,10 @@ export const getPageQuery = defineQuery(`
           totalTotalComparison,
           totalPerCapitaPercentile,
           totalPerCapitaComparison
+        },
+        opioidCases {
+          oudDeaths2023,
+          oudCases2023
         }
       },
       null

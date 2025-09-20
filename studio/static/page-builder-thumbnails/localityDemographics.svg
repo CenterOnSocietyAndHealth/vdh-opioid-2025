@@ -1,0 +1,41 @@
+<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="120" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+  
+  <!-- Title -->
+  <text x="100" y="20" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#333">
+    Locality Demographics
+  </text>
+  
+  <!-- Stats Row -->
+  <g transform="translate(10, 35)">
+    <!-- Population -->
+    <g transform="translate(0, 0)">
+      <text x="0" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#414141">1.2M</text>
+      <text x="50" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="400" fill="#414141">Population</text>
+    </g>
+    
+    <!-- Opioid Fatalities -->
+    <g transform="translate(120, 0)">
+      <text x="0" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#414141">45</text>
+      <text x="30" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="400" fill="#414141">Opioid Fatalities</text>
+    </g>
+    
+    <!-- Persons with UOU -->
+    <g transform="translate(220, 0)">
+      <text x="0" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#414141">1,234</text>
+      <text x="50" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="400" fill="#414141">Persons with UOU</text>
+    </g>
+    
+    <!-- UOU Cases per 100k -->
+    <g transform="translate(350, 0)">
+      <text x="0" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#414141">103</text>
+      <text x="30" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="400" fill="#414141">UOU Cases per 100k</text>
+    </g>
+  </g>
+  
+  <!-- Description -->
+  <text x="100" y="100" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#666">
+    Population, opioid fatalities, UOU cases, and rates
+  </text>
+</svg>

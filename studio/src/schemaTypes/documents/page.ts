@@ -56,6 +56,7 @@ export const page = defineType({
         { type: 'sources' },
         { type: 'sectorCosts' },
         { type: 'localityPayorBreakdown' },
+        { type: 'localityDemographics' },
       ],
       options: {
         insertMenu: {
