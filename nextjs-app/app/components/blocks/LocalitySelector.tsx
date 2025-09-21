@@ -140,7 +140,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 borderBottom: '1px solid black',
                 borderRadius: 0,
                 flex: 1,
-                height: 60,
+                height: 45,
                 width: 400,
                 backgroundColor: '#FAF9F8',
                 cursor: isUpdating ? "not-allowed" : "pointer",
@@ -251,7 +251,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
               }),
               indicatorsContainer: (base: any) => ({
                 ...base,
-                height: 60,
+                height: 45,
                 width: 45,
                 cursor: isUpdating ? "not-allowed" : "pointer",
               }),

@@ -46,7 +46,7 @@ export default function SectorSelector({
               key={sector}
               onClick={() => setSelectedSector(sector)}
               className={`
-                px-6 py-3 rounded-lg font-inter text-sm font-bold transition-all duration-200
+                px-3 py-2 rounded-[3px] font-inter text-sm font-bold transition-all duration-200
                 ${isSelected 
                   ? 'bg-[#4783B5] text-white' 
                   : 'bg-[#F2F1F1] text-[#414141] font-normal'

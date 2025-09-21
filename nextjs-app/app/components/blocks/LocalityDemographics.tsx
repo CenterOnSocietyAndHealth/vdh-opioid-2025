@@ -102,7 +102,7 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
       >
         <div className="flex flex-wrap justify-center items-center gap-4 md:gap-4 lg:gap-4">
           {/* Population */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <div 
               style={{
                 color: '#414141',
@@ -132,7 +132,7 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
           </div>
 
           {/* Opioid Fatalities */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <div 
               style={{
                 color: '#414141',
@@ -162,7 +162,7 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
           </div>
 
           {/* Persons with UOU */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <div 
               style={{
                 color: '#414141',
@@ -192,7 +192,7 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
           </div>
 
           {/* UOU Cases per 100k */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <div 
               style={{
                 color: '#414141',
