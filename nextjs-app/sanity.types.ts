@@ -13,6 +13,24 @@
  */
 
 // Source: schema.json
+export type LocalityDemographics = {
+  _type: 'localityDemographics';
+  sectionId?: string;
+  textAlignment?: 'left' | 'center' | 'right';
+  backgroundColor?:
+    | 'transparent'
+    | '#f0f0f0'
+    | '#ffffff'
+    | '#e6f3ff'
+    | '#f0f8f0'
+    | '#fffbf0'
+    | 'custom';
+  customBackgroundColor?: string;
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  maxWidth?: number;
+};
+
 export type LocalityPayorBreakdown = {
   _type: 'localityPayorBreakdown';
   title: string;
@@ -104,6 +122,7 @@ export type SectorCosts = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -198,6 +217,7 @@ export type SectorCosts = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -292,6 +312,7 @@ export type SectorCosts = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -386,6 +407,7 @@ export type SectorCosts = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -480,6 +502,7 @@ export type SectorCosts = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -593,6 +616,7 @@ export type Sources = {
               | 'percentage'
               | 'comma';
             decimalPlaces?: number;
+            bold?: boolean;
             _type: 'localityField';
             _key: string;
           }
@@ -667,6 +691,9 @@ export type ContentWrapper = {
     | ({
         _key: string;
       } & SectorCosts)
+    | ({
+        _key: string;
+      } & LocalityDemographics)
   >;
 };
 
@@ -755,6 +782,7 @@ export type Accordion = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -894,6 +922,7 @@ export type CostsBreakdown = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -1014,6 +1043,7 @@ export type CostsMaps = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -1108,6 +1138,7 @@ export type CostsMaps = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -1202,6 +1233,7 @@ export type CostsMaps = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -1296,6 +1328,7 @@ export type CostsMaps = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -1390,6 +1423,7 @@ export type CostsMaps = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -1580,6 +1614,7 @@ export type TextContent = {
             | 'percentage'
             | 'comma';
           decimalPlaces?: number;
+          bold?: boolean;
           _type: 'localityField';
           _key: string;
         }
@@ -1703,6 +1738,7 @@ export type BlockContent = Array<{
           | 'percentage'
           | 'comma';
         decimalPlaces?: number;
+        bold?: boolean;
         _type: 'localityField';
         _key: string;
       }
@@ -1844,6 +1880,9 @@ export type Page = {
     | ({
         _key: string;
       } & LocalityPayorBreakdown)
+    | ({
+        _key: string;
+      } & LocalityDemographics)
   >;
 };
 
@@ -2182,6 +2221,7 @@ export type SanityAssetSourceData = {
 };
 
 export type AllSanitySchemaTypes =
+  | LocalityDemographics
   | LocalityPayorBreakdown
   | SectorCosts
   | Sources
@@ -2335,7 +2375,7 @@ export type LocalitiesQueryResult = Array<{
   } | null;
 }>;
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "rawSelectedLocality": selectedLocality,    "selectedLocality": select(      defined(selectedLocality) => selectedLocality->{        _id,        counties,        fips,        countyFips,        sectorBreakdown {          householdSectorTotal,          fedGovtSectorTotal,          stateLocalSectorTotal        },        demographics,        regions,        classification,        opioidMetrics {          totalPerCapita,          totalTotal,          laborPerCapita,          laborTotal,          healthcarePerCapita,          healthcareTotal,          crimeOtherPerCapita,          crimeOtherTotal,          householdPerCapita,          householdTotal,          totalTotalPercentile,          totalTotalComparison,          totalPerCapitaPercentile,          totalPerCapitaComparison        },        opioidCases {          oudDeaths2023,          oudCases2023        }      },      null    ),    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }      },      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        }      },      _type == "largeButton" => {        ...,        page->{          _id,          "slug": slug.current        }      },    },  }
+// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "rawSelectedLocality": selectedLocality,    "selectedLocality": select(      defined(selectedLocality) => selectedLocality->{        _id,        counties,        fips,        countyFips,        sectorBreakdown {          householdSectorTotal,          fedGovtSectorTotal,          stateLocalSectorTotal        },        demographics,        regions,        classification,        opioidMetrics {          totalPerCapita,          totalTotal,          laborPerCapita,          laborTotal,          healthcarePerCapita,          healthcareTotal,          crimeOtherPerCapita,          crimeOtherTotal,          householdPerCapita,          householdTotal,          totalTotalPercentile,          totalTotalComparison,          totalPerCapitaPercentile,          totalPerCapitaComparison        },        opioidCases {          oudDeaths2023,          oudCases2023        }      },      null    ),    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }      },      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        }      },      _type == "textContent" => {        ...,        content[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        }      },      _type == "accordion" => {        ...,        content[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        }      },      _type == "sources" => {        ...,        citations[]{          ...,          text[]{            ...,            markDefs[]{              ...,                  _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }            }          }        }      },      _type == "sectorCosts" => {        ...,        healthcareCosts[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        },        laborCosts[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        },        crimeOtherCosts[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        },        householdCosts[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        },        summary[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        }      },      _type == "costsBreakdown" => {        ...,        content[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        }      },      _type == "costsMaps" => {        ...,        healthcareCosts[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        },        laborCosts[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        },        crimeOtherCosts[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        },        householdCosts[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        },        summary[]{          ...,          markDefs[]{            ...,                _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  },    _type == "definition" => {    term,    definition  }          }        }      },      _type == "largeButton" => {        ...,        page->{          _id,          "slug": slug.current        }      },    },  }
 export type GetPageQueryResult = {
   _id: string;
   _type: 'page';
@@ -2412,7 +2452,7 @@ export type GetPageQueryResult = {
           }>;
           style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal' | 'quote';
           listItem?: 'bullet' | 'number';
-          markDefs?: Array<
+          markDefs: Array<
             | {
                 citationId: string;
                 _type: 'citation';
@@ -2427,15 +2467,11 @@ export type GetPageQueryResult = {
             | {
                 linkType?: 'href' | 'page';
                 href?: string;
-                page?: {
-                  _ref: string;
-                  _type: 'reference';
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: 'page';
-                };
+                page: string | null;
                 blank?: boolean;
                 _type: 'link';
                 _key: string;
+                post: null;
               }
             | {
                 fieldPath:
@@ -2489,10 +2525,11 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
-          >;
+          > | null;
           level?: number;
           _type: 'block';
           _key: string;
@@ -2574,6 +2611,9 @@ export type GetPageQueryResult = {
           | ({
               _key: string;
             } & CostsMaps)
+          | ({
+              _key: string;
+            } & LocalityDemographics)
           | ({
               _key: string;
             } & LocalitySelector)
@@ -2681,6 +2721,7 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
@@ -2701,6 +2742,7 @@ export type GetPageQueryResult = {
         }>;
         marginTop?: 'large' | 'medium' | 'none' | 'small';
         marginBottom?: 'large' | 'medium' | 'none' | 'small';
+        content: null;
       }
     | {
         _key: string;
@@ -2801,6 +2843,7 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
@@ -2895,6 +2938,7 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
@@ -2989,6 +3033,7 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
@@ -3083,6 +3128,7 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
@@ -3177,6 +3223,7 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
@@ -3185,6 +3232,11 @@ export type GetPageQueryResult = {
           _type: 'block';
           _key: string;
         }>;
+        healthcareCosts: null;
+        laborCosts: null;
+        crimeOtherCosts: null;
+        householdCosts: null;
+        summary: null;
       }
     | {
         _key: string;
@@ -3235,6 +3287,24 @@ export type GetPageQueryResult = {
         openInNewTab?: boolean;
         marginTop?: 'large' | 'medium' | 'none' | 'small';
         marginBottom?: 'large' | 'medium' | 'none' | 'small';
+      }
+    | {
+        _key: string;
+        _type: 'localityDemographics';
+        sectionId?: string;
+        textAlignment?: 'center' | 'left' | 'right';
+        backgroundColor?:
+          | '#e6f3ff'
+          | '#f0f0f0'
+          | '#f0f8f0'
+          | '#fffbf0'
+          | '#ffffff'
+          | 'custom'
+          | 'transparent';
+        customBackgroundColor?: string;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+        maxWidth?: number;
       }
     | {
         _key: string;
@@ -3370,6 +3440,7 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
@@ -3464,6 +3535,7 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
@@ -3558,6 +3630,7 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
@@ -3652,6 +3725,7 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
@@ -3746,6 +3820,7 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
@@ -3768,6 +3843,11 @@ export type GetPageQueryResult = {
         marginTop?: 'large' | 'medium' | 'none' | 'small';
         marginBottom?: 'large' | 'medium' | 'none' | 'small';
         maxWidth?: number;
+        healthcareCosts: null;
+        laborCosts: null;
+        crimeOtherCosts: null;
+        householdCosts: null;
+        summary: null;
       }
     | {
         _key: string;
@@ -3795,7 +3875,7 @@ export type GetPageQueryResult = {
               | 'normal'
               | 'quote';
             listItem?: 'bullet' | 'number';
-            markDefs?: Array<
+            markDefs: Array<
               | {
                   citationId: string;
                   _type: 'citation';
@@ -3810,15 +3890,11 @@ export type GetPageQueryResult = {
               | {
                   linkType?: 'href' | 'page';
                   href?: string;
-                  page?: {
-                    _ref: string;
-                    _type: 'reference';
-                    _weak?: boolean;
-                    [internalGroqTypeReferenceTo]?: 'page';
-                  };
+                  page: string | null;
                   blank?: boolean;
                   _type: 'link';
                   _key: string;
+                  post: null;
                 }
               | {
                   fieldPath:
@@ -3872,10 +3948,11 @@ export type GetPageQueryResult = {
                     | 'default'
                     | 'percentage';
                   decimalPlaces?: number;
+                  bold?: boolean;
                   _type: 'localityField';
                   _key: string;
                 }
-            >;
+            > | null;
             level?: number;
             _type: 'block';
             _key: string;
@@ -3899,7 +3976,7 @@ export type GetPageQueryResult = {
           }>;
           style?: 'h1' | 'h2' | 'h3' | 'h4' | 'largeValue' | 'normal' | 'quote';
           listItem?: 'bullet' | 'number';
-          markDefs?: Array<
+          markDefs: Array<
             | {
                 citationId: string;
                 _type: 'citation';
@@ -3914,15 +3991,11 @@ export type GetPageQueryResult = {
             | {
                 linkType?: 'href' | 'page';
                 href?: string;
-                page?: {
-                  _ref: string;
-                  _type: 'reference';
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: 'page';
-                };
+                page: string | null;
                 blank?: boolean;
                 _type: 'link';
                 _key: string;
+                post: null;
               }
             | {
                 fieldPath:
@@ -3976,10 +4049,11 @@ export type GetPageQueryResult = {
                   | 'default'
                   | 'percentage';
                 decimalPlaces?: number;
+                bold?: boolean;
                 _type: 'localityField';
                 _key: string;
               }
-          >;
+          > | null;
           level?: number;
           _type: 'block';
           _key: string;
@@ -4032,7 +4106,7 @@ declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult;
     '\n  *[_type == "locality"] | order(counties asc) {\n    _id,\n    counties,\n    fips,\n    countyFips,\n    sectorBreakdown {\n      householdSectorTotal,\n      fedGovtSectorTotal,\n      stateLocalSectorTotal\n    },\n    demographics,\n    opioidMetrics {\n      totalPerCapita,\n      totalTotal,\n      laborPerCapita,\n      laborTotal,\n      healthcarePerCapita,\n      healthcareTotal,\n      crimeOtherPerCapita,\n      crimeOtherTotal,\n      householdPerCapita,\n      householdTotal,\n      totalTotalPercentile,\n      totalTotalComparison,\n      totalPerCapitaPercentile,\n      totalPerCapitaComparison\n    },\n    opioidCases {\n      oudDeaths2023,\n      oudCases2023\n    }\n  }\n': LocalitiesQueryResult;
-    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "rawSelectedLocality": selectedLocality,\n    "selectedLocality": select(\n      defined(selectedLocality) => selectedLocality->{\n        _id,\n        counties,\n        fips,\n        countyFips,\n        sectorBreakdown {\n          householdSectorTotal,\n          fedGovtSectorTotal,\n          stateLocalSectorTotal\n        },\n        demographics,\n        regions,\n        classification,\n        opioidMetrics {\n          totalPerCapita,\n          totalTotal,\n          laborPerCapita,\n          laborTotal,\n          healthcarePerCapita,\n          healthcareTotal,\n          crimeOtherPerCapita,\n          crimeOtherTotal,\n          householdPerCapita,\n          householdTotal,\n          totalTotalPercentile,\n          totalTotalComparison,\n          totalPerCapitaPercentile,\n          totalPerCapitaComparison\n        },\n        opioidCases {\n          oudDeaths2023,\n          oudCases2023\n        }\n      },\n      null\n    ),\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        }\n      },\n      _type == "largeButton" => {\n        ...,\n        page->{\n          _id,\n          "slug": slug.current\n        }\n      },\n    },\n  }\n': GetPageQueryResult;
+    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "rawSelectedLocality": selectedLocality,\n    "selectedLocality": select(\n      defined(selectedLocality) => selectedLocality->{\n        _id,\n        counties,\n        fips,\n        countyFips,\n        sectorBreakdown {\n          householdSectorTotal,\n          fedGovtSectorTotal,\n          stateLocalSectorTotal\n        },\n        demographics,\n        regions,\n        classification,\n        opioidMetrics {\n          totalPerCapita,\n          totalTotal,\n          laborPerCapita,\n          laborTotal,\n          healthcarePerCapita,\n          healthcareTotal,\n          crimeOtherPerCapita,\n          crimeOtherTotal,\n          householdPerCapita,\n          householdTotal,\n          totalTotalPercentile,\n          totalTotalComparison,\n          totalPerCapitaPercentile,\n          totalPerCapitaComparison\n        },\n        opioidCases {\n          oudDeaths2023,\n          oudCases2023\n        }\n      },\n      null\n    ),\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        }\n      },\n      _type == "textContent" => {\n        ...,\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        }\n      },\n      _type == "accordion" => {\n        ...,\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        }\n      },\n      _type == "sources" => {\n        ...,\n        citations[]{\n          ...,\n          text[]{\n            ...,\n            markDefs[]{\n              ...,\n              \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n            }\n          }\n        }\n      },\n      _type == "sectorCosts" => {\n        ...,\n        healthcareCosts[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        },\n        laborCosts[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        },\n        crimeOtherCosts[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        },\n        householdCosts[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        },\n        summary[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        }\n      },\n      _type == "costsBreakdown" => {\n        ...,\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        }\n      },\n      _type == "costsMaps" => {\n        ...,\n        healthcareCosts[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        },\n        laborCosts[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        },\n        crimeOtherCosts[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        },\n        householdCosts[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        },\n        summary[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n,\n  \n  _type == "definition" => {\n    term,\n    definition\n  }\n\n\n          }\n        }\n      },\n      _type == "largeButton" => {\n        ...,\n        page->{\n          _id,\n          "slug": slug.current\n        }\n      },\n    },\n  }\n': GetPageQueryResult;
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult;
     '\n  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': AllPostsQueryResult;
     '\n  *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': MorePostsQueryResult;

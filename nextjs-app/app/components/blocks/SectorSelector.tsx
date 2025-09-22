@@ -6,8 +6,8 @@ import { useSector } from '@/app/contexts/SectorContext';
 const sectors = [
   'All Sectors',
   'Lost Labor',
-  'Healthcare',
-  'Child Services & K12',
+  'Health Care',
+  'Child Services & K-12',
   'Criminal Justice'
 ] as const;
 

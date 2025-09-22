@@ -354,7 +354,7 @@ export default function Accordion({ block }: AccordionProps) {
                     }
 
                     return (
-                      <span className={`${isUpdating ? 'animate-pulse' : ''}`}>
+                      <span className={`${isUpdating ? 'animate-pulse' : ''} ${value.bold ? 'font-bold' : ''}`}>
                         {isUpdating ? '...' : displayValue}
                       </span>
                     )

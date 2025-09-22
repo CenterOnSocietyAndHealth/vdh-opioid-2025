@@ -108,9 +108,9 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
     switch (selectedSector) {
       case 'Lost Labor':
         return lostLaborContent || []
-      case 'Healthcare':
+      case 'Health Care':
         return healthcareContent || []
-      case 'Child Services & K12':
+      case 'Child Services & K-12':
         return childServicesContent || []
       case 'Criminal Justice':
         return criminalJusticeContent || []
@@ -355,7 +355,7 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                 }
 
                 return (
-                  <span className={`${isUpdating ? 'animate-pulse' : ''}`}>
+                  <span className={`${isUpdating ? 'animate-pulse' : ''} ${value.bold ? 'font-bold' : ''}`}>
                     {isUpdating ? '...' : displayValue}
                   </span>
                 )

@@ -340,7 +340,7 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                 }
 
                 return (
-                  <span className={`${isUpdating ? 'animate-pulse' : ''}`}>
+                  <span className={`${isUpdating ? 'animate-pulse' : ''} ${value.bold ? 'font-bold' : ''}`}>
                     {isUpdating ? '...' : displayValue}
                   </span>
                 )

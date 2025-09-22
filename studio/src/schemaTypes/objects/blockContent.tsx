@@ -249,6 +249,13 @@ export const blockContent = defineType({
                 description: 'Number of decimal places to show (0-4)',
                 validation: (Rule) => Rule.min(0).max(4).integer(),
               }),
+              defineField({
+                name: 'bold',
+                title: 'Bold Text',
+                type: 'boolean',
+                initialValue: false,
+                description: 'Make the locality field value bold',
+              }),
             ],
           },
           {

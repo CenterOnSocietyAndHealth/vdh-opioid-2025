@@ -210,7 +210,7 @@ export default function Sources({ block }: SourcesProps) {
                           components={{
                             block: {
                               normal: ({ children }) => (
-                                <p className="mb-2 last:mb-0">{children}</p>
+                                <p className="mb-2 last:mb-0 break-words">{children}</p>
                               ),
                             },
                             marks: {

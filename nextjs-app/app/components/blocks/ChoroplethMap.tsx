@@ -31,9 +31,6 @@ export default function ChoroplethMap({
 }: ChoroplethMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
-  const [tooltipContent, setTooltipContent] = useState('');
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  const [tooltipVisible, setTooltipVisible] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 800);
   const mapGroupRef = useRef<SVGGElement | null>(null);
   const [transform, setTransform] = useState<d3.ZoomTransform>(d3.zoomIdentity);
@@ -53,7 +50,7 @@ export default function ChoroplethMap({
   const indicatorDisplayNames = useMemo<Record<CostsMapIndicator, string>>(() => ({
     'Total': 'Total',
     'Labor': 'Lost Labor',
-    'HealthCare': 'Healthcare',
+    'HealthCare': 'Health Care',
     'Crime_Other': 'Criminal Justice',
     'Household': 'Child Services & K-12',
   }), []);
@@ -501,74 +498,6 @@ export default function ChoroplethMap({
               console.log('No locality found or no onLocalityClick handler');
             }
           })
-          .on("mouseover", (event: any, d: any) => {
-            // Handle mouseover event
-            // Get FIPS code using various property names
-            let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
-                          d.properties.id || d.id;
-            
-            // Add prefix if needed
-            if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
-              fipsCode = `51${fipsCode}`;
-            }
-            
-            // Get locality name
-            const countyName = d.properties.NAME || d.properties.name;
-            
-            // Try to find matching locality
-            const locality = localities.find(loc => {
-              // Clean up locality FIPS code for comparison
-              let locFips = loc.fips;
-              
-              if (locFips) {
-                // Remove 'us-va-' prefix if present
-                locFips = locFips.replace('us-va-', '');
-                // Remove any remaining non-numeric characters
-                locFips = locFips.toString().replace(/\D/g, '');
-                // Ensure it's 5 digits
-                locFips = locFips.padStart(3, '0');
-                // Add state prefix if not present
-                if (locFips.length === 3) {
-                  locFips = `51${locFips}`;
-                }
-              }
-              
-              const fipsMatch = fipsCode && locFips === fipsCode;
-              const nameMatch = countyName && loc.counties === countyName;
-              
-              return fipsMatch || nameMatch;
-            });
-            
-            if (locality) {
-              const perCapitaValue = getValueFromPath(
-                locality, 
-                getFieldPath(locality, indicator, 'PerCapita')
-              );
-              
-              const totalValue = getValueFromPath(
-                locality, 
-                getFieldPath(locality, indicator, 'Total')
-              );
-              
-              setTooltipContent(`
-                <div style="font-family: Inter; font-size: 12px; line-height: 180%; letter-spacing: -0.228px;">
-                  <div style="color: #1E1E1E; font-weight: 700;">${locality.counties}</div>
-                  <div style="color: #1E1E1E; font-weight: 400;"><span style="font-weight: 700;">$${formatNumber(perCapitaValue, '', ' per capita')}</span></div>
-                  <div style="color: #1E1E1E; font-weight: 400;"><span style="font-weight: 700;">$${formatNumber(totalValue, '', ' total')}</span></div>
-                </div>
-              `);
-              
-              setTooltipPosition({ 
-                x: event.pageX, 
-                y: event.pageY
-              });
-              
-              setTooltipVisible(true);
-            }
-          })
-          .on("mouseout", () => {
-            setTooltipVisible(false);
-          });
           
         // No panning or zoom interactions enabled
         
@@ -780,19 +709,6 @@ export default function ChoroplethMap({
         </div>
       )}
       
-      {tooltipVisible && (
-        <div 
-          className="absolute p-2 bg-white border border-gray-300 shadow-md z-50 rounded-sm text-sm"
-          style={{
-            left: `${tooltipPosition.x}px`,
-            top: `${tooltipPosition.y}px`,
-            transform: 'translate(-50%, -100%)',
-            maxWidth: '200px',
-            pointerEvents: 'none'
-          }}
-          dangerouslySetInnerHTML={{ __html: tooltipContent }}
-        />
-      )}
     </div>
   );
 } 

@@ -32,13 +32,30 @@ export function linkResolver(link: Link | undefined) {
   if (!link.linkType && link.href) {
     link.linkType = "href";
   }
+  
+  // If linkType is not set but page is, lets set linkType to "page"
+  if (!link.linkType && link.page) {
+    link.linkType = "page";
+  }
 
   switch (link.linkType) {
     case "href":
       return link.href || null;
     case "page":
-      if (link?.page && typeof link.page === "string") {
-        return `/${link.page}`;
+      if (link?.page) {
+        // Handle both string slugs and reference objects
+        let pageSlug = '';
+        if (typeof link.page === "string") {
+          pageSlug = link.page;
+        } else if ((link.page as any)?.slug?.current) {
+          pageSlug = (link.page as any).slug.current;
+        } else if ((link.page as any)?.current) {
+          pageSlug = (link.page as any).current;
+        }
+        
+        if (pageSlug) {
+          return `/${pageSlug}`;
+        }
       }
       return null;
     default:

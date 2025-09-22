@@ -134,6 +134,125 @@ export const getPageQuery = defineQuery(`
           }
         }
       },
+      _type == "textContent" => {
+        ...,
+        content[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        }
+      },
+      _type == "accordion" => {
+        ...,
+        content[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        }
+      },
+      _type == "sources" => {
+        ...,
+        citations[]{
+          ...,
+          text[]{
+            ...,
+            markDefs[]{
+              ...,
+              ${markDefsReference}
+            }
+          }
+        }
+      },
+      _type == "sectorCosts" => {
+        ...,
+        healthcareCosts[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        laborCosts[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        crimeOtherCosts[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        householdCosts[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        summary[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        }
+      },
+      _type == "costsBreakdown" => {
+        ...,
+        content[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        }
+      },
+      _type == "costsMaps" => {
+        ...,
+        healthcareCosts[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        laborCosts[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        crimeOtherCosts[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        householdCosts[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        summary[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        }
+      },
       _type == "largeButton" => {
         ...,
         page->{

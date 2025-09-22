@@ -87,6 +87,223 @@ export async function fetchPage(slug: string) {
               }
             }
           },
+          _type == "textContent" => {
+            ...,
+            content[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            }
+          },
+          _type == "accordion" => {
+            ...,
+            content[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            }
+          },
+          _type == "sources" => {
+            ...,
+            citations[]{
+              ...,
+              text[]{
+                ...,
+                markDefs[]{
+                  ...,
+                  _type == "link" => {
+                    "page": page->slug.current,
+                    "post": post->slug.current
+                  },
+                  _type == "definition" => {
+                    term,
+                    definition
+                  }
+                }
+              }
+            }
+          },
+          _type == "sectorCosts" => {
+            ...,
+            healthcareCosts[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            },
+            laborCosts[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            },
+            crimeOtherCosts[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            },
+            householdCosts[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            },
+            summary[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            }
+          },
+          _type == "costsBreakdown" => {
+            ...,
+            content[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            }
+          },
+          _type == "costsMaps" => {
+            ...,
+            healthcareCosts[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            },
+            laborCosts[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            },
+            crimeOtherCosts[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            },
+            householdCosts[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            },
+            summary[]{
+              ...,
+              markDefs[]{
+                ...,
+                _type == "link" => {
+                  "page": page->slug.current,
+                  "post": post->slug.current
+                },
+                _type == "definition" => {
+                  term,
+                  definition
+                }
+              }
+            }
+          },
           _type == "largeButton" => {
             ...,
             page->{

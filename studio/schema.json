@@ -1,5 +1,150 @@
 [
   {
+    "name": "localityDemographics",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "localityDemographics"
+          }
+        },
+        "sectionId": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "textAlignment": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "left"
+              },
+              {
+                "type": "string",
+                "value": "center"
+              },
+              {
+                "type": "string",
+                "value": "right"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "backgroundColor": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "transparent"
+              },
+              {
+                "type": "string",
+                "value": "#f0f0f0"
+              },
+              {
+                "type": "string",
+                "value": "#ffffff"
+              },
+              {
+                "type": "string",
+                "value": "#e6f3ff"
+              },
+              {
+                "type": "string",
+                "value": "#f0f8f0"
+              },
+              {
+                "type": "string",
+                "value": "#fffbf0"
+              },
+              {
+                "type": "string",
+                "value": "custom"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "customBackgroundColor": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "marginTop": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "medium"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "marginBottom": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "medium"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "maxWidth": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
     "name": "localityPayorBreakdown",
     "type": "type",
     "value": {
@@ -571,6 +716,13 @@
                               },
                               "optional": true
                             },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
+                              },
+                              "optional": true
+                            },
                             "_type": {
                               "type": "objectAttribute",
                               "value": {
@@ -1132,6 +1284,13 @@
                               "type": "objectAttribute",
                               "value": {
                                 "type": "number"
+                              },
+                              "optional": true
+                            },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
                               },
                               "optional": true
                             },
@@ -1699,6 +1858,13 @@
                               },
                               "optional": true
                             },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
+                              },
+                              "optional": true
+                            },
                             "_type": {
                               "type": "objectAttribute",
                               "value": {
@@ -2263,6 +2429,13 @@
                               },
                               "optional": true
                             },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
+                              },
+                              "optional": true
+                            },
                             "_type": {
                               "type": "objectAttribute",
                               "value": {
@@ -2824,6 +2997,13 @@
                               "type": "objectAttribute",
                               "value": {
                                 "type": "number"
+                              },
+                              "optional": true
+                            },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
                               },
                               "optional": true
                             },
@@ -3543,6 +3723,13 @@
                                       },
                                       "optional": true
                                     },
+                                    "bold": {
+                                      "type": "objectAttribute",
+                                      "value": {
+                                        "type": "boolean"
+                                      },
+                                      "optional": true
+                                    },
                                     "_type": {
                                       "type": "objectAttribute",
                                       "value": {
@@ -4128,6 +4315,21 @@
                     "type": "inline",
                     "name": "sectorCosts"
                   }
+                },
+                {
+                  "type": "object",
+                  "attributes": {
+                    "_key": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "rest": {
+                    "type": "inline",
+                    "name": "localityDemographics"
+                  }
                 }
               ]
             }
@@ -4658,6 +4860,13 @@
                               "type": "objectAttribute",
                               "value": {
                                 "type": "number"
+                              },
+                              "optional": true
+                            },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
                               },
                               "optional": true
                             },
@@ -5628,6 +5837,13 @@
                               },
                               "optional": true
                             },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
+                              },
+                              "optional": true
+                            },
                             "_type": {
                               "type": "objectAttribute",
                               "value": {
@@ -6433,6 +6649,13 @@
                               },
                               "optional": true
                             },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
+                              },
+                              "optional": true
+                            },
                             "_type": {
                               "type": "objectAttribute",
                               "value": {
@@ -6994,6 +7217,13 @@
                               "type": "objectAttribute",
                               "value": {
                                 "type": "number"
+                              },
+                              "optional": true
+                            },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
                               },
                               "optional": true
                             },
@@ -7561,6 +7791,13 @@
                               },
                               "optional": true
                             },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
+                              },
+                              "optional": true
+                            },
                             "_type": {
                               "type": "objectAttribute",
                               "value": {
@@ -8125,6 +8362,13 @@
                               },
                               "optional": true
                             },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
+                              },
+                              "optional": true
+                            },
                             "_type": {
                               "type": "objectAttribute",
                               "value": {
@@ -8686,6 +8930,13 @@
                               "type": "objectAttribute",
                               "value": {
                                 "type": "number"
+                              },
+                              "optional": true
+                            },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
                               },
                               "optional": true
                             },
@@ -9961,6 +10212,13 @@
                               },
                               "optional": true
                             },
+                            "bold": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
+                              },
+                              "optional": true
+                            },
                             "_type": {
                               "type": "objectAttribute",
                               "value": {
@@ -10732,6 +10990,13 @@
                         "type": "objectAttribute",
                         "value": {
                           "type": "number"
+                        },
+                        "optional": true
+                      },
+                      "bold": {
+                        "type": "objectAttribute",
+                        "value": {
+                          "type": "boolean"
                         },
                         "optional": true
                       },
@@ -11565,6 +11830,21 @@
                 "rest": {
                   "type": "inline",
                   "name": "localityPayorBreakdown"
+                }
+              },
+              {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rest": {
+                  "type": "inline",
+                  "name": "localityDemographics"
                 }
               }
             ]
