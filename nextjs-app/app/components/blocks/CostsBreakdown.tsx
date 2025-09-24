@@ -102,15 +102,15 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       .style('padding', '0')
       .style('margin-bottom', '20px')
       .html(`
-        <div class="text-[24px] font-normal mb-4">${totalCostSubtitle || 'Annual Cost'}</div>
+        <h2 class="text-[24px] font-normal mb-4">${totalCostSubtitle || 'Annual Cost'}</h2>
         <div style="display: flex; align-items: center; width: 100%;">
           <span style="flex: 1; height: 20px; border-top: 1px solid #000; border-left: 1px solid #000; margin-right: 36px; margin-top: 20px;"></span>
-          <span class="text-[24px]" style="white-space: nowrap; font-weight: 700;">
+          <h3 class="text-[24px]" style="white-space: nowrap; font-weight: 700;">
             ${(() => {
               const num = typeof totalCost === 'string' ? Number(totalCost.replace(/[^\d.]/g, '')) : totalCost;
               return !isNaN(num) && num > 0 ? formatCostAbbr(num, 2) : totalCost;
             })()}
-          </span>
+          </h3>
           <span style="flex: 1; height: 20px; border-top: 1px solid #000; border-right: 1px solid #000; margin-left: 36px; margin-top: 20px;"></span>
         </div>
       `);
@@ -171,7 +171,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       // Add value with scaled font size only if not showLabelAsTooltip
       if (!sector.showLabelAsTooltip) {
         block.append('div')
-          .attr('class', 'font-bold mb-2')
+          .attr('class', 'font-bold mb-0')
           .style('font-size', '18px')
           .style('white-space', 'nowrap')
           .style('overflow', 'hidden')
@@ -271,13 +271,37 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
               return (
                 <div key={i} className="mb-0">
                   {/* Title */}
-                  <h3 className="text-lg font-bold mb-2 mt-0">{sector.title} - {formatCostShort(sector.value)}</h3>
+                  <h3 
+                    className="mb-2 mt-0 text-left"
+                    style={{
+                      color: '#1E1E1E',
+                      fontFamily: 'Inter',
+                      fontSize: '16px',
+                      fontStyle: 'normal',
+                      fontWeight: 700,
+                      lineHeight: '130%',
+                      letterSpacing: '-0.16px'
+                    }}
+                  >
+                    {sector.title} - {formatCostShort(sector.value)}
+                  </h3>
                   {/* Mini-graph bar */}
                   <div className="mb-2 w-full h-2 flex overflow-hidden" style={{minWidth: 80}}>
                     {miniBarSegments}
                   </div>
                   {/* Description as plain text */}
-                  <div className="font-[400] text-[16px] mt-3">{sector.description}</div>
+                  <div 
+                    className="mt-3"
+                    style={{
+                      fontFamily: 'Inter',
+                      fontWeight: 300,
+                      color: '#1E1E1E',
+                      fontSize: '16px',
+                      lineHeight: '130%'
+                    }}
+                  >
+                    {sector.description}
+                  </div>
                 </div>
               );
             })}
@@ -291,11 +315,6 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         )}
       </div>
       
-      {source && (
-        <div className="mt-4 text-sm text-gray-500">
-          Sources: {source}
-        </div>
-      )}
     </div>
   );
 } 
