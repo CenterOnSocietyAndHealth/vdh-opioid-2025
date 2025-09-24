@@ -2,7 +2,7 @@ import "./globals.css";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { Inter, Lato, Merriweather } from "next/font/google";
+import { Inter, Lato, Merriweather, DM_Sans } from "next/font/google";
 import { draftMode } from "next/headers";
 import { VisualEditing, toPlainText } from "next-sanity";
 import { Toaster } from "sonner";
@@ -73,6 +73,14 @@ const merriweather = Merriweather({
   display: "swap",
 });
 
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
 export default async function RootLayout({
   children,
 }: {
@@ -81,7 +89,7 @@ export default async function RootLayout({
   const { isEnabled: isDraftMode } = await draftMode();
 
   return (
-    <html lang="en" className={`${inter.variable} ${lato.variable} ${merriweather.variable} bg-white text-black`}>
+    <html lang="en" className={`${inter.variable} ${lato.variable} ${merriweather.variable} ${dmSans.variable} bg-white text-black`}>
       <body suppressHydrationWarning>
         <section className="min-h-screen mx-auto">
           {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
