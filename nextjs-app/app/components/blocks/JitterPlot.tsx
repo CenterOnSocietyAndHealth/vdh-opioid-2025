@@ -211,7 +211,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
 
         {/* Subtitle */}
         <p
-          className="mb-8 text-center"
+          className="mb-4 text-center"
           style={{
             color: '#1E1E1E',
             fontFamily: 'Inter',
@@ -326,9 +326,9 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
 
           {/* Legend */}
           <div className="mt-6 flex justify-end">
-            <div className="flex items-center gap-4 text-sm">
+              <div className="flex items-center gap-4 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-blue-400 opacity-70"></div>
+                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'rgba(29, 50, 101, 0.60)' }}></div>
                 <span className="text-gray-600">Virginia Localities</span>
               </div>
             </div>
