@@ -85,26 +85,7 @@ export default function ContentWrapper({ block, selectedLocality, localities, pa
   // Validate padding
   const validPadding = cleanPadding && paddingMap[cleanPadding as keyof typeof paddingMap] ? cleanPadding : 'medium'
 
-  console.log('ContentWrapper block:', { 
-    marginTop, 
-    marginBottom, 
-    backgroundColor, 
-    customBackgroundColor,
-    backgroundWidth, 
-    contentWidth, 
-    customContentWidth,
-    padding 
-  })
-  console.log('ContentWrapper sector context:', { selectedSector })
-  console.log('Cleaned values:', { 
-    cleanMarginTop, 
-    cleanMarginBottom, 
-    cleanBackgroundColor,
-    cleanBackgroundWidth,
-    cleanContentWidth,
-    cleanPadding
-  })
-  
+
   return (
     <div className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
       {/* Background container */}

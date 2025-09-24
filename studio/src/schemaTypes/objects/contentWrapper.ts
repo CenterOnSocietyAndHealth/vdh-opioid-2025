@@ -121,6 +121,7 @@ export const contentWrapper = defineType({
         { type: 'columnLayout' },
         { type: 'sectorCosts' },
         { type: 'localityDemographics' },
+        { type: 'jitterPlot' },
       ],
       validation: (Rule) => Rule.required().min(1),
     }),

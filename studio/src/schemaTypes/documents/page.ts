@@ -57,6 +57,7 @@ export const page = defineType({
         { type: 'sectorCosts' },
         { type: 'localityPayorBreakdown' },
         { type: 'localityDemographics' },
+        { type: 'jitterPlot' },
       ],
       options: {
         insertMenu: {

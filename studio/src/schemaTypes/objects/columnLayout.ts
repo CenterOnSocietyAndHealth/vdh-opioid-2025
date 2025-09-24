@@ -60,6 +60,7 @@ export const columnLayout = defineType({
             }
           }
         },
+        { type: 'jitterPlot' },
       ],
     }),
     defineField({
@@ -102,6 +103,7 @@ export const columnLayout = defineType({
             }
           }
         },
+        { type: 'jitterPlot' },
       ],
     }),
     defineField({
@@ -145,6 +147,7 @@ export const columnLayout = defineType({
             }
           }
         },
+        { type: 'jitterPlot' },
       ],
       hidden: ({parent}) => parent?.columns !== 3,
     }),

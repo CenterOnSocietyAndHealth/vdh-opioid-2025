@@ -92,17 +92,11 @@ export default function ChoroplethMap({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Debug: Monitor changes to selectedLocality prop
-  useEffect(() => {
-    console.log('ChoroplethMap: selectedLocality prop changed to:', selectedLocality);
-  }, [selectedLocality]);
-
   // Drawing the map
   useEffect(() => {
     // Skip if SVG ref isn't available or localities aren't loaded
     if (!svgRef.current || localities.length === 0) return;
 
-    console.log('ChoroplethMap: Drawing map with selectedLocality:', selectedLocality);
 
     const drawMap = async () => {
       try {
@@ -110,7 +104,6 @@ export default function ChoroplethMap({
         setIsInitialized(true);
 
         // Load Virginia counties GeoJSON
-        console.log('Attempting to load TopoJSON from: /virginia-counties.json');
         const response = await fetch('/virginia-counties.json');
         if (!response.ok) {
           console.error(`Failed to load map data: ${response.status} ${response.statusText}`);
@@ -131,8 +124,7 @@ export default function ChoroplethMap({
           throw parseError;
         }
         
-        // Debug the data structure
-        console.log('Topology data loaded:', topoData);
+
         
         // Check if it's TopoJSON (has type: "Topology")
         let geoData;

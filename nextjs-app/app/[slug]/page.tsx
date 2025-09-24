@@ -58,14 +58,6 @@ export default async function Page(props: Props) {
     );
   }
 
-  console.log('Page data:', {
-    rawSelectedLocality: page.rawSelectedLocality,
-    selectedLocality: page.selectedLocality,
-    pageId: page._id,
-    localities,
-    localitiesCount: localities?.length
-  });
-
   return (
     <div className="px-1 mx-auto">
       <PageBuilderPage page={page as GetPageQueryResult} localities={localities} />
