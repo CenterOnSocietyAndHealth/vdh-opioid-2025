@@ -283,10 +283,10 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
                     left: `${Math.max(...plotData.values.map(v => v.value), plotData.average) > 0 ? (plotData.average / Math.max(...plotData.values.map(v => v.value), plotData.average)) * 100 : 0}%` 
                   }}
                 >
-                  <div className="absolute -top-12 -left-1 text-xs text-gray-600 font-medium whitespace-nowrap text-center">
+                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 text-xs text-gray-600 font-medium whitespace-nowrap text-center">
                     Virginia Average/Person
                   </div>
-                  <div className="absolute -top-8 -left-2 text-xs text-gray-600 font-bold text-center">
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-xs text-gray-600 font-bold text-center">
                     ${Math.round(plotData.average).toLocaleString()}
                   </div>
                 </div>
@@ -303,13 +303,13 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
                       left: `${Math.max(...plotData.values.map(v => v.value), plotData.average) > 0 ? (plotData.selectedValue / Math.max(...plotData.values.map(v => v.value), plotData.average)) * 100 : 0}%` 
                     }}
                   >
-                    <div className="absolute top-12 -left-1 text-xs text-red-600 font-medium whitespace-nowrap text-center">
+                    <div className="absolute top-12 left-1/2 -translate-x-1/2 text-xs text-red-600 font-medium whitespace-nowrap text-center">
                       {selectedLocality.counties}
                     </div>
-                    <div className="absolute top-14 -left-2 text-xs text-red-600 font-bold text-center">
+                    <div className="absolute top-14 left-1/2 -translate-x-1/2 text-xs text-red-600 font-bold text-center">
                       ${Math.round(plotData.selectedValue).toLocaleString()}/person
                     </div>
-                    <div className="absolute top-16 -left-2 text-xs text-red-600 text-center">
+                    <div className="absolute top-16 left-1/2 -translate-x-1/2 text-xs text-red-600 text-center">
                       (${Math.round(plotData.selectedValue * (selectedLocality.demographics?.totalPopulation || 0)).toLocaleString()} total cost)
                     </div>
                   </div>
