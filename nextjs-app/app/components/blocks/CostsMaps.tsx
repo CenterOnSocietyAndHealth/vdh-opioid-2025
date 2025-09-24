@@ -48,7 +48,8 @@ const marginBottomMap: Record<string, string> = {
 
 // Color schemes for different indicators
 const colorSchemes = [
-  { name: "Total", colors: ["#EDD2F1", "#C874D9", "#A732B6", "#4C1854"] },
+  {
+    name: "Total", colors: ["#EBD2E6", "#B378B4", "#97459A", "#4C1C54"] },
   { name: "Labor", colors: ["#D0E4F6", "#94C5E2", "#4783B5", "#1A4F72"] },
   { name: "HealthCare", colors: ["#F3F0C5", "#ECE089", "#C4B664", "#5B531E"] },
   { name: "Crime_Other", colors: ["#D4ECE7", "#7DC5B8", "#439788", "#1E4D46"] },
