@@ -63,7 +63,7 @@ const colors = {
 };
 
 export default function JitterPlot({ block, localities, pageId }: JitterPlotProps) {
-  const { selectedLocality } = useLocality();
+  const { selectedLocality, setSelectedLocality } = useLocality();
   const { selectedSector } = useSector();
   const [mounted, setMounted] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number | null>(null);
@@ -262,6 +262,10 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
         d3.select(this)
           .attr('r', 8)
           .style('opacity', 0.8);
+      })
+      .on('click', function(event, d) {
+        // Set the clicked locality as selected
+        setSelectedLocality(d.locality);
       });
 
     // Add selected dots last (so they appear in front)
@@ -289,6 +293,10 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
           d3.select(this)
             .attr('r', 8)
             .style('opacity', 1);
+        })
+        .on('click', function(event, d) {
+          // Set the clicked locality as selected
+          setSelectedLocality(d.locality);
         });
     }
 
@@ -333,6 +341,18 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       const selectedLine = chartGroup.append('g')
         .attr('class', 'selected-line');
 
+      // Determine text alignment based on position
+      // Use start alignment for values in the first 20% of the chart
+      // Use end alignment for values in the last 20% of the chart
+      // Use middle alignment for values in the middle 60%
+      const chartPosition = selectedX / chartWidth;
+      const textAnchor = chartPosition < 0.2 ? 'start' : chartPosition > 0.8 ? 'end' : 'middle';
+      
+      // Adjust x position for start/end alignment to prevent overflow
+      const textX = textAnchor === 'start' ? Math.max(0, selectedX - 50) : 
+                   textAnchor === 'end' ? Math.min(chartWidth, selectedX + 50) : 
+                   selectedX;
+
       selectedLine.append('line')
         .attr('x1', selectedX)
         .attr('x2', selectedX)
@@ -342,36 +362,36 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
         .attr('stroke-width', 1);
 
       selectedLine.append('text')
-        .attr('x', selectedX)
+        .attr('x', textX)
         .attr('y', (chartHeight/2 + 85))
-        .attr('text-anchor', 'middle')
+        .attr('text-anchor', textAnchor)
         .attr('font-size', '16px')
         .attr('fill', '#1E1E1E')
         .attr('font-weight', '500')
         .text(selectedLocality.counties.trim());
 
       selectedLine.append('text')
-        .attr('x', selectedX)
+        .attr('x', textX)
         .attr('y', (chartHeight/2 + 105))
-        .attr('text-anchor', 'middle')
+        .attr('text-anchor', textAnchor)
         .attr('font-size', '16px')
         .attr('fill', '#1E1E1E')
         .attr('font-weight', '500')
         .text(`${sectorDisplayNames[selectedSector]} Costs`);
 
       selectedLine.append('text')
-        .attr('x', selectedX)
+        .attr('x', textX)
         .attr('y', (chartHeight/2 + 125))
-        .attr('text-anchor', 'middle')
+        .attr('text-anchor', textAnchor)
         .attr('font-size', '16px')
         .attr('fill', '#1E1E1E')
         .attr('font-weight', '700')
         .text(`$${Math.round(plotData.selectedValue).toLocaleString()}/person`);
 
       selectedLine.append('text')
-        .attr('x', selectedX)
+        .attr('x', textX)
         .attr('y', (chartHeight/2 + 145))
-        .attr('text-anchor', 'middle')
+        .attr('text-anchor', textAnchor)
         .attr('font-size', '16px')
         .attr('fill', '#1E1E1E')
         .text(`($${Math.round(plotData.selectedValue * (selectedLocality.demographics?.totalPopulation || 0)).toLocaleString()} total cost)`);
@@ -431,7 +451,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       .attr('fill', '#1e1e1e')
       .text('Virginia Localities');
 
-  }, [mounted, plotData, selectedLocality, windowWidth]);
+  }, [mounted, plotData, selectedLocality, windowWidth, setSelectedLocality]);
 
   // Don't render until mounted on the client
   if (!mounted) {
