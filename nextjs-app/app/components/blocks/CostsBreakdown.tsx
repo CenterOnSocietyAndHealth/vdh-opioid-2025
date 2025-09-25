@@ -171,7 +171,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       // Add value with scaled font size only if not showLabelAsTooltip
       if (!sector.showLabelAsTooltip) {
         block.append('div')
-          .attr('class', 'font-bold mb-0')
+          .attr('class', 'font-[600] mb-0')
           .style('font-size', '18px')
           .style('white-space', 'nowrap')
           .style('overflow', 'hidden')

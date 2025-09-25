@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import * as d3 from 'd3';
 import { useLocality } from '@/app/contexts/LocalityContext';
 import { useSector } from '@/app/contexts/SectorContext';
 import { Locality } from '@/app/types/locality';
@@ -52,11 +53,13 @@ const sectorDisplayNames: Record<string, string> = {
 const colors = {
   background: '#f8f9fa',
   grid: '#e9ecef',
-  dots: 'rgba(71, 131, 181, 0.3)', // Semi-transparent blue
+  dots: 'rgba(29, 50, 101, 0.60)', // Semi-transparent blue
   selectedDot: '#dc2626', // Red for selected locality
-  averageLine: '#6b7280', // Gray for average line
-  text: '#374151',
+  averageLine: '#000000', // Black for average line
+    text: '#747474',
   subtitle: '#6b7280',
+  gradientLeft: '#dfecc4', // Light blue for gradient start
+  gradientRight: '#315674', // Darker blue for gradient end
 };
 
 export default function JitterPlot({ block, localities, pageId }: JitterPlotProps) {
@@ -64,6 +67,8 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
   const { selectedSector } = useSector();
   const [mounted, setMounted] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const chartRef = useRef<HTMLDivElement>(null);
 
   // Set mounted state once component is mounted on client
   useEffect(() => {
@@ -117,21 +122,18 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     return { values, average, selectedValue };
   }, [localities, selectedSector, selectedLocality, mounted]);
 
-  // Deterministic jitter utility so dots don't jump on re-render
-  function hashStringToInt(input: string): number {
+  // Create deterministic jitter based on locality ID with better distribution
+  function getDeterministicJitter(localityId: string): number {
+    // Create a more robust hash function for better distribution
     let hash = 0;
-    for (let i = 0; i < input.length; i++) {
-      hash = (hash << 5) - hash + input.charCodeAt(i);
-      hash |= 0; // Convert to 32bit integer
+    for (let i = 0; i < localityId.length; i++) {
+      const char = localityId.charCodeAt(i);
+      hash = ((hash << 5) - hash + char) & 0xffffffff;
     }
-    return Math.abs(hash);
-  }
-
-  // Map hash to range [-amplitude, amplitude] in pixels
-  function getVerticalJitter(localityId: string, amplitudePx: number): number {
-    const seed = hashStringToInt(localityId);
-    const normalized = (seed % 1000) / 999; // 0..1
-    return (normalized * 2 - 1) * amplitudePx; // -amp .. +amp
+    
+    // Use a larger modulus and multiple by a prime for better distribution
+    const normalized = ((Math.abs(hash) * 2654435761) % 1000000) / 1000000; // 0 to 1
+    return (normalized - 0.5); // -0.5 to 0.5 for uniform distribution
   }
 
   // Calculate statistics for titles
@@ -158,6 +160,246 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     }
   }, [selectedSector, selectedLocality, plotData]);
 
+  // D3 chart rendering
+  useEffect(() => {
+    if (!mounted || !chartRef.current || !svgRef.current || plotData.values.length === 0) return;
+
+    const container = chartRef.current;
+    const svg = d3.select(svgRef.current);
+    
+    // Clear previous chart
+    svg.selectAll('*').remove();
+
+    // Chart dimensions
+    const containerWidth = container.clientWidth;
+    const containerHeight = 362; // Fixed height for chart area
+    const margin = { top: 20, right: 20, bottom: 60, left: 20 };
+    const chartWidth = containerWidth - margin.left - margin.right;
+    const chartHeight = containerHeight - margin.top - margin.bottom;
+
+    // Set SVG dimensions
+    svg
+      .attr('width', containerWidth)
+      .attr('height', containerHeight)
+      .style('background', '#ffffff');
+
+    // Create main chart group
+    const chartGroup = svg
+      .append('g')
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    // Calculate data range
+    const maxValue = Math.max(...plotData.values.map(v => v.value), plotData.average);
+    
+    // Create scales
+    const xScale = d3.scaleLinear()
+      .domain([0, maxValue])
+      .range([0, chartWidth]);
+
+    const yScale = d3.scaleLinear()
+      .domain([-0.7, 0.7])
+      .range([chartHeight * 0.5, chartHeight * 0.1]);
+
+    // Add gradient bar background
+    const gradientDef = svg.append('defs')
+      .append('linearGradient')
+      .attr('id', 'costGradient')
+      .attr('x1', '0%')
+      .attr('x2', '100%')
+      .attr('y1', '0%')
+      .attr('y2', '0%');
+
+    gradientDef.append('stop')
+      .attr('offset', '0%')
+      .attr('stop-color', colors.gradientLeft);
+
+    gradientDef.append('stop')
+      .attr('offset', '100%')
+      .attr('stop-color', colors.gradientRight);
+
+    // Add gradient bar
+    chartGroup.append('rect')
+      .attr('x', 0)
+      .attr('y', chartHeight / 2)
+      .attr('width', chartWidth)
+      .attr('height', 17)
+      .attr('stroke', 'rgb(49, 86, 116)')
+      .attr('stroke-width', 1)
+      .attr('fill', 'url(#costGradient)');
+
+    // Create jitter data with deterministic positioning
+    const jitterData = plotData.values.map(item => ({
+      ...item,
+      jitter: getDeterministicJitter(item.locality._id)
+    }));
+
+    // Add dots with jitter
+    const dots = chartGroup.selectAll('.dot')
+      .data(jitterData)
+      .enter()
+      .append('circle')
+      .attr('class', 'dot')
+      .attr('cx', d => xScale(d.value))
+      .attr('cy', d => yScale(d.jitter))
+      .attr('r', 8)
+      .attr('fill', d => d.isSelected ? colors.selectedDot : colors.dots)
+      .attr('stroke', d => d.isSelected ? '#ffffff' : 'none')
+      .attr('stroke-width', d => d.isSelected ? 2 : 0)
+      .style('cursor', 'pointer')
+      .on('mouseover', function(event, d) {
+        // Highlight on hover
+        d3.select(this)
+          .attr('r', 8)
+          .style('opacity', 1);
+      })
+      .on('mouseout', function(event, d) {
+        // Reset on mouse out
+        d3.select(this)
+          .attr('r', 8)
+          .style('opacity', d.isSelected ? 1 : 0.8);
+      });
+
+    // Add average line
+    const averageX = xScale(plotData.average);
+    const averageLine = chartGroup.append('g')
+      .attr('class', 'average-line');
+
+    averageLine.append('line')
+      .attr('x1', averageX)
+      .attr('x2', averageX)
+      .attr('y1', chartHeight * 0.11)
+      .attr('y2', chartHeight * 0.5)
+      .attr('stroke', colors.averageLine)
+      .attr('stroke-width', 1)
+      .attr('stroke-dasharray', '2,2');
+
+    // Add average label
+    averageLine.append('text')
+      .attr('x', averageX)
+      .attr('y', 10)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '12px')
+      .attr('fill', colors.text)
+      .attr('font-weight', '500')
+      .text('Virginia Average/Person');
+
+    averageLine.append('text')
+      .attr('x', averageX)
+      .attr('y', 25)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '12px')
+      .attr('fill', colors.text)
+      .attr('font-weight', '700')
+      .text(`$${Math.round(plotData.average).toLocaleString()}`);
+
+    // Add selected locality line if applicable
+    if (selectedLocality && selectedLocality.counties !== 'Virginia' && plotData.selectedValue > 0) {
+      const selectedX = xScale(plotData.selectedValue);
+      const selectedJitter = getDeterministicJitter(selectedLocality._id);
+      const selectedY = yScale(selectedJitter);
+      const selectedLine = chartGroup.append('g')
+        .attr('class', 'selected-line');
+
+      selectedLine.append('line')
+        .attr('x1', selectedX)
+        .attr('x2', selectedX)
+        .attr('y1', selectedY)
+        .attr('y2', (chartHeight/2) + 65)
+        .attr('stroke', colors.selectedDot)
+        .attr('stroke-width', 1);
+
+      selectedLine.append('text')
+        .attr('x', selectedX)
+        .attr('y', (chartHeight/2 + 85))
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '16px')
+        .attr('fill', '#1E1E1E')
+        .attr('font-weight', '500')
+        .text(selectedLocality.counties);
+
+      selectedLine.append('text')
+        .attr('x', selectedX)
+        .attr('y', (chartHeight/2 + 105))
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '16px')
+        .attr('fill', '#1E1E1E')
+        .attr('font-weight', '500')
+        .text(`${sectorDisplayNames[selectedSector]} Costs`);
+
+      selectedLine.append('text')
+        .attr('x', selectedX)
+        .attr('y', (chartHeight/2 + 125))
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '16px')
+        .attr('fill', '#1E1E1E')
+        .attr('font-weight', '700')
+        .text(`$${Math.round(plotData.selectedValue).toLocaleString()}/person`);
+
+      selectedLine.append('text')
+        .attr('x', selectedX)
+        .attr('y', (chartHeight/2 + 145))
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '16px')
+        .attr('fill', '#1E1E1E')
+        .text(`($${Math.round(plotData.selectedValue * (selectedLocality.demographics?.totalPopulation || 0)).toLocaleString()} total cost)`);
+    }
+
+    // Add x-axis labels
+    const xAxisGroup = chartGroup.append('g')
+      .attr('class', 'x-axis')
+      .attr('transform', `translate(0, ${(chartHeight/2 + 40)})`);
+
+    xAxisGroup.append('text')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('font-size', '14px')
+      .attr('fill', '#000000')
+      .text('$0');
+
+    xAxisGroup.append('text')
+      .attr('x', 0)
+      .attr('y', 15)
+      .attr('text-anchor', 'start')
+      .attr('font-size', '14px')
+      .attr('fill', '#000000')
+      .text('cost per person');
+
+    xAxisGroup.append('text')
+      .attr('x', chartWidth)
+      .attr('y', 0)
+      .attr('text-anchor', 'end')
+      .attr('font-size', '14px')
+      .attr('fill', '#000000')
+      .text(`$${Math.round(maxValue).toLocaleString()}`);
+
+    xAxisGroup.append('text')
+      .attr('x', chartWidth)
+      .attr('y', 15)
+      .attr('text-anchor', 'end')
+      .attr('font-size', '14px')
+      .attr('fill', '#000000')
+      .text('cost per person');
+
+    // Add legend
+    const legendGroup = chartGroup.append('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(${chartWidth - 125}, ${(chartHeight + 40)})`);
+
+    legendGroup.append('circle')
+      .attr('cx', 0)
+      .attr('cy', 0)
+      .attr('r', 8)
+      .attr('fill', colors.dots);
+
+    legendGroup.append('text')
+      .attr('x', 15)
+      .attr('y', 5)
+      .attr('font-size', '14px')
+      .attr('fill', '#1e1e1e')
+      .text('Virginia Localities');
+
+  }, [mounted, plotData, selectedLocality, windowWidth]);
+
   // Don't render until mounted on the client
   if (!mounted) {
     return (
@@ -175,7 +417,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
       <div className="relative mx-auto max-w-[800px] p-4">
         {/* Title */}
-        <h2
+        <h3
           className="mb-2 mx-auto text-center"
           style={{
             color: '#1E1E1E',
@@ -207,10 +449,10 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
               </>
             );
           })()}
-        </h2>
+        </h3>
 
         {/* Subtitle */}
-        <p
+        <h4
           className="mb-4 text-center"
           style={{
             color: '#1E1E1E',
@@ -223,116 +465,15 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
           }}
         >
           {subtitle}
-        </p>
+        </h4>
 
         {/* Chart Container */}
         <div 
-          className="bg-white border border-gray-200 p-6"
+          ref={chartRef}
+          className="bg-white border border-gray-200 p-0 py-6"
           style={{ minHeight: '400px' }}
         >
-          {/* Chart Area */}
-          <div className="relative w-full h-80">
-            {/* Gradient bar below dots - represents data range */}
-            <div className="absolute bottom-0 left-0 right-0 h-2">
-              <div 
-                className="w-full h-full"
-                style={{
-                  background: 'linear-gradient(to right, #e0f2fe 0%, #0ea5e9 100%)'
-                }}
-              ></div>
-            </div>
-            
-            {/* Dots with vertical jitter to avoid overlap */}
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full relative">
-                {plotData.values.map((item, index) => {
-                  // Calculate position based on value (0 to max value maps to 0 to 100%)
-                  const maxValue = Math.max(...plotData.values.map(v => v.value), plotData.average);
-                  const position = maxValue > 0 ? (item.value / maxValue) * 100 : 0;
-                  // Jitter amplitude smaller on narrow screens - doubled
-                  const amplitude = (windowWidth || 1200) < 640 ? 16 : 28; // px
-                  const jitter = getVerticalJitter(item.locality._id, amplitude);
-                  
-                  return (
-                    <div
-                      key={`${item.locality._id}-${index}`}
-                      className="absolute transform -translate-x-1/2 -translate-y-1/2"
-                      style={{ left: `${position}%`, top: `calc(50% + ${jitter}px)` }}
-                    >
-                      <div
-                        className={`w-4 h-4 rounded-full ${
-                          item.isSelected ? 'bg-red-600' : ''
-                        } hover:opacity-100 transition-opacity cursor-pointer`}
-                        style={{
-                          backgroundColor: item.isSelected ? undefined : 'rgba(29, 50, 101, 0.60)'
-                        }}
-                        title={`${item.locality.counties}: $${Math.round(item.value).toLocaleString()}`}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Virginia Average Line - dotted vertical black line */}
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full relative">
-                <div
-                  className="absolute top-1/2 transform -translate-y-1/2 h-32 w-0.5 border-l-2 border-dotted border-black"
-                  style={{ 
-                    left: `${Math.max(...plotData.values.map(v => v.value), plotData.average) > 0 ? (plotData.average / Math.max(...plotData.values.map(v => v.value), plotData.average)) * 100 : 0}%` 
-                  }}
-                >
-                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 text-xs text-gray-600 font-medium whitespace-nowrap text-center">
-                    Virginia Average/Person
-                  </div>
-                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-xs text-gray-600 font-bold text-center">
-                    ${Math.round(plotData.average).toLocaleString()}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Selected Locality Line (if applicable) - positioned below dots - only show for non-Virginia localities */}
-            {selectedLocality && selectedLocality.counties !== 'Virginia Total' && plotData.selectedValue > 0 && (
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full relative">
-                  <div
-                    className="absolute top-1/2 transform -translate-y-1/2 h-8 w-0.5 bg-red-600"
-                    style={{ 
-                      left: `${Math.max(...plotData.values.map(v => v.value), plotData.average) > 0 ? (plotData.selectedValue / Math.max(...plotData.values.map(v => v.value), plotData.average)) * 100 : 0}%` 
-                    }}
-                  >
-                    <div className="absolute top-12 left-1/2 -translate-x-1/2 text-xs text-red-600 font-medium whitespace-nowrap text-center">
-                      {selectedLocality.counties}
-                    </div>
-                    <div className="absolute top-14 left-1/2 -translate-x-1/2 text-xs text-red-600 font-bold text-center">
-                      ${Math.round(plotData.selectedValue).toLocaleString()}/person
-                    </div>
-                    <div className="absolute top-16 left-1/2 -translate-x-1/2 text-xs text-red-600 text-center">
-                      (${Math.round(plotData.selectedValue * (selectedLocality.demographics?.totalPopulation || 0)).toLocaleString()} total cost)
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* X-axis Labels - positioned above gradient bar */}
-          <div className="mt-2 flex justify-between text-sm text-gray-600">
-            <span>$0 cost per person</span>
-            <span>${Math.round(Math.max(...plotData.values.map(v => v.value), plotData.average)).toLocaleString()} cost per person</span>
-          </div>
-
-          {/* Legend */}
-          <div className="mt-6 flex justify-end">
-              <div className="flex items-center gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'rgba(29, 50, 101, 0.60)' }}></div>
-                <span className="text-gray-600">Virginia Localities</span>
-              </div>
-            </div>
-          </div>
+          <svg ref={svgRef}></svg>
         </div>
 
         

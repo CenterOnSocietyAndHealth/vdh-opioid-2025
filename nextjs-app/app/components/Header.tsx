@@ -32,7 +32,7 @@ export default async function Header() {
       className="w-full p-4 flex items-center justify-between bg-[#F3F2EC]"
     >
       <div className="container max-w-[1311px] px-1 mx-auto flex items-center justify-between">
-        <div className="logo h-[70px]">
+        <div className="logo h-[50px]">
           {logoUrl ? (
             <Link href="/">
               <Image 
@@ -40,7 +40,7 @@ export default async function Header() {
                 alt={settings.logo.alt || "Virginia Opioid Cost Data Tool"}
                 width={590}
                 height={204}
-                style={{ maxHeight: '70px', width: 'auto', height: '100%' }}
+                style={{ maxHeight: '50px', width: 'auto', height: '100%' }}
               />
             </Link>
           ) : (
