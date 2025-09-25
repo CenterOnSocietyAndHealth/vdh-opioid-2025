@@ -1,4 +1,4 @@
-import { PortableText } from '@portabletext/react'
+import { PortableText } from 'next-sanity'
 import { useState, useEffect } from 'react'
 import { AccordionProps } from '@/app/types/locality'
 import imageUrlBuilder from '@sanity/image-url'

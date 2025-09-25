@@ -6,7 +6,7 @@ import { useLocality } from '@/app/contexts/LocalityContext';
 import { useSector } from '@/app/contexts/SectorContext';
 import dynamic from 'next/dynamic';
 import { Locality } from '@/app/types/locality';
-import { PortableText } from '@portabletext/react';
+import { PortableText } from 'next-sanity';
 import topojson from 'topojson-client';
 
 // Define the ChoroplethMap props type to match what we'll pass to the dynamic component

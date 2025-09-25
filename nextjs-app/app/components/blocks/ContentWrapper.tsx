@@ -109,6 +109,7 @@ export default function ContentWrapper({ block, selectedLocality, localities, pa
               pageId={pageId}
               pageType={pageType}
               localities={localities}
+              selectedLocality={selectedLocality}
               path={`pageBuilder[_key=="${block._key}"]content[_key=="${contentBlock._key}"]`}
             />
           ))}

@@ -15,6 +15,11 @@ export default function ResolvedLink({
 }: ResolvedLinkProps) {
   // resolveLink() is used to determine the type of link and return the appropriate URL.
   const resolvedLink = linkResolver(link);
+  
+  // Debug logging for internal page links
+  if (link?.linkType === 'page') {
+    console.log('ResolvedLink - Page link:', { link, resolvedLink });
+  }
 
   if (typeof resolvedLink === "string") {
     return (

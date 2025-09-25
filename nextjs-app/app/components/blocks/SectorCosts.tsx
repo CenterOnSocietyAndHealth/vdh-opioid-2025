@@ -1,6 +1,6 @@
 "use client"
 
-import { PortableText } from '@portabletext/react'
+import { PortableText } from 'next-sanity'
 import imageUrlBuilder from '@sanity/image-url'
 import { client } from '@/sanity/lib/client'
 import { useEffect, useState } from 'react'

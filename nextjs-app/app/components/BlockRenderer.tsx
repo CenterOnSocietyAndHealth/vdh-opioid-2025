@@ -29,6 +29,7 @@ type BlockProps = {
   pageId: string;
   pageType: string;
   localities?: Array<any>;
+  selectedLocality?: any;
   path?: string;
 };
 
@@ -61,9 +62,11 @@ export default function BlockRenderer({
   pageId,
   pageType,
   localities,
+  selectedLocality: propSelectedLocality,
   path,
 }: BlockProps) {
-  const { selectedLocality } = useLocality();
+  const { selectedLocality: contextSelectedLocality } = useLocality();
+  const selectedLocality = propSelectedLocality || contextSelectedLocality;
   const blockPath = path || `pageBuilder[_key=="${block._key}"]`;
 
   // Block does exist

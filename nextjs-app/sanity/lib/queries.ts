@@ -15,7 +15,11 @@ const postFields = /* groq */ `
 
 const linkReference = /* groq */ `
   _type == "link" => {
-    "page": page->slug.current,
+    "page": page->{
+      _ref,
+      _type,
+      "slug": slug.current
+    },
     "post": post->slug.current
   }
 `;

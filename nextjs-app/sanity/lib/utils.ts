@@ -47,6 +47,9 @@ export function linkResolver(link: Link | undefined) {
         let pageSlug = '';
         if (typeof link.page === "string") {
           pageSlug = link.page;
+        } else if ((link.page as any)?.slug) {
+          // Handle the resolved structure where slug is directly available from the query
+          pageSlug = (link.page as any).slug;
         } else if ((link.page as any)?.slug?.current) {
           pageSlug = (link.page as any).slug.current;
         } else if ((link.page as any)?.current) {

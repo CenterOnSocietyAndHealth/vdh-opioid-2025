@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { PortableText } from '@portabletext/react';
+import { PortableText } from 'next-sanity';
 import * as d3 from 'd3';
 import { CostsBreakdownProps } from '@/app/types/locality';
 

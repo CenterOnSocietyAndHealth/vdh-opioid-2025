@@ -1,6 +1,6 @@
 "use client"
 
-import { PortableText } from '@portabletext/react'
+import { PortableText } from 'next-sanity'
 import imageUrlBuilder from '@sanity/image-url'
 import { client } from '@/sanity/lib/client'
 import { useEffect, useState } from 'react'
@@ -96,6 +96,7 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
 
   console.log('TextContent block:', { marginTop, marginBottom, textAlignment, backgroundColor, customBackgroundColor, maxWidth })
   console.log('TextContent sector context:', { selectedSector })
+  console.log('TextContent content:', content)
   console.log('Cleaned values:', { 
     cleanMarginTop, 
     cleanMarginBottom, 
@@ -171,6 +172,7 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
             },
             marks: {
               link: ({ children, value: link }) => {
+                console.log('TextContent - Link mark:', { children, link });
                 return <ResolvedLink link={link}>{children}</ResolvedLink>;
               },
               smallGrayText: ({ children }) => (

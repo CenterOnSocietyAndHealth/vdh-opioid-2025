@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { PortableText } from '@portabletext/react'
+import { PortableText } from 'next-sanity'
 import { SourcesProps } from '@/app/types/locality'
 
 const marginMap = {
