@@ -198,7 +198,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       .range([0, chartWidth]);
 
     const yScale = d3.scaleLinear()
-      .domain([-0.7, 0.7])
+      .domain([-1, 1])
       .range([chartHeight * 0.5, chartHeight * 0.1]);
 
     // Add gradient bar background
@@ -223,7 +223,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       .attr('x', 0)
       .attr('y', chartHeight / 2)
       .attr('width', chartWidth)
-      .attr('height', 17)
+      .attr('height', 12)
       .attr('stroke', 'rgb(49, 86, 116)')
       .attr('stroke-width', 1)
       .attr('fill', 'url(#costGradient)');

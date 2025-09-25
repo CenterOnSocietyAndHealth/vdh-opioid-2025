@@ -186,6 +186,19 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                   {children}
                 </span>
               ),
+              asteriskText: ({ children }) => (
+                <span style={{
+                  color: '#414141',
+                  textAlign: 'center',
+                  fontFamily: 'Inter',
+                  fontSize: '14px',
+                  fontStyle: 'normal',
+                  fontWeight: 400,
+                  lineHeight: '110%',
+                }}>
+                  {children}
+                </span>
+              ),
               definition: ({ children, value }) => {
                 try {
                   if (!value?.term || !value?.definition) {

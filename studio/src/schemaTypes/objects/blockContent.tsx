@@ -33,6 +33,7 @@ export const blockContent = defineType({
           {title: 'Strong', value: 'strong'},
           {title: 'Emphasis', value: 'em'},
           {title: 'Small Gray Text', value: 'smallGrayText'},
+          {title: 'Asterisk Text', value: 'asteriskText'},
         ],
         annotations: [
           {
