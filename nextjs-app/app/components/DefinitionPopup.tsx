@@ -16,6 +16,7 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
   const tooltipRef = useRef<HTMLDivElement>(null)
   const positionRef = useRef(position)
   const [mounted, setMounted] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
 
   // Keep ref in sync with state
   useEffect(() => {
@@ -91,6 +92,57 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
     setIsVisible(false)
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      if (isVisible) {
+        setIsVisible(false)
+      } else {
+        // Calculate position based on trigger element for keyboard activation
+        if (triggerRef.current) {
+          const rect = triggerRef.current.getBoundingClientRect()
+          calculatePosition(rect.left + rect.width / 2, rect.top + rect.height / 2)
+        }
+        setIsVisible(true)
+      }
+    } else if (event.key === 'Escape' && isVisible) {
+      event.preventDefault()
+      setIsVisible(false)
+    }
+  }
+
+  const handleFocus = () => {
+    setIsFocused(true)
+  }
+
+  const handleBlur = (event: React.FocusEvent) => {
+    // Only hide if focus is moving outside the component entirely
+    if (!triggerRef.current?.contains(event.relatedTarget as Node) && 
+        !tooltipRef.current?.contains(event.relatedTarget as Node)) {
+      setIsFocused(false)
+      setIsVisible(false)
+    }
+  }
+
+  // Handle focus management and screen reader announcements
+  useEffect(() => {
+    if (isVisible) {
+      // Announce to screen readers when popup opens
+      const announcement = `Definition for ${term}: ${definition}`
+      const announcementElement = document.createElement('div')
+      announcementElement.setAttribute('aria-live', 'polite')
+      announcementElement.setAttribute('aria-atomic', 'true')
+      announcementElement.className = 'sr-only'
+      announcementElement.textContent = announcement
+      document.body.appendChild(announcementElement)
+      
+      // Clean up announcement after a short delay
+      setTimeout(() => {
+        document.body.removeChild(announcementElement)
+      }, 1000)
+    }
+  }, [isVisible, term, definition])
+
   // Adjust position after tooltip renders to account for actual dimensions
   useEffect(() => {
     if (isVisible && tooltipRef.current && triggerRef.current) {
@@ -142,18 +194,28 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
     <>
       <span
         ref={triggerRef}
-        className="relative inline cursor-help border-b-2 border-dashed border-gray-400 hover:border-gray-600 transition-colors"
+        className="relative inline cursor-help border-b-2 border-dashed border-gray-400 hover:border-gray-600 focus:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
         style={{ wordBreak: 'break-word', hyphens: 'auto' }}
+        tabIndex={0}
+        role="button"
+        aria-describedby={isVisible ? `definition-${term.replace(/\s+/g, '-').toLowerCase()}` : undefined}
+        aria-label={`Definition for ${term}. Press Enter or Space to show definition.`}
         onMouseEnter={handleMouseEnter}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        onKeyDown={handleKeyDown}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       >
         {children}
       </span>
       {mounted && isVisible && createPortal(
         <div
           ref={tooltipRef}
+          id={`definition-${term.replace(/\s+/g, '-').toLowerCase()}`}
           className="fixed z-50 max-w-xs shadow-lg p-3"
+          role="tooltip"
+          aria-live="polite"
           style={{
             top: `${position.top}px`,
             left: `${position.left}px`,

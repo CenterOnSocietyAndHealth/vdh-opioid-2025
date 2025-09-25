@@ -80,7 +80,7 @@ export default function Accordion({ block }: AccordionProps) {
         {/* Accordion Header */}
         <button
           onClick={toggleAccordion}
-          className="w-full px-0 py-3 pt-5 flex items-center justify-between text-left hover:bg-gray-200 transition-colors duration-200"
+          className="w-full px-0 py-3 pt-5 flex items-center justify-between text-left  transition-colors duration-200"
         >
           <div className="flex items-center space-x-3">
             {/* Plus/X icon */}
@@ -98,8 +98,8 @@ export default function Accordion({ block }: AccordionProps) {
           </div>
         </button>
         
-        {/* Divider line */}
-        <div className="border-t border-gray-300"></div>
+        {/* Divider line - only show when collapsed */}
+        {!isExpanded && <div className="border-t border-gray-300"></div>}
         
         {/* Accordion Content */}
         <div
@@ -415,6 +415,9 @@ export default function Accordion({ block }: AccordionProps) {
             />
           </div>
         </div>
+        
+        {/* Divider line - only show when expanded */}
+        {isExpanded && <div className="border-t border-gray-300"></div>}
       </div>
     </div>
   )

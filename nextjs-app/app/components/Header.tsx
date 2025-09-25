@@ -27,11 +27,33 @@ export default async function Header() {
   const navigationItems = settings?.navigationItems || [];
 
   return (
-    <header 
-      role="banner" 
-      className="w-full p-4 flex items-center justify-between bg-[#F3F2EC]"
-    >
-      <div className="container max-w-[1311px] px-1 mx-auto flex items-center justify-between">
+    <>
+      {/* Skip Navigation Link for Accessibility */}
+      <div className="skip-navigation-container">
+        <a 
+          href="#main-content" 
+          className="skip-navigation"
+          tabIndex={1}
+        >
+          Skip navigation »
+        </a>
+      </div>
+
+      {/* Announcement Bar */}
+      <div className="w-full py-2 px-4 text-center announcement-bar">
+        <div className="container max-w-[1311px] mx-auto">
+          Update: Our site is now the Virginia Opioid Cost Data Tool. Read more about new features in{' '}
+          <Link href="/whats-new/">
+            our announcement. ––&gt;
+          </Link>
+        </div>
+      </div>
+
+      <header 
+        role="banner" 
+        className="w-full p-4 flex items-center justify-between bg-[#F3F2EC]"
+      >
+        <div className="container max-w-[1311px] px-1 mx-auto flex items-center justify-between">
         <div className="logo h-[50px]">
           {logoUrl ? (
             <Link href="/">
@@ -55,5 +77,6 @@ export default async function Header() {
         <div className="flex items-center gap-4 w-48"></div>
       </div>
     </header>
+    </>
   );
 }
