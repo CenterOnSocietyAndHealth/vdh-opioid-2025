@@ -151,10 +151,11 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       const diff = ((plotData.selectedValue - plotData.average) / plotData.average) * 100;
       const moreOrLess = diff > 0 ? 'more' : 'less';
       const absDiff = Math.abs(Math.round(diff));
+      const countyName = selectedLocality.counties.trim();
       
       return {
-        title: `${sectorDisplayName} costs in ${selectedLocality.counties} were ${absDiff}% ${moreOrLess} than the average community.`,
-        subtitle: `${sectorDisplayName} Cost Per Person of the Opioid Epidemic for ${selectedLocality.counties}, 2023`,
+        title: `${sectorDisplayName} costs in ${countyName} were ${absDiff}% ${moreOrLess} than the average community.`,
+        subtitle: `${sectorDisplayName} Cost Per Person of the Opioid Epidemic for ${countyName}, 2023`,
         percentageDifference: diff,
       };
     }
@@ -347,7 +348,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
         .attr('font-size', '16px')
         .attr('fill', '#1E1E1E')
         .attr('font-weight', '500')
-        .text(selectedLocality.counties);
+        .text(selectedLocality.counties.trim());
 
       selectedLine.append('text')
         .attr('x', selectedX)
@@ -472,7 +473,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
               );
             }
             const moreOrLess = (percentageDifference || 0) > 0 ? 'more' : 'less';
-            const localityName = selectedLocality?.counties || '';
+            const localityName = selectedLocality?.counties?.trim() || '';
             const absDiff = Math.abs(Math.round(percentageDifference || 0));
             const sectorLower = sectorName === 'Total' ? 'total costs' : sectorName.toLowerCase();
             return (

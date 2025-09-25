@@ -102,7 +102,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       .style('padding', '0')
       .style('margin-bottom', '20px')
       .html(`
-        <h2 class="text-[24px] font-normal mb-4">${totalCostSubtitle || 'Annual Cost'}</h2>
+        <h2 class="text-[24px] font-normal mb-2">${totalCostSubtitle || 'Annual Cost'}</h2>
         <div style="display: flex; align-items: center; width: 100%;">
           <span style="flex: 1; height: 20px; border-top: 1px solid #000; border-left: 1px solid #000; margin-right: 36px; margin-top: 20px;"></span>
           <h3 class="text-[24px]" style="white-space: nowrap; font-weight: 700;">
@@ -271,7 +271,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
               return (
                 <div key={i} className="mb-0">
                   {/* Title */}
-                  <h3 
+                  <p 
                     className="mb-2 mt-0 text-left"
                     style={{
                       color: '#1E1E1E',
@@ -284,7 +284,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
                     }}
                   >
                     {sector.title} - {formatCostShort(sector.value)}
-                  </h3>
+                  </p>
                   {/* Mini-graph bar */}
                   <div className="mb-2 w-full h-2 flex overflow-hidden" style={{minWidth: 80}}>
                     {miniBarSegments}
@@ -309,7 +309,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         </div>
         {/* Aside (1/3 column on desktop, below on mobile) */}
         {block.aside && (
-          <div className="bg-[#F3F2EC] p-6 pt-8 pr-8 h-full aside-container">
+          <div className="bg-[#F3F2EC] p-[30px] h-full aside-container">
             <PortableText value={block.aside} />
           </div>
         )}

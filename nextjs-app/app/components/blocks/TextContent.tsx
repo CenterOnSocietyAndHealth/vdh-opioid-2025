@@ -177,11 +177,11 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                 <span style={{
                   color: '#747474',
                   fontFamily: 'Inter',
-                  fontSize: '14px',
+                  fontSize: '12px',
                   fontStyle: 'normal',
-                  fontWeight: 500,
+                  fontWeight: 400,
                   lineHeight: '130%',
-                  letterSpacing: '-0.266px',
+                  letterSpacing: '-0.228px',
                 }}>
                   {children}
                 </span>
