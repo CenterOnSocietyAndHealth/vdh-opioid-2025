@@ -1,9 +1,13 @@
 import PageBuilderPage from "@/app/components/PageBuilder";
-import { fetchPage } from "@/sanity/lib/server";
+import { sanityFetch } from "@/sanity/lib/live";
+import { getPageQuery, localitiesQuery } from "@/sanity/lib/queries";
 import { GetPageQueryResult } from "@/sanity.types";
 
 export default async function Page() {
-  const { data: page, localities } = await fetchPage('home');
+  const [{ data: page }, { data: localities }] = await Promise.all([
+    sanityFetch({ query: getPageQuery, params: { slug: 'home' } }),
+    sanityFetch({ query: localitiesQuery }),
+  ]);
 
   if (!page?._id) {
     return (

@@ -352,7 +352,8 @@ export default function ChoroplethMap({
               getFieldPath(locality, indicator, displayType)
             );
             
-            return value ? colorScale(value) : "#ccc";
+            // Include localities with 0 values in the color scale
+            return value !== undefined && value !== null ? colorScale(value) : "#ccc";
           })
           .attr("stroke", (d: any) => {
             // Check if this is the selected locality

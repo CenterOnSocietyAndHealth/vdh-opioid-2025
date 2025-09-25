@@ -104,7 +104,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
           isSelected: selectedLocality?._id === loc._id,
         };
       })
-      .filter(item => item.value > 0); // Only include localities with data
+      .filter(item => item.value >= 0); // Include localities with 0 values (zero cost is valid data)
 
     // Calculate average
     const average = values.length > 0 
@@ -168,8 +168,9 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     const container = chartRef.current;
     const svg = d3.select(svgRef.current);
     
-    // Clear previous chart
+    // Clear previous chart and tooltip
     svg.selectAll('*').remove();
+    d3.selectAll('.jitter-plot-tooltip').remove();
 
     // Chart dimensions
     const containerWidth = container.clientWidth;
@@ -238,6 +239,22 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     const nonSelectedData = jitterData.filter(d => !d.isSelected);
     const selectedData = jitterData.filter(d => d.isSelected);
 
+    // Create tooltip
+    const tooltip = d3.select('body')
+      .append('div')
+      .attr('class', 'jitter-plot-tooltip')
+      .style('position', 'absolute')
+      .style('background', 'white')
+      .style('color', 'black')
+      .style('padding', '8px 12px')
+      .style('border-radius', '4px')
+      .style('font-size', '14px')
+      .style('pointer-events', 'none')
+      .style('opacity', 0)
+      .style('z-index', '1000')
+      .style('border', '1px solid #ccc')
+      .style('box-shadow', '0 2px 8px rgba(0, 0, 0, 0.15)');
+
     // Add non-selected dots first (so they appear behind)
     const dots = chartGroup.selectAll('.dot')
       .data(nonSelectedData)
@@ -252,20 +269,30 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       .attr('stroke-width', 0)
       .style('cursor', 'pointer')
       .on('mouseover', function(event, d) {
-        // Highlight on hover
+        // Add stroke on hover
         d3.select(this)
-          .attr('r', 8)
-          .style('opacity', 1);
+          .attr('stroke', '#FFD900')
+          .attr('stroke-width', 2);
+        
+        // Show tooltip
+        const sectorDisplayName = sectorDisplayNames[selectedSector] || 'Costs';
+        tooltip
+          .style('opacity', 1)
+          .html(`
+            <div><strong>${d.locality.counties.trim()}</strong></div>
+            <div>$${Math.round(d.value).toLocaleString()} per person</div>
+          `)
+          .style('left', (event.pageX + 10) + 'px')
+          .style('top', (event.pageY - 10) + 'px');
       })
       .on('mouseout', function(event, d) {
-        // Reset on mouse out
+        // Remove stroke on mouse out
         d3.select(this)
-          .attr('r', 8)
-          .style('opacity', 0.8);
-      })
-      .on('click', function(event, d) {
-        // Set the clicked locality as selected
-        setSelectedLocality(d.locality);
+          .attr('stroke', 'none')
+          .attr('stroke-width', 0);
+        
+        // Hide tooltip
+        tooltip.style('opacity', 0);
       });
 
     // Add selected dots last (so they appear in front)
@@ -283,20 +310,30 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
         .attr('stroke-width', 0)
         .style('cursor', 'pointer')
         .on('mouseover', function(event, d) {
-          // Highlight on hover
+          // Add stroke on hover
           d3.select(this)
-            .attr('r', 8)
-            .style('opacity', 1);
+            .attr('stroke', '#FFD900')
+            .attr('stroke-width', 2);
+          
+          // Show tooltip
+          const sectorDisplayName = sectorDisplayNames[selectedSector] || 'Costs';
+          tooltip
+            .style('opacity', 1)
+            .html(`
+              <div><strong>${d.locality.counties.trim()}</strong></div>
+              <div>$${Math.round(d.value).toLocaleString()} per person</div>
+            `)
+            .style('left', (event.pageX + 10) + 'px')
+            .style('top', (event.pageY - 10) + 'px');
         })
         .on('mouseout', function(event, d) {
-          // Reset on mouse out
+          // Remove stroke on mouse out
           d3.select(this)
-            .attr('r', 8)
-            .style('opacity', 1);
-        })
-        .on('click', function(event, d) {
-          // Set the clicked locality as selected
-          setSelectedLocality(d.locality);
+            .attr('stroke', 'none')
+            .attr('stroke-width', 0);
+          
+          // Hide tooltip
+          tooltip.style('opacity', 0);
         });
     }
 
@@ -334,7 +371,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       .text(`$${Math.round(plotData.average).toLocaleString()}`);
 
     // Add selected locality line if applicable
-    if (selectedLocality && selectedLocality.counties !== 'Virginia' && plotData.selectedValue > 0) {
+    if (selectedLocality && selectedLocality.counties !== 'Virginia' && plotData.selectedValue >= 0) {
       const selectedX = xScale(plotData.selectedValue);
       const selectedJitter = getDeterministicJitter(selectedLocality._id);
       const selectedY = yScale(selectedJitter);
@@ -451,7 +488,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       .attr('fill', '#1e1e1e')
       .text('Virginia Localities');
 
-  }, [mounted, plotData, selectedLocality, windowWidth, setSelectedLocality]);
+  }, [mounted, plotData, selectedLocality, windowWidth, selectedSector]);
 
   // Don't render until mounted on the client
   if (!mounted) {

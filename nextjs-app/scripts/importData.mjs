@@ -48,8 +48,21 @@ const getComparisonPhrase = (percentileRank) => {
 
 const cleanCurrencyValue = (value) => {
     if (!value) return 0;
-    // Remove currency symbol, commas, and trim whitespace
-    return parseFloat(value.replace(/[$,]/g, '').trim());
+
+    // Convert to string and trim whitespace
+    const stringValue = value.toString().trim();
+
+    // Handle dash values (both "-" and "$-")
+    if (stringValue === '-' || stringValue === '$-' || stringValue === '') {
+        return 0;
+    }
+
+    // Remove currency symbol, commas, and parse as float
+    const cleanedValue = stringValue.replace(/[$,]/g, '');
+    const parsedValue = parseFloat(cleanedValue);
+
+    // Return 0 if parsing fails (NaN)
+    return isNaN(parsedValue) ? 0 : parsedValue;
 }
 
 const importData = async () => {

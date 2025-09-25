@@ -15,6 +15,7 @@ export const serverClient = createClient({
 });
 
 // Helper function to fetch data server-side
+// @deprecated Use sanityFetch with getPageQuery and localitiesQuery instead
 export async function fetchPage(slug: string) {
   const [page, localities] = await Promise.all([
     serverClient.fetch(

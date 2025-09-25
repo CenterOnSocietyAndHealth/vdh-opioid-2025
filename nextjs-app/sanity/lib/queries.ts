@@ -50,7 +50,22 @@ export const localitiesQuery = defineQuery(`
       fedGovtSectorTotal,
       stateLocalSectorTotal
     },
-    demographics,
+    demographics {
+      totalPopulation,
+      medianAge,
+      medianIncome,
+      povertyPct
+    },
+    regions {
+      healthDistrict,
+      healthRegion,
+      cooperCtrRegion
+    },
+    classification {
+      category,
+      urbanRural,
+      metroNonMetro
+    },
     opioidMetrics {
       totalPerCapita,
       totalTotal,
