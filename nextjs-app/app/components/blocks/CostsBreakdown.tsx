@@ -244,7 +244,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       <div className="mt-6 grid gap-8 md:grid-cols-3 mb-12">
         {/* Breakdown descriptions in a nested 2-col grid */}
         <div className="md:col-span-2">
-          <div className="grid gap-12 md:grid-cols-2 mr-4">
+          <div className="grid gap-x-12 gap-y-6 md:grid-cols-2 mr-4">
             {costSectors.map((sector, i) => {
               const percentOfTotal = sector.value / totalValue;
               // For mini-graph: build an array of widths/colors for all sectors

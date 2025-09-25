@@ -233,18 +233,22 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       jitter: getDeterministicJitter(item.locality._id)
     }));
 
-    // Add dots with jitter
+    // Separate selected and non-selected dots
+    const nonSelectedData = jitterData.filter(d => !d.isSelected);
+    const selectedData = jitterData.filter(d => d.isSelected);
+
+    // Add non-selected dots first (so they appear behind)
     const dots = chartGroup.selectAll('.dot')
-      .data(jitterData)
+      .data(nonSelectedData)
       .enter()
       .append('circle')
       .attr('class', 'dot')
       .attr('cx', d => xScale(d.value))
       .attr('cy', d => yScale(d.jitter))
       .attr('r', 8)
-      .attr('fill', d => d.isSelected ? colors.selectedDot : colors.dots)
-      .attr('stroke', d => d.isSelected ? '#ffffff' : 'none')
-      .attr('stroke-width', d => d.isSelected ? 2 : 0)
+      .attr('fill', colors.dots)
+      .attr('stroke', 'none')
+      .attr('stroke-width', 0)
       .style('cursor', 'pointer')
       .on('mouseover', function(event, d) {
         // Highlight on hover
@@ -256,8 +260,36 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
         // Reset on mouse out
         d3.select(this)
           .attr('r', 8)
-          .style('opacity', d.isSelected ? 1 : 0.8);
+          .style('opacity', 0.8);
       });
+
+    // Add selected dots last (so they appear in front)
+    if (selectedData.length > 0) {
+      const selectedDots = chartGroup.selectAll('.selected-dot')
+        .data(selectedData)
+        .enter()
+        .append('circle')
+        .attr('class', 'selected-dot')
+        .attr('cx', d => xScale(d.value))
+        .attr('cy', d => yScale(d.jitter))
+        .attr('r', 8)
+        .attr('fill', colors.selectedDot)
+        .attr('stroke', 'none')
+        .attr('stroke-width', 0)
+        .style('cursor', 'pointer')
+        .on('mouseover', function(event, d) {
+          // Highlight on hover
+          d3.select(this)
+            .attr('r', 8)
+            .style('opacity', 1);
+        })
+        .on('mouseout', function(event, d) {
+          // Reset on mouse out
+          d3.select(this)
+            .attr('r', 8)
+            .style('opacity', 1);
+        });
+    }
 
     // Add average line
     const averageX = xScale(plotData.average);
@@ -267,7 +299,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     averageLine.append('line')
       .attr('x1', averageX)
       .attr('x2', averageX)
-      .attr('y1', chartHeight * 0.11)
+      .attr('y1', chartHeight * 0.1)
       .attr('y2', chartHeight * 0.5)
       .attr('stroke', colors.averageLine)
       .attr('stroke-width', 1)
@@ -276,7 +308,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     // Add average label
     averageLine.append('text')
       .attr('x', averageX)
-      .attr('y', 10)
+      .attr('y', 5)
       .attr('text-anchor', 'middle')
       .attr('font-size', '12px')
       .attr('fill', colors.text)
@@ -285,7 +317,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
 
     averageLine.append('text')
       .attr('x', averageX)
-      .attr('y', 25)
+      .attr('y', 20)
       .attr('text-anchor', 'middle')
       .attr('font-size', '12px')
       .attr('fill', colors.text)
@@ -470,7 +502,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
         {/* Chart Container */}
         <div 
           ref={chartRef}
-          className="bg-white border border-gray-200 p-0 py-6"
+          className="bg-white border border-gray-200 p-0 pt-6"
           style={{ minHeight: '400px' }}
         >
           <svg ref={svgRef}></svg>
