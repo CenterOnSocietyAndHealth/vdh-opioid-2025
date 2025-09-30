@@ -8,14 +8,14 @@ const marginMap = {
   none: 'mt-0',
   small: 'mt-4',
   medium: 'mt-8',
-  large: 'mt-16',
+  large: 'mt-10',
 }
 
 const marginBottomMap = {
   none: 'mb-0',
   small: 'mb-4',
   medium: 'mb-8',
-  large: 'mb-16',
+  large: 'mb-10',
 }
 
 export default function Sources({ block }: SourcesProps) {
@@ -156,13 +156,13 @@ export default function Sources({ block }: SourcesProps) {
   return (
     <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`} data-sources-accordion>
       <div 
-        className="mx-auto"
+        className="mx-auto bg-[#f3f2ec]"
         style={{ maxWidth: `${width}px` }}
       >
         {/* Sources Header */}
         <button
           onClick={toggleSources}
-          className="w-full px-0 py-3 pt-5 flex items-center justify-between text-left transition-colors duration-200"
+          className="w-full px-[20px] py-[10px] flex items-center justify-between text-left transition-colors duration-200"
         >
           <div className="flex items-center space-x-3">
             {/* Title */}
@@ -187,7 +187,7 @@ export default function Sources({ block }: SourcesProps) {
             isExpanded ? 'max-h-none opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="px-0 py-4">
+          <div className="px-[20px] py-[15px] pb-[20px]">
             <ol className="space-y-3">
               {citations.map((citation, index) => {
                 const citationId = generateCitationId(index)
@@ -200,7 +200,7 @@ export default function Sources({ block }: SourcesProps) {
                       isHighlighted ? 'bg-[#F3E7B9] rounded-lg' : ''
                     }`}
                   >
-                    <span className="flex-shrink-0 w-6 h-6 bg-gray-100 text-gray-700 text-sm font-medium rounded-full flex items-center justify-center mr-3 mt-0.5">
+                    <span className="flex-shrink-0 text-gray-700 text-sm font-medium ml-2 mr-6 mt-1">
                       {index + 1}
                     </span>
                     <div className="flex-1">
@@ -219,7 +219,7 @@ export default function Sources({ block }: SourcesProps) {
                                   href={value?.href}
                                   target={value?.blank ? '_blank' : undefined}
                                   rel={value?.blank ? 'noopener noreferrer' : undefined}
-                                  className="text-blue-600 hover:text-blue-800 underline"
+                                  className="text-[#1e1e1e] hover:bg-[#f3e7b9] visited:text-[#6b7280] underline"
                                 >
                                   {children}
                                 </a>
