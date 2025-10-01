@@ -64,7 +64,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
   const governmentPercent = federalPercent + stateLocalPercent;
   
   return (
-    <div className={`max-w-[1311px] mx-auto ${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+    <div className={`max-w-[1180px] mx-auto ${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
       {/* Header */}
       <div className="text-center mb-12 max-w-[600px] mx-auto">
         <h2 className="text-2xl font-normal mb-2">{title}</h2>
@@ -104,7 +104,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
           </div>
 
             <div
-                      className="absolute -top-10 left-0 h-8 flex items-center justify-center text-[#1E1E1E] font-medium text-[18px] px-2 rounded"
+                      className="absolute -top-10 left-0 h-8 flex items-center justify-center text-[#1E1E1E] font-medium text-[16px] px-2 rounded"
                 style={{
                     left: `${familiesBusinessesPercent}%`,
                     width: `${governmentPercent}%`,
@@ -129,7 +129,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                 className="font-bold"
                 style={{
                   fontFamily: 'Inter',
-                  fontSize: '18px',
+                  fontSize: '16px',
                   fontStyle: 'normal',
                   fontWeight: 700,
                   lineHeight: 'normal',
@@ -141,7 +141,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
               <div 
                 style={{
                   fontFamily: 'Inter',
-                  fontSize: '18px',
+                  fontSize: '16px',
                   fontStyle: 'normal',
                   fontWeight: 500,
                   lineHeight: '130%',
@@ -168,7 +168,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                 className="font-bold"
                 style={{
                   fontFamily: 'Inter',
-                  fontSize: '18px',
+                  fontSize: '16px',
                   fontStyle: 'normal',
                   fontWeight: 700,
                   lineHeight: 'normal',
@@ -180,7 +180,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
               <div 
                 style={{
                   fontFamily: 'Inter',
-                  fontSize: '18px',
+                  fontSize: '16px',
                   fontStyle: 'normal',
                   fontWeight: 500,
                   lineHeight: '130%',
@@ -207,7 +207,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                 className="font-bold"
                 style={{
                   fontFamily: 'Inter',
-                  fontSize: '18px',
+                  fontSize: '16px',
                   fontStyle: 'normal',
                   fontWeight: 700,
                   lineHeight: 'normal',
@@ -219,7 +219,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
               <div 
                 style={{
                   fontFamily: 'Inter',
-                  fontSize: '18px',
+                  fontSize: '16px',
                   fontStyle: 'normal',
                   fontWeight: 500,
                   lineHeight: '130%',
