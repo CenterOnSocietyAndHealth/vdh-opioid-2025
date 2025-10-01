@@ -194,7 +194,7 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
     <>
       <span
         ref={triggerRef}
-        className="relative inline cursor-help border-b-2 border-dashed border-gray-400 hover:border-gray-600 focus:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+        className="relative inline cursor-help border-b-2 border-dotted border-[#1E1E1E] hover:bg-[#cfe6ef] focus:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
         style={{ wordBreak: 'break-word', hyphens: 'auto' }}
         tabIndex={0}
         role="button"
