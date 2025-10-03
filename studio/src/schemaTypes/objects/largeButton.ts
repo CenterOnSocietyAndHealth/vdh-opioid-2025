@@ -54,9 +54,19 @@ export const largeButton = defineType({
     defineField({
       name: 'url',
       title: 'URL',
-      type: 'url',
-      description: 'The external URL the button will link to or download from',
+      type: 'string',
+      description: 'The external URL the button will link to or download from (supports http://, https://, and mailto:)',
       hidden: ({parent}) => parent?.linkType !== 'url',
+      validation: (Rule) =>
+        Rule.custom((value, context: any) => {
+          if (context.parent?.linkType === 'url' && !value) {
+            return 'URL is required when Link Type is External URL'
+          }
+          if (value && !value.match(/^(https?:\/\/|mailto:)/)) {
+            return 'URL must start with http://, https://, or mailto:'
+          }
+          return true
+        }),
     }),
     defineField({
       name: 'page',

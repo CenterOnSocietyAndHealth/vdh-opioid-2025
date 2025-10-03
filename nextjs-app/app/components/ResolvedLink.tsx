@@ -22,16 +22,35 @@ export default function ResolvedLink({
   }
 
   if (typeof resolvedLink === "string") {
-    return (
-      <Link
-        href={resolvedLink}
-        target={link?.openInNewTab || link?.blank ? "_blank" : undefined}
-        rel={link?.openInNewTab || link?.blank ? "noopener noreferrer" : undefined}
-        className={className}
-      >
-        {children}
-      </Link>
-    );
+    // Check if it's an external URL (http/https/mailto) or internal page
+    const isExternalUrl = resolvedLink.startsWith('http://') || 
+                         resolvedLink.startsWith('https://') || 
+                         resolvedLink.startsWith('mailto:');
+    
+    if (isExternalUrl) {
+      return (
+        <a
+          href={resolvedLink}
+          target={link?.openInNewTab || link?.blank ? "_blank" : undefined}
+          rel={link?.openInNewTab || link?.blank ? "noopener noreferrer" : undefined}
+          className={className}
+        >
+          {children}
+        </a>
+      );
+    } else {
+      // Internal page link - use Next.js Link
+      return (
+        <Link
+          href={resolvedLink}
+          target={link?.openInNewTab || link?.blank ? "_blank" : undefined}
+          rel={link?.openInNewTab || link?.blank ? "noopener noreferrer" : undefined}
+          className={className}
+        >
+          {children}
+        </Link>
+      );
+    }
   }
   return <>{children}</>;
 }
