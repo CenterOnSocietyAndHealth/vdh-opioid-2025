@@ -227,6 +227,21 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                   localitiesCount: localities?.length
                 });
                 
+                // Debug: Show all Virginia-related localities
+                if (localities && localities.length > 0) {
+                  const virginiaCandidates = localities.filter(loc => 
+                    loc.counties?.toLowerCase().includes('virginia') ||
+                    loc.fips?.includes('999') ||
+                    loc.marcCountyId === '999'
+                  );
+                  console.log('Virginia candidates found:', virginiaCandidates.map(loc => ({
+                    _id: loc._id,
+                    counties: loc.counties,
+                    fips: loc.fips,
+                    marcCountyId: loc.marcCountyId
+                  })));
+                }
+                
                 if (selectedLocality) {
                   // Use selected locality value
                   fieldValue = getNestedValue(selectedLocality, value.fieldPath)
