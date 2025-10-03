@@ -14,7 +14,7 @@ export const contentWrapper = defineType({
       initialValue: '#f0f0f0',
       options: {
         list: [
-          {title: 'Light Gray', value: '#f0f0f0'},
+          { title: 'Light Gray', value: '#FCFAF8'},
           {title: 'White', value: '#ffffff'},
           {title: 'Light Blue', value: '#EDF4FA'},
           {title: 'Light Green', value: '#F3F2EC'},
