@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocality } from '@/app/contexts/LocalityContext';
 import { LocalitySelectorProps, Locality } from '@/app/types/locality';
+import { getValidKeyOrDefault } from '@/app/client-utils';
 
 type OptionType = {
   value: string;
@@ -97,10 +98,13 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
 
   const { heading = 'SEARCH:', subheading = 'By Locality (County or Independent City)', marginTop = 'medium', marginBottom = 'medium' } = block;
 
+  const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'medium');
+  const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'medium');
+
   // Don't render anything until the component is mounted on the client
   if (!mounted || !Select) {
     return (
-      <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]} flex justify-center items-center`}>
+      <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]} flex justify-center items-center`}>
         <div className="relative text-center">
           <label className="inline-block mb-3 font-bold font-lato text-base">
             {heading}
@@ -119,7 +123,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
   }
 
   return (
-    <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]} flex justify-center items-center`}>
+    <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]} flex justify-center items-center`}>
       <div className="relative text-center">
         <h3 className="relative inline-block ml-2 mb-1">
           {subheading}

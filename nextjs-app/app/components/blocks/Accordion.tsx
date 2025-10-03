@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { useSector } from '@/app/contexts/SectorContext'
 import { useLocality } from '@/app/contexts/LocalityContext'
 import ResolvedLink from '@/app/components/ResolvedLink'
+import { getValidKeyOrDefault } from '@/app/client-utils'
 
 const marginMap = {
   none: 'mt-0',
@@ -40,6 +41,9 @@ export default function Accordion({ block }: AccordionProps) {
   const [isUpdating, setIsUpdating] = useState(false)
   const { selectedSector } = useSector()
   const { selectedLocality } = useLocality()
+
+  const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none')
+  const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
 
   // Listen for locality updates
   useEffect(() => {
@@ -75,7 +79,7 @@ export default function Accordion({ block }: AccordionProps) {
   }
 
   return (
-    <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+    <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       <div className="">
         {/* Accordion Header */}
         <button

@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 import { Locality } from '@/app/types/locality';
 import { PortableText } from 'next-sanity';
 import topojson from 'topojson-client';
+import { getValidKeyOrDefault } from '@/app/client-utils';
 
 // Define the ChoroplethMap props type to match what we'll pass to the dynamic component
 interface ChoroplethMapProps {
@@ -122,6 +123,8 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
   const displayType = block.type || 'PerCapita';
   const marginTop = block.marginTop || 'none';
   const marginBottom = block.marginBottom || 'none';
+  const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none')
+  const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
 
   function getColorsByIndicator(indicator: CostsMapIndicator) {
     const scheme = colorSchemes.find(scheme => scheme.name === indicator);
@@ -211,7 +214,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
   // Don't render until mounted on the client
   if (!mounted) {
     return (
-      <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+      <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
         <div className="relative mx-auto p-4">
           <div className="w-full h-[400px] bg-gray-100 flex items-center justify-center">
             <p>Loading map...</p>
@@ -222,7 +225,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
   }
 
   return (
-    <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+    <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       {/* Detailed Description */}
       {getCurrentDescription() && (
         <div className="bg-white mt-4 mb-2">

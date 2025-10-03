@@ -28,3 +28,31 @@ export function handleError(error: unknown) {
     });
   }
 }
+
+// Draft-mode safe string cleaner: removes invisible Unicode control chars
+export function cleanStringDraftSafe(str: string | undefined): string | undefined {
+  if (typeof str !== 'string') return str;
+  return str.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim();
+}
+
+// Validates that a key exists in a mapping; returns a safe default if not
+export function getValidKeyOrDefault<K extends string, T extends Record<string, unknown>>(
+  raw: K | undefined,
+  map: T,
+  fallback: K
+): K {
+  const cleaned = cleanStringDraftSafe(raw as unknown as string) as K | undefined;
+  if (cleaned && Object.prototype.hasOwnProperty.call(map, cleaned)) {
+    return cleaned as K;
+  }
+  return fallback;
+}
+
+// Hex color validator with draft-safe cleaning
+export function getValidHexColorOrDefault(
+  raw: string | undefined,
+  fallback: string
+): string {
+  const cleaned = cleanStringDraftSafe(raw);
+  return typeof cleaned === 'string' && /^#[0-9A-Fa-f]{6}$/.test(cleaned) ? cleaned : fallback;
+}

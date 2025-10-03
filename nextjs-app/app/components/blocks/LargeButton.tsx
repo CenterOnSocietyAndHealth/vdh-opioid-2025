@@ -3,6 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { LargeButtonProps } from '@/app/types/locality';
+import { getValidKeyOrDefault } from '@/app/client-utils';
 
 const marginMap = {
   none: 'mt-0',
@@ -69,6 +70,9 @@ export default function LargeButton({ block }: LargeButtonProps) {
     marginBottom = 'medium'
   } = block;
 
+  const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'medium')
+  const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'medium')
+
   // Determine the action text to display
   const getActionText = () => {
     if (action === 'custom' && customAction) {
@@ -131,7 +135,7 @@ export default function LargeButton({ block }: LargeButtonProps) {
   const isDisabled = linkType === 'url' ? !url : !page?.slug;
 
   return (
-    <div className={`max-w-[1311px] mx-auto ${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+    <div className={`max-w-[1311px] mx-auto ${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       <div className="flex justify-center">
         <button
           onClick={handleClick}

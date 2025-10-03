@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { PortableText } from 'next-sanity'
 import { SourcesProps } from '@/app/types/locality'
+import { getValidKeyOrDefault } from '@/app/client-utils'
 
 const marginMap = {
   none: 'mt-0',
@@ -22,6 +23,9 @@ export default function Sources({ block }: SourcesProps) {
   const { citations = [], marginTop = 'none', marginBottom = 'none', width = 672 } = block
   const [isExpanded, setIsExpanded] = useState(false)
   const [highlightedSource, setHighlightedSource] = useState<string | null>(null)
+
+  const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none')
+  const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
 
   const toggleSources = () => {
     setIsExpanded(!isExpanded)
@@ -154,7 +158,7 @@ export default function Sources({ block }: SourcesProps) {
   }
 
   return (
-    <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`} data-sources-accordion>
+    <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`} data-sources-accordion>
       <div 
         className="mx-auto bg-[#f3f2ec]"
         style={{ maxWidth: `${width}px` }}

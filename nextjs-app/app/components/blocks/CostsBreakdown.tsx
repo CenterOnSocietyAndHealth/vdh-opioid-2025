@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { PortableText } from 'next-sanity';
 import * as d3 from 'd3';
 import { CostsBreakdownProps } from '@/app/types/locality';
+import { getValidKeyOrDefault } from '@/app/client-utils';
 
 const marginMap = {
   none: 'mt-0',
@@ -47,7 +48,12 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
     totalCostSubtitle, 
     source, 
     costSectors,
+    marginTop = 'none',
+    marginBottom = 'none'
   } = block;
+
+  const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none')
+  const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
   
   const chartRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -195,7 +201,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   
   const totalValue = d3.sum(costSectors, d => d.value);
   return (
-    <div className="max-w-[1311px] mx-auto">
+    <div className={`max-w-[1311px] mx-auto ${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       <div ref={chartRef} className="w-full h-auto" style={{position: 'relative'}}>
         {/* Custom Tooltip for blocks with showLabelAsTooltip */}
         {hoveredTooltipIndex !== null && tooltipPosition && costSectors[hoveredTooltipIndex] && costSectors[hoveredTooltipIndex].showLabelAsTooltip && (

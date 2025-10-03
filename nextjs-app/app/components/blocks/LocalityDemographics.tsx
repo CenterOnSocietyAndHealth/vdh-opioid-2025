@@ -2,6 +2,7 @@
 
 import { useLocality } from '@/app/contexts/LocalityContext'
 import { LocalityDemographicsProps } from '@/app/types/locality'
+import { cleanStringDraftSafe, getValidKeyOrDefault, getValidHexColorOrDefault } from '@/app/client-utils'
 
 const marginMap = {
   none: 'mt-0',
@@ -39,17 +40,21 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
     maxWidth
   } = block
 
+  // Draft-safe cleaning
+  const cleanBG = cleanStringDraftSafe(backgroundColor)
+  const cleanCustomBG = cleanStringDraftSafe(customBackgroundColor)
+
   // Validate and sanitize backgroundColor
-  const finalBackgroundColor = backgroundColor === 'custom' && customBackgroundColor 
-    ? (typeof customBackgroundColor === 'string' && customBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? customBackgroundColor : 'transparent')
-    : (backgroundColor === 'transparent' ? 'transparent' : (typeof backgroundColor === 'string' && backgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? backgroundColor : 'transparent'))
+  const finalBackgroundColor = cleanBG === 'custom' && cleanCustomBG 
+    ? getValidHexColorOrDefault(cleanCustomBG, 'transparent')
+    : (cleanBG === 'transparent' ? 'transparent' : getValidHexColorOrDefault(cleanBG, 'transparent'))
   
   // Validate margin values to prevent undefined classes
-  const validMarginTop = marginTop && marginMap[marginTop as keyof typeof marginMap] ? marginTop : 'none'
-  const validMarginBottom = marginBottom && marginBottomMap[marginBottom as keyof typeof marginBottomMap] ? marginBottom : 'none'
+  const validMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none')
+  const validMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
   
   // Validate text alignment to prevent undefined classes
-  const validTextAlignment = textAlignment && alignmentMap[textAlignment as keyof typeof alignmentMap] ? textAlignment : 'left'
+  const validTextAlignment = getValidKeyOrDefault(textAlignment, alignmentMap, 'left')
 
   // Helper function to parse numbers that might have comma separators
   const parseNumber = (value: number | string | null | undefined): number | null => {

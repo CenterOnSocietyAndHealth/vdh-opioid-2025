@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 import { useLocality } from '@/app/contexts/LocalityContext';
 import { useSector } from '@/app/contexts/SectorContext';
 import { Locality } from '@/app/types/locality';
+import { getValidKeyOrDefault } from '@/app/client-utils';
 
 // Types for the component
 type JitterPlotProps = {
@@ -84,6 +85,8 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
   // Get the margin values from block props
   const marginTop = block.marginTop || 'none';
   const marginBottom = block.marginBottom || 'none';
+  const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none')
+  const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
 
   // Process data for the current sector
   const plotData = useMemo(() => {
@@ -493,7 +496,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
   // Don't render until mounted on the client
   if (!mounted) {
     return (
-      <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+      <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
         <div className="relative mx-auto p-4">
           <div className="w-full h-[400px] bg-gray-100 flex items-center justify-center">
             <p>Loading chart...</p>
@@ -504,7 +507,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
   }
 
   return (
-    <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+    <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       <div className="relative mx-auto max-w-[800px] p-4">
         {/* Title */}
         <h3

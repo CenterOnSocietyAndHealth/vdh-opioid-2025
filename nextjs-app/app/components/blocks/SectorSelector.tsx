@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useSector } from '@/app/contexts/SectorContext';
+import { getValidKeyOrDefault } from '@/app/client-utils';
 
 const sectors = [
   'All Sectors',
@@ -35,9 +36,11 @@ export default function SectorSelector({
 }) {
   const { selectedSector, setSelectedSector } = useSector();
   const { marginTop = 'medium', marginBottom = 'medium' } = block;
+  const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'medium');
+  const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'medium');
 
   return (
-    <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]} flex justify-center items-center`}>
+    <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]} flex justify-center items-center`}>
       <div className="flex flex-wrap gap-3 justify-center">
         {sectors.map((sector) => {
           const isSelected = selectedSector === sector;
