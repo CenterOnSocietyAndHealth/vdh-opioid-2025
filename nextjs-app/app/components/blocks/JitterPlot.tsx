@@ -42,7 +42,7 @@ const sectorToFieldMapping: Record<string, string> = {
 
 // Display names for sectors
 const sectorDisplayNames: Record<string, string> = {
-  'All Sectors': 'Total',
+  'All Sectors': 'All-Sector',
   'Lost Labor': 'Lost Labor',
   'Health Care': 'Health Care',
   'Child Services & K-12': 'Child Services & K-12',
@@ -532,7 +532,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
             const moreOrLess = (percentageDifference || 0) > 0 ? 'more' : 'less';
             const localityName = selectedLocality?.counties?.trim() || '';
             const absDiff = Math.abs(Math.round(percentageDifference || 0));
-            const sectorLower = sectorName === 'Total' ? 'total costs' : sectorName.toLowerCase();
+            const sectorLower = sectorName === 'All-Sector' ? 'all-sector costs' : sectorName.toLowerCase();
             return (
               <>
                 <span style={{ fontWeight: 700 }}>{localityName}</span> paid {absDiff}% {moreOrLess} per person for <span style={{ fontWeight: 700 }}>{sectorLower}</span> than the average Virginia community
