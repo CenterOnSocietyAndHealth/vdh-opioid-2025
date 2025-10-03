@@ -69,7 +69,7 @@ const importData = async () => {
     const results = []
 
     // Read CSV file
-    fs.createReadStream('./public/AllOpioidData2021f.csv')
+    fs.createReadStream('./public/AllOpioidData2021g.csv')
         .pipe(csv())
         .on('data', (data) => results.push(data))
         .on('end', async () => {

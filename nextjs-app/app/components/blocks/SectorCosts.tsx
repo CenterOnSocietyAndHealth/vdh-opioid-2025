@@ -461,7 +461,7 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                   <a
                     href={`#${citationId}`}
                     onClick={handleCitationClick}
-                    className="hover:bg-[#F3E7B9] underline text-sm font-medium align-super cursor-pointer"
+                    className="hover:bg-[#cfe6ef] underline text-sm font-medium align-super cursor-pointer"
                     title="View source"
                     style={{ fontSize: '0.75em', verticalAlign: 'super' }}
                   >
