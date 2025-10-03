@@ -120,6 +120,7 @@ export type TextContentProps = {
     maxWidth?: number;
   };
   selectedLocality?: Locality;
+  localities?: Locality[];
 };
 
 // Type for the costs breakdown component props

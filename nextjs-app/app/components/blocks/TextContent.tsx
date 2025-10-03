@@ -4,10 +4,12 @@ import { PortableText } from 'next-sanity'
 import imageUrlBuilder from '@sanity/image-url'
 import { client } from '@/sanity/lib/client'
 import { useEffect, useState } from 'react'
-import { TextContentProps } from '@/app/types/locality'
+import { TextContentProps, Locality } from '@/app/types/locality'
 import DefinitionPopup from '@/app/components/DefinitionPopup'
 import Image from 'next/image'
 import { useSector } from '@/app/contexts/SectorContext'
+import { useLocality } from '@/app/contexts/LocalityContext'
+import { getValidKeyOrDefault, getValidHexColorOrDefault } from '@/app/client-utils'
 import ResolvedLink from '@/app/components/ResolvedLink'
 
 const urlForImage = (source: any) => {
@@ -41,15 +43,13 @@ const getNestedValue = (obj: any, path: string) => {
   }, obj)
 }
 
-// Function to clean corrupted string values by removing invisible Unicode characters
-const cleanString = (str: string | undefined): string | undefined => {
-  if (typeof str !== 'string') return str
-  // Remove invisible Unicode characters that might be causing corruption
-  return str.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim()
-}
 
-export default function TextContent({ block, selectedLocality }: TextContentProps) {
+export default function TextContent({ block, selectedLocality: propSelectedLocality, localities }: TextContentProps & { localities?: Locality[] }) {
   const { selectedSector } = useSector();
+  const { selectedLocality: contextSelectedLocality } = useLocality();
+  
+  // Use context selectedLocality if available, otherwise fall back to prop
+  const selectedLocality = contextSelectedLocality || propSelectedLocality;
   const { 
     content, 
     sectionId,
@@ -61,24 +61,17 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
     maxWidth
   } = block
 
-  // Clean corrupted string values
-  const cleanMarginTop = cleanString(marginTop)
-  const cleanMarginBottom = cleanString(marginBottom)
-  const cleanTextAlignment = cleanString(textAlignment)
-  const cleanBackgroundColor = cleanString(backgroundColor)
-  const cleanCustomBackgroundColor = cleanString(customBackgroundColor)
-
   // Validate and sanitize backgroundColor
-  const finalBackgroundColor = cleanBackgroundColor === 'custom' && cleanCustomBackgroundColor 
-    ? (typeof cleanCustomBackgroundColor === 'string' && cleanCustomBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? cleanCustomBackgroundColor : 'transparent')
-    : (cleanBackgroundColor === 'transparent' ? 'transparent' : (typeof cleanBackgroundColor === 'string' && cleanBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? cleanBackgroundColor : 'transparent'))
+  const finalBackgroundColor = backgroundColor === 'custom' && customBackgroundColor 
+    ? getValidHexColorOrDefault(customBackgroundColor, 'transparent')
+    : (backgroundColor === 'transparent' ? 'transparent' : getValidHexColorOrDefault(backgroundColor, 'transparent'))
   
   // Validate margin values to prevent undefined classes
-  const validMarginTop = cleanMarginTop && marginMap[cleanMarginTop as keyof typeof marginMap] ? cleanMarginTop : 'none'
-  const validMarginBottom = cleanMarginBottom && marginBottomMap[cleanMarginBottom as keyof typeof marginBottomMap] ? cleanMarginBottom : 'none'
+  const validMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none')
+  const validMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
   
   // Validate text alignment to prevent undefined classes
-  const validTextAlignment = cleanTextAlignment && alignmentMap[cleanTextAlignment as keyof typeof alignmentMap] ? cleanTextAlignment : 'left'
+  const validTextAlignment = getValidKeyOrDefault(textAlignment, alignmentMap, 'left')
   const [isUpdating, setIsUpdating] = useState(false)
 
   // Listen for locality updates
@@ -98,19 +91,12 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
   console.log('TextContent block:', { marginTop, marginBottom, textAlignment, backgroundColor, customBackgroundColor, maxWidth })
   console.log('TextContent sector context:', { selectedSector })
   console.log('TextContent content:', content)
-  console.log('Cleaned values:', { 
-    cleanMarginTop, 
-    cleanMarginBottom, 
-    cleanTextAlignment,
-    cleanBackgroundColor
-  })
   console.log('Margin classes:', { 
     topClass: marginMap[validMarginTop as keyof typeof marginMap], 
     bottomClass: marginBottomMap[validMarginBottom as keyof typeof marginBottomMap] 
   })
   console.log('Text alignment:', { 
-    original: textAlignment, 
-    cleaned: cleanTextAlignment,
+    original: textAlignment,
     valid: validTextAlignment, 
     class: alignmentMap[validTextAlignment as keyof typeof alignmentMap] 
   })
@@ -222,10 +208,30 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
                 }
               },
               localityField: ({ children, value }) => {
-                if (!selectedLocality || !value.fieldPath) {
+                if (!value.fieldPath) {
                   return children
                 }
-                const fieldValue = getNestedValue(selectedLocality, value.fieldPath)
+                
+                let fieldValue;
+                
+                if (selectedLocality) {
+                  // Use selected locality value
+                  fieldValue = getNestedValue(selectedLocality, value.fieldPath)
+                } else if (localities && localities.length > 0) {
+                  // Calculate Virginia average when no locality is selected
+                  const values = localities
+                    .filter((loc: Locality) => loc.counties !== 'Virginia' && loc.counties !== 'Virginia Total')
+                    .map((loc: Locality) => {
+                      const val = getNestedValue(loc, value.fieldPath)
+                      return typeof val === 'number' ? val : 0
+                    })
+                    .filter((val: number) => val >= 0)
+                  
+                  if (values.length > 0) {
+                    fieldValue = values.reduce((sum: number, val: number) => sum + val, 0) / values.length
+                  }
+                }
+                
                 if (fieldValue === undefined) {
                   return children
                 }
