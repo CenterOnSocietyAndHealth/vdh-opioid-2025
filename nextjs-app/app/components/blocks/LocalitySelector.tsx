@@ -49,7 +49,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
     { value: "State", label: "State of Virginia" },
     ...(localities ? localities.map((locality) => ({
       value: locality._id,
-      label: locality.counties,
+      label: locality.counties.trim(),
     })).sort((a, b) => a.label.localeCompare(b.label)) : [])
   ];
 

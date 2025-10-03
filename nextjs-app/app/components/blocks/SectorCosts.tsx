@@ -110,12 +110,6 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
   }
 
   const currentContent = getContentForSector()
-
-  // Debug logging (can be removed in production)
-  // console.log('SectorCosts block:', { selectedSector, marginTop, marginBottom, textAlignment, backgroundColor, customBackgroundColor, maxWidth })
-  // console.log('SectorCosts sector context:', { selectedSector })
-  // console.log('SectorCosts selectedLocality:', { contextSelectedLocality, propSelectedLocality, finalSelectedLocality: selectedLocality })
-  // console.log('Current content for sector:', currentContent)
   
   return (
     <div className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
@@ -245,6 +239,12 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                 if (selectedLocality) {
                   // Use selected locality value
                   fieldValue = getNestedValue(selectedLocality, value.fieldPath)
+                  
+                  // Special handling for counties field to trim trailing spaces
+                  if (value.fieldPath === 'counties' && typeof fieldValue === 'string') {
+                    fieldValue = fieldValue.trim();
+                  }
+                  
                   console.log('Using selectedLocality value:', fieldValue);
                 } else if (localities && localities.length > 0) {
                   // Find Virginia data row when no locality is selected
@@ -258,6 +258,12 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                   
                   if (virginia) {
                     fieldValue = getNestedValue(virginia, value.fieldPath)
+                    
+                    // Special handling for counties field to trim trailing spaces
+                    if (value.fieldPath === 'counties' && typeof fieldValue === 'string') {
+                      fieldValue = fieldValue.trim();
+                    }
+                    
                     console.log('Using Virginia data value:', fieldValue);
                   }
                 }
@@ -268,6 +274,12 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                   
                   if (virginia) {
                     fieldValue = getNestedValue(virginia, value.fieldPath)
+                    
+                    // Special handling for counties field to trim trailing spaces
+                    if (value.fieldPath === 'counties' && typeof fieldValue === 'string') {
+                      fieldValue = fieldValue.trim();
+                    }
+                    
                     console.log('Using Virginia fallback value:', fieldValue);
                   }
                 }
@@ -344,6 +356,9 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                     }
                   }
                 } else if (typeof fieldValue === 'string') {
+                  // Trim the field value to remove any trailing spaces (especially important for draft mode)
+                  fieldValue = fieldValue.trim();
+                  
                   // Handle string values - they might already be formatted
                   const numValue = parseFloat(fieldValue.replace(/[,$%]/g, ''))
                   

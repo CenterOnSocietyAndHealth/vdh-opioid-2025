@@ -47,9 +47,9 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
     return localities
       .filter(locality => locality.countyFips !== '51999') // Exclude Virginia state total
       .filter(locality => 
-        locality.counties.toLowerCase().includes(searchTerm.toLowerCase())
+        locality.counties.trim().toLowerCase().includes(searchTerm.toLowerCase())
       )
-      .sort((a, b) => a.counties.localeCompare(b.counties));
+      .sort((a, b) => a.counties.trim().localeCompare(b.counties.trim()));
   }, [localities, searchTerm]);
 
   console.log("filteredLocalities", filteredLocalities);
@@ -128,7 +128,7 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
               {filteredLocalities.map((locality) => (
                 <tr key={locality._id} className="border-b border-[#E0DCDC] hover:bg-gray-50">
                   <td className="py-0 px-0 text-[#1E1E1E] font-inter text-sm font-normal leading-[289%]">
-                    {locality.counties}
+                    {locality.counties.trim()}
                   </td>
                   <td className="py-0 px-0 text-right text-[#1E1E1E] font-inter text-sm font-normal leading-[289%]">
                     {locality.sectorBreakdown?.householdSectorTotal != null

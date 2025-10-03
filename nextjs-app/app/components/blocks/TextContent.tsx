@@ -217,12 +217,22 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                 if (selectedLocality) {
                   // Use selected locality value
                   fieldValue = getNestedValue(selectedLocality, value.fieldPath)
+                  
+                  // Special handling for counties field to trim trailing spaces
+                  if (value.fieldPath === 'counties' && typeof fieldValue === 'string') {
+                    fieldValue = fieldValue.trim();
+                  }
                 } else if (localities && localities.length > 0) {
                   // Find Virginia data row when no locality is selected
                   const virginia = findVirginiaLocality(localities);
                   
                   if (virginia) {
                     fieldValue = getNestedValue(virginia, value.fieldPath)
+                    
+                    // Special handling for counties field to trim trailing spaces
+                    if (value.fieldPath === 'counties' && typeof fieldValue === 'string') {
+                      fieldValue = fieldValue.trim();
+                    }
                   }
                 }
                 
@@ -232,6 +242,11 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                   
                   if (virginia) {
                     fieldValue = getNestedValue(virginia, value.fieldPath)
+                    
+                    // Special handling for counties field to trim trailing spaces
+                    if (value.fieldPath === 'counties' && typeof fieldValue === 'string') {
+                      fieldValue = fieldValue.trim();
+                    }
                   }
                 }
                 
@@ -305,6 +320,9 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                     }
                   }
                 } else if (typeof fieldValue === 'string') {
+                  // Trim the field value to remove any trailing spaces (especially important for draft mode)
+                  fieldValue = fieldValue.trim();
+                  
                   // Handle string values - they might already be formatted
                   const numValue = parseFloat(fieldValue.replace(/[,$%]/g, ''))
                   

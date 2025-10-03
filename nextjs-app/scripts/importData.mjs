@@ -92,7 +92,7 @@ const importData = async () => {
 
                 const document = {
                     _type: 'locality',
-                    counties: row.LocalityName,
+                    counties: row.LocalityName.trim(),
                     fips: row.FIPS,
                     countyFips: row.CountyFIPS,
                     marcCountyId: row.Marc_CountyID1,
