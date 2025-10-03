@@ -1,22 +1,26 @@
 import React from 'react'
 import { OnThisPageProps } from '@/app/types/locality'
+import { getValidKeyOrDefault } from '@/app/client-utils'
+
+const marginMap = {
+  none: 'mt-0',
+  small: 'mt-[20px]',
+  medium: 'mt-[40px]',
+  large: 'mt-[60px]',
+}
+
+const marginBottomMap = {
+  none: 'mb-0',
+  small: 'mb-[20px]',
+  medium: 'mb-[40px]',
+  large: 'mb-[60px]',
+}
 
 export default function OnThisPage({ block }: OnThisPageProps) {
   const { links = [], marginTop = 'none', marginBottom = 'none' } = block
 
-  const marginMap = {
-    none: 'mt-0',
-    small: 'mt-[20px]',
-    medium: 'mt-[40px]',
-    large: 'mt-[60px]',
-  }
-
-  const marginBottomMap = {
-    none: 'mb-0',
-    small: 'mb-[20px]',
-    medium: 'mb-[40px]',
-    large: 'mb-[60px]',
-  }
+  const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none')
+  const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
 
   const handleLinkClick = (destinationId: string) => {
     const element = document.getElementById(destinationId)
@@ -33,7 +37,7 @@ export default function OnThisPage({ block }: OnThisPageProps) {
   }
 
   return (
-    <div className={`${marginMap[marginTop as keyof typeof marginMap]} ${marginBottomMap[marginBottom as keyof typeof marginBottomMap]}`}>
+    <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       <div className="w-full bg-[#F5F5F0] py-8 px-6">
         <div className="flex items-center justify-center space-x-6">
           {/* Icon and "On this page:" label */}

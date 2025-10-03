@@ -1,6 +1,7 @@
 import React from 'react';
 import BlockRenderer from '../BlockRenderer';
 import { Locality } from '@/app/types/locality';
+import { getValidKeyOrDefault } from '@/app/client-utils';
 
 type ColumnLayoutProps = {
   block: {
@@ -49,6 +50,9 @@ export default function ColumnLayout({ block, pageId, pageType, localities, path
     maxWidth 
   } = block;
 
+  const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'medium')
+  const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'medium')
+
   // Calculate column widths - use custom widths if provided, otherwise equal distribution
   const getColumnWidth = (columnIndex: number, customWidth?: number) => {
     if (customWidth) {
@@ -65,7 +69,7 @@ export default function ColumnLayout({ block, pageId, pageType, localities, path
   const containerStyle = maxWidth ? { maxWidth: `${maxWidth}px`, margin: '0 auto' } : {};
 
   return (
-    <div className={`${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+    <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       <div className="flex flex-wrap -mx-4" style={containerStyle}>
         <div className="px-4" style={column1Style}>
           {column1?.map((childBlock: any, index: number) => (
