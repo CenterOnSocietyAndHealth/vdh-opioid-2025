@@ -1,5 +1,6 @@
 import React from 'react';
 import { PayerBreakdownProps } from '@/app/types/locality';
+import { getValidKeyOrDefault, getValidHexColorOrDefault } from '@/app/client-utils';
 
 const marginMap = {
   none: 'mt-0',
@@ -56,29 +57,17 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
     marginBottom = 'medium'
   } = block;
 
-  // Clean potential invisible characters in draft-mode string values
-  const cleanString = (str: string | undefined): string | undefined => {
-    if (typeof str !== 'string') return str;
-    return str.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim();
-  };
+  // Sanitize margin values using shared utilities
+  const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'medium');
+  const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'medium');
 
-  const isValidHex = (str: string | undefined): boolean => {
-    return typeof str === 'string' && /^#[0-9A-Fa-f]{6}$/.test(str);
-  };
-
-  const cleanFamiliesBusinessesColor = cleanString(familiesBusinessesColor);
-  const cleanFamiliesBusinessesTextColor = cleanString(familiesBusinessesTextColor);
-  const cleanFederalColor = cleanString(federalColor);
-  const cleanFederalTextColor = cleanString(federalTextColor);
-  const cleanStateLocalColor = cleanString(stateLocalColor);
-  const cleanStateLocalTextColor = cleanString(stateLocalTextColor);
-
-  const safeFamiliesBusinessesColor = isValidHex(cleanFamiliesBusinessesColor) ? cleanFamiliesBusinessesColor! : '#cccccc';
-  const safeFamiliesBusinessesTextColor = isValidHex(cleanFamiliesBusinessesTextColor) ? cleanFamiliesBusinessesTextColor! : '#1E1E1E';
-  const safeFederalColor = isValidHex(cleanFederalColor) ? cleanFederalColor! : '#cccccc';
-  const safeFederalTextColor = isValidHex(cleanFederalTextColor) ? cleanFederalTextColor! : '#1E1E1E';
-  const safeStateLocalColor = isValidHex(cleanStateLocalColor) ? cleanStateLocalColor! : '#cccccc';
-  const safeStateLocalTextColor = isValidHex(cleanStateLocalTextColor) ? cleanStateLocalTextColor! : '#1E1E1E';
+  // Sanitize color values using shared utilities
+  const safeFamiliesBusinessesColor = getValidHexColorOrDefault(familiesBusinessesColor, '#cccccc');
+  const safeFamiliesBusinessesTextColor = getValidHexColorOrDefault(familiesBusinessesTextColor, '#1E1E1E');
+  const safeFederalColor = getValidHexColorOrDefault(federalColor, '#cccccc');
+  const safeFederalTextColor = getValidHexColorOrDefault(federalTextColor, '#1E1E1E');
+  const safeStateLocalColor = getValidHexColorOrDefault(stateLocalColor, '#cccccc');
+  const safeStateLocalTextColor = getValidHexColorOrDefault(stateLocalTextColor, '#1E1E1E');
   
   // Calculate total and percentages
   const totalValue = familiesBusinessesValue + federalValue + stateLocalValue;
@@ -88,7 +77,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
   const governmentPercent = federalPercent + stateLocalPercent;
   
   return (
-    <div className={`max-w-[1180px] mx-auto ${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}>
+    <div className={`max-w-[1180px] mx-auto ${marginMap[safeMarginTop]} ${marginBottomMap[safeMarginBottom]}`}>
       {/* Header */}
       <div className="text-center mb-12 max-w-[600px] mx-auto">
         <h2 className="text-2xl font-normal mb-2">{title}</h2>
