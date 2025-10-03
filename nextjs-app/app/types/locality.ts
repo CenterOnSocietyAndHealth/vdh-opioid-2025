@@ -275,6 +275,7 @@ export type SectorCostsProps = {
     maxWidth?: number;
   };
   selectedLocality?: Locality;
+  localities: Locality[];
 };
 
 // Type for the locality payor breakdown component props
