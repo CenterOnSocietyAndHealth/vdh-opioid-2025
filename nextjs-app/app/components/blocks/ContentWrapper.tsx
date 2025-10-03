@@ -68,10 +68,11 @@ export default function ContentWrapper({ block, selectedLocality, localities, pa
   const cleanBackgroundWidth = cleanString(backgroundWidth)
   const cleanContentWidth = cleanString(contentWidth)
   const cleanPadding = cleanString(padding)
+  const cleanCustomBackgroundColor = cleanString(customBackgroundColor)
 
   // Validate and sanitize backgroundColor
-  const finalBackgroundColor = cleanBackgroundColor === 'custom' && customBackgroundColor 
-    ? (typeof customBackgroundColor === 'string' && customBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? customBackgroundColor : '#ffffff')
+  const finalBackgroundColor = cleanBackgroundColor === 'custom' && cleanCustomBackgroundColor 
+    ? (typeof cleanCustomBackgroundColor === 'string' && cleanCustomBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? cleanCustomBackgroundColor : '#ffffff')
     : (typeof cleanBackgroundColor === 'string' && cleanBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? cleanBackgroundColor : '#ffffff')
   
   // Validate margin values to prevent undefined classes

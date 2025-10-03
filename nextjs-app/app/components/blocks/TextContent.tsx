@@ -66,10 +66,11 @@ export default function TextContent({ block, selectedLocality }: TextContentProp
   const cleanMarginBottom = cleanString(marginBottom)
   const cleanTextAlignment = cleanString(textAlignment)
   const cleanBackgroundColor = cleanString(backgroundColor)
+  const cleanCustomBackgroundColor = cleanString(customBackgroundColor)
 
   // Validate and sanitize backgroundColor
-  const finalBackgroundColor = cleanBackgroundColor === 'custom' && customBackgroundColor 
-    ? (typeof customBackgroundColor === 'string' && customBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? customBackgroundColor : 'transparent')
+  const finalBackgroundColor = cleanBackgroundColor === 'custom' && cleanCustomBackgroundColor 
+    ? (typeof cleanCustomBackgroundColor === 'string' && cleanCustomBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? cleanCustomBackgroundColor : 'transparent')
     : (cleanBackgroundColor === 'transparent' ? 'transparent' : (typeof cleanBackgroundColor === 'string' && cleanBackgroundColor.match(/^#[0-9A-Fa-f]{6}$/) ? cleanBackgroundColor : 'transparent'))
   
   // Validate margin values to prevent undefined classes
