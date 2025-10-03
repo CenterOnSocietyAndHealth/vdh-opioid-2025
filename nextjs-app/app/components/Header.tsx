@@ -74,7 +74,7 @@ export default async function Header() {
 
         {/* Use the client-side Navigation component */}
         <Navigation items={navigationItems} />
-        <div className="flex items-center gap-4 w-48"></div>
+        <div className="flex items-center gap-4 w-[135px]"></div>
       </div>
     </header>
     </>
