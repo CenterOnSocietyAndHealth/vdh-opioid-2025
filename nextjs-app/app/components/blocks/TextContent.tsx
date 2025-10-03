@@ -9,7 +9,7 @@ import DefinitionPopup from '@/app/components/DefinitionPopup'
 import Image from 'next/image'
 import { useSector } from '@/app/contexts/SectorContext'
 import { useLocality } from '@/app/contexts/LocalityContext'
-import { getValidKeyOrDefault, getValidHexColorOrDefault } from '@/app/client-utils'
+import { getValidKeyOrDefault, getValidHexColorOrDefault, findVirginiaLocality } from '@/app/client-utils'
 import ResolvedLink from '@/app/components/ResolvedLink'
 
 const urlForImage = (source: any) => {
@@ -219,18 +219,7 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                   fieldValue = getNestedValue(selectedLocality, value.fieldPath)
                 } else if (localities && localities.length > 0) {
                   // Find Virginia data row when no locality is selected
-                  // Use sanitized comparison to handle Draft mode corruption
-                  const virginia = localities.find((loc: Locality) => {
-                    const cleanCounties = loc.counties?.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim();
-                    const cleanFips = loc.fips?.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim();
-                    const cleanMarcCountyId = loc.marcCountyId?.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim();
-                    
-                    return cleanCounties === 'Virginia Total' || 
-                           cleanCounties === 'Virginia' ||
-                           cleanFips === 'us-va-999' ||
-                           cleanMarcCountyId === '999' ||
-                           loc._id === 'locality-999';
-                  });
+                  const virginia = findVirginiaLocality(localities);
                   
                   if (virginia) {
                     fieldValue = getNestedValue(virginia, value.fieldPath)
@@ -239,17 +228,7 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                 
                 // If we still don't have a value, try to find Virginia data as fallback
                 if (fieldValue === undefined && localities && localities.length > 0) {
-                  const virginia = localities.find((loc: Locality) => {
-                    const cleanCounties = loc.counties?.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim();
-                    const cleanFips = loc.fips?.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim();
-                    const cleanMarcCountyId = loc.marcCountyId?.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim();
-                    
-                    return cleanCounties === 'Virginia Total' || 
-                           cleanCounties === 'Virginia' ||
-                           cleanFips === 'us-va-999' ||
-                           cleanMarcCountyId === '999' ||
-                           loc._id === 'locality-999';
-                  });
+                  const virginia = findVirginiaLocality(localities);
                   
                   if (virginia) {
                     fieldValue = getNestedValue(virginia, value.fieldPath)

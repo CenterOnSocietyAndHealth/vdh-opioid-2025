@@ -56,3 +56,18 @@ export function getValidHexColorOrDefault(
   const cleaned = cleanStringDraftSafe(raw);
   return typeof cleaned === 'string' && /^#[0-9A-Fa-f]{6}$/.test(cleaned) ? cleaned : fallback;
 }
+
+// Utility to find Virginia locality with Draft mode corruption handling
+export function findVirginiaLocality(localities: any[]): any | undefined {
+  return localities.find((loc: any) => {
+    const cleanCounties = cleanStringDraftSafe(loc.counties);
+    const cleanFips = cleanStringDraftSafe(loc.fips);
+    const cleanMarcCountyId = cleanStringDraftSafe(loc.marcCountyId);
+    
+    return cleanCounties === 'Virginia Total' || 
+           cleanCounties === 'Virginia' ||
+           cleanFips === 'us-va-999' ||
+           cleanMarcCountyId === '999' ||
+           loc._id === 'locality-999';
+  });
+}
