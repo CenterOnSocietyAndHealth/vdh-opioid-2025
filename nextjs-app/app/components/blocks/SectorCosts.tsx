@@ -216,9 +216,21 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                 
                 let fieldValue;
                 
+                // Debug logging for Draft mode
+                console.log('SectorCosts localityField debug:', {
+                  fieldPath: value.fieldPath,
+                  selectedLocality: selectedLocality ? {
+                    _id: selectedLocality._id,
+                    counties: selectedLocality.counties,
+                    fips: selectedLocality.fips
+                  } : null,
+                  localitiesCount: localities?.length
+                });
+                
                 if (selectedLocality) {
                   // Use selected locality value
                   fieldValue = getNestedValue(selectedLocality, value.fieldPath)
+                  console.log('Using selectedLocality value:', fieldValue);
                 } else if (localities && localities.length > 0) {
                   // Find Virginia data row when no locality is selected
                   const virginia = localities.find((loc: Locality) => 
@@ -228,10 +240,34 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                     loc.marcCountyId === '999'
                   );
                   
+                  console.log('Found Virginia locality:', virginia ? {
+                    _id: virginia._id,
+                    counties: virginia.counties,
+                    fips: virginia.fips
+                  } : null);
+                  
                   if (virginia) {
                     fieldValue = getNestedValue(virginia, value.fieldPath)
+                    console.log('Using Virginia data value:', fieldValue);
                   }
                 }
+                
+                // If we still don't have a value, try to find Virginia data as fallback
+                if (fieldValue === undefined && localities && localities.length > 0) {
+                  const virginia = localities.find((loc: Locality) => 
+                    loc.counties === 'Virginia Total' || 
+                    loc.counties === 'Virginia' ||
+                    loc.fips === 'us-va-999' ||
+                    loc.marcCountyId === '999'
+                  );
+                  
+                  if (virginia) {
+                    fieldValue = getNestedValue(virginia, value.fieldPath)
+                    console.log('Using Virginia fallback value:', fieldValue);
+                  }
+                }
+                
+                console.log('Final fieldValue:', fieldValue);
                 
                 if (fieldValue === undefined) {
                   return children

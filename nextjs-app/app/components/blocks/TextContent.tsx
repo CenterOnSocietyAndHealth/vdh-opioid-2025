@@ -231,6 +231,20 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                   }
                 }
                 
+                // If we still don't have a value, try to find Virginia data as fallback
+                if (fieldValue === undefined && localities && localities.length > 0) {
+                  const virginia = localities.find((loc: Locality) => 
+                    loc.counties === 'Virginia Total' || 
+                    loc.counties === 'Virginia' ||
+                    loc.fips === 'us-va-999' ||
+                    loc.marcCountyId === '999'
+                  );
+                  
+                  if (virginia) {
+                    fieldValue = getNestedValue(virginia, value.fieldPath)
+                  }
+                }
+                
                 if (fieldValue === undefined) {
                   return children
                 }
