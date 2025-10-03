@@ -218,17 +218,16 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                   // Use selected locality value
                   fieldValue = getNestedValue(selectedLocality, value.fieldPath)
                 } else if (localities && localities.length > 0) {
-                  // Calculate Virginia average when no locality is selected
-                  const values = localities
-                    .filter((loc: Locality) => loc.counties !== 'Virginia' && loc.counties !== 'Virginia Total')
-                    .map((loc: Locality) => {
-                      const val = getNestedValue(loc, value.fieldPath)
-                      return typeof val === 'number' ? val : 0
-                    })
-                    .filter((val: number) => val >= 0)
+                  // Find Virginia data row when no locality is selected
+                  const virginia = localities.find((loc: Locality) => 
+                    loc.counties === 'Virginia Total' || 
+                    loc.counties === 'Virginia' ||
+                    loc.fips === 'us-va-999' ||
+                    loc.marcCountyId === '999'
+                  );
                   
-                  if (values.length > 0) {
-                    fieldValue = values.reduce((sum: number, val: number) => sum + val, 0) / values.length
+                  if (virginia) {
+                    fieldValue = getNestedValue(virginia, value.fieldPath)
                   }
                 }
                 
