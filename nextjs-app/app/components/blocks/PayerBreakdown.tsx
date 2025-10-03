@@ -55,6 +55,30 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
     marginTop = 'medium',
     marginBottom = 'medium'
   } = block;
+
+  // Clean potential invisible characters in draft-mode string values
+  const cleanString = (str: string | undefined): string | undefined => {
+    if (typeof str !== 'string') return str;
+    return str.replace(/[\u200B-\u200D\uFEFF\u2060-\u2064\u206A-\u206F]/g, '').trim();
+  };
+
+  const isValidHex = (str: string | undefined): boolean => {
+    return typeof str === 'string' && /^#[0-9A-Fa-f]{6}$/.test(str);
+  };
+
+  const cleanFamiliesBusinessesColor = cleanString(familiesBusinessesColor);
+  const cleanFamiliesBusinessesTextColor = cleanString(familiesBusinessesTextColor);
+  const cleanFederalColor = cleanString(federalColor);
+  const cleanFederalTextColor = cleanString(federalTextColor);
+  const cleanStateLocalColor = cleanString(stateLocalColor);
+  const cleanStateLocalTextColor = cleanString(stateLocalTextColor);
+
+  const safeFamiliesBusinessesColor = isValidHex(cleanFamiliesBusinessesColor) ? cleanFamiliesBusinessesColor! : '#cccccc';
+  const safeFamiliesBusinessesTextColor = isValidHex(cleanFamiliesBusinessesTextColor) ? cleanFamiliesBusinessesTextColor! : '#1E1E1E';
+  const safeFederalColor = isValidHex(cleanFederalColor) ? cleanFederalColor! : '#cccccc';
+  const safeFederalTextColor = isValidHex(cleanFederalTextColor) ? cleanFederalTextColor! : '#1E1E1E';
+  const safeStateLocalColor = isValidHex(cleanStateLocalColor) ? cleanStateLocalColor! : '#cccccc';
+  const safeStateLocalTextColor = isValidHex(cleanStateLocalTextColor) ? cleanStateLocalTextColor! : '#1E1E1E';
   
   // Calculate total and percentages
   const totalValue = familiesBusinessesValue + federalValue + stateLocalValue;
@@ -121,7 +145,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
             className="absolute top-0 left-0 h-full flex items-center"
             style={{
               width: `${familiesBusinessesPercent}%`,
-              backgroundColor: familiesBusinessesColor,
+              backgroundColor: safeFamiliesBusinessesColor,
             }}
           >
             <div className="ml-4 text-left">
@@ -133,7 +157,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                   fontStyle: 'normal',
                   fontWeight: 700,
                   lineHeight: 'normal',
-                  color: familiesBusinessesTextColor,
+                  color: safeFamiliesBusinessesTextColor,
                 }}
               >
                 {familiesBusinessesPercent.toFixed(1)}% ({formatCostShort(familiesBusinessesValue)})
@@ -146,7 +170,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                   fontWeight: 500,
                   lineHeight: '130%',
                   letterSpacing: '-0.342px',
-                  color: familiesBusinessesTextColor,
+                  color: safeFamiliesBusinessesTextColor,
                 }}
               >
                 Families & Businesses
@@ -160,7 +184,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
             style={{
               left: `${familiesBusinessesPercent}%`,
               width: `${federalPercent}%`,
-              backgroundColor: federalColor,
+              backgroundColor: safeFederalColor,
             }}
           >
             <div className="ml-4 text-left">
@@ -172,7 +196,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                   fontStyle: 'normal',
                   fontWeight: 700,
                   lineHeight: 'normal',
-                  color: federalTextColor,
+                  color: safeFederalTextColor,
                 }}
               >
                 {federalPercent.toFixed(1)}% ({formatCostShort(federalValue)})
@@ -185,7 +209,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                   fontWeight: 500,
                   lineHeight: '130%',
                   letterSpacing: '-0.342px',
-                  color: federalTextColor,
+                  color: safeFederalTextColor,
                 }}
               >
                 Federal
@@ -199,7 +223,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
             style={{
               left: `${familiesBusinessesPercent + federalPercent}%`,
               width: `${stateLocalPercent}%`,
-              backgroundColor: stateLocalColor,
+              backgroundColor: safeStateLocalColor,
             }}
           >
             <div className="ml-4 text-left">
@@ -211,7 +235,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                   fontStyle: 'normal',
                   fontWeight: 700,
                   lineHeight: 'normal',
-                  color: stateLocalTextColor,
+                  color: safeStateLocalTextColor,
                 }}
               >
                 {stateLocalPercent.toFixed(1)}% ({formatCostShort(stateLocalValue)})
@@ -224,7 +248,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                   fontWeight: 500,
                   lineHeight: '130%',
                   letterSpacing: '-0.342px',
-                  color: stateLocalTextColor,
+                  color: safeStateLocalTextColor,
                 }}
               >
                 State/Local
