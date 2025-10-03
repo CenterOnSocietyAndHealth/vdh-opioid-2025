@@ -42,7 +42,7 @@ export const textContent = defineType({
       options: {
         list: [
           {title: 'None', value: 'transparent'},
-          {title: 'Light Gray', value: '#f0f0f0'},
+          {title: 'Light Gray', value: '#FCFAF8'},
           {title: 'White', value: '#ffffff'},
           {title: 'Light Blue', value: '#e6f3ff'},
           {title: 'Light Green', value: '#f0f8f0'},
