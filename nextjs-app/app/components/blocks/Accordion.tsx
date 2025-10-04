@@ -63,30 +63,49 @@ export default function Accordion({ block }: AccordionProps) {
     setIsExpanded(!isExpanded)
   }
 
-  const renderTitle = () => {
-    const titleContent = <span className="font-[18px] font-medium">{title}</span>
+  const getHeadingId = () => `accordion-heading-${title.replace(/\s+/g, '-').toLowerCase()}`
+  
+  const renderHeading = () => {
+    const headingProps = {
+      id: getHeadingId(),
+      className: "font-medium text-black font-[18px]"
+    }
     
     switch (headingLevel) {
       case 'h2':
-        return <h2 className="font-medium text-black">{title}</h2>
+        return <h2 {...headingProps}>{title}</h2>
       case 'h3':
-        return <h3 className="font-medium text-black">{title}</h3>
+        return <h3 {...headingProps}>{title}</h3>
       case 'h4':
-        return <h4 className="font-medium text-black">{title}</h4>
+        return <h4 {...headingProps}>{title}</h4>
       default:
-        return titleContent
+        return <span {...headingProps}>{title}</span>
     }
+  }
+
+  const renderButtonContent = () => {
+    return <span className="font-medium text-black font-[18px]">{title}</span>
   }
 
   return (
     <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       <div className="">
         {/* Accordion Header */}
-        <button
-          onClick={toggleAccordion}
-          className="w-full px-0 py-3 pt-5 flex items-center justify-between text-left  transition-colors duration-200"
-        >
-          <div className="flex items-center space-x-3">
+        <div className="relative px-0 py-3 pt-5">
+          {/* Heading - positioned for screen readers */}
+          <div className="sr-only">
+            {renderHeading()}
+          </div>
+          
+          {/* Clickable button area */}
+          <button
+            onClick={toggleAccordion}
+            className="w-full flex items-center space-x-3 text-left transition-colors duration-200"
+            aria-expanded={isExpanded}
+            aria-controls={`accordion-content-${title}`}
+            aria-labelledby={getHeadingId()}
+            aria-label={`Toggle ${title} accordion`}
+          >
             {/* Plus/X icon */}
             <svg 
               className={`w-[12px] h-[12px] text-black flex-shrink-0 transition-transform duration-200 ${isExpanded ? 'rotate-45' : ''}`}
@@ -94,13 +113,14 @@ export default function Accordion({ block }: AccordionProps) {
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
-            {/* Title */}
-            {renderTitle()}
-          </div>
-        </button>
+            {/* Visual title text */}
+            {renderButtonContent()}
+          </button>
+        </div>
         
         {/* Divider line - only show when collapsed */}
         {!isExpanded && <div className="border-t border-gray-300"></div>}
@@ -111,6 +131,7 @@ export default function Accordion({ block }: AccordionProps) {
           className={`overflow-hidden transition-all duration-300 ease-in-out ${
             isExpanded ? 'max-h-none opacity-100' : 'max-h-0 opacity-0'
           }`}
+          aria-hidden={!isExpanded}
         >
           <div className="px-0 py-4">
             <PortableText

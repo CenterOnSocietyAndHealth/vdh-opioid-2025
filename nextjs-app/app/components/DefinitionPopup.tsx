@@ -213,7 +213,7 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
         <div
           ref={tooltipRef}
           id={`definition-${term.replace(/\s+/g, '-').toLowerCase()}`}
-          className="fixed z-50 max-w-xs shadow-lg p-3"
+          className="fixed z-50 max-w-xs shadow-lg py-[27px] px-[17px]"
           role="tooltip"
           aria-live="polite"
           style={{
