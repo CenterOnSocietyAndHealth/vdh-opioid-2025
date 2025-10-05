@@ -55,7 +55,8 @@ export default function ImageBlock({ block }: ImageProps) {
     customBackgroundColor,
     maxWidth,
     imageSize = 'medium',
-    customImageWidth
+    customImageWidth,
+    hasShadow = false
   } = block
 
   // Clean corrupted string values
@@ -106,7 +107,7 @@ export default function ImageBlock({ block }: ImageProps) {
             width={imageWidth || 800}
             height={imageWidth ? (imageWidth * 0.75) : 600} // Assume 4:3 aspect ratio
             priority={false}
-            className={`${imageWidth ? '' : 'w-auto h-auto'} max-w-full`}
+            className={`${imageWidth ? '' : 'w-auto h-auto'} max-w-full ${hasShadow ? 'shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]' : ''}`}
           />
           {image.caption && (
             <p className="mt-4 max-w-[600px] mx-auto text-[14px] text-[#000] text-left font-normal">

@@ -131,6 +131,13 @@ export const imageBlock = defineType({
       hidden: ({parent}) => parent?.imageSize !== 'custom',
       validation: (Rule) => Rule.min(100).max(2000).warning('Width should be between 100 and 2000 pixels'),
     }),
+    defineField({
+      name: 'hasShadow',
+      title: 'Add Shadow',
+      type: 'boolean',
+      description: 'Add a subtle shadow effect to the image',
+      initialValue: false,
+    }),
   ],
   preview: {
     select: {

@@ -243,6 +243,7 @@ export type ImageProps = {
     maxWidth?: number;
     imageSize?: 'small' | 'medium' | 'large' | 'full' | 'custom';
     customImageWidth?: number;
+    hasShadow?: boolean;
   };
 };
 
