@@ -58,6 +58,7 @@ export const page = defineType({
         { type: 'localityPayorBreakdown' },
         { type: 'localityDemographics' },
         { type: 'jitterPlot' },
+        { type: 'horizontalRule' },
       ],
       options: {
         insertMenu: {

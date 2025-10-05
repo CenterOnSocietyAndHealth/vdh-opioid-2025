@@ -183,6 +183,30 @@ h4 {
     margin-bottom: 0.5rem;
 }
 
+/* Content Container Ordered List Styles */
+ol {
+    list-style-type: decimal;
+    margin-left: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding-left: 0;
+}
+
+ol li {
+    margin-bottom: 0.5rem;
+    line-height: 130%;
+}
+
+ol ol {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    list-style-type: lower-alpha;
+}
+
+ol ol ol {
+    list-style-type: lower-roman;
+}
+
 /* Cost Maps Component Styles */
 .chartTab {
   -webkit-user-select: none;

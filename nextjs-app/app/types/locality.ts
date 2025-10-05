@@ -300,4 +300,16 @@ export type LocalityDemographicsProps = {
     customBackgroundColor?: string;
     maxWidth?: number;
   };
+};
+
+// Type for the horizontal rule component props
+export type HorizontalRuleProps = {
+  block: {
+    width?: number;
+    thickness?: number;
+    color?: string;
+    customColor?: string;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  };
 }; 

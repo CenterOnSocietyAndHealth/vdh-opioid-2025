@@ -17,6 +17,7 @@ import SectorCosts from "./blocks/SectorCosts";
 import LocalityPayorBreakdown from "./blocks/LocalityPayorBreakdown";
 import LocalityDemographics from "./blocks/LocalityDemographics";
 import JitterPlot from "./blocks/JitterPlot";
+import HorizontalRule from "./blocks/HorizontalRule";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -51,6 +52,7 @@ const Blocks: BlocksType = {
   localityPayorBreakdown: LocalityPayorBreakdown,
   localityDemographics: LocalityDemographics,
   jitterPlot: JitterPlot,
+  horizontalRule: HorizontalRule,
 };
 
 /**
