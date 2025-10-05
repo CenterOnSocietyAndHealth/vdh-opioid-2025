@@ -13,6 +13,22 @@
  */
 
 // Source: schema.json
+export type HorizontalRule = {
+  _type: 'horizontalRule';
+  width?: number;
+  thickness?: number;
+  color?: '#E6E6E6' | '#CCCCCC' | '#999999' | '#000000' | 'custom';
+  customColor?: string;
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+};
+
+export type JitterPlot = {
+  _type: 'jitterPlot';
+  marginTop?: 'none' | 'small' | 'medium' | 'large';
+  marginBottom?: 'none' | 'small' | 'medium' | 'large';
+};
+
 export type LocalityDemographics = {
   _type: 'localityDemographics';
   sectionId?: string;
@@ -653,7 +669,7 @@ export type OnThisPage = {
 export type ContentWrapper = {
   _type: 'contentWrapper';
   backgroundColor?:
-    | '#f0f0f0'
+    | '#FCFAF8'
     | '#ffffff'
     | '#EDF4FA'
     | '#F3F2EC'
@@ -694,6 +710,9 @@ export type ContentWrapper = {
     | ({
         _key: string;
       } & LocalityDemographics)
+    | ({
+        _key: string;
+      } & JitterPlot)
   >;
 };
 
@@ -1453,6 +1472,9 @@ export type ColumnLayout = {
     | ({
         _key: string;
       } & ImageBlock)
+    | ({
+        _key: string;
+      } & JitterPlot)
   >;
   column2Width?: number;
   column2?: Array<
@@ -1465,6 +1487,9 @@ export type ColumnLayout = {
     | ({
         _key: string;
       } & ImageBlock)
+    | ({
+        _key: string;
+      } & JitterPlot)
   >;
   column3Width?: number;
   column3?: Array<
@@ -1477,6 +1502,9 @@ export type ColumnLayout = {
     | ({
         _key: string;
       } & ImageBlock)
+    | ({
+        _key: string;
+      } & JitterPlot)
   >;
   marginTop?: 'none' | 'small' | 'medium' | 'large';
   marginBottom?: 'none' | 'small' | 'medium' | 'large';
@@ -1632,7 +1660,7 @@ export type TextContent = {
   textAlignment?: 'left' | 'center' | 'right';
   backgroundColor?:
     | 'transparent'
-    | '#f0f0f0'
+    | '#FCFAF8'
     | '#ffffff'
     | '#e6f3ff'
     | '#f0f8f0'
@@ -1883,6 +1911,12 @@ export type Page = {
     | ({
         _key: string;
       } & LocalityDemographics)
+    | ({
+        _key: string;
+      } & JitterPlot)
+    | ({
+        _key: string;
+      } & HorizontalRule)
   >;
 };
 
@@ -2221,6 +2255,8 @@ export type SanityAssetSourceData = {
 };
 
 export type AllSanitySchemaTypes =
+  | HorizontalRule
+  | JitterPlot
   | LocalityDemographics
   | LocalityPayorBreakdown
   | SectorCosts
@@ -2562,6 +2598,9 @@ export type GetPageQueryResult = {
             } & ImageBlock)
           | ({
               _key: string;
+            } & JitterPlot)
+          | ({
+              _key: string;
             } & LocalitySelector)
           | ({
               _key: string;
@@ -2574,6 +2613,9 @@ export type GetPageQueryResult = {
             } & ImageBlock)
           | ({
               _key: string;
+            } & JitterPlot)
+          | ({
+              _key: string;
             } & LocalitySelector)
           | ({
               _key: string;
@@ -2584,6 +2626,9 @@ export type GetPageQueryResult = {
           | ({
               _key: string;
             } & ImageBlock)
+          | ({
+              _key: string;
+            } & JitterPlot)
           | ({
               _key: string;
             } & LocalitySelector)
@@ -2600,8 +2645,8 @@ export type GetPageQueryResult = {
         _type: 'contentWrapper';
         backgroundColor?:
           | '#EDF4FA'
-          | '#f0f0f0'
           | '#F3F2EC'
+          | '#FCFAF8'
           | '#fffbf0'
           | '#ffffff'
           | 'custom';
@@ -2625,6 +2670,9 @@ export type GetPageQueryResult = {
           | ({
               _key: string;
             } & CostsMaps)
+          | ({
+              _key: string;
+            } & JitterPlot)
           | ({
               _key: string;
             } & LocalityDemographics)
@@ -3254,6 +3302,16 @@ export type GetPageQueryResult = {
       }
     | {
         _key: string;
+        _type: 'horizontalRule';
+        width?: number;
+        thickness?: number;
+        color?: '#000000' | '#999999' | '#CCCCCC' | '#E6E6E6' | 'custom';
+        customColor?: string;
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
+      }
+    | {
+        _key: string;
         _type: 'imageBlock';
         image: {
           asset?: {
@@ -3285,6 +3343,12 @@ export type GetPageQueryResult = {
         maxWidth?: number;
         imageSize?: 'custom' | 'full' | 'large' | 'medium' | 'small';
         customImageWidth?: number;
+      }
+    | {
+        _key: string;
+        _type: 'jitterPlot';
+        marginTop?: 'large' | 'medium' | 'none' | 'small';
+        marginBottom?: 'large' | 'medium' | 'none' | 'small';
       }
     | {
         _key: string;
@@ -4084,8 +4148,8 @@ export type GetPageQueryResult = {
         textAlignment?: 'center' | 'left' | 'right';
         backgroundColor?:
           | '#e6f3ff'
-          | '#f0f0f0'
           | '#f0f8f0'
+          | '#FCFAF8'
           | '#fffbf0'
           | '#ffffff'
           | 'custom'
