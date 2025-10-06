@@ -202,7 +202,7 @@ export default function PovertyIncome({ block, selectedLocality: propSelectedLoc
               }}
             >
               {isVirginia ? (
-                <>At {statePovertyPct}%, Virginia's poverty rate is 19% lower than the national average.{renderSourceLink(povertySource)}</>
+                <>At {statePovertyPct}%, Virginia&apos;s poverty rate is 19% lower than the national average.{renderSourceLink(povertySource)}</>
               ) : povertyPct && povertyComparison ? (
                 <>
                   At {formatPoverty(povertyPct)}, {selectedLocality?.counties} has a {povertyComparison.percentage}% {povertyComparison.isHigher ? 'higher' : 'lower'} poverty rate than the average Virginia community.{renderSourceLink(povertySource)}
@@ -259,10 +259,10 @@ export default function PovertyIncome({ block, selectedLocality: propSelectedLoc
               }}
             >
               {isVirginia ? (
-                <>At ${Math.round(stateMedianIncome / 1000)}K, Virginia's median household income is 16% higher than the national average.{renderSourceLink(medianIncomeSource)}</>
+                <>At ${Math.round(stateMedianIncome / 1000)}K, Virginia&apos;s median household income is 16% higher than the national average.{renderSourceLink(medianIncomeSource)}</>
               ) : medianIncome && incomeComparison ? (
                 <>
-                  At {formatIncome(medianIncome)}, {selectedLocality?.counties}'s median household income is {incomeComparison.percentage}% {incomeComparison.isHigher ? 'higher' : 'lower'} than the state median.{renderSourceLink(medianIncomeSource)}
+                  At {formatIncome(medianIncome)}, {selectedLocality?.counties}&apos;s median household income is {incomeComparison.percentage}% {incomeComparison.isHigher ? 'higher' : 'lower'} than the state median.{renderSourceLink(medianIncomeSource)}
                 </>
               ) : (
                 <>Data not available</>
