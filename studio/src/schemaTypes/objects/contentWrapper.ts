@@ -122,6 +122,7 @@ export const contentWrapper = defineType({
         { type: 'sectorCosts' },
         { type: 'localityDemographics' },
         { type: 'jitterPlot' },
+        { type: 'povertyIncome' },
       ],
       validation: (Rule) => Rule.required().min(1),
     }),

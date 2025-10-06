@@ -59,6 +59,7 @@ export const page = defineType({
         { type: 'localityDemographics' },
         { type: 'jitterPlot' },
         { type: 'horizontalRule' },
+        { type: 'povertyIncome' },
       ],
       options: {
         insertMenu: {

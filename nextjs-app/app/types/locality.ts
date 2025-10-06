@@ -313,4 +313,21 @@ export type HorizontalRuleProps = {
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
   };
+};
+
+// Type for the poverty income component props
+export type PovertyIncomeProps = {
+  block: {
+    sectionId?: string;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+    textAlignment?: 'left' | 'center' | 'right';
+    backgroundColor?: string;
+    customBackgroundColor?: string;
+    maxWidth?: number;
+    povertySource?: number;
+    medianIncomeSource?: number;
+    statePovertyPct?: number;
+    stateMedianIncome?: number;
+  };
 }; 

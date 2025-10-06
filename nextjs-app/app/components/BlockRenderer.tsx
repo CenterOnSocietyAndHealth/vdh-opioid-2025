@@ -18,6 +18,7 @@ import LocalityPayorBreakdown from "./blocks/LocalityPayorBreakdown";
 import LocalityDemographics from "./blocks/LocalityDemographics";
 import JitterPlot from "./blocks/JitterPlot";
 import HorizontalRule from "./blocks/HorizontalRule";
+import PovertyIncome from "./blocks/PovertyIncome";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -53,6 +54,7 @@ const Blocks: BlocksType = {
   localityDemographics: LocalityDemographics,
   jitterPlot: JitterPlot,
   horizontalRule: HorizontalRule,
+  povertyIncome: PovertyIncome,
 };
 
 /**
