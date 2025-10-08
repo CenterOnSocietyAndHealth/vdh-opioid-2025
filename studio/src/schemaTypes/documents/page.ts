@@ -60,6 +60,7 @@ export const page = defineType({
         { type: 'jitterPlot' },
         { type: 'horizontalRule' },
         { type: 'povertyIncome' },
+        { type: 'sourcesAccordion' },
       ],
       options: {
         insertMenu: {

@@ -99,6 +99,36 @@ export const costsMaps = defineType({
       type: 'blockContent',
       description: 'Detailed description for the Household tab',
     }),
+    defineField({
+      name: 'totalSources',
+      title: 'Total Cost Sources',
+      type: 'blockContent',
+      description: 'Sources information for the Total Cost tab',
+    }),
+    defineField({
+      name: 'laborSources',
+      title: 'Lost Labor Sources',
+      type: 'blockContent',
+      description: 'Sources information for the Lost Labor tab',
+    }),
+    defineField({
+      name: 'healthcareSources',
+      title: 'Health Care Sources',
+      type: 'blockContent',
+      description: 'Sources information for the Health Care tab',
+    }),
+    defineField({
+      name: 'crimeOtherSources',
+      title: 'Crime/Other Sources',
+      type: 'blockContent',
+      description: 'Sources information for the Crime/Other tab',
+    }),
+    defineField({
+      name: 'householdSources',
+      title: 'Household Sources',
+      type: 'blockContent',
+      description: 'Sources information for the Household tab',
+    }),
   ],
   preview: {
     select: {

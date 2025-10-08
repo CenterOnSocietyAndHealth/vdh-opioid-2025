@@ -1,0 +1,20 @@
+<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="120" fill="#ffffff" stroke="#e5e5e5" stroke-width="1"/>
+  
+  <!-- Left border line -->
+  <rect x="20" y="30" width="2" height="60" fill="#d1d5db"/>
+  
+  <!-- Title -->
+  <rect x="30" y="35" width="80" height="8" fill="#374151" rx="2"/>
+  
+  <!-- Chevron -->
+  <path d="M120 35 L125 40 L120 45" stroke="#6b7280" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Content lines (collapsed state) -->
+  <rect x="30" y="50" width="60" height="3" fill="#9ca3af" rx="1"/>
+  <rect x="30" y="55" width="45" height="3" fill="#9ca3af" rx="1"/>
+  
+  <!-- Bottom border -->
+  <rect x="0" y="118" width="200" height="2" fill="#e5e5e5"/>
+</svg>

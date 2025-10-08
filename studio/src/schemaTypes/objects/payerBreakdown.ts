@@ -127,6 +127,12 @@ export const payerBreakdown = defineType({
       type: 'blockContent',
       description: 'WYSIWYG description content for the data table accordion. This will appear in the "Chart Description/Data Table" section.',
     }),
+    defineField({
+      name: 'sources',
+      title: 'Sources',
+      type: 'blockContent',
+      description: 'WYSIWYG sources content that will appear in the Sources accordion below the data table.',
+    }),
   ],
   preview: {
     select: {

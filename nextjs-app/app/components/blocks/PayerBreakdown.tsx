@@ -2,6 +2,7 @@ import React from 'react';
 import { PayerBreakdownProps } from '@/app/types/locality';
 import { getValidKeyOrDefault, getValidHexColorOrDefault } from '@/app/client-utils';
 import DataTableDescription, { DataTableColumn, DataTableRow } from '@/app/components/blocks/DataTableDescription';
+import SourcesAccordion from './SourcesAccordion';
 
 const marginMap = {
   none: 'mt-0',
@@ -56,7 +57,8 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
     stateLocalTextColor,
     marginTop = 'medium',
     marginBottom = 'medium',
-    chartDescription
+    chartDescription,
+    sources
   } = block;
 
   // Sanitize margin values using shared utilities
@@ -287,6 +289,17 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
             description={chartDescription}
             columns={tableColumns}
             data={prepareTableData()}
+            backgroundColor="bg-transparent"
+          />
+        </div>
+      )}
+
+      {/* SourcesAccordion */}
+      {sources && (
+        <div className="px-0 mt-0">
+          <SourcesAccordion
+            title="Sources"
+            sources={sources}
             backgroundColor="bg-transparent"
           />
         </div>

@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import { CostsBreakdownProps } from '@/app/types/locality';
 import { getValidKeyOrDefault } from '@/app/client-utils';
 import DataTableDescription, { DataTableColumn } from './DataTableDescription';
+import SourcesAccordion from './SourcesAccordion';
 
 const marginMap = {
   none: 'mt-0',
@@ -49,6 +50,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
     totalCostSubtitle, 
     source, 
     chartDescription,
+    sources,
     costSectors,
     marginTop = 'none',
     marginBottom = 'none'
@@ -271,12 +273,22 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       
       {/* Data Table Description Component */}
       {chartDescription && (
-        <div className="mt-6">
+        <div className="mt-0">
           <DataTableDescription
             title="Data Table/This Chart Described"
             description={chartDescription}
             columns={tableColumns}
             data={tableData}
+          />
+        </div>
+      )}
+      
+      {/* Sources Accordion Component */}
+      {sources && (
+        <div className="mt-0">
+          <SourcesAccordion
+            title="Sources"
+            sources={sources}
           />
         </div>
       )}

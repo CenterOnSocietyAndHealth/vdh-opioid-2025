@@ -10,6 +10,7 @@ import { PortableText } from 'next-sanity';
 import topojson from 'topojson-client';
 import { getValidKeyOrDefault } from '@/app/client-utils';
 import DataTableDescription, { DataTableColumn, DataTableRow } from '@/app/components/blocks/DataTableDescription';
+import SourcesAccordion from './SourcesAccordion';
 
 // Define the ChoroplethMap props type to match what we'll pass to the dynamic component
 interface ChoroplethMapProps {
@@ -212,6 +213,24 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
     }
   };
 
+  // Get the sources for the current tab
+  const getCurrentSources = () => {
+    switch (indicatorTab) {
+      case 'Total':
+        return block.totalSources;
+      case 'Labor':
+        return block.laborSources;
+      case 'HealthCare':
+        return block.healthcareSources;
+      case 'Crime_Other':
+        return block.crimeOtherSources;
+      case 'Household':
+        return block.householdSources;
+      default:
+        return null;
+    }
+  };
+
   // Get field name for the current indicator
   const getFieldName = (indicator: CostsMapIndicator) => {
     let fieldName = indicator.toLowerCase();
@@ -232,20 +251,27 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
     const totalField = `${fieldName}Total` as keyof OpioidMetrics;
     const perCapitaField = `${fieldName}PerCapita` as keyof OpioidMetrics;
 
-    return localities.map(locality => {
-      const totalValueRaw = locality.opioidMetrics?.[totalField];
-      const perCapitaValueRaw = locality.opioidMetrics?.[perCapitaField];
-      
-      const totalValue = typeof totalValueRaw === 'number' ? totalValueRaw : 0;
-      const perCapitaValue = typeof perCapitaValueRaw === 'number' ? perCapitaValueRaw : 0;
+    // Filter out Virginia Total and map the remaining localities
+    return localities
+      .filter(locality => 
+        locality.counties !== 'Virginia Total' && 
+        locality.fips !== 'us-va-999' && 
+        locality.marcCountyId !== '999'
+      )
+      .map(locality => {
+        const totalValueRaw = locality.opioidMetrics?.[totalField];
+        const perCapitaValueRaw = locality.opioidMetrics?.[perCapitaField];
+        
+        const totalValue = typeof totalValueRaw === 'number' ? totalValueRaw : 0;
+        const perCapitaValue = typeof perCapitaValueRaw === 'number' ? perCapitaValueRaw : 0;
 
-      return {
-        id: locality._id, // Add id for highlighting
-        locality: locality.counties || 'Unknown',
-        total: totalValue,
-        perCapita: perCapitaValue,
-      };
-    });
+        return {
+          id: locality._id, // Add id for highlighting
+          locality: locality.counties || 'Unknown',
+          total: totalValue,
+          perCapita: perCapitaValue,
+        };
+      });
   };
 
   // Define columns for the data table
@@ -303,6 +329,17 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
                 data={prepareTableData()}
                 backgroundColor="bg-transparent"
                 highlightRowId={selectedLocality?._id}
+              />
+            </div>
+          )}
+
+          {/* SourcesAccordion for the current sector */}
+          {getCurrentSources() && (
+            <div className="px-24 mt-0">
+              <SourcesAccordion
+                title="Sources"
+                sources={getCurrentSources() || undefined}
+                backgroundColor="bg-transparent"
               />
             </div>
           )}

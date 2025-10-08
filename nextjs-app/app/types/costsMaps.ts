@@ -17,6 +17,11 @@ export interface CostsMapProps {
     healthcareDescription?: any[];
     crimeOtherDescription?: any[];
     householdDescription?: any[];
+    totalSources?: any[];
+    laborSources?: any[];
+    healthcareSources?: any[];
+    crimeOtherSources?: any[];
+    householdSources?: any[];
   };
   localities?: Locality[];
   selectedLocality: Locality | null;

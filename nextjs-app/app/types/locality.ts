@@ -130,6 +130,7 @@ export type CostsBreakdownProps = {
     totalCostSubtitle?: string;
     source?: string;
     chartDescription?: any[]; // WYSIWYG content for the data table description
+    sources?: any[]; // WYSIWYG content for the sources accordion
     costSectors: Array<{
       title: string;
       subtitle?: string;
@@ -205,6 +206,7 @@ export type PayerBreakdownProps = {
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
     chartDescription?: any[];
+    sources?: any[]; // WYSIWYG content for the sources accordion
   };
 };
 
