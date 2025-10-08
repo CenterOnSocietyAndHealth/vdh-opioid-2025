@@ -156,14 +156,14 @@ export default function DataTableDescription({
                   value={description}
                   components={{
                     block: {
-                      normal: ({ children }) => (
+                      normal: ({ children }: any) => (
                         <p className="text-sm text-gray-700 leading-relaxed mb-3 last:mb-0">
                           {children}
                         </p>
                       ),
                     },
                     marks: {
-                      link: ({ children, value }) => (
+                      link: ({ children, value }: any) => (
                         <a
                           href={value?.href}
                           target={value?.blank ? '_blank' : undefined}
@@ -173,10 +173,10 @@ export default function DataTableDescription({
                           {children}
                         </a>
                       ),
-                      strong: ({ children }) => (
+                      strong: ({ children }: any) => (
                         <strong className="font-semibold">{children}</strong>
                       ),
-                      em: ({ children }) => (
+                      em: ({ children }: any) => (
                         <em className="italic">{children}</em>
                       ),
                     },
