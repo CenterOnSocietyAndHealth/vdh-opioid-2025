@@ -7,6 +7,7 @@ import { useSector } from '@/app/contexts/SectorContext';
 import { Locality } from '@/app/types/locality';
 import { getValidKeyOrDefault } from '@/app/client-utils';
 import DataTableDescription, { DataTableColumn, DataTableRow } from '@/app/components/blocks/DataTableDescription';
+import SourcesAccordion from './SourcesAccordion';
 
 // Types for the component
 type JitterPlotProps = {
@@ -18,6 +19,11 @@ type JitterPlotProps = {
     healthcareDescription?: any[];
     crimeOtherDescription?: any[];
     householdDescription?: any[];
+    totalSources?: any[];
+    laborSources?: any[];
+    healthcareSources?: any[];
+    crimeOtherSources?: any[];
+    householdSources?: any[];
   };
   localities: Locality[];
   pageId: string;
@@ -192,6 +198,24 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
         return block.householdDescription;
       case 'Criminal Justice':
         return block.crimeOtherDescription;
+      default:
+        return null;
+    }
+  };
+
+  // Get the sources for the current sector
+  const getCurrentSources = () => {
+    switch (selectedSector) {
+      case 'All Sectors':
+        return block.totalSources;
+      case 'Lost Labor':
+        return block.laborSources;
+      case 'Health Care':
+        return block.healthcareSources;
+      case 'Child Services & K-12':
+        return block.householdSources;
+      case 'Criminal Justice':
+        return block.crimeOtherSources;
       default:
         return null;
     }
@@ -646,6 +670,17 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
               data={prepareTableData()}
               backgroundColor="bg-transparent"
               highlightRowId={selectedLocality?._id}
+            />
+          </div>
+        )}
+
+        {/* SourcesAccordion for the current sector */}
+        {getCurrentSources() && (
+          <div className="px-0 mt-0">
+            <SourcesAccordion
+              title="Sources"
+              sources={getCurrentSources() || undefined}
+              backgroundColor="bg-transparent"
             />
           </div>
         )}

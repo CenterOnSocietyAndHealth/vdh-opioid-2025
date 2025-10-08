@@ -25,6 +25,7 @@ interface SourcesAccordionBlockProps {
     backgroundColor?: string;
     marginTop?: string;
     marginBottom?: string;
+    maxWidth?: number;
   };
 }
 
@@ -34,14 +35,18 @@ export default function SourcesAccordionBlock({ block }: SourcesAccordionBlockPr
     sources, 
     backgroundColor = 'bg-white',
     marginTop = 'none',
-    marginBottom = 'none'
+    marginBottom = 'none',
+    maxWidth
   } = block;
 
   const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none');
   const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none');
 
   return (
-    <div className={`${safeMarginTop} ${safeMarginBottom}`}>
+    <div 
+      className={`${safeMarginTop} ${safeMarginBottom}`}
+      style={maxWidth ? { maxWidth: `${maxWidth}px`, marginLeft: 'auto', marginRight: 'auto' } : {}}
+    >
       <SourcesAccordion
         title={title}
         sources={sources}

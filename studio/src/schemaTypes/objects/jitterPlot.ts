@@ -65,6 +65,36 @@ export const jitterPlot = defineType({
       type: 'blockContent',
       description: 'Description for the Child Services & K-12 jitter plot data table',
     }),
+    defineField({
+      name: 'totalSources',
+      title: 'All Sectors Sources',
+      type: 'blockContent',
+      description: 'Sources information for the All Sectors jitter plot',
+    }),
+    defineField({
+      name: 'laborSources',
+      title: 'Lost Labor Sources',
+      type: 'blockContent',
+      description: 'Sources information for the Lost Labor jitter plot',
+    }),
+    defineField({
+      name: 'healthcareSources',
+      title: 'Health Care Sources',
+      type: 'blockContent',
+      description: 'Sources information for the Health Care jitter plot',
+    }),
+    defineField({
+      name: 'crimeOtherSources',
+      title: 'Criminal Justice Sources',
+      type: 'blockContent',
+      description: 'Sources information for the Criminal Justice jitter plot',
+    }),
+    defineField({
+      name: 'householdSources',
+      title: 'Child Services & K-12 Sources',
+      type: 'blockContent',
+      description: 'Sources information for the Child Services & K-12 jitter plot',
+    }),
   ],
   preview: {
     prepare() {

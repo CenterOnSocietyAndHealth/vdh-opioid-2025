@@ -63,6 +63,12 @@ export const sourcesAccordion = defineType({
       },
       initialValue: 'none',
     }),
+    defineField({
+      name: 'maxWidth',
+      title: 'Max Width',
+      type: 'number',
+      description: 'Set maximum width in pixels (leave empty for full width)',
+    }),
   ],
   preview: {
     select: {
