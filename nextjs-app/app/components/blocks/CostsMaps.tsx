@@ -5,10 +5,11 @@ import { CostsMapProps, CostsMapIndicator, DisplayType } from '@/app/types/costs
 import { useLocality } from '@/app/contexts/LocalityContext';
 import { useSector } from '@/app/contexts/SectorContext';
 import dynamic from 'next/dynamic';
-import { Locality } from '@/app/types/locality';
+import { Locality, OpioidMetrics } from '@/app/types/locality';
 import { PortableText } from 'next-sanity';
 import topojson from 'topojson-client';
 import { getValidKeyOrDefault } from '@/app/client-utils';
+import DataTableDescription, { DataTableColumn, DataTableRow } from '@/app/components/blocks/DataTableDescription';
 
 // Define the ChoroplethMap props type to match what we'll pass to the dynamic component
 interface ChoroplethMapProps {
@@ -211,6 +212,49 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
     }
   };
 
+  // Get field name for the current indicator
+  const getFieldName = (indicator: CostsMapIndicator) => {
+    let fieldName = indicator.toLowerCase();
+    if (fieldName === 'crime_other') {
+      fieldName = 'crimeOther';
+    }
+    if (fieldName === 'healthcare') {
+      fieldName = 'healthcare';
+    }
+    return fieldName;
+  };
+
+  // Prepare data for the DataTableDescription
+  const prepareTableData = (): DataTableRow[] => {
+    if (!localities || localities.length === 0) return [];
+
+    const fieldName = getFieldName(indicatorTab);
+    const totalField = `${fieldName}Total` as keyof OpioidMetrics;
+    const perCapitaField = `${fieldName}PerCapita` as keyof OpioidMetrics;
+
+    return localities.map(locality => {
+      const totalValueRaw = locality.opioidMetrics?.[totalField];
+      const perCapitaValueRaw = locality.opioidMetrics?.[perCapitaField];
+      
+      const totalValue = typeof totalValueRaw === 'number' ? totalValueRaw : 0;
+      const perCapitaValue = typeof perCapitaValueRaw === 'number' ? perCapitaValueRaw : 0;
+
+      return {
+        id: locality._id, // Add id for highlighting
+        locality: locality.counties || 'Unknown',
+        total: totalValue,
+        perCapita: perCapitaValue,
+      };
+    });
+  };
+
+  // Define columns for the data table
+  const tableColumns: DataTableColumn[] = [
+    { key: 'locality', label: 'Locality', align: 'left', format: 'text' },
+    { key: 'total', label: 'Total Cost', align: 'right', format: 'currency' },
+    { key: 'perCapita', label: 'Per Capita Cost', align: 'right', format: 'currency' },
+  ];
+
   // Don't render until mounted on the client
   if (!mounted) {
     return (
@@ -226,37 +270,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
 
   return (
     <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
-      {/* Detailed Description */}
-      {getCurrentDescription() && (
-        <div className="bg-white mt-4 mb-2">
-          <button
-            onClick={() => setShowDetailedDescription(!showDetailedDescription)}
-            className="text-sm font-bold uppercase tracking-wider text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center gap-2"
-          >
-            Detailed Chart Description{' '}
-            <span 
-              className="inline-block transform transition-transform duration-200"
-              style={{
-                transform: showDetailedDescription ? 'rotate(225deg) translate(-4px,-3px)' : 'rotate(45deg)',
-                display: 'inline-block',
-                width: '10px',
-                height: '10px',
-                borderRight: '3px solid currentColor',
-                borderBottom: '3px solid currentColor',
-                marginLeft: '4px',
-                marginTop: '-2px'
-              }}
-            />
-          </button>
-          <div
-            className={`px-2 py-0 max-w-none text-[16px] [&_p]:text-[16px] transition-all duration-300 ease-in-out ${
-              showDetailedDescription ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-            }`}
-          >
-            <PortableText value={getCurrentDescription()} />
-          </div>
-        </div>
-      )}
+
       <div className="relative mx-auto max-w-[1200px]">
         {/* Map Container */}
         <div className="p-4">
@@ -278,6 +292,20 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
               onResetToVirginia={handleResetToVirginia}
             />
           </div>
+
+          {/* DataTableDescription for the current sector */}
+          {getCurrentDescription() && (
+            <div className="px-24 mt-4">
+              <DataTableDescription
+                title="Map Description/Data Table"
+                description={getCurrentDescription() || undefined}
+                columns={tableColumns}
+                data={prepareTableData()}
+                backgroundColor="bg-transparent"
+                highlightRowId={selectedLocality?._id}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

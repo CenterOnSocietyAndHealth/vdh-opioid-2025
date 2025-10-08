@@ -24,6 +24,12 @@ export const costsBreakdown = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'chartDescription',
+      title: 'Chart Description',
+      type: 'blockContent',
+      description: 'WYSIWYG description content for the data table accordion. This will appear in the "Data Table/This Chart Described" section.',
+    }),
+    defineField({
       name: 'updatedLast',
       title: 'Updated Last',
       type: 'date',

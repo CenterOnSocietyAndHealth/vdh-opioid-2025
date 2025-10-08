@@ -6,12 +6,18 @@ import { useLocality } from '@/app/contexts/LocalityContext';
 import { useSector } from '@/app/contexts/SectorContext';
 import { Locality } from '@/app/types/locality';
 import { getValidKeyOrDefault } from '@/app/client-utils';
+import DataTableDescription, { DataTableColumn, DataTableRow } from '@/app/components/blocks/DataTableDescription';
 
 // Types for the component
 type JitterPlotProps = {
   block: {
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
+    totalDescription?: any[];
+    laborDescription?: any[];
+    healthcareDescription?: any[];
+    crimeOtherDescription?: any[];
+    householdDescription?: any[];
   };
   localities: Locality[];
   pageId: string;
@@ -39,6 +45,15 @@ const sectorToFieldMapping: Record<string, string> = {
   'Health Care': 'healthcarePerCapita',
   'Child Services & K-12': 'householdPerCapita',
   'Criminal Justice': 'crimeOtherPerCapita',
+};
+
+// Mapping between SectorSelector sectors and total cost field names
+const sectorToTotalFieldMapping: Record<string, string> = {
+  'All Sectors': 'totalTotal',
+  'Lost Labor': 'laborTotal',
+  'Health Care': 'healthcareTotal',
+  'Child Services & K-12': 'householdTotal',
+  'Criminal Justice': 'crimeOtherTotal',
 };
 
 // Display names for sectors
@@ -163,6 +178,58 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       };
     }
   }, [selectedSector, selectedLocality, plotData]);
+
+  // Get the description for the current sector
+  const getCurrentDescription = () => {
+    switch (selectedSector) {
+      case 'All Sectors':
+        return block.totalDescription;
+      case 'Lost Labor':
+        return block.laborDescription;
+      case 'Health Care':
+        return block.healthcareDescription;
+      case 'Child Services & K-12':
+        return block.householdDescription;
+      case 'Criminal Justice':
+        return block.crimeOtherDescription;
+      default:
+        return null;
+    }
+  };
+
+  // Prepare data for the DataTableDescription
+  const prepareTableData = (): DataTableRow[] => {
+    if (!localities || localities.length === 0) return [];
+
+    const perCapitaFieldName = sectorToFieldMapping[selectedSector];
+    const totalFieldName = sectorToTotalFieldMapping[selectedSector];
+    
+    if (!perCapitaFieldName || !totalFieldName) return [];
+
+    return localities
+      .filter(loc => loc.counties !== 'Virginia') // Exclude Virginia from the table
+      .map(locality => {
+        const perCapitaRaw = locality.opioidMetrics?.[perCapitaFieldName as keyof typeof locality.opioidMetrics];
+        const totalRaw = locality.opioidMetrics?.[totalFieldName as keyof typeof locality.opioidMetrics];
+        
+        const perCapitaValue = typeof perCapitaRaw === 'number' ? perCapitaRaw : 0;
+        const totalValue = typeof totalRaw === 'number' ? totalRaw : 0;
+
+        return {
+          id: locality._id,
+          locality: locality.counties || 'Unknown',
+          total: totalValue,
+          perCapita: perCapitaValue,
+        };
+      });
+  };
+
+  // Define columns for the data table
+  const tableColumns: DataTableColumn[] = [
+    { key: 'locality', label: 'Locality', align: 'left', format: 'text' },
+    { key: 'total', label: 'Total Cost', align: 'right', format: 'currency' },
+    { key: 'perCapita', label: 'Per Capita Cost', align: 'right', format: 'currency' },
+  ];
 
   // D3 chart rendering
   useEffect(() => {
@@ -569,7 +636,19 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
           <svg ref={svgRef}></svg>
         </div>
 
-        
+        {/* DataTableDescription for the current sector */}
+        {getCurrentDescription() && (
+          <div className="px-0 mt-4">
+            <DataTableDescription
+              title="Chart Description/Data Table"
+              description={getCurrentDescription() || undefined}
+              columns={tableColumns}
+              data={prepareTableData()}
+              backgroundColor="bg-transparent"
+              highlightRowId={selectedLocality?._id}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

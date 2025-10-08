@@ -3,6 +3,7 @@ import { PortableText } from 'next-sanity';
 import * as d3 from 'd3';
 import { CostsBreakdownProps } from '@/app/types/locality';
 import { getValidKeyOrDefault } from '@/app/client-utils';
+import DataTableDescription, { DataTableColumn } from './DataTableDescription';
 
 const marginMap = {
   none: 'mt-0',
@@ -47,6 +48,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
     totalCost, 
     totalCostSubtitle, 
     source, 
+    chartDescription,
     costSectors,
     marginTop = 'none',
     marginBottom = 'none'
@@ -56,6 +58,29 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
   
   const chartRef = useRef<HTMLDivElement>(null);
+
+  // Virginia population constant
+  const VIRGINIA_POPULATION = 8734685;
+
+  // Calculate total value for percentage calculations
+  const totalValue = d3.sum(costSectors, d => d.value);
+
+  // Define columns for the data table
+  const tableColumns: DataTableColumn[] = [
+    { key: 'sector', label: 'Sector', align: 'left', format: 'text' },
+    { key: 'total', label: 'Total', align: 'right', format: 'currency' },
+    { key: 'perCapita', label: 'Per Capita', align: 'right', format: 'currency' },
+    { key: 'percentageOfTotal', label: 'Percentage of Total', align: 'right', format: 'percentage' }
+  ];
+
+  // Transform costSectors data into table format
+  const tableData = costSectors.map(sector => ({
+    sector: sector.title,
+    total: sector.value,
+    perCapita: Math.round(sector.value / VIRGINIA_POPULATION),
+    percentageOfTotal: Math.round((sector.value / totalValue) * 100)
+  }));
+
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [chartWidth, setChartWidth] = useState(0);
   const [hoveredTooltipIndex, setHoveredTooltipIndex] = useState<number | null>(null);
@@ -198,8 +223,6 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       }
     });
   }, [costSectors, chartWidth, totalCost, totalCostSubtitle]);
-  
-  const totalValue = d3.sum(costSectors, d => d.value);
   return (
     <div className={`max-w-[1311px] mx-auto ${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       <div ref={chartRef} className="w-full h-auto" style={{position: 'relative'}}>
@@ -245,6 +268,18 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
           </div>
         )}
       </div>
+      
+      {/* Data Table Description Component */}
+      {chartDescription && (
+        <div className="mt-6">
+          <DataTableDescription
+            title="Data Table/This Chart Described"
+            description={chartDescription}
+            columns={tableColumns}
+            data={tableData}
+          />
+        </div>
+      )}
       
       {/* Render all sector descriptions and aside in a grid */}
       <div className="mt-6 grid gap-8 md:grid-cols-3 mb-12">

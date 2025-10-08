@@ -1,6 +1,7 @@
 import React from 'react';
 import { PayerBreakdownProps } from '@/app/types/locality';
 import { getValidKeyOrDefault, getValidHexColorOrDefault } from '@/app/client-utils';
+import DataTableDescription, { DataTableColumn, DataTableRow } from '@/app/components/blocks/DataTableDescription';
 
 const marginMap = {
   none: 'mt-0',
@@ -54,7 +55,8 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
     stateLocalColor,
     stateLocalTextColor,
     marginTop = 'medium',
-    marginBottom = 'medium'
+    marginBottom = 'medium',
+    chartDescription
   } = block;
 
   // Sanitize margin values using shared utilities
@@ -75,6 +77,34 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
   const federalPercent = (federalValue / totalValue) * 100;
   const stateLocalPercent = (stateLocalValue / totalValue) * 100;
   const governmentPercent = federalPercent + stateLocalPercent;
+
+  // Prepare data for the DataTableDescription
+  const prepareTableData = (): DataTableRow[] => {
+    return [
+      {
+        payer: 'Families & Businesses',
+        costs: familiesBusinessesValue,
+        percentOfTotal: familiesBusinessesPercent.toFixed(1),
+      },
+      {
+        payer: 'Federal',
+        costs: federalValue,
+        percentOfTotal: federalPercent.toFixed(1),
+      },
+      {
+        payer: 'State/Local',
+        costs: stateLocalValue,
+        percentOfTotal: stateLocalPercent.toFixed(1),
+      },
+    ];
+  };
+
+  // Define columns for the data table
+  const tableColumns: DataTableColumn[] = [
+    { key: 'payer', label: 'Payer', align: 'left', format: 'text' },
+    { key: 'costs', label: 'Costs', align: 'right', format: 'currency' },
+    { key: 'percentOfTotal', label: 'Percent of Total', align: 'right', format: 'percentage' },
+  ];
   
   return (
     <div className={`max-w-[1180px] mx-auto ${marginMap[safeMarginTop]} ${marginBottomMap[safeMarginBottom]}`}>
@@ -249,37 +279,19 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
         
       </div>
       
-      {/* Data Table/Chart Description */}
-      <details className="mb-4">
-        <summary className="cursor-pointer text-sm text-gray-600 hover:text-gray-800">
-          Data table/Chart description
-          <svg className="inline w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </summary>
-        <div className="mt-2 p-4 bg-gray-50 rounded">
-          <p className="text-sm text-gray-700">
-            This chart shows the breakdown of opioid epidemic costs by payer type in Virginia for 2023. 
-            The data represents the financial burden distributed across different sectors of society.
-          </p>
+      {/* DataTableDescription */}
+      {chartDescription && (
+        <div className="px-0 mt-4">
+          <DataTableDescription
+            title="Chart Description/Data Table"
+            description={chartDescription}
+            columns={tableColumns}
+            data={prepareTableData()}
+            backgroundColor="bg-transparent"
+          />
         </div>
-      </details>
-      
-      {/* Sources */}
-      <details className="mb-4">
-        <summary className="cursor-pointer text-sm text-gray-600 hover:text-gray-800">
-          Sources: CDC Data and other sources
-          <svg className="inline w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </summary>
-        <div className="mt-2 p-4 bg-gray-50 rounded">
-          <p className="text-sm text-gray-700">
-            Data compiled from Centers for Disease Control and Prevention (CDC) reports, 
-            state health department records, and economic impact studies.
-          </p>
-        </div>
-      </details>
+      )}
+
     </div>
   );
 }

@@ -223,7 +223,7 @@ export default function Sources({ block }: SourcesProps) {
                                   href={value?.href}
                                   target={value?.blank ? '_blank' : undefined}
                                   rel={value?.blank ? 'noopener noreferrer' : undefined}
-                                  className="text-[#1e1e1e] hover:bg-[#cfe6ef] hover:text-black visited:text-[#6b7280] underline"
+                                  className="text-[#1e1e1e] hover:bg-[#cfe6ef] hover:text-black visited:text-[#6b7280] underline break-all"
                                 >
                                   {children}
                                 </a>

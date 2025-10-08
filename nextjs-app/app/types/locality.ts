@@ -129,6 +129,7 @@ export type CostsBreakdownProps = {
     totalCost: string;
     totalCostSubtitle?: string;
     source?: string;
+    chartDescription?: any[]; // WYSIWYG content for the data table description
     costSectors: Array<{
       title: string;
       subtitle?: string;
@@ -203,6 +204,7 @@ export type PayerBreakdownProps = {
     stateLocalTextColor: string;
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
+    chartDescription?: any[];
   };
 };
 
