@@ -187,8 +187,8 @@ export default function Sources({ block }: SourcesProps) {
         
         {/* Sources Content */}
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            isExpanded ? 'max-h-none opacity-100' : 'max-h-0 opacity-0'
+          className={`overflow-hidden transition-all duration-1000 ease-in-out ${
+            isExpanded ? 'max-h-none' : 'max-h-0'
           }`}
         >
           <div className="px-[20px] py-[15px] pb-[20px]">

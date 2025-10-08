@@ -51,8 +51,8 @@ export default function SourcesAccordion({
 
       {/* Accordion Content */}
       <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          isExpanded ? 'max-h-[2000px] opacity-100 border-b border-[#78787878]' : 'max-h-0 opacity-0'
+        className={`overflow-hidden transition-all duration-1000 ease-in-out ${
+          isExpanded ? 'max-h-[2000px] border-b border-[#78787878]' : 'max-h-0'
         }`}
       >
         <div className="pt-4 pb-6">
