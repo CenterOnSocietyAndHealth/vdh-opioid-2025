@@ -40,10 +40,61 @@ export default function DataTableDescription({
   highlightRowId
 }: DataTableDescriptionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };
+
+  // Handle column sorting
+  const handleSort = (columnKey: string) => {
+    if (sortColumn === columnKey) {
+      // Toggle direction if same column
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // New column, default to ascending
+      setSortColumn(columnKey);
+      setSortDirection('asc');
+    }
+  };
+
+  // Get numeric value for sorting
+  const getNumericValue = (value: string | number | undefined): number => {
+    if (value === undefined || value === null) return 0;
+    const numValue = typeof value === 'string' ? parseFloat(value) : value;
+    return isNaN(numValue) ? 0 : numValue;
+  };
+
+  // Sort data based on current sort column and direction
+  const sortedData = React.useMemo(() => {
+    if (!sortColumn) return data;
+
+    const column = columns.find(col => col.key === sortColumn);
+    if (!column) return data;
+
+    return [...data].sort((a, b) => {
+      const aValue = a[sortColumn];
+      const bValue = b[sortColumn];
+
+      // Handle numeric formats (currency, percentage, number)
+      if (column.format === 'currency' || column.format === 'percentage' || column.format === 'number') {
+        const aNum = getNumericValue(aValue);
+        const bNum = getNumericValue(bValue);
+        return sortDirection === 'asc' ? aNum - bNum : bNum - aNum;
+      }
+
+      // Handle text format
+      const aStr = String(aValue || '').toLowerCase();
+      const bStr = String(bValue || '').toLowerCase();
+      
+      if (sortDirection === 'asc') {
+        return aStr.localeCompare(bStr);
+      } else {
+        return bStr.localeCompare(aStr);
+      }
+    });
+  }, [data, sortColumn, sortDirection, columns]);
 
   // Format values based on column configuration
   const formatValue = (value: string | number | undefined, format: string): string => {
@@ -212,7 +263,7 @@ export default function DataTableDescription({
                       {columns.map((column) => (
                         <th 
                           key={column.key}
-                          className={`py-2 px-1 ${
+                          className={`py-2 px-1 cursor-pointer hover:bg-gray-100 transition-colors duration-150 ${
                             column.align === 'right' ? 'text-right' : 
                             column.align === 'center' ? 'text-center' : 
                             'text-left'
@@ -226,14 +277,39 @@ export default function DataTableDescription({
                             lineHeight: '118%',
                             letterSpacing: '-0.266px'
                           }}
+                          onClick={() => handleSort(column.key)}
                         >
-                          {column.label}
+                          <div className={`flex items-center gap-1 ${
+                            column.align === 'right' ? 'justify-end' : 
+                            column.align === 'center' ? 'justify-center' : 
+                            'justify-start'
+                          }`}>
+                            <span>{column.label}</span>
+                            {/* Sort indicator */}
+                            <span className="inline-flex flex-col w-3 h-4">
+                              {sortColumn === column.key ? (
+                                sortDirection === 'asc' ? (
+                                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
+                                  </svg>
+                                ) : (
+                                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" />
+                                  </svg>
+                                )
+                              ) : (
+                                <svg className="w-3 h-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                  <path d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" />
+                                </svg>
+                              )}
+                            </span>
+                          </div>
                         </th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {data.map((row, index) => {
+                    {sortedData.map((row, index) => {
                       const isHighlighted = highlightRowId !== undefined && row.id === highlightRowId;
                       return (
                         <tr
