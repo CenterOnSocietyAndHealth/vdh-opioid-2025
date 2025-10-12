@@ -41,24 +41,27 @@ export default async function Footer() {
           {/* Contact Information */}
           <div className="mb-4">
             <div className="mb-2">
-              <span className="text-gray-800">Email: </span>
-              <a href="mailto:societyhealth@vcu.edu" className="underline text-gray-800 hover:text-gray-600">societyhealth@vcu.edu</a>
+              <span className="text-black">Email: </span>
+              <a href="mailto:societyhealth@vcu.edu" className="underline text-black hover:text-gray-600">societyhealth@vcu.edu</a>
             </div>
-            <div className="text-gray-800">
+            <div className="text-black">
               Phone: (804) 628-4055
             </div>
           </div>
           
           {/* Physical Address */}
-          <div className="mb-4 text-gray-800">
+          <div className="mb-4 text-black">
             <div>830 East Main Street, Suite 5035</div>
             <div>P.O. Box 980212</div>
             <div>Richmond, Virginia 23298-0212</div>
           </div>
           
           {/* Copyright */}
-          <div className="text-gray-800">
+          <div className="text-black">
             © Copyright 2025 VCU Center on Society and Health
+          </div>
+          <div className="text-black text-[12px] my-2">
+            This work was partially supported by the National Center for Advancing Translational Sciences (grant UM1TR004360).
           </div>
         </div>
       </div>
