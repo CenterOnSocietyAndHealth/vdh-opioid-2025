@@ -138,7 +138,7 @@ export default function MobileNavigation({
                       <a
                         href={href}
                         onClick={closeMenu}
-                        className={`flex items-center justify-between no-underline py-6 text-lg font-normal text-black hover:text-gray-600 transition-colors ${
+                        className={`flex items-center justify-between no-underline py-6 text-[20px] font-normal text-black hover:text-gray-600 transition-colors ${
                           isCurrentPage ? 'font-bold' : ''
                         }`}
                         {...(item.linkType === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
@@ -155,7 +155,7 @@ export default function MobileNavigation({
             {/* Footer */}
             <div className="px-6 py-8 border-t border-gray-200">
               <div className="text-sm text-gray-600 mb-4">
-                <div>Email: societyhealth@vcu.edu</div>
+                <div>Email: <a href="mailto:societyhealth@vcu.edu" className="underline">societyhealth@vcu.edu</a></div>
                 <div>VCU Center on Society and Health</div>
               </div>
               
