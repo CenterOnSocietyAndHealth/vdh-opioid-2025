@@ -118,167 +118,271 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
       
       {/* Main Chart */}
       <div className="w-full mb-4">
-                  {/* Chart Container */}
+        {/* Desktop Chart - Horizontal bars */}
+        <div className="hidden md:block">
           <div className="relative w-full h-[90px] bg-gray-200">
-          {/* Government Label and Bracket - positioned above the chart */}
-
-          
-          {/* Government bracket lines - positioned above the chart */}
-          <div 
-            className="absolute -top-6 left-0 h-6"
-            style={{
-              left: `${familiesBusinessesPercent}%`,
-              width: `${governmentPercent}%`,
-            }}
-          >
-            {/* Top horizontal line */}
+            {/* Government Label and Bracket - positioned above the chart */}
             <div 
-              className="absolute top-0 left-0 w-full h-[1px] bg-[#1E1E1E]"
-              style={{ backgroundColor: '#1E1E1E' }}
-            ></div>
-            {/* Left vertical line */}
-            <div 
-              className="absolute top-0 left-0 w-[1px] h-4 bg-[#1E1E1E]"
-              style={{ backgroundColor: '#1E1E1E' }}
-            ></div>
-            {/* Right vertical line */}
-            <div 
-              className="absolute top-0 right-0 w-[1px] h-4 bg-[#1E1E1E]"
-              style={{ backgroundColor: '#1E1E1E' }}
-            ></div>
-          </div>
+              className="absolute -top-6 left-0 h-6"
+              style={{
+                left: `${familiesBusinessesPercent}%`,
+                width: `${governmentPercent}%`,
+              }}
+            >
+              {/* Top horizontal line */}
+              <div 
+                className="absolute top-0 left-0 w-full h-[1px] bg-[#1E1E1E]"
+                style={{ backgroundColor: '#1E1E1E' }}
+              ></div>
+              {/* Left vertical line */}
+              <div 
+                className="absolute top-0 left-0 w-[1px] h-4 bg-[#1E1E1E]"
+                style={{ backgroundColor: '#1E1E1E' }}
+              ></div>
+              {/* Right vertical line */}
+              <div 
+                className="absolute top-0 right-0 w-[1px] h-4 bg-[#1E1E1E]"
+                style={{ backgroundColor: '#1E1E1E' }}
+              ></div>
+            </div>
 
             <div
-                      className="absolute -top-10 left-0 h-8 flex items-center justify-center text-[#1E1E1E] font-medium text-[16px] px-2 rounded"
-                style={{
-                    left: `${familiesBusinessesPercent}%`,
-                    width: `${governmentPercent}%`,
-                }}
+              className="absolute -top-10 left-0 h-8 flex items-center justify-center text-[#1E1E1E] font-medium text-[16px] px-2 rounded"
+              style={{
+                left: `${familiesBusinessesPercent}%`,
+                width: `${governmentPercent}%`,
+              }}
             >
-                <div className=" bg-white w-fit px-2">
+              <div className="bg-white w-fit px-2">
                 Government
+              </div>
+            </div>
+            
+            {/* Families & Businesses Segment */}
+            <div 
+              className="absolute top-0 left-0 h-full flex items-center"
+              style={{
+                width: `${familiesBusinessesPercent}%`,
+                backgroundColor: safeFamiliesBusinessesColor,
+              }}
+            >
+              <div className="ml-4 text-left">
+                <div 
+                  className="font-bold"
+                  style={{
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: 700,
+                    lineHeight: 'normal',
+                    color: safeFamiliesBusinessesTextColor,
+                  }}
+                >
+                  {familiesBusinessesPercent.toFixed(1)}% ({formatCostShort(familiesBusinessesValue)})
                 </div>
-                
-            </div>
-          
-          {/* Families & Businesses Segment */}
-          <div 
-            className="absolute top-0 left-0 h-full flex items-center"
-            style={{
-              width: `${familiesBusinessesPercent}%`,
-              backgroundColor: safeFamiliesBusinessesColor,
-            }}
-          >
-            <div className="ml-4 text-left">
-              <div 
-                className="font-bold"
-                style={{
-                  fontFamily: 'Inter',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: 700,
-                  lineHeight: 'normal',
-                  color: safeFamiliesBusinessesTextColor,
-                }}
-              >
-                {familiesBusinessesPercent.toFixed(1)}% ({formatCostShort(familiesBusinessesValue)})
-              </div>
-              <div 
-                style={{
-                  fontFamily: 'Inter',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: 500,
-                  lineHeight: '130%',
-                  letterSpacing: '-0.342px',
-                  color: safeFamiliesBusinessesTextColor,
-                }}
-              >
-                Families & Businesses
+                <div 
+                  style={{
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    lineHeight: '130%',
+                    letterSpacing: '-0.342px',
+                    color: safeFamiliesBusinessesTextColor,
+                  }}
+                >
+                  Families & Businesses
+                </div>
               </div>
             </div>
-          </div>
-          
-          {/* Federal Segment */}
-          <div 
-            className="absolute top-0 left-0 h-full flex items-center"
-            style={{
-              left: `${familiesBusinessesPercent}%`,
-              width: `${federalPercent}%`,
-              backgroundColor: safeFederalColor,
-            }}
-          >
-            <div className="ml-4 text-left">
-              <div 
-                className="font-bold"
-                style={{
-                  fontFamily: 'Inter',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: 700,
-                  lineHeight: 'normal',
-                  color: safeFederalTextColor,
-                }}
-              >
-                {federalPercent.toFixed(1)}% ({formatCostShort(federalValue)})
-              </div>
-              <div 
-                style={{
-                  fontFamily: 'Inter',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: 500,
-                  lineHeight: '130%',
-                  letterSpacing: '-0.342px',
-                  color: safeFederalTextColor,
-                }}
-              >
-                Federal
+            
+            {/* Federal Segment */}
+            <div 
+              className="absolute top-0 left-0 h-full flex items-center"
+              style={{
+                left: `${familiesBusinessesPercent}%`,
+                width: `${federalPercent}%`,
+                backgroundColor: safeFederalColor,
+              }}
+            >
+              <div className="ml-4 text-left">
+                <div 
+                  className="font-bold"
+                  style={{
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: 700,
+                    lineHeight: 'normal',
+                    color: safeFederalTextColor,
+                  }}
+                >
+                  {federalPercent.toFixed(1)}% ({formatCostShort(federalValue)})
+                </div>
+                <div 
+                  style={{
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    lineHeight: '130%',
+                    letterSpacing: '-0.342px',
+                    color: safeFederalTextColor,
+                  }}
+                >
+                  Federal
+                </div>
               </div>
             </div>
-          </div>
-          
-          {/* State/Local Segment */}
-          <div 
-            className="absolute top-0 left-0 h-full flex items-center"
-            style={{
-              left: `${familiesBusinessesPercent + federalPercent}%`,
-              width: `${stateLocalPercent}%`,
-              backgroundColor: safeStateLocalColor,
-            }}
-          >
-            <div className="ml-4 text-left">
-              <div 
-                className="font-bold"
-                style={{
-                  fontFamily: 'Inter',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: 700,
-                  lineHeight: 'normal',
-                  color: safeStateLocalTextColor,
-                }}
-              >
-                {stateLocalPercent.toFixed(1)}% ({formatCostShort(stateLocalValue)})
-              </div>
-              <div 
-                style={{
-                  fontFamily: 'Inter',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: 500,
-                  lineHeight: '130%',
-                  letterSpacing: '-0.342px',
-                  color: safeStateLocalTextColor,
-                }}
-              >
-                State/Local
+            
+            {/* State/Local Segment */}
+            <div 
+              className="absolute top-0 left-0 h-full flex items-center"
+              style={{
+                left: `${familiesBusinessesPercent + federalPercent}%`,
+                width: `${stateLocalPercent}%`,
+                backgroundColor: safeStateLocalColor,
+              }}
+            >
+              <div className="ml-4 text-left">
+                <div 
+                  className="font-bold"
+                  style={{
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: 700,
+                    lineHeight: 'normal',
+                    color: safeStateLocalTextColor,
+                  }}
+                >
+                  {stateLocalPercent.toFixed(1)}% ({formatCostShort(stateLocalValue)})
+                </div>
+                <div 
+                  style={{
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    lineHeight: '130%',
+                    letterSpacing: '-0.342px',
+                    color: safeStateLocalTextColor,
+                  }}
+                >
+                  State/Local
+                </div>
               </div>
             </div>
           </div>
         </div>
-        
-        
+
+        {/* Mobile Chart - Vertical stacked bars */}
+        <div className="block md:hidden">
+          {/* Government Label */}
+          <div className="relative mb-6">
+            <div
+              className="absolute top-[122px] left-0 h-8 flex items-center justify-center text-[#1E1E1E] font-medium text-[16px] px-2 rounded"
+              style={{
+                left: `50%`,
+                width: `50%`,
+              }}
+            >
+              <div className="bg-white w-fit px-2">
+                Government
+              </div>
+            </div>
+          </div>
+
+          {/* Stacked bars with spacing and vertical bracket */}
+          <div className="relative">
+            {/* Vertical bracket line spanning Federal and State/Local bars */}
+            <div 
+              className="absolute top-[102px] w-[1px] bg-[#1E1E1E]"
+              style={{
+                left: `${familiesBusinessesPercent}%`,
+                height: `calc(30px + 12px + 30px)`, // height of Federal bar + spacing + State/Local bar
+                zIndex: 10,
+              }}
+            ></div>
+
+            <div className="space-y-4">
+              {/* Families & Businesses Bar */}
+              <div className="w-full">
+                <div 
+                  className="w-full h-[30px]"
+                  style={{
+                    width: `${familiesBusinessesPercent}%`,
+                    backgroundColor: safeFamiliesBusinessesColor,
+                  }}
+                ></div>
+                <div className="mt-2 text-left">
+                  <div 
+                    style={{
+                      fontFamily: 'Inter',
+                      fontSize: '16px',
+                      fontStyle: 'normal',
+                      lineHeight: '130%',
+                      letterSpacing: '-0.342px',
+                      color: '#1E1E1E',
+                    }}
+                  >
+                    <span style={{ fontWeight: 700 }}>Families & Businesses</span>   <span style={{ fontWeight: 400 }}>{familiesBusinessesPercent.toFixed(1)}% / {formatCostShort(familiesBusinessesValue)}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Federal Bar */}
+              <div className="w-full">
+                <div 
+                  className="w-full h-[30px]"
+                  style={{
+                    width: `${federalPercent}%`,
+                    backgroundColor: safeFederalColor,
+                  }}
+                ></div>
+                <div className="mt-2 text-left">
+                  <div 
+                    style={{
+                      fontFamily: 'Inter',
+                      fontSize: '16px',
+                      fontStyle: 'normal',
+                      lineHeight: '130%',
+                      letterSpacing: '-0.342px',
+                      color: '#1E1E1E',
+                    }}
+                  >
+                    <span style={{ fontWeight: 700 }}>Federal</span>   <span style={{ fontWeight: 400 }}>{federalPercent.toFixed(1)}% / {formatCostShort(federalValue)}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* State/Local Bar */}
+              <div className="w-full">
+                <div 
+                  className="w-full h-[30px]"
+                  style={{
+                    width: `${stateLocalPercent}%`,
+                    backgroundColor: safeStateLocalColor,
+                  }}
+                ></div>
+                <div className="mt-2 text-left">
+                  <div 
+                    style={{
+                      fontFamily: 'Inter',
+                      fontSize: '16px',
+                      fontStyle: 'normal',
+                      lineHeight: '130%',
+                      letterSpacing: '-0.342px',
+                      color: '#1E1E1E',
+                    }}
+                  >
+                    <span style={{ fontWeight: 700 }}>State/Local</span>   <span style={{ fontWeight: 400 }}>{stateLocalPercent.toFixed(1)}% / {formatCostShort(stateLocalValue)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       
       {/* DataTableDescription */}

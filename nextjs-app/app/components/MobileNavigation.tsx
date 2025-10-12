@@ -85,7 +85,7 @@ export default function MobileNavigation({
             style={{ height: 'calc(100vh - 38px)' }}
             >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <div className="flex items-center justify-between p-5 border-b border-gray-200">
               {/* Logo */}
               <div className="logo h-[50px] flex-shrink-0">
                 {logo ? (

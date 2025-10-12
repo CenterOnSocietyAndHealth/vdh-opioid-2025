@@ -64,7 +64,7 @@ export default async function Footer() {
       </div>
       
       {/* Existing logo section */}
-      <div className="footer-container flex justify-between items-center max-w-[880px] mx-auto">
+      <div className="footer-container flex flex-col gap-4 md:flex-row md:justify-between items-center max-w-[880px] mx-auto px-4">
         <div className="footer-left">
           <a href="https://www.vdh.virginia.gov/" target="_blank" rel="noopener noreferrer">
             <Image src={VDHlogo} alt='VDH Logo' className="h-[50px] w-auto" />

@@ -227,7 +227,8 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   }, [costSectors, chartWidth, totalCost, totalCostSubtitle]);
   return (
     <div className={`max-w-[1311px] mx-auto ${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
-      <div ref={chartRef} className="w-full h-auto" style={{position: 'relative'}}>
+      {/* Desktop: Large D3 Chart */}
+      <div ref={chartRef} className="w-full h-auto hidden md:block" style={{position: 'relative'}}>
         {/* Custom Tooltip for blocks with showLabelAsTooltip */}
         {hoveredTooltipIndex !== null && tooltipPosition && costSectors[hoveredTooltipIndex] && costSectors[hoveredTooltipIndex].showLabelAsTooltip && (
           <div
@@ -270,10 +271,65 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
           </div>
         )}
       </div>
+
+      {/* Mobile: Simplified layout with title and small bars */}
+      <div className="md:hidden">
+        {/* Title Section */}
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-normal mb-2 text-gray-800">
+            {totalCostSubtitle || 'The Opioid Epidemic Cost Virginians'}
+          </h2>
+          <div className="flex items-center justify-center mb-4">
+            <h3 className="text-2xl font-bold whitespace-nowrap">
+              {(() => {
+                const num = typeof totalCost === 'string' ? Number(totalCost.replace(/[^\d.]/g, '')) : totalCost;
+                return !isNaN(num) && num > 0 ? formatCostShort(num, 2) + ' Spread Across Four Sectors' : totalCost;
+              })()}
+            </h3>
+          </div>
+        </div>
+
+        {/* Mobile Sector List */}
+        <div className="space-y-6">
+          {costSectors.map((sector, i) => {
+            const percentOfTotal = (sector.value / totalValue) * 100;
+            
+            return (
+              <div key={i} className="bg-white py-0 px-4">
+                {/* Sector Bar */}
+                <div className="mb-2">
+                  <div className="w-full h-[30px] overflow-hidden">
+                    <div
+                      className="h-full"
+                      style={{
+                        width: `${percentOfTotal}%`,
+                        backgroundColor: sector.color,
+                        transition: 'width 0.3s ease'
+                      }}
+                    />
+                  </div>
+                </div>
+                
+                {/* Sector Title and Cost */}
+                <div className="mb-2">
+                  <h4 className="text-[14px] font-normal text-[#1E1E1E]">
+                    <span className="mr-2 font-bold">{sector.title}</span> {formatCostShort(sector.value)}
+                  </h4>
+                </div>
+                
+                {/* Sector Description */}
+                <p className="text-sm text-[#1E1E1E] leading-[130%] font-[400]">
+                  {sector.description}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
       
       {/* Data Table Description Component */}
       {chartDescription && (
-        <div className="mt-0">
+        <div className="mt-0 mx-4 md:mx-0">
           <DataTableDescription
             title="Data Table/This Chart Described"
             description={chartDescription}
@@ -285,7 +341,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       
       {/* Sources Accordion Component */}
       {sources && (
-        <div className="mt-0">
+        <div className="mt-0 mx-4 md:mx-0">
           <SourcesAccordion
             title="Sources"
             sources={sources}
@@ -293,8 +349,8 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         </div>
       )}
       
-      {/* Render all sector descriptions and aside in a grid */}
-      <div className="mt-6 grid gap-8 md:grid-cols-3 mb-12">
+      {/* Desktop: Render all sector descriptions and aside in a grid */}
+      <div className="hidden md:grid mt-6 gap-8 md:grid-cols-3 mb-12">
         {/* Breakdown descriptions in a nested 2-col grid */}
         <div className="md:col-span-2">
           <div className="grid gap-x-12 gap-y-6 md:grid-cols-2 mr-4">
