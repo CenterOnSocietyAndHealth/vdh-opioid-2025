@@ -18,7 +18,7 @@ export default function Navigation({
   const pathname = usePathname();
 
   return (
-    <nav className="flex-1 flex justify-center">
+    <nav className="hidden lg:flex flex-1 justify-center">
       <ul className="flex space-x-8">
         {items.map((item, index) => {
           const href = item.linkType === 'internal' 
@@ -35,7 +35,6 @@ export default function Navigation({
             <li key={index}>
               <a 
                 href={href}
-                style={{ }}
                 className={`text-lg hover:text-primary no-underline hover:underline hover:bg-transparent border-b-2 border-transparent hover:border-[#000000] ${isCurrentPage ? 'font-bold' : ''}`}
                 {...(item.linkType === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               >
