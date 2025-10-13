@@ -129,7 +129,7 @@ export default function Accordion({ block }: AccordionProps) {
         <div
           id={`accordion-content-${title}`}
           className={`overflow-hidden transition-all duration-1000 ease-in-out ${
-            isExpanded ? 'max-h-[2000px]' : 'max-h-0'
+            isExpanded ? 'max-h-[8000px]' : 'max-h-0'
           }`}
           aria-hidden={!isExpanded}
         >

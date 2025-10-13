@@ -45,8 +45,8 @@ export default function OnThisPage({ block }: OnThisPageProps) {
   }
 
   return (
-    <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
-      <div className="w-full bg-[#F5F5F0] py-8 px-6 mx-2 md:mx-0">
+      <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]} mx-2 md:mx-0`}>
+        <div className="w-full bg-[#F5F5F0] py-8 px-6">
         {/* Desktop Version */}
         <div className="hidden md:flex items-center justify-center space-x-6">
           {/* Icon and "On this page:" label */}
@@ -78,7 +78,7 @@ export default function OnThisPage({ block }: OnThisPageProps) {
 
         {/* Mobile Version */}
         <div className="md:hidden">
-          <div className="flex items-center space-x-2 mb-4">
+          <div className="flex items-center space-x-2 mb-2">
             <svg
               className="w-6 h-6"
               viewBox="0 0 24 24"
@@ -94,7 +94,7 @@ export default function OnThisPage({ block }: OnThisPageProps) {
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="w-full bg-white border border-gray-300 rounded-md px-4 py-3 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-white border border-[#E7E7E7] rounded-[3px] px-4 py-3 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <span className="text-[#1E1E1E] font-normal">{selectedLink}</span>
               <svg 
@@ -108,12 +108,12 @@ export default function OnThisPage({ block }: OnThisPageProps) {
             </button>
             
             {isDropdownOpen && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#E7E7E7] shadow-lg z-10">
                 {links.map((link, index) => (
                   <button
                     key={index}
                     onClick={() => handleDropdownLinkClick(link)}
-                    className="w-full px-4 py-3 text-left text-[#1E1E1E] font-normal hover:bg-gray-50 first:rounded-t-md last:rounded-b-md border-b border-gray-200 last:border-b-0"
+                    className="w-full px-4 py-3 text-left text-[#1E1E1E] font-normal hover:bg-gray-50 first:rounded-t-[3px] last:rounded-b-[3px] border-b border-gray-200 last:border-b-0"
                   >
                     {link.title}
                   </button>

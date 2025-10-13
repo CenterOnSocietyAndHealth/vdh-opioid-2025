@@ -114,7 +114,7 @@ export default function LargeButton({ block }: LargeButtonProps) {
 
   // Button styles
   const buttonStyles = {
-    backgroundColor: '#4783B5',
+    backgroundColor: '#427AA9',
     color: '#FFFFFF',
     border: '1px solid #417A90',
   };
@@ -142,10 +142,10 @@ export default function LargeButton({ block }: LargeButtonProps) {
           className={buttonClassName}
           style={buttonStyles}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#3B6D97';
+            e.currentTarget.style.backgroundColor = '#3A658A';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = '#4783B5';
+            e.currentTarget.style.backgroundColor = '#427AA9';
           }}
           disabled={isDisabled}
         >
