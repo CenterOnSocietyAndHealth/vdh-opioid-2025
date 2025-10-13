@@ -545,10 +545,10 @@ export default function ChoroplethMap({
             }
           })
           
-        // Add panning functionality on mobile
+        // Add panning functionality on mobile (zoom disabled)
         if (isMobile) {
           const zoom = d3.zoom<SVGSVGElement, unknown>()
-            .scaleExtent([1, 3]) // Allow zoom from 1x to 3x
+            .scaleExtent([1, 1]) // Disable zooming (fixed at 1x)
             .translateExtent([[-width * 1.5, -height * 0.5], [width * 2.5, height * 1.5]]) // Limit panning with more horizontal range
             .on('zoom', (event) => {
               mapGroup.attr('transform', event.transform);
