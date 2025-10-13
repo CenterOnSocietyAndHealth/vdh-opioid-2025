@@ -210,10 +210,63 @@ export default function ChoroplethMap({
         
         // Create projection with initial position settings
         const projection = d3.geoAlbers()
-          .scale(isMobile ? 4000 : 9000)
+          .scale(isMobile ? 12000 : 9000) // Increased mobile zoom for better locality visibility
           .rotate([78, 0, 0])
-          .center([-1.6, 38.1])
-          .translate([width / 2, height / 2]);
+          .center(isMobile ? [-0.6, 37.4] : [-1.6, 38.1]);
+        
+        // Adjust projection for mobile when a locality is selected
+        if (isMobile && selectedLocality) {
+          // Find the selected locality feature to get its centroid
+          const selectedFeature = geoData.features.find((f: any) => {
+            let fipsCode = f.properties.FIPS || f.properties.fips || f.properties.GEOID || 
+                          f.properties.id || f.id;
+            if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
+              fipsCode = `51${fipsCode}`;
+            }
+            
+            const countyName = f.properties.NAME || f.properties.name;
+            
+            let locFips = selectedLocality.fips;
+            if (locFips) {
+              locFips = locFips.replace('us-va-', '');
+              locFips = locFips.toString().replace(/\D/g, '');
+              locFips = locFips.padStart(3, '0');
+              if (locFips.length === 3) {
+                locFips = `51${locFips}`;
+              }
+            }
+            
+            const fipsMatch = fipsCode && locFips === fipsCode;
+            const nameMatch = countyName && selectedLocality.counties === countyName;
+            
+            return fipsMatch || nameMatch;
+          });
+          
+          if (selectedFeature) {
+            // Calculate the bounds of the selected locality using a clean projection
+            const tempProjection = d3.geoAlbers()
+              .scale(isMobile ? 12000 : 9000)
+              .rotate([78, 0, 0])
+              .center([-1.6, 38.1])
+              .translate([0, 0]); // No initial translation
+            
+            const tempPath = d3.geoPath().projection(tempProjection);
+            const bounds = tempPath.bounds(selectedFeature);
+            
+            // Calculate the center of the selected locality
+            const centerX = (bounds[0][0] + bounds[1][0]) / 2;
+            const centerY = (bounds[0][1] + bounds[1][1]) / 2;
+            
+            // Set the translation to center the locality in the viewport
+            projection.translate([width / 2 - centerX, height / 2 - centerY]);
+          } else {
+            // If no selected locality, use default center
+            projection.translate([width / 2, height / 2]);
+          }
+        } else {
+          // For desktop or no selected locality, use default center
+          projection.translate([width / 2, height / 2]);
+        }
         
         // Create path generator
         const path = d3.geoPath()
@@ -502,36 +555,42 @@ export default function ChoroplethMap({
         const legendHeight = isMobile ? 40 : 85;
         const boxSize = 18; // Fixed width
         const boxHeight = 20; // Fixed height
-        const spacing = isMobile ? 30 : 20;
+        const spacing = isMobile ? 25 : 20;
         
         const legend = svg.append("g")
-          .attr("transform", `translate(${isMobile ? 20 : 150}, ${isMobile ? height - legendHeight - 20 : 100})`);
+          .attr("transform", `translate(${isMobile ? -10 : 10}, ${isMobile ? height - legendHeight - 0 : height - legendHeight - 20})`);
         
         legend.append("rect")
-          .attr("width", legendWidth)
-          .attr("height", legendHeight + 10)
-          .attr("fill", "none")
+          .attr("width", isMobile ? legendWidth + 25 : legendWidth)
+          .attr("x", isMobile ? -5 : 0)
+          .attr("y", isMobile ? -35 : 0)
+          .attr("height", isMobile ? legendHeight + 35 : legendHeight + 10)
+          .attr("fill", isMobile ? "#FAF9F8" : "none")
           .attr("stroke", "#ddd")
           .attr("stroke-width", 0);
         
-        // Add sector name label above the legend
+        // Add descriptive legend label similar to mockup
+        const legendTitle = selectedLocality 
+          ? `${indicatorDisplayNames[indicator]} Costs per person for ${selectedLocality.counties}`
+          : `${indicatorDisplayNames[indicator]} Costs per person`;
+        
         legend.append("text")
           .attr("x", 10)
           .attr("y", -10)
           .attr("text-anchor", "start")
           .attr("font-family", "Inter")
-          .attr("font-weight", "400")
+          .attr("font-weight", "700")
           .attr("font-size", "14px")
           .attr("fill", "#1E1E1E")
           .attr("line-height", "170%")
           .attr("letter-spacing", "-0.266px")
-          .text(`${indicatorDisplayNames[indicator]} Costs`);
+          .text(legendTitle);
         
         // Add colored boxes for each color in the scale
         colors.forEach((color, i) => {
-          // For mobile, create a two-column grid
-          const x = isMobile ? (i % 2) * (legendWidth / 2 - 10) : 10;
-          const y = isMobile ? 10 + Math.floor(i / 2) * (spacing + 3) : 10 + i * (spacing + 3);
+          // For mobile, display all scales in a single row since we removed "per person"
+          const x = isMobile ? 10 + i * (legendWidth / colors.length) : 10;
+          const y = isMobile ? 10 : 10 + i * (spacing + 3);
           
           legend.append("rect")
             .attr("x", x)
@@ -547,13 +606,13 @@ export default function ChoroplethMap({
           legend.append("text")
             .attr("x", x + boxSize + 5)
             .attr("y", y + boxHeight / 2 + 5)
-            .attr("font-size", "14px")
+            .attr("font-size", isMobile ? "12px" : "14px")
             .attr("font-family", "Inter")
             .attr("font-weight", "400")
             .attr("fill", "#1E1E1E")
             .attr("line-height", "170%")
             .attr("letter-spacing", "-0.266px")
-            .text(`$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()} per person`);
+            .text(`$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()}`);
         });
         
 
@@ -624,7 +683,7 @@ export default function ChoroplethMap({
               
               // Add tooltip background
               annotation.append("rect")
-                .attr("x", -80)
+                .attr("x", -100)
                 .attr("y", -80)
                 .attr("width", 160)
                 .attr("height", 70)

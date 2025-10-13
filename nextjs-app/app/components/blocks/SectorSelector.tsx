@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSector } from '@/app/contexts/SectorContext';
 import { getValidKeyOrDefault } from '@/app/client-utils';
 
@@ -38,10 +38,34 @@ export default function SectorSelector({
   const { marginTop = 'medium', marginBottom = 'medium' } = block;
   const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'medium');
   const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'medium');
+  
+  // State for dropdown functionality
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleSectorSelect = (sector: typeof sectors[number]) => {
+    setSelectedSector(sector);
+    setIsDropdownOpen(false);
+  };
 
   return (
     <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]} flex justify-center items-center`}>
-      <div className="flex flex-wrap gap-3 justify-center">
+      {/* Desktop: Button layout */}
+      <div className="hidden md:flex flex-wrap gap-3 justify-center">
         {sectors.map((sector) => {
           const isSelected = selectedSector === sector;
           return (
@@ -69,6 +93,79 @@ export default function SectorSelector({
             </button>
           );
         })}
+      </div>
+
+      {/* Mobile: Dropdown */}
+      <div className="md:hidden flex items-center gap-3">
+        <label className="text-[#414141] font-inter text-[14px] font-bold whitespace-nowrap">
+          Sectors:
+        </label>
+        <div className="relative flex-1" ref={dropdownRef}>
+          <button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="
+              w-full min-w-[200px] px-4 py-1 
+              bg-white border border-[#E7E7E7] rounded-[3px]
+              flex justify-between items-center
+              font-inter text-[14px] font-normal text-[#414141]
+              hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4783B5] focus:border-transparent
+              transition-all duration-200
+            "
+            style={{
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '14px',
+              lineHeight: '150%',
+            }}
+          >
+            <span>{selectedSector}</span>
+            <svg
+              className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {/* Dropdown Menu */}
+          {isDropdownOpen && (
+            <div className="
+              absolute top-full left-0 right-0 mt-1
+              bg-white border border-gray-300 rounded-md shadow-lg
+              z-50 max-h-60 overflow-y-auto
+            ">
+              {sectors.map((sector) => {
+                const isSelected = selectedSector === sector;
+                return (
+                  <button
+                    key={sector}
+                    onClick={() => handleSectorSelect(sector)}
+                    className={`
+                      w-full px-4 py-3 text-left
+                      font-inter text-sm transition-colors duration-200
+                      ${isSelected 
+                        ? 'bg-[#4783B5] text-white' 
+                        : 'text-[#414141] hover:bg-gray-50'
+                      }
+                      first:rounded-t-md last:rounded-b-md
+                      focus:outline-none focus:bg-gray-50
+                    `}
+                    style={{
+                      fontFamily: 'Inter, sans-serif',
+                      fontSize: '14px',
+                      fontWeight: isSelected ? 700 : 400,
+                      lineHeight: '150%',
+                      letterSpacing: isSelected ? '-0.266px' : 'normal',
+                    }}
+                  >
+                    {sector}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
