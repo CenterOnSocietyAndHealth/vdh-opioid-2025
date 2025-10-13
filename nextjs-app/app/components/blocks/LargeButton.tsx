@@ -119,7 +119,7 @@ export default function LargeButton({ block }: LargeButtonProps) {
     border: '1px solid #417A90',
   };
 
-  const buttonClassName = "inline-flex items-center justify-center px-16 py-4 rounded-full font-medium text-base md:text-xl transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-opacity-50";
+  const buttonClassName = "inline-flex items-center justify-center px-8 py-4 rounded-full font-medium text-base md:text-xl transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-opacity-50";
 
   // Button content
   const buttonContent = (
