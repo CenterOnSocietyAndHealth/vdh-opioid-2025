@@ -212,7 +212,7 @@ export default function ChoroplethMap({
         const projection = d3.geoAlbers()
           .scale(isMobile ? 12000 : 9000) // Increased mobile zoom for better locality visibility
           .rotate([78, 0, 0])
-          .center(isMobile ? [-0.6, 37.4] : [-1.6, 38.1]);
+          .center([-1.6, 38.1]);
         
         // Adjust projection for mobile when a locality is selected
         if (isMobile && selectedLocality) {
@@ -545,7 +545,18 @@ export default function ChoroplethMap({
             }
           })
           
-        // No panning or zoom interactions enabled
+        // Add panning functionality on mobile
+        if (isMobile) {
+          const zoom = d3.zoom<SVGSVGElement, unknown>()
+            .scaleExtent([1, 3]) // Allow zoom from 1x to 3x
+            .translateExtent([[-width * 1.5, -height * 0.5], [width * 2.5, height * 1.5]]) // Limit panning with more horizontal range
+            .on('zoom', (event) => {
+              mapGroup.attr('transform', event.transform);
+            });
+          
+          // Apply zoom to the SVG
+          svg.call(zoom as any);
+        }
         
         // Create legend and UI elements outside of the map group so they don't get transformed
         // These are fixed elements that shouldn't move with the map
@@ -588,8 +599,9 @@ export default function ChoroplethMap({
         
         // Add colored boxes for each color in the scale
         colors.forEach((color, i) => {
-          // For mobile, display all scales in a single row since we removed "per person"
-          const x = isMobile ? 10 + i * (legendWidth / colors.length) : 10;
+          // For mobile, display all scales in a single row with tighter spacing
+          const mobileBoxSpacing = (legendWidth * 0.95) / colors.length; // Reduced spacing for mobile
+          const x = isMobile ? 10 + i * mobileBoxSpacing : 10;
           const y = isMobile ? 10 : 10 + i * (spacing + 3);
           
           legend.append("rect")
@@ -604,7 +616,7 @@ export default function ChoroplethMap({
           const max = colorScale.invertExtent(color)[1];
           
           legend.append("text")
-            .attr("x", x + boxSize + 5)
+            .attr("x", isMobile ? x + boxSize + 2 : x + boxSize + 5) // Closer labels on mobile
             .attr("y", y + boxHeight / 2 + 5)
             .attr("font-size", isMobile ? "12px" : "14px")
             .attr("font-family", "Inter")
