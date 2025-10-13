@@ -146,7 +146,7 @@ export default function PovertyIncome({ block, selectedLocality: propSelectedLoc
   }
 
   return (
-    <div className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
+    <div className={`px-16 md:px-0 ${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
       <div 
         id={sectionId}
         className={`content-container ${alignmentMap[validTextAlignment as keyof typeof alignmentMap]} ${finalBackgroundColor !== 'transparent' ? 'p-[20px_15px]' : ''}`} 
@@ -190,9 +190,9 @@ export default function PovertyIncome({ block, selectedLocality: propSelectedLoc
             
             {/* Poverty Comparison */}
             <div 
+              className="text-center md:text-left"
               style={{
                 color: '#1E1E1E',
-                textAlign: 'left',
                 fontFamily: 'Inter',
                 fontSize: '16px',
                 fontStyle: 'normal',
@@ -247,9 +247,9 @@ export default function PovertyIncome({ block, selectedLocality: propSelectedLoc
             
             {/* Income Comparison */}
             <div 
+              className="text-center md:text-left"
               style={{
                 color: '#1E1E1E',
-                textAlign: 'left',
                 fontFamily: 'Inter',
                 fontSize: '16px',
                 fontStyle: 'normal',

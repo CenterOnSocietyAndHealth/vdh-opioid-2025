@@ -111,7 +111,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
   return (
     <div className={`max-w-[1180px] mx-auto ${marginMap[safeMarginTop]} ${marginBottomMap[safeMarginBottom]}`}>
       {/* Header */}
-      <div className="text-center mb-12 max-w-[600px] mx-auto">
+      <div className="px-4 md:px-0 text-center mb-12 max-w-[600px] mx-auto">
         <h2 className="text-2xl font-normal mb-2">{title}</h2>
               <h3 className="text-lg text-[#1E1E1E]">{subtitle}</h3>
       </div>
@@ -277,7 +277,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
         </div>
 
         {/* Mobile Chart - Vertical stacked bars */}
-        <div className="block md:hidden">
+        <div className="block px-4 md:hidden">
           {/* Government Label */}
           <div className="relative mb-6">
             <div
@@ -387,7 +387,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
       
       {/* DataTableDescription */}
       {chartDescription && (
-        <div className="px-0 mt-4">
+        <div className="px-4 md:px-0 mt-4">
           <DataTableDescription
             title="Chart Description/Data Table"
             description={chartDescription}
@@ -400,7 +400,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
 
       {/* SourcesAccordion */}
       {sources && (
-        <div className="px-0 mt-0">
+        <div className="px-4 md:px-0 mt-0">
           <SourcesAccordion
             title="Sources"
             sources={sources}

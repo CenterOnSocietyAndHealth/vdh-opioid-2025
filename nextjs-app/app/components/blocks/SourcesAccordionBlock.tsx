@@ -44,7 +44,7 @@ export default function SourcesAccordionBlock({ block }: SourcesAccordionBlockPr
 
   return (
     <div 
-      className={`${safeMarginTop} ${safeMarginBottom}`}
+      className={`px-4 md:px-0 ${safeMarginTop} ${safeMarginBottom}`}
       style={maxWidth ? { maxWidth: `${maxWidth}px`, marginLeft: 'auto', marginRight: 'auto' } : {}}
     >
       <SourcesAccordion

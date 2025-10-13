@@ -18,10 +18,10 @@ const marginBottomMap = {
 }
 
 const paddingMap = {
-  none: 'p-0',
-  small: 'p-[20px]',
-  medium: 'p-[35px_30px]',
-  large: 'p-[50px_40px]',
+  none: 'py-0',
+  small: 'py-[20px]',
+  medium: 'py-[35px]',
+  large: 'py-[50px]',
 }
 
 const backgroundWidthMap = {
