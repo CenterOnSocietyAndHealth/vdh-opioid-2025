@@ -569,7 +569,7 @@ export default function ChoroplethMap({
         const spacing = isMobile ? 25 : 20;
         
         const legend = svg.append("g")
-          .attr("transform", `translate(${isMobile ? -10 : 10}, ${isMobile ? height - legendHeight - 0 : height - legendHeight - 20})`);
+          .attr("transform", `translate(${isMobile ? -10 : 120}, ${isMobile ? height - legendHeight - 0 : height - legendHeight - 300})`);
         
         legend.append("rect")
           .attr("width", isMobile ? legendWidth + 25 : legendWidth)
@@ -581,9 +581,11 @@ export default function ChoroplethMap({
           .attr("stroke-width", 0);
         
         // Add descriptive legend label similar to mockup
-        const legendTitle = selectedLocality 
-          ? `${indicatorDisplayNames[indicator]} Costs per person for ${selectedLocality.counties}`
-          : `${indicatorDisplayNames[indicator]} Costs per person`;
+        const legendTitle = isMobile
+          ? (selectedLocality 
+              ? `${indicatorDisplayNames[indicator]} Costs per person for ${selectedLocality.counties}`
+              : `${indicatorDisplayNames[indicator]} Costs per person`)
+          : `${indicatorDisplayNames[indicator]} Costs`;
         
         legend.append("text")
           .attr("x", 10)
@@ -624,7 +626,7 @@ export default function ChoroplethMap({
             .attr("fill", "#1E1E1E")
             .attr("line-height", "170%")
             .attr("letter-spacing", "-0.266px")
-            .text(`$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()}`);
+            .text(`$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()}${isMobile ? '' : ' per person'}`);
         });
         
 
