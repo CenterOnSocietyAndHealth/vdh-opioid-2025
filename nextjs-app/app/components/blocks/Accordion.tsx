@@ -91,7 +91,7 @@ export default function Accordion({ block }: AccordionProps) {
     <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       <div className="">
         {/* Accordion Header */}
-        <div className="relative px-0 py-3 pt-5">
+        <div className="relative px-4 md:px-0 py-3 pt-5">
           {/* Heading - positioned for screen readers */}
           <div className="sr-only">
             {renderHeading()}
@@ -128,12 +128,13 @@ export default function Accordion({ block }: AccordionProps) {
         {/* Accordion Content */}
         <div
           id={`accordion-content-${title}`}
-          className={`overflow-hidden transition-all duration-1000 ease-in-out ${
-            isExpanded ? 'max-h-[8000px]' : 'max-h-0'
+          className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+            isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
           }`}
           aria-hidden={!isExpanded}
         >
-          <div className="px-0 py-4">
+          <div className="overflow-hidden">
+            <div className="px-4 md:px-0 py-4">
             <PortableText
               value={content}
               components={{
@@ -438,6 +439,7 @@ export default function Accordion({ block }: AccordionProps) {
                 },
               }}
             />
+            </div>
           </div>
         </div>
         

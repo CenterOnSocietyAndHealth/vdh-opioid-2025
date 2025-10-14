@@ -695,7 +695,7 @@ export default function ChoroplethMap({
               
               // Add tooltip background
               annotation.append("rect")
-                .attr("x", -100)
+                .attr("x", -80)
                 .attr("y", -80)
                 .attr("width", 160)
                 .attr("height", 70)

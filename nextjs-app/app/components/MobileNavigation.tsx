@@ -85,7 +85,7 @@ export default function MobileNavigation({
             style={{ height: 'calc(100vh - 38px)' }}
             >
             {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b border-gray-200">
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-200">
               {/* Logo */}
               <div className="logo h-[50px] flex-shrink-0">
                 {logo ? (
@@ -120,7 +120,7 @@ export default function MobileNavigation({
             </div>
 
             {/* Navigation Items */}
-            <nav className="flex-1 px-6 py-8">
+            <nav className="flex-1 px-6 py-6">
               <ul className="space-y-0">
                 {items.map((item, index) => {
                   const href = item.linkType === 'internal' 
@@ -138,7 +138,7 @@ export default function MobileNavigation({
                       <a
                         href={href}
                         onClick={closeMenu}
-                        className={`flex items-center justify-between no-underline py-6 text-[20px] font-normal text-black hover:text-gray-600 transition-colors ${
+                        className={`flex items-center justify-between no-underline py-4 text-[20px] font-normal text-black hover:text-gray-600 transition-colors ${
                           isCurrentPage ? 'font-bold' : ''
                         }`}
                         {...(item.linkType === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}

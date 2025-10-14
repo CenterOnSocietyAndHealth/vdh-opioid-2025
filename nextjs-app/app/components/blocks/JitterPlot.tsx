@@ -602,15 +602,11 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       <div className="relative mx-auto max-w-[800px] p-4">
         {/* Title */}
         <h3
-          className="mb-2 mx-auto text-center"
+          className="mb-2 mx-auto text-center text-xl lg:text-2xl font-normal leading-[130%] max-w-[600px]"
           style={{
             color: '#1E1E1E',
             fontFamily: 'DM Sans',
-            fontSize: '24px',
-            fontStyle: 'normal',
-            fontWeight: 400,
-            lineHeight: '130%',
-            maxWidth: '600px',
+            letterSpacing: '-0.38px',
           }}
         >
           {(() => {
@@ -637,15 +633,10 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
 
         {/* Subtitle */}
         <h4
-          className="mb-4 text-center"
+          className="mb-4 text-center text-base font-normal lg:font-bold leading-[130%] max-w-[600px] lg:letter-spacing-[-0.304px]"
           style={{
             color: '#1E1E1E',
             fontFamily: 'Inter',
-            fontSize: '16px',
-            fontStyle: 'normal',
-            fontWeight: 700,
-            lineHeight: '130%',
-            letterSpacing: '-0.16px'
           }}
         >
           {subtitle}

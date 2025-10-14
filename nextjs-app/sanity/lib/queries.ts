@@ -232,6 +232,34 @@ export const getPageQuery = defineQuery(`
             ...,
             ${markDefsReference}
           }
+        },
+        aside[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        mobileAside[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        chartDescription[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        sources[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
         }
       },
       _type == "costsMaps" => {

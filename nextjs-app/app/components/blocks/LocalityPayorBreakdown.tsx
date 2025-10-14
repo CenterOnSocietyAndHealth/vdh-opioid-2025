@@ -29,6 +29,9 @@ function formatCostAbbr(value: number): string {
   return `$${value}`;
 }
 
+type SortColumn = 'locality' | 'household' | 'federal' | 'stateLocal';
+type SortDirection = 'asc' | 'desc';
+
 export default function LocalityPayorBreakdown({ block, localities }: LocalityPayorBreakdownProps) {
   const { 
     title,
@@ -38,19 +41,61 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
   } = block;
   
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortColumn, setSortColumn] = useState<SortColumn>('locality');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+
+  // Handle column header click for sorting
+  const handleSort = (column: SortColumn) => {
+    if (sortColumn === column) {
+      // Toggle direction if clicking the same column
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // Set new column and default to ascending
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
 
   // Filter localities excluding Virginia (CountyFIPS: 51999) and apply search filter
   const filteredLocalities = useMemo(() => {
     if (!localities || localities.length === 0) {
       return [];
     }
-    return localities
+    
+    const filtered = localities
       .filter(locality => locality.countyFips !== '51999') // Exclude Virginia state total
       .filter(locality => 
         locality.counties.trim().toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      .sort((a, b) => a.counties.trim().localeCompare(b.counties.trim()));
-  }, [localities, searchTerm]);
+      );
+    
+    // Sort based on selected column and direction
+    return filtered.sort((a, b) => {
+      let compareValue = 0;
+      
+      switch (sortColumn) {
+        case 'locality':
+          compareValue = a.counties.trim().localeCompare(b.counties.trim());
+          break;
+        case 'household':
+          const aHousehold = a.sectorBreakdown?.householdSectorTotal ?? 0;
+          const bHousehold = b.sectorBreakdown?.householdSectorTotal ?? 0;
+          compareValue = aHousehold - bHousehold;
+          break;
+        case 'federal':
+          const aFederal = a.sectorBreakdown?.fedGovtSectorTotal ?? 0;
+          const bFederal = b.sectorBreakdown?.fedGovtSectorTotal ?? 0;
+          compareValue = aFederal - bFederal;
+          break;
+        case 'stateLocal':
+          const aStateLocal = a.sectorBreakdown?.stateLocalSectorTotal ?? 0;
+          const bStateLocal = b.sectorBreakdown?.stateLocalSectorTotal ?? 0;
+          compareValue = aStateLocal - bStateLocal;
+          break;
+      }
+      
+      return sortDirection === 'asc' ? compareValue : -compareValue;
+    });
+  }, [localities, searchTerm, sortColumn, sortDirection]);
 
   console.log("filteredLocalities", filteredLocalities);
   console.log("localities", localities);
@@ -74,7 +119,7 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
 
   return (
     <div 
-      className={`mx-auto p-6 px-12 ${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}
+      className={`mx-auto p-6 px-4 md:px-12 ${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}
       style={{ 
         maxWidth: `${maxWidth}px`,
         backgroundColor: '#F3F2EC'
@@ -109,40 +154,80 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
           </colgroup>
           <thead className="sticky top-0 bg-[#F3F2EC] z-10">
             <tr className="border-t border-b border-[#979797]">
-              <th className="text-left py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal leading-[250%]">Locality</th>
-              <th className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal leading-[250%]">Families/Businesses</th>
-              <th className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal leading-[250%]">Federal Gov&apos;t</th>
-              <th className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal leading-[250%]">State/Local Gov&apos;t</th>
+              <th 
+                className="text-left py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] transition-colors select-none"
+                onClick={() => handleSort('locality')}
+              >
+                <div className="flex items-center gap-1">
+                  <span>Locality</span>
+                  {sortColumn === 'locality' && (
+                    <span className="text-[10px]">{sortDirection === 'asc' ? '▲' : '▼'}</span>
+                  )}
+                </div>
+              </th>
+              <th 
+                className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] transition-colors select-none"
+                onClick={() => handleSort('household')}
+              >
+                <div className="flex items-center justify-end gap-1">
+                  <span>Families / Businesses</span>
+                  {sortColumn === 'household' && (
+                    <span className="text-[10px]">{sortDirection === 'asc' ? '▲' : '▼'}</span>
+                  )}
+                </div>
+              </th>
+              <th 
+                className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] transition-colors select-none"
+                onClick={() => handleSort('federal')}
+              >
+                <div className="flex items-center justify-end gap-1">
+                  <span>Federal Gov&apos;t</span>
+                  {sortColumn === 'federal' && (
+                    <span className="text-[10px]">{sortDirection === 'asc' ? '▲' : '▼'}</span>
+                  )}
+                </div>
+              </th>
+              <th 
+                className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] transition-colors select-none"
+                onClick={() => handleSort('stateLocal')}
+              >
+                <div className="flex items-center justify-end gap-1">
+                  <span>State / Local Gov&apos;t</span>
+                  {sortColumn === 'stateLocal' && (
+                    <span className="text-[10px]">{sortDirection === 'asc' ? '▲' : '▼'}</span>
+                  )}
+                </div>
+              </th>
             </tr>
           </thead>
         </table>
         <div className="max-h-[340px] overflow-y-auto scrollbar-hide">
           <table className="w-full border-collapse table-fixed">
             <colgroup>
-              <col className="w-[34%]" />
-              <col className="w-[22%]" />
-              <col className="w-[22%]" />
-              <col className="w-[22%]" />
+              <col className="w-[31%]" />
+              <col className="w-[23%]" />
+              <col className="w-[23%]" />
+              <col className="w-[23%]" />
             </colgroup>
             <tbody>
               {filteredLocalities.map((locality) => (
                 <tr key={locality._id} className="border-b border-[#E0DCDC] hover:bg-gray-50">
-                  <td className="py-0 px-0 text-[#1E1E1E] font-inter text-sm font-normal leading-[289%]">
+                  <td className="py-2 px-0 text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
                     {locality.counties.trim()}
                   </td>
-                  <td className="py-0 px-0 text-right text-[#1E1E1E] font-inter text-sm font-normal leading-[289%]">
+                  <td className="py-2 px-0 text-right text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
                     {locality.sectorBreakdown?.householdSectorTotal != null
                       ? formatCostAbbr(locality.sectorBreakdown.householdSectorTotal)
                       : 'N/A'
                     }
                   </td>
-                  <td className="py-0 px-0 text-right text-[#1E1E1E] font-inter text-sm font-normal leading-[289%]">
+                  <td className="py-2 px-0 text-right text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
                     {locality.sectorBreakdown?.fedGovtSectorTotal != null
                       ? formatCostAbbr(locality.sectorBreakdown.fedGovtSectorTotal)
                       : 'N/A'
                     }
                   </td>
-                  <td className="py-0 px-0 text-right text-[#1E1E1E] font-inter text-sm font-normal leading-[289%]">
+                  <td className="py-2 px-0 text-right text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
                     {locality.sectorBreakdown?.stateLocalSectorTotal != null
                       ? formatCostAbbr(locality.sectorBreakdown.stateLocalSectorTotal)
                       : 'N/A'

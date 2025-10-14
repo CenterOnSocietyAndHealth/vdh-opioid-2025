@@ -46,6 +46,12 @@ export const costsBreakdown = defineType({
       type: 'blockContent',
     }),
     defineField({
+      name: 'mobileAside',
+      title: 'Mobile Aside',
+      type: 'blockContent',
+      description: 'WYSIWYG content that appears only on mobile devices between the title section and the sector list.',
+    }),
+    defineField({
       name: 'costSectors',
       title: 'Cost Sectors',
       type: 'array',

@@ -111,8 +111,8 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
   return (
     <div className={`max-w-[1180px] mx-auto ${marginMap[safeMarginTop]} ${marginBottomMap[safeMarginBottom]}`}>
       {/* Header */}
-      <div className="px-4 md:px-0 text-center mb-12 max-w-[600px] mx-auto">
-        <h2 className="text-2xl font-normal mb-2">{title}</h2>
+      <div className="px-4 md:px-0 text-center mb-4 lg:mb-12 max-w-[600px] mx-auto">
+        <h2 className="text-xl lg:text-2xl font-normal mb-2">{title}</h2>
               <h3 className="text-lg text-[#1E1E1E]">{subtitle}</h3>
       </div>
       
@@ -281,14 +281,15 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
           {/* Government Label */}
           <div className="relative mb-6">
             <div
-              className="absolute top-[122px] left-0 h-8 flex items-center justify-center text-[#1E1E1E] font-medium text-[16px] px-2 rounded"
+              className="absolute top-[120px] left-0 h-8 flex items-center justify-center text-[#1E1E1E] font-medium text-[14px]"
               style={{
-                left: `50%`,
-                width: `50%`,
+                left: `70%`,
+                width: `27%`,
               }}
             >
-              <div className="bg-white w-fit px-2">
-                Government
+              <div className="bg-white">
+                <span style={{ fontWeight: 700 }}>Government</span>   <br />
+                <span style={{ fontWeight: 400 }}>{(federalPercent + stateLocalPercent).toFixed(1)}% / {formatCostShort(federalValue + stateLocalValue)}</span>
               </div>
             </div>
           </div>
@@ -297,21 +298,23 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
           <div className="relative">
             {/* Vertical bracket line spanning Federal and State/Local bars */}
             <div 
-              className="absolute top-[102px] w-[1px] bg-[#1E1E1E]"
+              className="absolute top-[95px] w-[1px] bg-[#1E1E1E]"
               style={{
-                left: `${familiesBusinessesPercent}%`,
-                height: `calc(30px + 12px + 30px)`, // height of Federal bar + spacing + State/Local bar
+                left: '68%',
+                height: `80px`, // height of Federal bar + spacing + State/Local bar
                 zIndex: 10,
               }}
             ></div>
+            <div className="absolute top-[95px] h-[1px] w-[3%] left-[65%] bg-[#1E1E1E]"></div>
+            <div className="absolute top-[174px] h-[1px] w-[3%] left-[65%] bg-[#1E1E1E]"></div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               {/* Families & Businesses Bar */}
               <div className="w-full">
                 <div 
                   className="w-full h-[30px]"
                   style={{
-                    width: `${familiesBusinessesPercent}%`,
+                    width: '90%',
                     backgroundColor: safeFamiliesBusinessesColor,
                   }}
                 ></div>
@@ -319,7 +322,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                   <div 
                     style={{
                       fontFamily: 'Inter',
-                      fontSize: '16px',
+                      fontSize: '14px',
                       fontStyle: 'normal',
                       lineHeight: '130%',
                       letterSpacing: '-0.342px',
@@ -336,7 +339,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                 <div 
                   className="w-full h-[30px]"
                   style={{
-                    width: `${federalPercent}%`,
+                    width: `${(federalPercent / governmentPercent) * 90}%`,
                     backgroundColor: safeFederalColor,
                   }}
                 ></div>
@@ -344,7 +347,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                   <div 
                     style={{
                       fontFamily: 'Inter',
-                      fontSize: '16px',
+                      fontSize: '14px',
                       fontStyle: 'normal',
                       lineHeight: '130%',
                       letterSpacing: '-0.342px',
@@ -361,7 +364,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                 <div 
                   className="w-full h-[30px]"
                   style={{
-                    width: `${stateLocalPercent}%`,
+                    width: `${(stateLocalPercent / governmentPercent) * 90}%`,
                     backgroundColor: safeStateLocalColor,
                   }}
                 ></div>
@@ -369,7 +372,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
                   <div 
                     style={{
                       fontFamily: 'Inter',
-                      fontSize: '16px',
+                      fontSize: '14px',
                       fontStyle: 'normal',
                       lineHeight: '130%',
                       letterSpacing: '-0.342px',

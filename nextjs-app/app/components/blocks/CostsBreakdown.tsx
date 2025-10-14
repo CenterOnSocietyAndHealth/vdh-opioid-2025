@@ -52,6 +52,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
     chartDescription,
     sources,
     costSectors,
+    mobileAside,
     marginTop = 'none',
     marginBottom = 'none'
   } = block;
@@ -274,6 +275,22 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
 
       {/* Mobile: Simplified layout with title and small bars */}
       <div className="md:hidden">
+
+        {/* Mobile Aside */}
+        {mobileAside && (
+          <div className="bg-[#F3F2EC] p-4 pb-0.5 mb-6 mobile-aside">
+            <div
+              style={{
+                color: '#1E1E1E',
+                fontSize: '14px',
+                fontWeight: 400,
+              }}
+            >
+              <PortableText value={mobileAside} />
+            </div>
+          </div>
+        )}
+
         {/* Title Section */}
         <div className="text-center mb-6">
           <h2 className="text-2xl font-normal mb-2 text-gray-800">
@@ -293,6 +310,10 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         <div className="space-y-6">
           {costSectors.map((sector, i) => {
             const percentOfTotal = (sector.value / totalValue) * 100;
+            // Calculate the maximum percentage (first item's percentage)
+            const maxPercent = (costSectors[0].value / totalValue) * 100;
+            // Scale all bars so the first one is 100%
+            const scaledWidth = (percentOfTotal / maxPercent) * 100;
             
             return (
               <div key={i} className="bg-white py-0 px-4">
@@ -302,7 +323,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
                     <div
                       className="h-full"
                       style={{
-                        width: `${percentOfTotal}%`,
+                        width: `${scaledWidth}%`,
                         backgroundColor: sector.color,
                         transition: 'width 0.3s ease'
                       }}
