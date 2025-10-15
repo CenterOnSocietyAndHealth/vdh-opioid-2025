@@ -62,31 +62,35 @@ export default async function Header() {
         role="banner" 
         className="w-full p-4 bg-[#F3F2EC]"
       >
-        <div className="container max-w-[1311px] px-1 mx-auto flex items-center justify-between">
-          {/* Logo */}
-          <div className="logo h-[50px] flex-shrink-0">
-            {logoUrl ? (
-              <Link href="/">
-                <Image 
-                  src={urlForImage(settings.logo).width(590).url()} 
-                  alt={settings.logo.alt || "Virginia Opioid Cost Data Tool"}
-                  width={590}
-                  height={204}
-                  style={{ maxHeight: '50px', width: 'auto', height: '100%' }}
-                />
-              </Link>
-            ) : (
-              <Link href="/" className="text-2xl font-bold">
-                Virginia Opioid Cost Data Tool
-              </Link>
-            )}
-          </div>
+        <div className="container max-w-[1311px] px-1 mx-auto relative">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <div className="logo h-[50px] flex-shrink-0">
+              {logoUrl ? (
+                <Link href="/">
+                  <Image 
+                    src={urlForImage(settings.logo).width(590).url()} 
+                    alt={settings.logo.alt || "Virginia Opioid Cost Data Tool"}
+                    width={590}
+                    height={204}
+                    style={{ maxHeight: '50px', width: 'auto', height: '100%' }}
+                  />
+                </Link>
+              ) : (
+                <Link href="/" className="text-2xl font-bold">
+                  Virginia Opioid Cost Data Tool
+                </Link>
+              )}
+            </div>
 
-          {/* Desktop Navigation */}
-          <Navigation items={navigationItems} />
-          
-          {/* Mobile Navigation */}
-          <MobileNavigation items={navigationItems} logo={settings?.logo} />
+            {/* Desktop Navigation - Absolutely positioned to center */}
+            <div className="absolute left-1/2 transform -translate-x-1/2">
+              <Navigation items={navigationItems} />
+            </div>
+            
+            {/* Mobile Navigation */}
+            <MobileNavigation items={navigationItems} logo={settings?.logo} />
+          </div>
         </div>
       </header>
     </>

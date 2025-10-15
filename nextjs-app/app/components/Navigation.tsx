@@ -18,7 +18,7 @@ export default function Navigation({
   const pathname = usePathname();
 
   return (
-    <nav className="hidden lg:flex flex-1 justify-center">
+    <nav className="hidden lg:flex">
       <ul className="flex space-x-8">
         {items.map((item, index) => {
           const href = item.linkType === 'internal' 
