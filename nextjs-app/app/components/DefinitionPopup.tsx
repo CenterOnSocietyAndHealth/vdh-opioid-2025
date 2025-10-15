@@ -127,19 +127,35 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
   // Handle focus management and screen reader announcements
   useEffect(() => {
     if (isVisible) {
-      // Announce to screen readers when popup opens
+      // Use a more reliable method for screen reader announcements
+      // This approach works better with VoiceOver
       const announcement = `Definition for ${term}: ${definition}`
-      const announcementElement = document.createElement('div')
-      announcementElement.setAttribute('aria-live', 'polite')
-      announcementElement.setAttribute('aria-atomic', 'true')
-      announcementElement.className = 'sr-only'
-      announcementElement.textContent = announcement
-      document.body.appendChild(announcementElement)
       
-      // Clean up announcement after a short delay
+      // Create a hidden live region that persists during the session
+      let liveRegion = document.getElementById('definition-announcements')
+      if (!liveRegion) {
+        liveRegion = document.createElement('div')
+        liveRegion.id = 'definition-announcements'
+        liveRegion.setAttribute('aria-live', 'polite')
+        liveRegion.setAttribute('aria-atomic', 'true')
+        liveRegion.className = 'sr-only'
+        liveRegion.style.position = 'absolute'
+        liveRegion.style.left = '-10000px'
+        liveRegion.style.width = '1px'
+        liveRegion.style.height = '1px'
+        liveRegion.style.overflow = 'hidden'
+        document.body.appendChild(liveRegion)
+      }
+      
+      // Update the live region content
+      liveRegion.textContent = announcement
+      
+      // Clear the announcement after a short delay to allow for re-announcement
       setTimeout(() => {
-        document.body.removeChild(announcementElement)
-      }, 1000)
+        if (liveRegion) {
+          liveRegion.textContent = ''
+        }
+      }, 2000)
     }
   }, [isVisible, term, definition])
 
@@ -199,7 +215,9 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
         tabIndex={0}
         role="button"
         aria-describedby={isVisible ? `definition-${term.replace(/\s+/g, '-').toLowerCase()}` : undefined}
-        aria-label={`Definition for ${term}. Press Enter or Space to show definition.`}
+        aria-label={`Definition for ${term}. Press Enter or Space to toggle definition.`}
+        aria-expanded={isVisible ? "true" : "false"}
+        aria-haspopup="dialog"
         onMouseEnter={handleMouseEnter}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -214,8 +232,10 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
           ref={tooltipRef}
           id={`definition-${term.replace(/\s+/g, '-').toLowerCase()}`}
           className="fixed z-50 max-w-xs shadow-lg py-[27px] px-[17px]"
-          role="tooltip"
-          aria-live="polite"
+          role="dialog"
+          aria-labelledby={`definition-title-${term.replace(/\s+/g, '-').toLowerCase()}`}
+          aria-describedby={`definition-content-${term.replace(/\s+/g, '-').toLowerCase()}`}
+          aria-modal="false"
           style={{
             top: `${position.top}px`,
             left: `${position.left}px`,
@@ -229,13 +249,21 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
             pointerEvents: 'none'
           }}
         >
-          <span className="font-bold text-[16px] text-black mb-1 flex items-center gap-2">
-            <span className="inline-flex items-center justify-center w-5 h-5 bg-black text-white rounded-full text-xs font-bold">
+          <span 
+            id={`definition-title-${term.replace(/\s+/g, '-').toLowerCase()}`}
+            className="font-bold text-[16px] text-black mb-1 flex items-center gap-2"
+          >
+            <span className="inline-flex items-center justify-center w-5 h-5 bg-black text-white rounded-full text-xs font-bold" aria-hidden="true">
               ?
             </span>
             {term}:
           </span>
-          <span className="text-sm text-gray-800 block">{definition}</span>
+          <span 
+            id={`definition-content-${term.replace(/\s+/g, '-').toLowerCase()}`}
+            className="text-sm text-gray-800 block"
+          >
+            {definition}
+          </span>
           
           {/* Arrow */}
           <div 
@@ -249,6 +277,7 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
               transform: 'translateX(-50%)',
               filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.1))'
             }}
+            aria-hidden="true"
           />
         </div>,
         document.body

@@ -47,7 +47,7 @@ export default async function Header() {
           <div className="hidden md:block">
             Update: Our site is now the Virginia Opioid Cost Data Tool. Read more about new features in{' '}
             <Link href="/whats-new/">
-              our announcement. ––&gt;
+              our announcement. &rarr;
             </Link>
           </div>
           

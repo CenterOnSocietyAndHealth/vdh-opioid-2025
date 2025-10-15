@@ -190,7 +190,7 @@ export default function PovertyIncome({ block, selectedLocality: propSelectedLoc
             
             {/* Poverty Comparison */}
             <div 
-              className="text-center md:text-left"
+              className="text-center"
               style={{
                 color: '#1E1E1E',
                 fontFamily: 'Inter',
@@ -247,7 +247,7 @@ export default function PovertyIncome({ block, selectedLocality: propSelectedLoc
             
             {/* Income Comparison */}
             <div 
-              className="text-center md:text-left"
+              className="text-center"
               style={{
                 color: '#1E1E1E',
                 fontFamily: 'Inter',
