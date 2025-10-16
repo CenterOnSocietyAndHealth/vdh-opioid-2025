@@ -23,6 +23,7 @@ import {jitterPlot} from './objects/jitterPlot'
 import {horizontalRule} from './objects/horizontalRule'
 import {povertyIncome} from './objects/povertyIncome'
 import {sourcesAccordion} from './objects/sourcesAccordion'
+import {updateIntro} from './objects/updateIntro'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -55,4 +56,5 @@ export const schemaTypes = [
   horizontalRule,
   povertyIncome,
   sourcesAccordion,
+  updateIntro,
 ]

@@ -61,6 +61,7 @@ export const page = defineType({
         { type: 'horizontalRule' },
         { type: 'povertyIncome' },
         { type: 'sourcesAccordion' },
+        { type: 'updateIntro' },
       ],
       options: {
         insertMenu: {

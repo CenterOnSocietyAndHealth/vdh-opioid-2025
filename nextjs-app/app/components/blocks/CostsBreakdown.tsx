@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { PortableText } from 'next-sanity';
 import * as d3 from 'd3';
+import { animate, stagger } from 'animejs';
 import { CostsBreakdownProps } from '@/app/types/locality';
 import { getValidKeyOrDefault } from '@/app/client-utils';
 import DataTableDescription, { DataTableColumn } from './DataTableDescription';
@@ -61,6 +62,12 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
   
   const chartRef = useRef<HTMLDivElement>(null);
+  const totalCostsRef = useRef<HTMLDivElement>(null);
+  const leftSpanRef = useRef<HTMLSpanElement>(null);
+  const rightSpanRef = useRef<HTMLSpanElement>(null);
+  const h3Ref = useRef<HTMLHeadingElement>(null);
+  const mobileTitleRef = useRef<HTMLDivElement>(null);
+  const mobileBarsRef = useRef<HTMLDivElement>(null);
 
   // Virginia population constant
   const VIRGINIA_POPULATION = 8734685;
@@ -129,23 +136,23 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       .style('width', '100%');
       
     // Create top header with total cost line
-    container.append('div')
+    const headerDiv = container.append('div')
       .style('display', 'flex')
       .style('flex-direction', 'column')
       .style('align-items', 'center')
       .style('padding', '0')
       .style('margin-bottom', '20px')
+      .attr('class', 'desktop-header')
       .html(`
-        <h2 class="text-[24px] font-normal mb-2">${totalCostSubtitle || 'Annual Cost'}</h2>
         <div style="display: flex; align-items: center; width: 100%;">
-          <span style="flex: 1; height: 20px; border-top: 1px solid #000; border-left: 1px solid #000; margin-right: 36px; margin-top: 20px;"></span>
-          <h3 class="text-[24px]" style="white-space: nowrap; font-weight: 700;">
+          <span class="left-span" style="flex: 1; height: 20px; border-top: 1px solid #000; border-left: 1px solid #000; margin-right: 36px; margin-top: 20px; opacity: 0;"></span>
+          <h3 class="desktop-h3 text-[24px]" style="white-space: nowrap; font-weight: 700; opacity: 0;">
             ${(() => {
               const num = typeof totalCost === 'string' ? Number(totalCost.replace(/[^\d.]/g, '')) : totalCost;
               return !isNaN(num) && num > 0 ? formatCostAbbr(num, 2) : totalCost;
             })()}
           </h3>
-          <span style="flex: 1; height: 20px; border-top: 1px solid #000; border-right: 1px solid #000; margin-left: 36px; margin-top: 20px;"></span>
+          <span class="right-span" style="flex: 1; height: 20px; border-top: 1px solid #000; border-right: 1px solid #000; margin-left: 36px; margin-top: 20px; opacity: 0;"></span>
         </div>
       `);
       
@@ -171,17 +178,18 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         .style('background-color', sector.color)
         .style('color', sector.textColor || '#fff')
         .style('border-radius', '0px')
-        .style('padding', containerWidth < 640 ? '20px 10px' : '20px 10px')
-        .style('flex', containerWidth < 768
-          ? `0 0 ${blockWidth}px`
-          : (i === costSectors.length - 1
-              ? '1 1 0%'
-              : `0 0 ${(percentOfTotal * 100).toFixed(4)}%`)
-        )
-        .style('min-width', containerWidth < 768 ? `${blockWidth}px` : '0')
+        .style('padding', '0')
+        .style('flex', '0 0 0px') // Start with 0 width for animation
+        .style('min-width', '0px')
+        .style('height', '90px') // Fixed height for desktop bars
         .style('cursor', 'pointer')
         .style('position', 'relative')
         .style('margin-right', i !== costSectors.length - 1 ? '5px' : '0')
+        .style('opacity', '0') // Start hidden for animation
+        .style('display', 'flex')
+        .style('align-items', 'center')
+        .style('justify-content', 'flex-start')
+        .attr('class', 'cost-block') // Use consistent class for D3 selection
         .on('mouseenter', function() {
           if (sector.showLabelAsTooltip) {
             const rect = (this as HTMLElement).getBoundingClientRect();
@@ -202,34 +210,276 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
           setActiveIndex(null)
         });
       
-      // Add value with scaled font size only if not showLabelAsTooltip
+      // Add text content container for left-aligned two-line layout
       if (!sector.showLabelAsTooltip) {
-        block.append('div')
-          .attr('class', 'font-[600] mb-0')
+        const textContainer = block.append('div')
+          .style('padding', '10px')
+          .style('display', 'flex')
+          .style('flex-direction', 'column')
+          .style('justify-content', 'center')
+          .style('align-items', 'flex-start')
+          .style('height', '100%')
+          .style('min-width', '0')
+          .style('flex', '1');
+
+        // Add value on top line
+        textContainer.append('div')
+          .attr('class', 'font-[600]')
           .style('font-size', '18px')
           .style('white-space', 'nowrap')
           .style('overflow', 'hidden')
           .style('text-overflow', 'ellipsis')
-          .text(formatCostShort(sector.value));
-      }
-      
-      // Add title and subtitle with possibly smaller text on mobile, or as tooltip only
-      if (!sector.showLabelAsTooltip) {
-        block.append('div')
-          .style('white-space', 'normal')
-          .style('word-wrap', 'break-word')
-          .attr('class', containerWidth < 640 ? 'text-sm' : '')
-          .html(`
-            <div class="text-[18px]">${sector.title}</div>
-            ${sector.subtitle ? `<div class="text-sm opacity-80">(${sector.subtitle})</div>` : ''}
-          `);
+          .style('width', '100%')
+          .text('$0'); // Start with $0 for animation
+
+        // Add title on bottom line
+        textContainer.append('div')
+          .style('font-size', '16px')
+          .style('white-space', 'nowrap')
+          .style('overflow', 'hidden')
+          .style('text-overflow', 'ellipsis')
+          .style('width', '100%')
+          .style('margin-top', '2px')
+          .text(sector.title);
+
+        // Add subtitle if it exists
+        if (sector.subtitle) {
+          textContainer.append('div')
+            .style('font-size', '14px')
+            .style('opacity', '0.8')
+            .style('white-space', 'nowrap')
+            .style('overflow', 'hidden')
+            .style('text-overflow', 'ellipsis')
+            .style('width', '100%')
+            .style('margin-top', '1px')
+            .text(`(${sector.subtitle})`);
+        }
       }
     });
   }, [costSectors, chartWidth, totalCost, totalCostSubtitle]);
+
+  // Animation effect
+  useEffect(() => {
+    if (!costSectors.length) return;
+
+    // Animate desktop bars/blocks sequentially
+    const animateDesktopBars = () => {
+      if (!chartRef.current || chartWidth === 0) return;
+      
+      // Use D3 to animate the bars sequentially
+      const bars = d3.selectAll('.cost-block');
+      
+      // Set initial state for all bars
+      bars
+        .style('opacity', 0)
+        .style('flex', '0 0 0px')
+        .style('min-width', '0px');
+
+      // Animate bars one by one
+      const animateBar = (index: number) => {
+        if (index >= costSectors.length) {
+          // All bars are done, animate the total costs header
+          animateDesktopTotalCosts();
+          return;
+        }
+
+        const bar = d3.select(bars.nodes()[index]);
+        const sector = costSectors[index];
+        const totalDuration = 2400;
+        // const duration = totalDuration * sector.value / totalValue;
+
+        const duration = 800;
+        console.log('duration', duration);
+        // Animate the bar fade-in quickly
+        bar
+          .transition()
+          .duration(0)
+          .ease(d3.easeQuadOut)
+          .style('opacity', 1)
+          .on('end', () => {
+            // After fade-in, start the width animation
+            bar
+              .transition()
+              .duration(duration) // Slower width animation
+              .ease(d3.easeQuadOut)
+              .style('flex', () => {
+                const percentOfTotal = sector.value / totalValue;
+                const blockWidth = Math.max(Math.floor(percentOfTotal * 97), 
+                                          chartWidth < 640 ? 150 : 100);
+                return chartWidth < 768
+                  ? `0 0 ${blockWidth}px`
+                  : (index === costSectors.length - 1
+                      ? '1 1 0%'
+                      : `0 0 ${(percentOfTotal * 100).toFixed(4)}%`);
+              })
+              .style('min-width', () => {
+                const percentOfTotal = sector.value / totalValue;
+                const blockWidth = Math.max(Math.floor(percentOfTotal * 97), 
+                                          chartWidth < 640 ? 150 : 100);
+                return chartWidth < 768 ? `${blockWidth}px` : '0';
+              })
+              .on('end', () => {
+                // After width animation finishes, start the next bar
+                animateBar(index + 1);
+              });
+          });
+
+        // Animate the value counting for this bar (slower to match width animation)
+        if (!sector.showLabelAsTooltip) {
+          const valueElement = bar.select('.font-\\[600\\]');
+          if (!valueElement.empty()) {
+            const targetValue = sector.value;
+            
+            valueElement
+              .transition()
+              .duration(duration) // Match the slower width animation
+              .ease(d3.easeQuadOut)
+              .tween('text', function() {
+                const current = d3.select(this);
+                return function(t) {
+                  const currentValue = Math.floor(targetValue * t);
+                  current.text(formatCostShort(currentValue));
+                };
+              });
+          }
+        }
+      };
+
+      // Start with the first bar
+      animateBar(0);
+    };
+
+    // Animate desktop total costs header
+    const animateDesktopTotalCosts = () => {
+      // Only animate the cost line elements, not the h2
+      animate(['.left-span', '.right-span', '.desktop-h3'], {
+        opacity: [0, 1],
+        duration: 400,
+        easing: 'easeOutQuart'
+      });
+    };
+
+    // Animate mobile elements
+    const animateMobileElements = () => {
+      // Animate mobile title first
+      if (mobileTitleRef.current) {
+        animate(mobileTitleRef.current, {
+          opacity: [0, 1],
+          translateY: ['-20px', '0px'],
+          duration: 600,
+          easing: 'easeOutQuart',
+          complete: () => {
+            // After title, animate mobile bars
+            animateMobileBars();
+          }
+        });
+      }
+    };
+
+    // Animate mobile bars sequentially
+    const animateMobileBars = () => {
+      const mobileSectors = d3.selectAll('.mobile-sector');
+      
+      // Set initial state for all sectors
+      mobileSectors
+        .style('opacity', 0)
+        .style('transform', 'translateX(-30px)');
+
+      // Animate sectors one by one
+      const animateSector = (index: number) => {
+        if (index >= costSectors.length) {
+          // All sectors are done, animate the bar widths
+          animateMobileBarWidths();
+          return;
+        }
+
+        const sector = d3.select(mobileSectors.nodes()[index]);
+        
+        sector
+          .transition()
+          .duration(200) // Faster fade-in
+          .ease(d3.easeQuadOut)
+          .style('opacity', 1)
+          .style('transform', 'translateX(0px)')
+          .on('end', () => {
+            // After this sector finishes, start the next one
+            animateSector(index + 1);
+          });
+      };
+
+      // Start with the first sector
+      animateSector(0);
+    };
+
+    // Animate mobile bar widths sequentially
+    const animateMobileBarWidths = () => {
+      const mobileBars = d3.selectAll('.mobile-bar');
+      const mobileValues = d3.selectAll('.mobile-value');
+      
+      // Set initial state for all bars
+      mobileBars.style('width', '0%');
+      mobileValues.text('$0');
+
+      // Animate bars one by one
+      const animateBar = (index: number) => {
+        if (index >= costSectors.length) {
+          return; // All bars are done
+        }
+
+        const bar = d3.select(mobileBars.nodes()[index]);
+        const value = d3.select(mobileValues.nodes()[index]);
+        const sector = costSectors[index];
+        
+        const percentOfTotal = (sector.value / totalValue) * 100;
+        const maxPercent = (costSectors[0].value / totalValue) * 100;
+        const targetWidth = `${(percentOfTotal / maxPercent) * 100}%`;
+
+        // Animate bar width (slower)
+        bar
+          .transition()
+          .duration(800) // Slower width animation
+          .ease(d3.easeQuadOut)
+          .style('width', targetWidth)
+          .on('end', () => {
+            // After this bar finishes, start the next one
+            animateBar(index + 1);
+          });
+
+        // Animate value counting (match width animation timing)
+        value
+          .transition()
+          .duration(800) // Match the slower width animation
+          .ease(d3.easeQuadOut)
+          .tween('text', function() {
+            const current = d3.select(this);
+            const targetValue = sector.value;
+            return function(t) {
+              const currentValue = Math.floor(targetValue * t);
+              current.text(formatCostShort(currentValue));
+            };
+          });
+      };
+
+      // Start with the first bar
+      animateBar(0);
+    };
+
+    // Start animations after a small delay to ensure DOM is ready
+    setTimeout(() => {
+      animateDesktopBars();
+      animateMobileElements();
+    }, 100);
+  }, [costSectors, chartWidth, totalValue]);
+
   return (
     <div className={`max-w-[1311px] mx-auto ${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
+      {/* Desktop Title */}
+      <div className="hidden md:block text-center mb-5">
+        <h2 className="text-[24px] font-normal mb-2">{totalCostSubtitle || 'Annual Cost'}</h2>
+      </div>
+      
       {/* Desktop: Large D3 Chart */}
-      <div ref={chartRef} className="w-full h-auto hidden md:block" style={{position: 'relative'}}>
+      <div ref={chartRef} className="w-full hidden md:block" style={{position: 'relative', minHeight: '160px'}}>
         {/* Custom Tooltip for blocks with showLabelAsTooltip */}
         {hoveredTooltipIndex !== null && tooltipPosition && costSectors[hoveredTooltipIndex] && costSectors[hoveredTooltipIndex].showLabelAsTooltip && (
           <div
@@ -274,7 +524,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       </div>
 
       {/* Mobile: Simplified layout with title and small bars */}
-      <div className="md:hidden">
+      <div className="md:hidden" style={{minHeight: '600px'}}>
 
         {/* Mobile Aside */}
         {mobileAside && (
@@ -292,7 +542,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         )}
 
         {/* Title Section */}
-        <div className="text-center mb-6">
+        <div ref={mobileTitleRef} className="text-center mb-6" style={{opacity: 0, transform: 'translateY(-20px)'}}>
           <h2 className="text-2xl font-normal mb-2 text-gray-800">
             {totalCostSubtitle || 'The Opioid Epidemic Cost Virginians'}
           </h2>
@@ -307,7 +557,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         </div>
 
         {/* Mobile Sector List */}
-        <div className="space-y-6">
+        <div ref={mobileBarsRef} className="space-y-6">
           {costSectors.map((sector, i) => {
             const percentOfTotal = (sector.value / totalValue) * 100;
             // Calculate the maximum percentage (first item's percentage)
@@ -316,16 +566,15 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
             const scaledWidth = (percentOfTotal / maxPercent) * 100;
             
             return (
-              <div key={i} className="bg-white py-0 px-4">
+              <div key={i} className="bg-white py-0 px-4 mobile-sector" style={{opacity: 0, transform: 'translateX(-30px)'}}>
                 {/* Sector Bar */}
                 <div className="mb-2">
                   <div className="w-full h-[30px] overflow-hidden">
                     <div
-                      className="h-full"
+                      className="h-full mobile-bar"
                       style={{
-                        width: `${scaledWidth}%`,
-                        backgroundColor: sector.color,
-                        transition: 'width 0.3s ease'
+                        width: '0%', // Start at 0 width for animation
+                        backgroundColor: sector.color
                       }}
                     />
                   </div>
@@ -334,7 +583,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
                 {/* Sector Title and Cost */}
                 <div className="mb-2">
                   <h4 className="text-[14px] font-normal text-[#1E1E1E]">
-                    <span className="mr-2 font-bold">{sector.title}</span> {formatCostShort(sector.value)}
+                    <span className="mr-2 font-bold">{sector.title}</span> <span className="mobile-value">$0</span>
                   </h4>
                 </div>
                 
