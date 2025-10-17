@@ -170,6 +170,8 @@ export default function DataTableDescription({
       {/* Accordion Header */}
       <button
         onClick={toggleExpanded}
+        aria-expanded={isExpanded ? "true" : "false"}
+        aria-controls="data-table-content"
         className={`w-full px-0 py-2 flex items-start justify-start text-left border-b border-[#78787878] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors duration-200 ${isExpanded ? 'border-b border-[#78787800]' : ''}`}
       >
         <span className="text-[12px] font-[400] text-[#1E1E1E] mr-2">{title}</span>
@@ -195,6 +197,8 @@ export default function DataTableDescription({
 
       {/* Accordion Content */}
       <div
+        id="data-table-content"
+        aria-hidden={!isExpanded ? "true" : "false"}
         className={`overflow-hidden transition-all duration-1000 ease-in-out ${
           isExpanded ? 'max-h-[2000px] border-b border-[#78787878]' : 'max-h-0'
         }`}
@@ -219,6 +223,7 @@ export default function DataTableDescription({
                         <ResolvedLink
                           link={value}
                           className="text-blue-600 hover:text-blue-800 underline"
+                          tabIndex={isExpanded ? 0 : -1}
                         >
                           {children}
                         </ResolvedLink>
@@ -245,6 +250,7 @@ export default function DataTableDescription({
                 {/* Download Button */}
                 <button
                   onClick={downloadCSV}
+                  tabIndex={isExpanded ? 0 : -1}
                   className="flex items-center gap-2 px-2 py-1 bg-[#F2F1F1] hover:bg-gray-200 text-[#1E1E1E] rounded-[3px] border border-[#DBDBDB] text-[14px] font-[500] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -277,6 +283,7 @@ export default function DataTableDescription({
                             letterSpacing: '-0.266px'
                           }}
                           onClick={() => handleSort(column.key)}
+                          tabIndex={isExpanded ? 0 : -1}
                         >
                           <div className={`flex items-center gap-1 ${
                             column.align === 'right' ? 'justify-end' : 

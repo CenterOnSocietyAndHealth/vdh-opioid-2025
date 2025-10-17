@@ -27,6 +27,8 @@ export default function SourcesAccordion({
       {/* Accordion Header */}
       <button
         onClick={toggleExpanded}
+        aria-expanded={isExpanded ? "true" : "false"}
+        aria-controls="sources-content"
         className={`w-full px-0 py-2 flex items-start justify-start text-left border-b border-[#78787878] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors duration-200 ${isExpanded ? 'border-b border-[#78787800]' : ''}`}
       >
         <span className="text-[12px] font-[400] text-[#1E1E1E] mr-2">{title}</span>
@@ -52,6 +54,8 @@ export default function SourcesAccordion({
 
       {/* Accordion Content */}
       <div
+        id="sources-content"
+        aria-hidden={!isExpanded ? "true" : "false"}
         className={`overflow-hidden transition-all duration-1000 ease-in-out ${
           isExpanded ? 'max-h-[2000px] border-b border-[#78787878]' : 'max-h-0'
         }`}
@@ -113,6 +117,7 @@ export default function SourcesAccordion({
                           <ResolvedLink
                             link={value}
                             className="text-blue-600 hover:text-blue-800 underline"
+                            tabIndex={isExpanded ? 0 : -1}
                           >
                             {children}
                           </ResolvedLink>
