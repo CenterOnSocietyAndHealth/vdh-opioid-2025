@@ -222,6 +222,13 @@ export const getPageQuery = defineQuery(`
             ...,
             ${markDefsReference}
           }
+        },
+        sources[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
         }
       },
       _type == "costsBreakdown" => {
@@ -298,6 +305,96 @@ export const getPageQuery = defineQuery(`
             ...,
             ${markDefsReference}
           }
+        },
+        totalSources[]{
+          ...,
+          markDefs[]{
+            ...,
+            _type == "link" => {
+              ...,
+              "page": page->{
+                _id,
+                "slug": slug.current
+              },
+              "post": post->slug.current
+            },
+            _type == "definition" => {
+              term,
+              definition
+            }
+          }
+        },
+        laborSources[]{
+          ...,
+          markDefs[]{
+            ...,
+            _type == "link" => {
+              ...,
+              "page": page->{
+                _id,
+                "slug": slug.current
+              },
+              "post": post->slug.current
+            },
+            _type == "definition" => {
+              term,
+              definition
+            }
+          }
+        },
+        healthcareSources[]{
+          ...,
+          markDefs[]{
+            ...,
+            _type == "link" => {
+              ...,
+              "page": page->{
+                _id,
+                "slug": slug.current
+              },
+              "post": post->slug.current
+            },
+            _type == "definition" => {
+              term,
+              definition
+            }
+          }
+        },
+        crimeOtherSources[]{
+          ...,
+          markDefs[]{
+            ...,
+            _type == "link" => {
+              ...,
+              "page": page->{
+                _id,
+                "slug": slug.current
+              },
+              "post": post->slug.current
+            },
+            _type == "definition" => {
+              term,
+              definition
+            }
+          }
+        },
+        householdSources[]{
+          ...,
+          markDefs[]{
+            ...,
+            _type == "link" => {
+              ...,
+              "page": page->{
+                _id,
+                "slug": slug.current
+              },
+              "post": post->slug.current
+            },
+            _type == "definition" => {
+              term,
+              definition
+            }
+          }
         }
       },
       _type == "largeButton" => {
@@ -305,6 +402,36 @@ export const getPageQuery = defineQuery(`
         page->{
           _id,
           "slug": slug.current
+        }
+      },
+      _type == "sourcesAccordion" => {
+        ...,
+        sources[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        }
+      },
+      _type == "payerBreakdown" => {
+        ...,
+        sources[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        }
+      },
+      _type == "jitterPlot" => {
+        ...,
+        sources[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
         }
       },
     },

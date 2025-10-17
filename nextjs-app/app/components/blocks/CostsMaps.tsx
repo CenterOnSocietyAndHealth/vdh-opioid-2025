@@ -102,6 +102,22 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
   const [mounted, setMounted] = useState(false);
   const [showDetailedDescription, setShowDetailedDescription] = useState(false);
 
+  // Debug: Log the block data to see what we're receiving
+  console.log('CostsMaps - block data:', block);
+  
+  // Debug: Check if any of the source fields have resolved page references
+  if (block.totalSources) {
+    block.totalSources.forEach((block: any, index: number) => {
+      if (block.markDefs) {
+        block.markDefs.forEach((markDef: any, markIndex: number) => {
+          if (markDef._type === 'link' && markDef.linkType === 'page') {
+            console.log(`CostsMaps - totalSources[${index}].markDefs[${markIndex}] link:`, markDef);
+          }
+        });
+      }
+    });
+  }
+
 
 
   // Set mounted state once component is mounted on client
@@ -215,20 +231,29 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
 
   // Get the sources for the current tab
   const getCurrentSources = () => {
+    let sources;
     switch (indicatorTab) {
       case 'Total':
-        return block.totalSources;
+        sources = block.totalSources;
+        break;
       case 'Labor':
-        return block.laborSources;
+        sources = block.laborSources;
+        break;
       case 'HealthCare':
-        return block.healthcareSources;
+        sources = block.healthcareSources;
+        break;
       case 'Crime_Other':
-        return block.crimeOtherSources;
+        sources = block.crimeOtherSources;
+        break;
       case 'Household':
-        return block.householdSources;
+        sources = block.householdSources;
+        break;
       default:
-        return null;
+        sources = null;
     }
+    
+    console.log(`CostsMaps - getCurrentSources for ${indicatorTab}:`, sources);
+    return sources;
   };
 
   // Get field name for the current indicator

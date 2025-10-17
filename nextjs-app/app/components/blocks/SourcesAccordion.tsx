@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { PortableText } from 'next-sanity';
+import ResolvedLink from '@/app/components/ResolvedLink';
 
 // Define the component props interface
 export interface SourcesAccordionProps {
@@ -109,14 +110,12 @@ export default function SourcesAccordion({
                       },
                       marks: {
                         link: ({ children, value }: any) => (
-                          <a
-                            href={value?.href}
-                            target={value?.blank ? '_blank' : undefined}
-                            rel={value?.blank ? 'noopener noreferrer' : undefined}
+                          <ResolvedLink
+                            link={value}
                             className="text-blue-600 hover:text-blue-800 underline"
                           >
                             {children}
-                          </a>
+                          </ResolvedLink>
                         ),
                         strong: ({ children }: any) => (
                           <strong className="font-semibold">{children}</strong>

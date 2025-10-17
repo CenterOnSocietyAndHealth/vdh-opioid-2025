@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { PortableText } from 'next-sanity'
 import { SourcesProps } from '@/app/types/locality'
 import { getValidKeyOrDefault } from '@/app/client-utils'
+import ResolvedLink from '@/app/components/ResolvedLink'
 
 const marginMap = {
   none: 'mt-0',
@@ -220,14 +221,12 @@ export default function Sources({ block }: SourcesProps) {
                             },
                             marks: {
                               link: ({ children, value }) => (
-                                <a
-                                  href={value?.href}
-                                  target={value?.blank ? '_blank' : undefined}
-                                  rel={value?.blank ? 'noopener noreferrer' : undefined}
+                                <ResolvedLink
+                                  link={value}
                                   className="text-[#1e1e1e] hover:bg-[#cfe6ef] hover:text-black visited:text-[#6b7280] underline break-all"
                                 >
                                   {children}
-                                </a>
+                                </ResolvedLink>
                               ),
                               strong: ({ children }) => (
                                 <strong className="font-semibold">{children}</strong>
