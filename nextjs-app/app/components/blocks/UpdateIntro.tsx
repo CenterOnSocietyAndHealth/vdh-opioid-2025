@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react'
+import Link from 'next/link'
 import { getValidKeyOrDefault } from '@/app/client-utils'
 
 const marginMap = {
@@ -63,7 +64,7 @@ export default function UpdateIntro({ block }: UpdateIntroProps) {
     >
       <div className="text-center text-[#747474] text-xs font-normal leading-[130%] tracking-[-0.228px]" style={{ fontFamily: 'Inter, sans-serif' }}>
         <p className={`text-xs ${displayOnMobile ? 'mb-0' : 'mb-2'}`}>{introText}</p>
-        <p className="text-xs"><a href='/whats-new'>Updated {dateUpdated}</a></p>
+        <p className="text-xs"><Link href='/whats-new'>Updated {dateUpdated}</Link></p>
       </div>
     </div>
   )

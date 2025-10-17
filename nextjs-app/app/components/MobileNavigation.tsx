@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import imageUrlBuilder from '@sanity/image-url'
 import { client } from "@/sanity/lib/client";
 
@@ -42,7 +43,7 @@ export default function MobileNavigation({
           onClick={toggleMenu}
           className="flex flex-col items-center justify-center p-2"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isMenuOpen}
+          aria-expanded={isMenuOpen ? 'true' : 'false'}
         >
           {/* Hamburger/X Icon */}
           <div className="relative w-6 h-5 flex flex-col justify-center">
@@ -91,9 +92,11 @@ export default function MobileNavigation({
                 {logo ? (
                   // eslint-disable-next-line @next/next/no-html-link-for-pages
                   <a href="/" onClick={closeMenu}>
-                    <img 
+                    <Image 
                       src={urlForImage(logo).width(590).url()} 
                       alt={logo.alt || "Virginia Opioid Cost Data Tool"}
+                      width={590}
+                      height={50}
                       style={{ maxHeight: '50px', width: 'auto', height: '100%' }}
                     />
                   </a>
@@ -163,11 +166,11 @@ export default function MobileNavigation({
               <div className="flex items-center justify-start space-x-8">
                 {/* CSH Logo */}
                 <a href="https://societyhealth.vcu.edu/" target="_blank" rel="noopener noreferrer" title="Visit VCU Center on Society and Health website">
-                    <img src="/csh-logo.png" alt='CSH Logo' className="h-[24px] w-auto" />
+                    <Image src="/csh-logo.png" alt='CSH Logo' width={100} height={24} className="h-[24px] w-auto" />
                 </a>
                 {/* VDH Logo */}
                 <a href="https://www.vdh.virginia.gov/" target="_blank" rel="noopener noreferrer" title="Visit Virginia Department of Health website">
-                  <img src="/vdh.png" alt='VDH Logo' className="h-[24px] w-auto" />
+                  <Image src="/vdh.png" alt='VDH Logo' width={100} height={24} className="h-[24px] w-auto" />
                 </a>
               </div>
             </div>
