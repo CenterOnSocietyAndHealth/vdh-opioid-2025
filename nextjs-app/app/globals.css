@@ -398,6 +398,7 @@ ol ol ol {
 /* Navigation hover effects without layout shift */
 .nav-link {
   transition: all 0.2s ease;
+  text-decoration: none;
 }
 
 .nav-link:hover {
