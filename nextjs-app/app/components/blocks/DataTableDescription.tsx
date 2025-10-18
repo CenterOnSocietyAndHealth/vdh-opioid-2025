@@ -261,10 +261,15 @@ export default function DataTableDescription({
               </div>
 
               {/* Data Table */}
-              <div className="border border-gray-200 rounded-lg overflow-hidden">
+              <div className="overflow-hidden">
                 {/* Fixed Header */}
                 <div className="overflow-x-auto bg-white">
-                  <table className="w-full border-collapse">
+                  <table className="w-full border-collapse table-fixed">
+                    <colgroup>
+                      {columns.map((column) => (
+                        <col key={column.key} className="min-w-0" />
+                      ))}
+                    </colgroup>
                     <thead>
                       <tr className="border-b border-gray-200">
                         {columns.map((column) => (
@@ -321,7 +326,12 @@ export default function DataTableDescription({
                 
                 {/* Scrollable Body */}
                 <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
-                  <table className="w-full border-collapse">
+                  <table className="w-full border-collapse table-fixed">
+                    <colgroup>
+                      {columns.map((column) => (
+                        <col key={column.key} className="min-w-0" />
+                      ))}
+                    </colgroup>
                     <tbody>
                       {sortedData.map((row, index) => {
                         const isHighlighted = highlightRowId !== undefined && row.id === highlightRowId;
