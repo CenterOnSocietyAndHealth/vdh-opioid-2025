@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { Locality } from '@/app/types/locality';
@@ -33,8 +33,12 @@ export default function ChoroplethMap({
   const [mapLoaded, setMapLoaded] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 800);
   const mapGroupRef = useRef<SVGGElement | null>(null);
+  const countiesRef = useRef<d3.Selection<SVGGElement, unknown, null, undefined> | null>(null);
+  const hoverTooltipRef = useRef<SVGGElement | null>(null);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [transform, setTransform] = useState<d3.ZoomTransform>(d3.zoomIdentity);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [hoveredLocality, setHoveredLocality] = useState<Locality | null>(null);
 
   // Function to format numbers in a readable way
   function formatNumber(num: number, prefix = "", suffix = "") {
@@ -78,6 +82,335 @@ export default function ChoroplethMap({
     const value = path.split('.').reduce((o, key) => (o?.[key] !== undefined ? o[key] : 0), obj);
     return value || 0;
   };
+
+  // Helper function to check if a locality should be highlighted (selected or hovered)
+  const isLocalityHighlighted = useCallback((locality: Locality | null | undefined): boolean => {
+    if (!locality) return false;
+    return Boolean((selectedLocality && selectedLocality._id === locality._id) || 
+           (hoveredLocality && hoveredLocality._id === locality._id));
+  }, [selectedLocality, hoveredLocality]);
+
+  // Function to apply hover effects
+  const applyHoverEffects = useCallback((currentHoveredLocality: Locality | null) => {
+    if (!countiesRef.current) return;
+    
+    countiesRef.current.selectAll("path")
+      .style("opacity", (pathData: any) => {
+        // Find the locality for this path
+        let pathFipsCode = pathData.properties.FIPS || pathData.properties.fips || pathData.properties.GEOID || 
+                         pathData.properties.id || pathData.id;
+        
+        if (pathFipsCode && typeof pathFipsCode === 'string' && pathFipsCode.length === 3) {
+          pathFipsCode = `51${pathFipsCode}`;
+        }
+        
+        const pathCountyName = pathData.properties.NAME || pathData.properties.name;
+        
+        const pathLocality = localities.find(loc => {
+          let locFips = loc.fips;
+          
+          if (locFips) {
+            locFips = locFips.replace('us-va-', '');
+            locFips = locFips.toString().replace(/\D/g, '');
+            locFips = locFips.padStart(3, '0');
+            if (locFips.length === 3) {
+              locFips = `51${locFips}`;
+            }
+          }
+          
+          const fipsMatch = pathFipsCode && locFips === pathFipsCode;
+          const nameMatch = pathCountyName && loc.counties === pathCountyName;
+          
+          return fipsMatch || nameMatch;
+        });
+        
+        // Return full opacity for selected or hovered localities, 25% for others
+        const isSelected = selectedLocality && pathLocality && selectedLocality._id === pathLocality._id;
+        const isHovered = currentHoveredLocality && pathLocality && currentHoveredLocality._id === pathLocality._id;
+        
+        return (isSelected || isHovered) ? 1 : 0.25;
+      })
+      .attr("stroke", (pathData: any) => {
+        // Find the locality for this path
+        let pathFipsCode = pathData.properties.FIPS || pathData.properties.fips || pathData.properties.GEOID || 
+                         pathData.properties.id || pathData.id;
+        
+        if (pathFipsCode && typeof pathFipsCode === 'string' && pathFipsCode.length === 3) {
+          pathFipsCode = `51${pathFipsCode}`;
+        }
+        
+        const pathCountyName = pathData.properties.NAME || pathData.properties.name;
+        
+        const pathLocality = localities.find(loc => {
+          let locFips = loc.fips;
+          
+          if (locFips) {
+            locFips = locFips.replace('us-va-', '');
+            locFips = locFips.toString().replace(/\D/g, '');
+            locFips = locFips.padStart(3, '0');
+            if (locFips.length === 3) {
+              locFips = `51${locFips}`;
+            }
+          }
+          
+          const fipsMatch = pathFipsCode && locFips === pathFipsCode;
+          const nameMatch = pathCountyName && loc.counties === pathCountyName;
+          
+          return fipsMatch || nameMatch;
+        });
+        
+        // Set stroke color: yellow for selected or hovered localities, original strokeColor for others
+        const isSelected = selectedLocality && pathLocality && selectedLocality._id === pathLocality._id;
+        const isHovered = currentHoveredLocality && pathLocality && currentHoveredLocality._id === pathLocality._id;
+        
+        return (isSelected || isHovered) ? "#FFD900" : strokeColor;
+      })
+      .attr("stroke-width", (pathData: any) => {
+        // Find the locality for this path
+        let pathFipsCode = pathData.properties.FIPS || pathData.properties.fips || pathData.properties.GEOID || 
+                         pathData.properties.id || pathData.id;
+        
+        if (pathFipsCode && typeof pathFipsCode === 'string' && pathFipsCode.length === 3) {
+          pathFipsCode = `51${pathFipsCode}`;
+        }
+        
+        const pathCountyName = pathData.properties.NAME || pathData.properties.name;
+        
+        const pathLocality = localities.find(loc => {
+          let locFips = loc.fips;
+          
+          if (locFips) {
+            locFips = locFips.replace('us-va-', '');
+            locFips = locFips.toString().replace(/\D/g, '');
+            locFips = locFips.padStart(3, '0');
+            if (locFips.length === 3) {
+              locFips = `51${locFips}`;
+            }
+          }
+          
+          const fipsMatch = pathFipsCode && locFips === pathFipsCode;
+          const nameMatch = pathCountyName && loc.counties === pathCountyName;
+          
+          return fipsMatch || nameMatch;
+        });
+        
+        // Set stroke width: 2 for selected or hovered localities, 0.5 for others
+        const isSelected = selectedLocality && pathLocality && selectedLocality._id === pathLocality._id;
+        const isHovered = currentHoveredLocality && pathLocality && currentHoveredLocality._id === pathLocality._id;
+        
+        return (isSelected || isHovered) ? 2 : 0.5;
+      });
+  }, [selectedLocality, localities, strokeColor]);
+
+  // Function to reset hover effects
+  const resetHoverEffects = useCallback(() => {
+    if (!countiesRef.current) return;
+    
+    countiesRef.current.selectAll("path")
+      .style("opacity", 1)
+      .attr("stroke", (pathData: any) => {
+        // Find the locality for this path
+        let pathFipsCode = pathData.properties.FIPS || pathData.properties.fips || pathData.properties.GEOID || 
+                         pathData.properties.id || pathData.id;
+        
+        if (pathFipsCode && typeof pathFipsCode === 'string' && pathFipsCode.length === 3) {
+          pathFipsCode = `51${pathFipsCode}`;
+        }
+        
+        const pathCountyName = pathData.properties.NAME || pathData.properties.name;
+        
+        const pathLocality = localities.find(loc => {
+          let locFips = loc.fips;
+          
+          if (locFips) {
+            locFips = locFips.replace('us-va-', '');
+            locFips = locFips.toString().replace(/\D/g, '');
+            locFips = locFips.padStart(3, '0');
+            if (locFips.length === 3) {
+              locFips = `51${locFips}`;
+            }
+          }
+          
+          const fipsMatch = pathFipsCode && locFips === pathFipsCode;
+          const nameMatch = pathCountyName && loc.counties === pathCountyName;
+          
+          return fipsMatch || nameMatch;
+        });
+        
+        // Restore original stroke color: yellow for selected locality, strokeColor for others
+        const isSelected = selectedLocality && pathLocality && selectedLocality._id === pathLocality._id;
+        
+        return isSelected ? "#FFD900" : strokeColor;
+      })
+      .attr("stroke-width", (pathData: any) => {
+        // Find the locality for this path
+        let pathFipsCode = pathData.properties.FIPS || pathData.properties.fips || pathData.properties.GEOID || 
+                         pathData.properties.id || pathData.id;
+        
+        if (pathFipsCode && typeof pathFipsCode === 'string' && pathFipsCode.length === 3) {
+          pathFipsCode = `51${pathFipsCode}`;
+        }
+        
+        const pathCountyName = pathData.properties.NAME || pathData.properties.name;
+        
+        const pathLocality = localities.find(loc => {
+          let locFips = loc.fips;
+          
+          if (locFips) {
+            locFips = locFips.replace('us-va-', '');
+            locFips = locFips.toString().replace(/\D/g, '');
+            locFips = locFips.padStart(3, '0');
+            if (locFips.length === 3) {
+              locFips = `51${locFips}`;
+            }
+          }
+          
+          const fipsMatch = pathFipsCode && locFips === pathFipsCode;
+          const nameMatch = pathCountyName && loc.counties === pathCountyName;
+          
+          return fipsMatch || nameMatch;
+        });
+        
+        // Restore original stroke width: 2 for selected locality, 0.5 for others
+        const isSelected = selectedLocality && pathLocality && selectedLocality._id === pathLocality._id;
+        
+        return isSelected ? 2 : 0.5;
+      });
+  }, [selectedLocality, localities, strokeColor]);
+
+  // Function to create hover tooltip
+  const createHoverTooltip = useCallback((locality: Locality, geoData: any, path: any) => {
+    if (!mapGroupRef.current) return;
+    
+    // Remove existing hover tooltip
+    if (hoverTooltipRef.current) {
+      d3.select(hoverTooltipRef.current).remove();
+      hoverTooltipRef.current = null;
+    }
+    
+    // Find the corresponding feature in the geo data
+    const feature = geoData.features.find((f: any) => {
+      // Get FIPS code using various property names
+      let fipsCode = f.properties.FIPS || f.properties.fips || f.properties.GEOID || 
+                    f.properties.id || f.id;
+      
+      // Add prefix if needed
+      if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
+        fipsCode = `51${fipsCode}`;
+      }
+      
+      // Get locality name
+      const countyName = f.properties.NAME || f.properties.name;
+      
+      // Clean up locality FIPS code for comparison
+      let locFips = locality.fips;
+      
+      if (locFips) {
+        // Remove 'us-va-' prefix if present
+        locFips = locFips.replace('us-va-', '');
+        // Remove any remaining non-numeric characters
+        locFips = locFips.toString().replace(/\D/g, '');
+        // Ensure it's 5 digits
+        locFips = locFips.padStart(3, '0');
+        // Add state prefix if not present
+        if (locFips.length === 3) {
+          locFips = `51${locFips}`;
+        }
+      }
+      
+      const fipsMatch = fipsCode && locFips === fipsCode;
+      const nameMatch = countyName && locality.counties === countyName;
+      
+      return fipsMatch || nameMatch;
+    });
+    
+    if (feature) {
+      // Calculate the centroid of the locality
+      const centroid = path.centroid(feature);
+      
+      if (centroid && !isNaN(centroid[0]) && !isNaN(centroid[1])) {
+        // Create the hover tooltip - add it to the map group so it moves with the map
+        const tooltip = d3.select(mapGroupRef.current).append("g")
+          .attr("class", "hover-tooltip")
+          .attr("transform", `translate(${centroid[0]}, ${centroid[1]})`);
+        
+        // Store reference for removal
+        hoverTooltipRef.current = tooltip.node();
+        
+        // Tooltip content
+        const perCapitaValue = getValueFromPath(
+          locality, 
+          getFieldPath(locality, indicator, 'PerCapita')
+        );
+        
+        const totalValue = getValueFromPath(
+          locality, 
+          getFieldPath(locality, indicator, 'Total')
+        );
+        
+        // Add tooltip background
+        tooltip.append("rect")
+          .attr("x", -80)
+          .attr("y", -80)
+          .attr("width", 160)
+          .attr("height", 70)
+          .attr("fill", "white")
+          .attr("rx", 4)
+          .attr("ry", 4)
+          .attr("stroke", "#E6E6E6")
+          .attr("stroke-width", 1)
+          .attr("filter", "url(#drop-shadow)");
+          
+        // Add locality name
+        tooltip.append("text")
+          .attr("x", 0)
+          .attr("y", -60)
+          .attr("text-anchor", "middle")
+          .attr("font-size", "12px")
+          .attr("font-family", "Inter")
+          .attr("font-weight", "700")
+          .attr("fill", "#1E1E1E")
+          .text(locality.counties);
+          
+        // Add per capita value
+        tooltip.append("text")
+          .attr("x", 0)
+          .attr("y", -40)
+          .attr("text-anchor", "middle")
+          .attr("font-size", "12px")
+          .attr("font-family", "Inter")
+          .attr("font-weight", "400")
+          .attr("fill", "#1E1E1E")
+          .text(`${formatNumber(perCapitaValue, '$', ' per person')}`);
+          
+        // Add total value
+        tooltip.append("text")
+          .attr("x", 0)
+          .attr("y", -20)
+          .attr("text-anchor", "middle")
+          .attr("font-size", "12px")
+          .attr("font-family", "Inter")
+          .attr("font-weight", "400")
+          .attr("fill", "#1E1E1E")
+          .text(`${formatNumber(totalValue, '$', ' total costs')}`);
+
+        // Add triangular arrow pointing down
+        tooltip.append("polygon")
+          .attr("points", "-12,-11 12,-11 0,1")
+          .attr("fill", "white")
+          .attr("stroke", "white") 
+          .attr("stroke-width", 0.5);
+      }
+    }
+  }, [indicator]);
+
+  // Function to remove hover tooltip
+  const removeHoverTooltip = useCallback(() => {
+    if (hoverTooltipRef.current) {
+      d3.select(hoverTooltipRef.current).remove();
+      hoverTooltipRef.current = null;
+    }
+  }, []);
 
   // Set up window resize handler
   useEffect(() => {
@@ -129,7 +462,6 @@ export default function ChoroplethMap({
         // Check if it's TopoJSON (has type: "Topology")
         let geoData;
         if (topoData.type === "Topology") {
-          console.log('Converting TopoJSON to GeoJSON');
           // Get the first object in the TopoJSON
           const objectName = Object.keys(topoData.objects)[0];
           if (!objectName) {
@@ -152,7 +484,6 @@ export default function ChoroplethMap({
             };
           }
           
-          console.log('Converted to GeoJSON:', geoData);
         } else if (topoData.type === "FeatureCollection" && Array.isArray(topoData.features)) {
           // It's already GeoJSON
           geoData = topoData;
@@ -187,6 +518,12 @@ export default function ChoroplethMap({
         
         // Clear previous SVG content
         d3.select(svgRef.current).selectAll("*").remove();
+        
+        // Clear any pending hover timeout
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current);
+          hoverTimeoutRef.current = null;
+        }
         
         // Create the SVG
         const svg = d3.select(svgRef.current)
@@ -298,8 +635,12 @@ export default function ChoroplethMap({
         
         // Draw counties in the map group
         const counties = mapGroup.append("g")
-          .attr("class", "counties")
-          .selectAll("path")
+          .attr("class", "counties");
+        
+        // Store counties selection in ref for hover effects
+        countiesRef.current = counties;
+        
+        const countiesPaths = counties.selectAll("path")
           .data(() => {
             // Reorder features so selected locality is drawn last (on top)
             if (!selectedLocality) return geoData.features;
@@ -544,6 +885,69 @@ export default function ChoroplethMap({
               console.log('No locality found or no onLocalityClick handler');
             }
           })
+          .on("mouseenter", (event: any, d: any) => {
+            // Get FIPS code using various property names
+            let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
+                          d.properties.id || d.id;
+            
+            // Add prefix if needed
+            if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
+              fipsCode = `51${fipsCode}`;
+            }
+            
+            // Get locality name
+            const countyName = d.properties.NAME || d.properties.name;
+            
+            // Try to find matching locality
+            const locality = localities.find(loc => {
+              // Clean up locality FIPS code for comparison
+              let locFips = loc.fips;
+              
+              if (locFips) {
+                // Remove 'us-va-' prefix if present
+                locFips = locFips.replace('us-va-', '');
+                // Remove any remaining non-numeric characters
+                locFips = locFips.toString().replace(/\D/g, '');
+                // Ensure it's 5 digits
+                locFips = locFips.padStart(3, '0');
+                // Add state prefix if not present
+                if (locFips.length === 3) {
+                  locFips = `51${locFips}`;
+                }
+              }
+              
+              const fipsMatch = fipsCode && locFips === fipsCode;
+              const nameMatch = countyName && loc.counties === countyName;
+              
+              return fipsMatch || nameMatch;
+            });
+            
+            if (locality) {
+              // Clear any pending hover timeout
+              if (hoverTimeoutRef.current) {
+                clearTimeout(hoverTimeoutRef.current);
+                hoverTimeoutRef.current = null;
+              }
+              
+              setHoveredLocality(locality);
+              applyHoverEffects(locality);
+              createHoverTooltip(locality, geoData, path);
+            }
+          })
+          .on("mouseleave", (event: any, d: any) => {
+            // Clear any existing timeout
+            if (hoverTimeoutRef.current) {
+              clearTimeout(hoverTimeoutRef.current);
+            }
+            
+            // Set a small delay before resetting hover effects to prevent flashing
+            hoverTimeoutRef.current = setTimeout(() => {
+              setHoveredLocality(null);
+              resetHoverEffects();
+              removeHoverTooltip();
+              hoverTimeoutRef.current = null;
+            }, 50); // 50ms delay
+          })
           
         // Add panning functionality on mobile (zoom disabled)
         if (isMobile) {
@@ -633,7 +1037,6 @@ export default function ChoroplethMap({
         
         // If a locality is selected, add an annotation
         if (selectedLocality) {
-          console.log('Adding annotation for selected locality:', selectedLocality);
           
           // Find the corresponding feature in the geo data
           const feature = geoData.features.find((f: any) => {
@@ -668,12 +1071,10 @@ export default function ChoroplethMap({
             const fipsMatch = fipsCode && locFips === fipsCode;
             const nameMatch = countyName && selectedLocality.counties === countyName;
             
-            console.log(`Annotation matching: ${selectedLocality.counties} - FIPS: ${locFips} vs ${fipsCode} (${fipsMatch}), Name: ${selectedLocality.counties} vs ${countyName} (${nameMatch})`);
             
             return fipsMatch || nameMatch;
           });
           
-          console.log('Found feature for annotation:', feature);
           
           if (feature) {
             // Calculate the centroid of the locality
@@ -758,7 +1159,7 @@ export default function ChoroplethMap({
     };
 
     drawMap();
-  }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue, indicatorDisplayNames, onLocalityClick, onResetToVirginia, strokeColor]);
+  }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue, indicatorDisplayNames, onLocalityClick, onResetToVirginia, strokeColor, applyHoverEffects, resetHoverEffects, createHoverTooltip, removeHoverTooltip]);
 
   return (
     <div className="relative">

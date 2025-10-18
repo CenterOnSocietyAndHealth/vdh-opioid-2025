@@ -261,94 +261,103 @@ export default function DataTableDescription({
               </div>
 
               {/* Data Table */}
-              <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
-                <table className="w-full border-collapse">
-                  <thead>
-                    <tr className="border-b border-gray-200">
-                      {columns.map((column) => (
-                        <th 
-                          key={column.key}
-                          className={`py-2 px-1 cursor-pointer hover:bg-gray-100 transition-colors duration-150 ${
-                            column.align === 'right' ? 'text-right' : 
-                            column.align === 'center' ? 'text-center' : 
-                            'text-left'
-                          }`}
-                          style={{
-                            color: '#000',
-                            fontFamily: 'Inter',
-                            fontSize: '14px',
-                            fontStyle: 'normal',
-                            fontWeight: '600',
-                            lineHeight: '118%',
-                            letterSpacing: '-0.266px'
-                          }}
-                          onClick={() => handleSort(column.key)}
-                          tabIndex={isExpanded ? 0 : -1}
-                        >
-                          <div className={`flex items-center gap-1 ${
-                            column.align === 'right' ? 'justify-end' : 
-                            column.align === 'center' ? 'justify-center' : 
-                            'justify-start'
-                          }`}>
-                            <span>{column.label}</span>
-                            {/* Sort indicator */}
-                            <span className="inline-flex flex-col w-3 h-4">
-                              {sortColumn === column.key ? (
-                                sortDirection === 'asc' ? (
-                                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
-                                  </svg>
+              <div className="border border-gray-200 rounded-lg overflow-hidden">
+                {/* Fixed Header */}
+                <div className="overflow-x-auto bg-white">
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        {columns.map((column) => (
+                          <th 
+                            key={column.key}
+                            className={`py-2 px-1 cursor-pointer hover:bg-gray-100 transition-colors duration-150 ${
+                              column.align === 'right' ? 'text-right' : 
+                              column.align === 'center' ? 'text-center' : 
+                              'text-left'
+                            }`}
+                            style={{
+                              color: '#000',
+                              fontFamily: 'Inter',
+                              fontSize: '14px',
+                              fontStyle: 'normal',
+                              fontWeight: '600',
+                              lineHeight: '118%',
+                              letterSpacing: '-0.266px'
+                            }}
+                            onClick={() => handleSort(column.key)}
+                            tabIndex={isExpanded ? 0 : -1}
+                          >
+                            <div className={`flex items-center gap-1 ${
+                              column.align === 'right' ? 'justify-end' : 
+                              column.align === 'center' ? 'justify-center' : 
+                              'justify-start'
+                            }`}>
+                              <span>{column.label}</span>
+                              {/* Sort indicator */}
+                              <span className="inline-flex flex-col w-3 h-4">
+                                {sortColumn === column.key ? (
+                                  sortDirection === 'asc' ? (
+                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                      <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
+                                    </svg>
+                                  ) : (
+                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                      <path d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" />
+                                    </svg>
+                                  )
                                 ) : (
-                                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" />
+                                  <svg className="w-3 h-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" />
                                   </svg>
-                                )
-                              ) : (
-                                <svg className="w-3 h-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                  <path d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" />
-                                </svg>
-                              )}
-                            </span>
-                          </div>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {sortedData.map((row, index) => {
-                      const isHighlighted = highlightRowId !== undefined && row.id === highlightRowId;
-                      return (
-                        <tr
-                          key={index}
-                          className={`border-b border-gray-100 ${
-                            index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                          }`}
-                        >
-                          {columns.map((column) => (
-                            <td 
-                              key={column.key}
-                              className={`py-0 px-1 ${
-                                column.align === 'right' ? 'text-right' : 
-                                column.align === 'center' ? 'text-center' : 
-                                'text-left'
-                              }`}
-                              style={{
-                                color: '#1E1E1E',
-                                fontFamily: 'Inter',
-                                fontSize: '14px',
-                                fontStyle: 'normal',
-                                fontWeight: isHighlighted ? '700' : '400',
-                                lineHeight: '289%'
-                              }}
-                            >
-                              {formatValue(row[column.key], column.format || 'text')}
-                            </td>
-                          ))}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                                )}
+                              </span>
+                            </div>
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+                
+                {/* Scrollable Body */}
+                <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
+                  <table className="w-full border-collapse">
+                    <tbody>
+                      {sortedData.map((row, index) => {
+                        const isHighlighted = highlightRowId !== undefined && row.id === highlightRowId;
+                        return (
+                          <tr
+                            key={index}
+                            className={`border-b border-gray-100 ${
+                              index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                            }`}
+                          >
+                            {columns.map((column) => (
+                              <td 
+                                key={column.key}
+                                className={`py-0 px-1 ${
+                                  column.align === 'right' ? 'text-right' : 
+                                  column.align === 'center' ? 'text-center' : 
+                                  'text-left'
+                                }`}
+                                style={{
+                                  color: '#1E1E1E',
+                                  fontFamily: 'Inter',
+                                  fontSize: '14px',
+                                  fontStyle: 'normal',
+                                  fontWeight: isHighlighted ? '700' : '400',
+                                  lineHeight: '289%'
+                                }}
+                              >
+                                {formatValue(row[column.key], column.format || 'text')}
+                              </td>
+                            ))}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           )}
