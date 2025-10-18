@@ -46,6 +46,44 @@ export const costsBreakdown = defineType({
       type: 'blockContent',
     }),
     defineField({
+      name: 'asideLink',
+      title: 'Aside Link',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Link Text',
+          type: 'string',
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: 'url',
+          title: 'URL',
+          type: 'string',
+          description: 'Enter a custom URL (e.g., https://example.com)',
+        }),
+        defineField({
+          name: 'internalPage',
+          title: 'Internal Page',
+          type: 'reference',
+          to: [{ type: 'page' }],
+          description: 'Select an internal page from your site',
+        }),
+      ],
+      validation: (Rule) => Rule.custom((fields) => {
+        if (!fields?.title) {
+          return 'Link text is required';
+        }
+        if (!fields?.url && !fields?.internalPage) {
+          return 'Either URL or Internal Page must be provided';
+        }
+        if (fields?.url && fields?.internalPage) {
+          return 'Please provide either URL or Internal Page, not both';
+        }
+        return true;
+      }),
+    }),
+    defineField({
       name: 'mobileAside',
       title: 'Mobile Aside',
       type: 'blockContent',

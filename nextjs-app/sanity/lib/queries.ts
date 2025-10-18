@@ -247,6 +247,14 @@ export const getPageQuery = defineQuery(`
             ${markDefsReference}
           }
         },
+        asideLink {
+          title,
+          url,
+          internalPage->{
+            _id,
+            "slug": slug.current
+          }
+        },
         mobileAside[]{
           ...,
           markDefs[]{

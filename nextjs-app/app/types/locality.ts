@@ -143,6 +143,14 @@ export type CostsBreakdownProps = {
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
     aside?: any[];
+    asideLink?: {
+      title: string;
+      url?: string;
+      internalPage?: {
+        _id: string;
+        slug: string;
+      };
+    };
     mobileAside?: any[];
   };
 };

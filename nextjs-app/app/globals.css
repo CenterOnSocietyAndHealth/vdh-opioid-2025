@@ -395,3 +395,23 @@ ol ol ol {
   background-color: transparent;
 }
 
+/* Navigation hover effects without layout shift */
+.nav-link {
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  /* Use text-shadow to simulate bold text without changing width */
+  text-shadow: 
+    0.8px 0 0 currentColor,
+    -0.8px 0 0 currentColor,
+    0 0.4px 0 currentColor,
+    0 -0.4px 0 currentColor;
+  text-decoration: none;
+  border-bottom: none;
+  background-color: transparent;
+}
+
+.nav-link.no-shadow {
+  text-shadow: none;
+}

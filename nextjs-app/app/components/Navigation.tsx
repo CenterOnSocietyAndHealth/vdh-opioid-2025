@@ -35,7 +35,7 @@ export default function Navigation({
             <li key={index}>
               <a 
                 href={href}
-                className={`text-lg hover:text-primary no-underline hover:underline hover:bg-transparent border-b-2 border-transparent hover:border-[#000000] ${isCurrentPage ? 'font-bold' : ''}`}
+                className={`nav-link text-lg no-underline ${isCurrentPage ? 'font-bold no-shadow' : ''}`}
                 {...(item.linkType === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               >
                 {item.title}

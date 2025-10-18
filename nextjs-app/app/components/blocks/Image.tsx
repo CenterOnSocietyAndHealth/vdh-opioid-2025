@@ -110,9 +110,19 @@ export default function ImageBlock({ block }: ImageProps) {
             className={`${imageWidth ? '' : 'w-auto h-auto'} max-w-full ${hasShadow ? 'shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]' : ''}`}
           />
           {image.caption && (
-            <p className="mt-4 max-w-[600px] mx-auto text-[14px] text-[#000] text-left font-normal">
-              {image.caption}
-            </p>
+            <div 
+              className="w-full py-5 px-4"
+              style={{
+                backgroundColor: '#F3F2EC',
+                fontFamily: 'Inter',
+                fontWeight: '400',
+                lineHeight: '130%',
+              }}
+            >
+              <p className="text-left text-[14px] font-normal leading-[130%] text-[#1E1E1E] mx-auto mt-0 mb-0 max-w-[600px]">
+                {image.caption}
+              </p>
+            </div>
           )}
         </div>
       </div>

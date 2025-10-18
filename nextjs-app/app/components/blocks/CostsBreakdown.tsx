@@ -54,6 +54,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
     sources,
     costSectors,
     mobileAside,
+    asideLink,
     marginTop = 'none',
     marginBottom = 'none'
   } = block;
@@ -688,8 +689,30 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         </div>
         {/* Aside (1/3 column on desktop, below on mobile) */}
         {block.aside && (
-          <div className="bg-[#F3F2EC] p-[30px] h-full aside-container">
-            <PortableText value={block.aside} />
+          <div className="bg-[#F3F2EC] p-[30px] h-full aside-container flex flex-col">
+            <div className="flex-1">
+              <PortableText value={block.aside} />
+            </div>
+            {/* Aside Link */}
+            {asideLink && (
+              <div className="mt-6">
+                <a
+                  href={asideLink.internalPage ? `/${asideLink.internalPage.slug}` : asideLink.url}
+                  className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
+                  style={{
+                    color: '#000',
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: 400,
+                    lineHeight: 'normal',
+                    textDecorationLine: 'underline',
+                  }}
+                >
+                  {asideLink.title} »
+                </a>
+              </div>
+            )}
           </div>
         )}
       </div>
