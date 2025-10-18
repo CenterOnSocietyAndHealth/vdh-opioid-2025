@@ -130,6 +130,7 @@ export default function ChoroplethMap({
         
         return (isSelected || isHovered) ? 1 : 0.25;
       })
+      .style("transition", "opacity 100ms ease-in-out")
       .attr("stroke", (pathData: any) => {
         // Find the locality for this path
         let pathFipsCode = pathData.properties.FIPS || pathData.properties.fips || pathData.properties.GEOID || 
@@ -208,6 +209,7 @@ export default function ChoroplethMap({
     
     countiesRef.current.selectAll("path")
       .style("opacity", 1)
+      .style("transition", "opacity 100ms ease-in-out")
       .attr("stroke", (pathData: any) => {
         // Find the locality for this path
         let pathFipsCode = pathData.properties.FIPS || pathData.properties.fips || pathData.properties.GEOID || 
