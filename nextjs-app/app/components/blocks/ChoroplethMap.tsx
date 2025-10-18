@@ -334,7 +334,8 @@ export default function ChoroplethMap({
         // Create the hover tooltip - add it to the map group so it moves with the map
         const tooltip = d3.select(mapGroupRef.current).append("g")
           .attr("class", "hover-tooltip")
-          .attr("transform", `translate(${centroid[0]}, ${centroid[1]})`);
+          .attr("transform", `translate(${centroid[0]}, ${centroid[1]})`)
+          .style("pointer-events", "none");
         
         // Store reference for removal
         hoverTooltipRef.current = tooltip.node();
@@ -361,7 +362,8 @@ export default function ChoroplethMap({
           .attr("ry", 4)
           .attr("stroke", "#E6E6E6")
           .attr("stroke-width", 1)
-          .attr("filter", "url(#drop-shadow)");
+          .attr("filter", "url(#drop-shadow)")
+          .style("pointer-events", "none");
           
         // Add locality name
         tooltip.append("text")
@@ -372,6 +374,7 @@ export default function ChoroplethMap({
           .attr("font-family", "Inter")
           .attr("font-weight", "700")
           .attr("fill", "#1E1E1E")
+          .style("pointer-events", "none")
           .text(locality.counties);
           
         // Add per capita value
@@ -383,6 +386,7 @@ export default function ChoroplethMap({
           .attr("font-family", "Inter")
           .attr("font-weight", "400")
           .attr("fill", "#1E1E1E")
+          .style("pointer-events", "none")
           .text(`${formatNumber(perCapitaValue, '$', ' per person')}`);
           
         // Add total value
@@ -394,6 +398,7 @@ export default function ChoroplethMap({
           .attr("font-family", "Inter")
           .attr("font-weight", "400")
           .attr("fill", "#1E1E1E")
+          .style("pointer-events", "none")
           .text(`${formatNumber(totalValue, '$', ' total costs')}`);
 
         // Add triangular arrow pointing down
@@ -401,7 +406,8 @@ export default function ChoroplethMap({
           .attr("points", "-12,-11 12,-11 0,1")
           .attr("fill", "white")
           .attr("stroke", "white") 
-          .attr("stroke-width", 0.5);
+          .attr("stroke-width", 0.5)
+          .style("pointer-events", "none");
       }
     }
   }, [indicator]);
@@ -631,9 +637,6 @@ export default function ChoroplethMap({
           }
         });
         
-        // Add a simple title for accessibility
-        svg.append("title")
-          .text("Virginia counties map");
         
         // Draw counties in the map group
         const counties = mapGroup.append("g")
@@ -1085,7 +1088,8 @@ export default function ChoroplethMap({
             if (centroid && !isNaN(centroid[0]) && !isNaN(centroid[1])) {
               // Create the annotation - add it to the map group so it moves with the map
               const annotation = mapGroup.append("g")
-                .attr("transform", `translate(${centroid[0]}, ${centroid[1]})`);
+                .attr("transform", `translate(${centroid[0]}, ${centroid[1]})`)
+                .style("pointer-events", "none");
                 
               // Tooltip content
               const perCapitaValue = getValueFromPath(
@@ -1109,7 +1113,8 @@ export default function ChoroplethMap({
                 .attr("ry", 4)
                 .attr("stroke", "#E6E6E6")
                 .attr("stroke-width", 1)
-                .attr("filter", "url(#drop-shadow)");
+                .attr("filter", "url(#drop-shadow)")
+                .style("pointer-events", "none");
                 
               // Add locality name
               annotation.append("text")
@@ -1120,6 +1125,7 @@ export default function ChoroplethMap({
                 .attr("font-family", "Inter")
                 .attr("font-weight", "700")
                 .attr("fill", "#1E1E1E")
+                .style("pointer-events", "none")
                 .text(selectedLocality.counties);
                 
               // Add per capita value
@@ -1131,6 +1137,7 @@ export default function ChoroplethMap({
                 .attr("font-family", "Inter")
                 .attr("font-weight", "400")
                 .attr("fill", "#1E1E1E")
+                .style("pointer-events", "none")
                 .text(`${formatNumber(perCapitaValue, '$', ' per person')}`);
                 
               // Add total value
@@ -1142,6 +1149,7 @@ export default function ChoroplethMap({
                 .attr("font-family", "Inter")
                 .attr("font-weight", "400")
                 .attr("fill", "#1E1E1E")
+                .style("pointer-events", "none")
                 .text(`${formatNumber(totalValue, '$', ' total costs')}`);
 
               // Add triangular arrow pointing down
@@ -1150,6 +1158,7 @@ export default function ChoroplethMap({
                 .attr("fill", "white")
                 .attr("stroke", "white") 
                 .attr("stroke-width", 0.5)
+                .style("pointer-events", "none")
             }
           }
         }
