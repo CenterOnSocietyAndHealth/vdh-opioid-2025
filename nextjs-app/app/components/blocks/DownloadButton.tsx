@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DownloadButtonProps } from '@/app/types/locality';
 import { getValidKeyOrDefault } from '@/app/client-utils';
 import { client } from '@/sanity/lib/client';
@@ -35,29 +35,79 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
     marginBottom = 'medium'
   } = block;
 
+  const [fileUrl, setFileUrl] = useState<string | undefined>();
+  const [fileName, setFileName] = useState<string>('download');
+  const [isLoading, setIsLoading] = useState(false);
+
   // Debug logging to see what data we're receiving
-  console.log('DownloadButton block data:', block);
-  console.log('File data:', file);
-  console.log('Asset data:', file?.asset);
+  console.log('DownloadButton block data:', JSON.stringify(block, null, 2));
+  console.log('File data:', JSON.stringify(file, null, 2));
+  console.log('Asset data:', JSON.stringify(file?.asset, null, 2));
 
   const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'medium')
   const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'medium')
 
-  // Get file URL and filename from different possible data structures
-  let fileUrl = file?.asset?.url || file?.url;
-  let fileName = file?.asset?.originalFilename || file?.originalFilename || 'download';
-  
-  // If we have an asset reference but no URL, try to build the URL from the reference
-  if (!fileUrl && file?.asset?._ref) {
-    try {
-      // Build URL from asset reference using Sanity's CDN
-      const assetId = file.asset._ref.replace('file-', '').replace(/-[a-z0-9]+$/, '');
-      fileUrl = `https://cdn.sanity.io/files/${projectId}/${dataset}/${assetId}.csv`;
-    } catch (error) {
-      console.error('Error building file URL:', error);
-    }
-  }
-  
+  // Resolve file URL and filename
+  useEffect(() => {
+    const resolveFileAsset = async () => {
+      if (!file?.asset) {
+        setFileUrl(undefined);
+        setFileName('download');
+        return;
+      }
+
+      // Check if asset is already resolved (has url property)
+      if ('url' in file.asset && file.asset.url) {
+        console.log('Asset is already resolved');
+        setFileUrl(file.asset.url);
+        setFileName(file.asset.originalFilename || 'download');
+        return;
+      }
+
+      // Check if asset is a reference (has _ref property)
+      if ('_ref' in file.asset && file.asset._ref && typeof file.asset._ref === 'string') {
+        console.log('Asset is a reference, resolving...');
+        setIsLoading(true);
+        
+        try {
+          // Try to fetch the asset data from Sanity
+          const assetData = await client.fetch(`*[_id == $ref][0]`, { ref: file.asset._ref });
+          console.log('Resolved asset data:', assetData);
+          
+          if (assetData?.url) {
+            setFileUrl(assetData.url);
+            setFileName(assetData.originalFilename || 'download');
+          } else {
+            // Fallback: build URL from reference
+            const assetId = file.asset._ref.replace('file-', '').replace(/-[a-z0-9]+$/, '');
+            const fallbackUrl = `https://cdn.sanity.io/files/${projectId}/${dataset}/${assetId}`;
+            console.log('Using fallback URL:', fallbackUrl);
+            setFileUrl(fallbackUrl);
+            setFileName('download');
+          }
+        } catch (error) {
+          console.error('Error resolving asset reference:', error);
+          // Fallback: build URL from reference
+          try {
+            const assetId = file.asset._ref.replace('file-', '').replace(/-[a-z0-9]+$/, '');
+            const fallbackUrl = `https://cdn.sanity.io/files/${projectId}/${dataset}/${assetId}`;
+            console.log('Using fallback URL after error:', fallbackUrl);
+            setFileUrl(fallbackUrl);
+            setFileName('download');
+          } catch (fallbackError) {
+            console.error('Error building fallback URL:', fallbackError);
+            setFileUrl(undefined);
+            setFileName('download');
+          }
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    resolveFileAsset();
+  }, [file?.asset]);
+
   console.log('File URL:', fileUrl);
   console.log('File name:', fileName);
 
@@ -96,7 +146,7 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
   };
 
   // Determine if button should be disabled
-  const isDisabled = !fileUrl;
+  const isDisabled = !fileUrl || isLoading;
 
   return (
     <div className={`max-w-[1311px] mx-auto ${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
@@ -122,12 +172,20 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
         >
           <DownloadIcon />
           <span className="whitespace-nowrap ml-3">
-            {buttonText}
+            {isLoading ? 'Loading...' : buttonText}
           </span>
         </button>
       </div>
       
-      {isDisabled && (
+      {isLoading && (
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-500">
+            🔄 Loading file...
+          </p>
+        </div>
+      )}
+      
+      {!isLoading && !fileUrl && (
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-500">
             ⚠️ File not configured. Please upload a file in the CMS to enable this button.

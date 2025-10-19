@@ -350,10 +350,15 @@ export type DownloadButtonProps = {
   block: {
     buttonText: string;
     file?: {
-      asset: {
-        url: string;
+      asset?: {
+        // Resolved asset structure (when query resolves the reference)
+        url?: string;
+        originalFilename?: string;
+        // Reference structure (when asset is not resolved)
+        _ref?: string;
+        _type?: 'reference';
+        _weak?: boolean;
       };
-      originalFilename?: string;
     };
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
