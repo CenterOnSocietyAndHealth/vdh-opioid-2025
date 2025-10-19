@@ -12,6 +12,7 @@ import {costsMaps} from './objects/costsMaps'
 import {costsBreakdown} from './objects/costsBreakdown'
 import {payerBreakdown} from './objects/payerBreakdown'
 import {largeButton} from './objects/largeButton'
+import {downloadButton} from './objects/downloadButton'
 import {accordion} from './objects/accordion'
 import {contentWrapper} from './objects/contentWrapper'
 import {onThisPage} from './objects/onThisPage'
@@ -45,6 +46,7 @@ export const schemaTypes = [
   costsBreakdown,
   payerBreakdown,
   largeButton,
+  downloadButton,
   accordion,
   contentWrapper,
   onThisPage,

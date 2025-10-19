@@ -412,6 +412,15 @@ export const getPageQuery = defineQuery(`
           "slug": slug.current
         }
       },
+      _type == "downloadButton" => {
+        ...,
+        file {
+          asset->{
+            url,
+            originalFilename
+          }
+        }
+      },
       _type == "sourcesAccordion" => {
         ...,
         sources[]{

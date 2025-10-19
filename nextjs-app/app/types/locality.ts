@@ -343,4 +343,19 @@ export type PovertyIncomeProps = {
     statePovertyPct?: number;
     stateMedianIncome?: number;
   };
+};
+
+// Type for the download button component props
+export type DownloadButtonProps = {
+  block: {
+    buttonText: string;
+    file?: {
+      asset: {
+        url: string;
+      };
+      originalFilename?: string;
+    };
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  };
 }; 

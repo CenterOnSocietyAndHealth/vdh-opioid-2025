@@ -12,6 +12,7 @@ import ContentWrapper from "./blocks/ContentWrapper";
 import OnThisPage from "./blocks/OnThisPage";
 import PayerBreakdown from "./blocks/PayerBreakdown";
 import LargeButton from "./blocks/LargeButton";
+import DownloadButton from "./blocks/DownloadButton";
 import Sources from "./blocks/Sources";
 import SectorCosts from "./blocks/SectorCosts";
 import LocalityPayorBreakdown from "./blocks/LocalityPayorBreakdown";
@@ -50,6 +51,7 @@ const Blocks: BlocksType = {
   onThisPage: OnThisPage,
   payerBreakdown: PayerBreakdown,
   largeButton: LargeButton,
+  downloadButton: DownloadButton,
   sources: Sources,
   sectorCosts: SectorCosts,
   localityPayorBreakdown: LocalityPayorBreakdown,

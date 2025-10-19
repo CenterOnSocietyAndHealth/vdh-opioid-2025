@@ -70,12 +70,12 @@ export default async function Footer() {
       <div className="footer-container flex flex-col gap-4 md:flex-row md:justify-between items-center max-w-[880px] mx-auto px-4">
         <div className="footer-left">
           <a href="https://www.vdh.virginia.gov/" target="_blank" rel="noopener noreferrer">
-            <Image src={VDHlogo} alt='VDH Logo' className="h-[50px] w-auto" />
+            <Image src={VDHlogo} alt='VDH Logo' className="h-[33px] md:h-[50px] w-auto" />
           </a>
         </div>
         <div className="footer-right">
           <a href="https://societyhealth.vcu.edu/" target="_blank" rel="noopener noreferrer">
-            <Image src={CSHlogo} alt='CSH Logo' className="h-[50px] w-auto" />
+            <Image src={CSHlogo} alt='CSH Logo' className="mt-2 md:mt-0 h-[38px] md:h-[50px] w-auto" />
           </a>
         </div>
       </div>

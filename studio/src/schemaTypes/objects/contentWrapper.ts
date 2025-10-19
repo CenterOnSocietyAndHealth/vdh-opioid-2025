@@ -123,6 +123,7 @@ export const contentWrapper = defineType({
         { type: 'localityDemographics' },
         { type: 'jitterPlot' },
         { type: 'povertyIncome' },
+        { type: 'downloadButton' },
       ],
       validation: (Rule) => Rule.required().min(1),
     }),
