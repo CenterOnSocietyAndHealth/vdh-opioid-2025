@@ -79,7 +79,7 @@ export default function SourcesAccordion({
                     components={{
                       block: {
                         normal: ({ children }: any) => (
-                          <p className="text-sm text-[#1E1E1E] leading-[150%] mb-3 last:mb-0">
+                          <p className="text-[14px] text-[#1E1E1E] leading-[150%] mb-3 last:mb-0">
                             {children}
                           </p>
                         ),
@@ -98,18 +98,18 @@ export default function SourcesAccordion({
                       },
                       list: {
                         bullet: ({ children }: any) => (
-                          <ul className="list-disc mb-4">{children}</ul>
+                          <ul className="list-disc mb-4 text-[14px]">{children}</ul>
                         ),
                         number: ({ children }: any) => (
-                          <ol className="list-decimal mb-4">{children}</ol>
+                          <ol className="list-decimal mb-4 text-[14px]">{children}</ol>
                         ),
                       },
                       listItem: {
                         bullet: ({ children }: any) => (
-                          <li className="text-sm font-[400] text-[#1E1E1E] leading-[150%] ml-4">{children}</li>
+                          <li className="text-[14px] font-[400] text-[#1E1E1E] leading-[150%] ml-4">{children}</li>
                         ),
                         number: ({ children }: any) => (
-                          <li className="text-sm font-[400] text-[#1E1E1E] leading-[150%] ml-4">{children}</li>
+                          <li className="text-[14px] font-[400] text-[#1E1E1E] leading-[150%] ml-4">{children}</li>
                         ),
                       },
                       marks: {

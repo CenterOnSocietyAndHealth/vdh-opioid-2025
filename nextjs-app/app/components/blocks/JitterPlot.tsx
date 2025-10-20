@@ -633,7 +633,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
 
         {/* Subtitle */}
         <h4
-          className="mb-4 mx-auto text-center text-base font-normal lg:font-bold leading-[130%] max-w-[600px] lg:letter-spacing-[-0.304px]"
+          className="mb-4 mx-auto text-center text-base font-normal lg:font-bold leading-[130%] max-w-none lg:letter-spacing-[-0.304px]"
           style={{
             color: '#1E1E1E',
             fontFamily: 'Inter',

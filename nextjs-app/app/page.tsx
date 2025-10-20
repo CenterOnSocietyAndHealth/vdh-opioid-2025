@@ -24,7 +24,7 @@ export default async function Page() {
   });
 
   return (
-    <div className="mx-auto px-1">
+    <div className="mx-auto">
       <PageBuilderPage page={page as GetPageQueryResult} localities={localities} />
     </div>
   );

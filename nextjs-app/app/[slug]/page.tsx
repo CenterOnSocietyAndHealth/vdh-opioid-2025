@@ -59,7 +59,7 @@ export default async function Page(props: Props) {
   }
 
   return (
-    <div className="px-1 mx-auto sub-page">
+    <div className="mx-auto sub-page">
       <PageBuilderPage page={page as GetPageQueryResult} localities={localities} />
     </div>
   );
