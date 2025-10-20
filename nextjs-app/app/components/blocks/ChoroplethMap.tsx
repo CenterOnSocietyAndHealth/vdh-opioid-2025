@@ -128,7 +128,7 @@ export default function ChoroplethMap({
         const isSelected = selectedLocality && pathLocality && selectedLocality._id === pathLocality._id;
         const isHovered = currentHoveredLocality && pathLocality && currentHoveredLocality._id === pathLocality._id;
         
-        return (isSelected || isHovered) ? 1 : 0.25;
+        return (isSelected || isHovered) ? 1 : 0.10;
       })
       .style("transition", "opacity 100ms ease-in-out")
       .attr("stroke", (pathData: any) => {

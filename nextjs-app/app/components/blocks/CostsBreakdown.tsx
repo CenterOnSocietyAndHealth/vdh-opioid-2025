@@ -709,7 +709,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
                     textDecorationLine: 'underline',
                   }}
                 >
-                  {asideLink.title} »
+                  {asideLink.title} ––&gt;
                 </a>
               </div>
             )}
