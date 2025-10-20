@@ -73,18 +73,19 @@ export default function SectorSelector({
               key={sector}
               onClick={() => setSelectedSector(sector)}
               className={`
-                px-3 py-2 rounded-[3px] font-inter text-sm font-bold transition-all duration-200
+                px-3 py-2 rounded-[3px] font-inter text-sm transition-all duration-100
+                border
                 ${isSelected 
-                  ? 'bg-[#4783B5] text-white' 
-                  : 'bg-[#F2F1F1] text-[#414141] font-normal'
+                  ? 'bg-[#4783B5] text-white border-[#4783B5]' 
+                  : 'bg-[#F2F1F1] text-[#414141] border-[#eee] hover:bg-[#F6F6F6] hover:shadow-md hover:transform hover:-translate-y-0.5'
                 }
-                hover:opacity-90 active:scale-95
+                active:scale-95
               `}
               style={{
                 fontFamily: 'Inter, sans-serif',
                 fontSize: '14px',
                 fontStyle: 'normal',
-                fontWeight: isSelected ? 700 : 400,
+                fontWeight: isSelected ? 600 : 400,
                 lineHeight: '150%',
                 letterSpacing: isSelected ? '-0.266px' : 'normal',
               }}
@@ -143,18 +144,19 @@ export default function SectorSelector({
                     onClick={() => handleSectorSelect(sector)}
                     className={`
                       w-full px-4 py-3 text-left
-                      font-inter text-sm transition-colors duration-200
+                      font-inter text-sm transition-all duration-200
+                      border
                       ${isSelected 
-                        ? 'bg-[#4783B5] text-white' 
-                        : 'text-[#414141] hover:bg-gray-50'
+                        ? 'bg-[#4783B5] text-white border-[#4783B5]' 
+                        : 'bg-[#F2F1F1] text-[#414141] border-[#eee] hover:bg-[#F6F6F6] hover:shadow-md hover:transform hover:-translate-y-0.5'
                       }
                       first:rounded-t-md last:rounded-b-md
-                      focus:outline-none focus:bg-gray-50
+                      focus:outline-none
                     `}
                     style={{
                       fontFamily: 'Inter, sans-serif',
                       fontSize: '14px',
-                      fontWeight: isSelected ? 700 : 400,
+                      fontWeight: isSelected ? 600 : 400,
                       lineHeight: '150%',
                       letterSpacing: isSelected ? '-0.266px' : 'normal',
                     }}

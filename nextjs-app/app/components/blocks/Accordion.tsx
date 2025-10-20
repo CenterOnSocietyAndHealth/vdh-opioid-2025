@@ -166,7 +166,7 @@ export default function Accordion({ block }: AccordionProps) {
                     <h3 className="text-lg font-bold mb-2">{children}</h3>
                   ),
                   normal: ({ children }) => (
-                    <p className="mb-3 leading-relaxed">{children}</p>
+                    <p className="mb-3 leading-[150%]">{children}</p>
                   ),
                   largeValue: ({ children }) => (
                     <div style={{
@@ -203,10 +203,10 @@ export default function Accordion({ block }: AccordionProps) {
                 },
                 listItem: {
                   bullet: ({ children }) => (
-                    <li className="leading-relaxed">{children}</li>
+                    <li className="leading-[150%]">{children}</li>
                   ),
                   number: ({ children }) => (
-                    <li className="leading-relaxed">{children}</li>
+                    <li className="leading-[150%]">{children}</li>
                   ),
                 },
                 marks: {

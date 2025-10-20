@@ -161,7 +161,17 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
                 <div className="flex items-center gap-1">
                   <span>Locality</span>
                   {sortColumn === 'locality' && (
-                    <span className="text-[10px]">{sortDirection === 'asc' ? '▲' : '▼'}</span>
+                    <span className="inline-flex flex-col w-3 h-4">
+                      {sortDirection === 'asc' ? (
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
+                        </svg>
+                      ) : (
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" />
+                        </svg>
+                      )}
+                    </span>
                   )}
                 </div>
               </th>
@@ -172,7 +182,17 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
                 <div className="flex items-center justify-end gap-1">
                   <span>Families / Businesses</span>
                   {sortColumn === 'household' && (
-                    <span className="text-[10px]">{sortDirection === 'asc' ? '▲' : '▼'}</span>
+                    <span className="inline-flex flex-col w-3 h-4">
+                      {sortDirection === 'asc' ? (
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
+                        </svg>
+                      ) : (
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" />
+                        </svg>
+                      )}
+                    </span>
                   )}
                 </div>
               </th>
@@ -183,7 +203,17 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
                 <div className="flex items-center justify-end gap-1">
                   <span>Federal Gov&apos;t</span>
                   {sortColumn === 'federal' && (
-                    <span className="text-[10px]">{sortDirection === 'asc' ? '▲' : '▼'}</span>
+                    <span className="inline-flex flex-col w-3 h-4">
+                      {sortDirection === 'asc' ? (
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
+                        </svg>
+                      ) : (
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" />
+                        </svg>
+                      )}
+                    </span>
                   )}
                 </div>
               </th>
@@ -194,7 +224,17 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
                 <div className="flex items-center justify-end gap-1">
                   <span>State / Local Gov&apos;t</span>
                   {sortColumn === 'stateLocal' && (
-                    <span className="text-[10px]">{sortDirection === 'asc' ? '▲' : '▼'}</span>
+                    <span className="inline-flex flex-col w-3 h-4">
+                      {sortDirection === 'asc' ? (
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
+                        </svg>
+                      ) : (
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" />
+                        </svg>
+                      )}
+                    </span>
                   )}
                 </div>
               </th>

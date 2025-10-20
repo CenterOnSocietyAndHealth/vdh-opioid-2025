@@ -73,50 +73,50 @@ export default function SourcesAccordion({
                 <h3 className="mb-4">Sources</h3>
                 
                 {/* Sources content */}
-                <div className="prose prose-sm max-w-none">
+                <div className="max-w-[570px]">
                   <PortableText
                     value={sources}
                     components={{
                       block: {
                         normal: ({ children }: any) => (
-                          <p className="text-sm text-gray-700 leading-relaxed mb-3 last:mb-0">
+                          <p className="text-sm text-[#1E1E1E] leading-[150%] mb-3 last:mb-0">
                             {children}
                           </p>
                         ),
                         h1: ({ children }: any) => (
-                          <h1 className="text-lg font-bold text-gray-900 mb-3">{children}</h1>
+                          <h1 className="text-lg font-bold text-[#1E1E1E] mb-3">{children}</h1>
                         ),
                         h2: ({ children }: any) => (
-                          <h2 className="text-base font-bold text-gray-900 mb-2">{children}</h2>
-                        ),
+                          <h2 className="text-base font-bold text-[#1E1E1E] mb-2">{children}</h2>
+                        ),  
                         h3: ({ children }: any) => (
-                          <h3 className="text-sm font-bold text-gray-900 mb-2">{children}</h3>
+                          <h3 className="text-sm font-bold text-[#1E1E1E] mb-2">{children}</h3>
                         ),
                         h4: ({ children }: any) => (
-                          <h4 className="text-sm font-bold text-gray-900 mb-2">{children}</h4>
+                          <h4 className="text-sm font-bold text-[#1E1E1E] mb-0">{children}</h4>
                         ),
                       },
                       list: {
                         bullet: ({ children }: any) => (
-                          <ul className="list-disc list-inside mb-4 space-y-1">{children}</ul>
+                          <ul className="list-disc mb-4">{children}</ul>
                         ),
                         number: ({ children }: any) => (
-                          <ol className="list-decimal list-inside mb-4 space-y-1">{children}</ol>
+                          <ol className="list-decimal mb-4">{children}</ol>
                         ),
                       },
                       listItem: {
                         bullet: ({ children }: any) => (
-                          <li className="text-sm text-gray-700 leading-relaxed ml-4">{children}</li>
+                          <li className="text-sm font-[400] text-[#1E1E1E] leading-[150%] ml-4">{children}</li>
                         ),
                         number: ({ children }: any) => (
-                          <li className="text-sm text-gray-700 leading-relaxed ml-4">{children}</li>
+                          <li className="text-sm font-[400] text-[#1E1E1E] leading-[150%] ml-4">{children}</li>
                         ),
                       },
                       marks: {
                         link: ({ children, value }: any) => (
                           <ResolvedLink
                             link={value}
-                            className="text-blue-600 hover:text-blue-800 underline"
+                            className="text-[#1E1E1E] font-[400] hover:text-[#1E1E1E] hover:bg-[#F3E7B9] visited:text-[#5C4766] underline"
                             tabIndex={isExpanded ? 0 : -1}
                           >
                             {children}
