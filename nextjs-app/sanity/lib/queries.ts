@@ -451,6 +451,45 @@ export const getPageQuery = defineQuery(`
           }
         }
       },
+      _type == "columnLayout" => {
+        ...,
+        column1[]{
+          ...,
+          _type == "textContent" => {
+            content[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            }
+          }
+        },
+        column2[]{
+          ...,
+          _type == "textContent" => {
+            content[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            }
+          }
+        },
+        column3[]{
+          ...,
+          _type == "textContent" => {
+            content[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            }
+          }
+        }
+      },
     },
   }
 `);

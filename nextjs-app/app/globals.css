@@ -303,6 +303,10 @@ ol ol ol {
     list-style-type: lower-roman;
 }
 
+.no-margin-p p {
+  margin-bottom: 0;
+}
+
 /* Cost Maps Component Styles */
 .chartTab {
   -webkit-user-select: none;
@@ -399,15 +403,12 @@ ol ol ol {
 .nav-link {
   transition: all 0.2s ease;
   text-decoration: none;
+  border-bottom: none;
 }
 
 .nav-link:hover {
   /* Use text-shadow to simulate bold text without changing width */
-  text-shadow: 
-    0.8px 0 0 currentColor,
-    -0.8px 0 0 currentColor,
-    0 0.4px 0 currentColor,
-    0 -0.4px 0 currentColor;
+  font-weight: 600;
   text-decoration: none;
   border-bottom: none;
   background-color: transparent;

@@ -15,6 +15,7 @@ type ColumnLayoutProps = {
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
     maxWidth?: number;
+    containerClass?: string;
   };
   pageId: string;
   pageType: string;
@@ -47,7 +48,8 @@ export default function ColumnLayout({ block, pageId, pageType, localities, path
     column3Width,
     marginTop = 'medium', 
     marginBottom = 'medium', 
-    maxWidth 
+    maxWidth,
+    containerClass 
   } = block;
 
   const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'medium')
@@ -69,9 +71,9 @@ export default function ColumnLayout({ block, pageId, pageType, localities, path
   const containerStyle = maxWidth ? { maxWidth: `${maxWidth}px`, margin: '0 auto' } : {};
 
   return (
-    <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
+    <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]} ${containerClass || ''}`.trim()}>
       <div className="flex flex-wrap -mx-4" style={containerStyle}>
-        <div className="px-4" style={column1Style}>
+        <div className="pl-4 md:pl-4 pr-2 md:pr-4" style={column1Style}>
           {column1?.map((childBlock: any, index: number) => (
             <BlockRenderer
               key={childBlock._key}
@@ -84,7 +86,7 @@ export default function ColumnLayout({ block, pageId, pageType, localities, path
             />
           ))}
         </div>
-        <div className="px-4" style={column2Style}>
+        <div className="pl-2 md:pl-4 pr-4 md:pr-4" style={column2Style}>
           {column2?.map((childBlock: any, index: number) => (
             <BlockRenderer
               key={childBlock._key}

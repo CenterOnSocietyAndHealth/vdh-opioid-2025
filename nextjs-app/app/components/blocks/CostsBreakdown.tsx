@@ -544,11 +544,11 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
 
         {/* Title Section */}
         <div ref={mobileTitleRef} className="text-center mb-6" style={{opacity: 0, transform: 'translateY(-20px)'}}>
-          <h2 className="text-2xl font-normal mb-2 text-gray-800">
+          <h2 className="mb-2 text-gray-800">
             {totalCostSubtitle || 'The Opioid Epidemic Cost Virginians'}
           </h2>
           <div className="flex items-center justify-center mb-4">
-            <h3 className="text-2xl font-bold whitespace-nowrap">
+            <h3 className="">
               {(() => {
                 const num = typeof totalCost === 'string' ? Number(totalCost.replace(/[^\d.]/g, '')) : totalCost;
                 return !isNaN(num) && num > 0 ? formatCostShort(num, 2) + ' Spread Across Four Sectors' : totalCost;

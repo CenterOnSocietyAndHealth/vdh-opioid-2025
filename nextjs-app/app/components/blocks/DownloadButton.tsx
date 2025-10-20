@@ -126,7 +126,7 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
 
   // Button styles matching the mockup
   const buttonStyles = {
-    backgroundColor: '#4783B5',
+    backgroundColor: '#427AA9',
     color: '#FFFFFF',
     fontFamily: 'Inter',
     fontSize: '16px',
@@ -156,16 +156,12 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
           style={buttonStyles}
           onMouseEnter={(e) => {
             if (!isDisabled) {
-              e.currentTarget.style.backgroundColor = '#3A6B9A';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.boxShadow = '0 4px 8px rgba(71, 131, 181, 0.4)';
+              e.currentTarget.style.backgroundColor = '#417A90';
             }
           }}
           onMouseLeave={(e) => {
             if (!isDisabled) {
-              e.currentTarget.style.backgroundColor = '#4783B5';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 1px 3px rgba(71, 131, 181, 0.3)';
+              e.currentTarget.style.backgroundColor = '#427AA9';
             }
           }}
           disabled={isDisabled}

@@ -187,6 +187,14 @@ export const columnLayout = defineType({
       validation: (Rule) => Rule.min(100).max(2000),
       initialValue: undefined,
     }),
+    defineField({
+      name: 'containerClass',
+      title: 'Container CSS Class',
+      type: 'string',
+      description: 'Additional CSS class to apply to the container. Useful for custom styling.',
+      validation: (Rule) => Rule.max(100).warning('Keep class names concise'),
+      initialValue: undefined,
+    }),
   ],
   preview: {
     select: {

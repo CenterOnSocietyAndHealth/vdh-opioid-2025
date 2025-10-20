@@ -559,57 +559,134 @@ export default function ChoroplethMap({
           .rotate([78, 0, 0])
           .center([-1.6, 38.1]);
         
-        // Adjust projection for mobile when a locality is selected
-        if (isMobile && selectedLocality) {
-          // Find the selected locality feature to get its centroid
-          const selectedFeature = geoData.features.find((f: any) => {
-            let fipsCode = f.properties.FIPS || f.properties.fips || f.properties.GEOID || 
-                          f.properties.id || f.id;
-            if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
-              fipsCode = `51${fipsCode}`;
-            }
+        // Adjust projection for mobile
+        if (isMobile) {
+          if (selectedLocality) {
+            // Find the selected locality feature to get its centroid
+            const selectedFeature = geoData.features.find((f: any) => {
+              let fipsCode = f.properties.FIPS || f.properties.fips || f.properties.GEOID || 
+                            f.properties.id || f.id;
+              if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
+                fipsCode = `51${fipsCode}`;
+              }
+              
+              const countyName = f.properties.NAME || f.properties.name;
+              
+              let locFips = selectedLocality.fips;
+              if (locFips) {
+                locFips = locFips.replace('us-va-', '');
+                locFips = locFips.toString().replace(/\D/g, '');
+                locFips = locFips.padStart(3, '0');
+                if (locFips.length === 3) {
+                  locFips = `51${locFips}`;
+                }
+              }
+              
+              const fipsMatch = fipsCode && locFips === fipsCode;
+              const nameMatch = countyName && selectedLocality.counties === countyName;
+              
+              return fipsMatch || nameMatch;
+            });
             
-            const countyName = f.properties.NAME || f.properties.name;
-            
-            let locFips = selectedLocality.fips;
-            if (locFips) {
-              locFips = locFips.replace('us-va-', '');
-              locFips = locFips.toString().replace(/\D/g, '');
-              locFips = locFips.padStart(3, '0');
-              if (locFips.length === 3) {
-                locFips = `51${locFips}`;
+            if (selectedFeature) {
+              // Calculate the bounds of the selected locality using a clean projection
+              const tempProjection = d3.geoAlbers()
+                .scale(isMobile ? 12000 : 9000)
+                .rotate([78, 0, 0])
+                .center([-1.6, 38.1])
+                .translate([0, 0]); // No initial translation
+              
+              const tempPath = d3.geoPath().projection(tempProjection);
+              const bounds = tempPath.bounds(selectedFeature);
+              
+              // Calculate the center of the selected locality
+              const centerX = (bounds[0][0] + bounds[1][0]) / 2;
+              const centerY = (bounds[0][1] + bounds[1][1]) / 2;
+              
+              // Set the translation to center the locality in the viewport
+              projection.translate([width / 2 - centerX, height / 2 - centerY]);
+            } else {
+              // If no selected locality found, center on Richmond City
+              const richmondFeature = geoData.features.find((f: any) => {
+                let fipsCode = f.properties.FIPS || f.properties.fips || f.properties.GEOID || 
+                              f.properties.id || f.id;
+                if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
+                  fipsCode = `51${fipsCode}`;
+                }
+                
+                const countyName = f.properties.NAME || f.properties.name;
+                
+                // Look for Richmond City by FIPS code 51760 or name
+                const fipsMatch = fipsCode === '51760';
+                const nameMatch = countyName === 'Richmond City';
+                
+                return fipsMatch || nameMatch;
+              });
+              
+              if (richmondFeature) {
+                // Calculate the bounds of Richmond City using a clean projection
+                const tempProjection = d3.geoAlbers()
+                  .scale(isMobile ? 12000 : 9000)
+                  .rotate([78, 0, 0])
+                  .center([-1.6, 38.1])
+                  .translate([0, 0]); // No initial translation
+                
+                const tempPath = d3.geoPath().projection(tempProjection);
+                const bounds = tempPath.bounds(richmondFeature);
+                
+                // Calculate the center of Richmond City
+                const centerX = (bounds[0][0] + bounds[1][0]) / 2;
+                const centerY = (bounds[0][1] + bounds[1][1]) / 2;
+                
+                // Set the translation to center Richmond City in the viewport
+                projection.translate([width / 2 - centerX, height / 2 - centerY]);
+              } else {
+                // Fallback to default center if Richmond City not found
+                projection.translate([width / 2, height / 2]);
               }
             }
-            
-            const fipsMatch = fipsCode && locFips === fipsCode;
-            const nameMatch = countyName && selectedLocality.counties === countyName;
-            
-            return fipsMatch || nameMatch;
-          });
-          
-          if (selectedFeature) {
-            // Calculate the bounds of the selected locality using a clean projection
-            const tempProjection = d3.geoAlbers()
-              .scale(isMobile ? 12000 : 9000)
-              .rotate([78, 0, 0])
-              .center([-1.6, 38.1])
-              .translate([0, 0]); // No initial translation
-            
-            const tempPath = d3.geoPath().projection(tempProjection);
-            const bounds = tempPath.bounds(selectedFeature);
-            
-            // Calculate the center of the selected locality
-            const centerX = (bounds[0][0] + bounds[1][0]) / 2;
-            const centerY = (bounds[0][1] + bounds[1][1]) / 2;
-            
-            // Set the translation to center the locality in the viewport
-            projection.translate([width / 2 - centerX, height / 2 - centerY]);
           } else {
-            // If no selected locality, use default center
-            projection.translate([width / 2, height / 2]);
+            // No locality selected on mobile - center on Richmond City
+            const richmondFeature = geoData.features.find((f: any) => {
+              let fipsCode = f.properties.FIPS || f.properties.fips || f.properties.GEOID || 
+                            f.properties.id || f.id;
+              if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
+                fipsCode = `51${fipsCode}`;
+              }
+              
+              const countyName = f.properties.NAME || f.properties.name;
+              
+              // Look for Richmond City by FIPS code 51760 or name
+              const fipsMatch = fipsCode === '51760';
+              const nameMatch = countyName === 'Richmond City';
+              
+              return fipsMatch || nameMatch;
+            });
+            
+            if (richmondFeature) {
+              // Calculate the bounds of Richmond City using a clean projection
+              const tempProjection = d3.geoAlbers()
+                .scale(isMobile ? 12000 : 9000)
+                .rotate([78, 0, 0])
+                .center([-1.6, 38.1])
+                .translate([0, 0]); // No initial translation
+              
+              const tempPath = d3.geoPath().projection(tempProjection);
+              const bounds = tempPath.bounds(richmondFeature);
+              
+              // Calculate the center of Richmond City
+              const centerX = (bounds[0][0] + bounds[1][0]) / 2;
+              const centerY = (bounds[0][1] + bounds[1][1]) / 2;
+              
+              // Set the translation to center Richmond City in the viewport
+              projection.translate([width / 2 - centerX, height / 2 - centerY]);
+            } else {
+              // Fallback to default center if Richmond City not found
+              projection.translate([width / 2, height / 2]);
+            }
           }
         } else {
-          // For desktop or no selected locality, use default center
+          // For desktop, use default center
           projection.translate([width / 2, height / 2]);
         }
         
@@ -1011,7 +1088,7 @@ export default function ChoroplethMap({
         // Add colored boxes for each color in the scale
         colors.forEach((color, i) => {
           // For mobile, display all scales in a single row with tighter spacing
-          const mobileBoxSpacing = (legendWidth * 0.95) / colors.length; // Reduced spacing for mobile
+          const mobileBoxSpacing = (legendWidth * 0.95) / colors.length + 12; // Reduced spacing for mobile + 8px extra
           const x = isMobile ? 10 + i * mobileBoxSpacing : 10;
           const y = isMobile ? 10 : 10 + i * (spacing + 3);
           
@@ -1026,6 +1103,15 @@ export default function ChoroplethMap({
           const min = colorScale.invertExtent(color)[0];
           const max = colorScale.invertExtent(color)[1];
           
+          // On mobile, replace the highest value with "+" symbol
+          let labelText;
+          if (isMobile && i === colors.length - 1) {
+            // This is the highest value block on mobile - show "+" symbol
+            labelText = `$${Math.round(min).toLocaleString()}+`;
+          } else {
+            labelText = `$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()}${isMobile ? '' : ' per person'}`;
+          }
+          
           legend.append("text")
             .attr("x", isMobile ? x + boxSize + 2 : x + boxSize + 5) // Closer labels on mobile
             .attr("y", y + boxHeight / 2 + 5)
@@ -1035,7 +1121,7 @@ export default function ChoroplethMap({
             .attr("fill", "#1E1E1E")
             .attr("line-height", "170%")
             .attr("letter-spacing", "-0.266px")
-            .text(`$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()}${isMobile ? '' : ' per person'}`);
+            .text(labelText);
         });
         
 
