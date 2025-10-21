@@ -1318,9 +1318,16 @@ export default function ChoroplethMap({
       <svg 
         ref={svgRef} 
         className="w-full max-w-full" 
-        aria-label={`Map showing ${indicatorDisplayNames[indicator]} costs in Virginia`}
+        role="img"
+        aria-label={`Interactive choropleth map showing ${indicatorDisplayNames[indicator]} ${displayType === 'PerCapita' ? 'per capita' : 'total'} costs across Virginia localities. Each locality is colored based on its cost value. ${selectedLocality ? `Currently selected: ${selectedLocality.counties.trim()}` : 'No locality is currently selected.'} Click on any locality to select it, or click outside to reset to Virginia view.`}
+        aria-describedby="choropleth-map-description"
         style={{ visibility: isInitialized ? 'visible' : 'hidden' }}
       />
+      
+      {/* Hidden description for screen readers */}
+      <div id="choropleth-map-description" className="sr-only">
+        Interactive map of Virginia showing {indicatorDisplayNames[indicator]} {displayType === 'PerCapita' ? 'per capita' : 'total'} costs. Each locality is colored according to its cost value, with darker colors indicating higher costs. Hover over localities to see detailed information including locality name and cost values. {selectedLocality ? `The selected locality ${selectedLocality.counties.trim()} is highlighted with a gold border.` : 'No specific locality is currently selected.'} The map includes a color legend showing the cost ranges. On mobile devices, you can pan the map to explore different areas.
+      </div>
       
       {!mapLoaded && (
         <div className="absolute inset-0 flex items-center justify-center">

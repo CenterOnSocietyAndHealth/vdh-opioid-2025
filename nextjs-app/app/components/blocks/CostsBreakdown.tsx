@@ -480,7 +480,13 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       </div>
       
       {/* Desktop: Large D3 Chart */}
-      <div ref={chartRef} className="w-full hidden md:block" style={{position: 'relative', minHeight: '160px'}}>
+      <div 
+        ref={chartRef} 
+        className="w-full hidden md:block" 
+        style={{position: 'relative', minHeight: '160px'}}
+        role="img"
+        aria-label={`Bar chart showing cost breakdown across ${costSectors.length} sectors: ${costSectors.map(sector => `${sector.title} (${formatCostShort(sector.value)})`).join(', ')}`}
+      >
         {/* Custom Tooltip for blocks with showLabelAsTooltip */}
         {hoveredTooltipIndex !== null && tooltipPosition && costSectors[hoveredTooltipIndex] && costSectors[hoveredTooltipIndex].showLabelAsTooltip && (
           <div
@@ -525,7 +531,12 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       </div>
 
       {/* Mobile: Simplified layout with title and small bars */}
-      <div className="md:hidden" style={{minHeight: '600px'}}>
+      <div 
+        className="md:hidden" 
+        style={{minHeight: '600px'}}
+        role="img"
+        aria-label={`Mobile bar chart showing cost breakdown across ${costSectors.length} sectors: ${costSectors.map(sector => `${sector.title} (${formatCostShort(sector.value)})`).join(', ')}`}
+      >
 
         {/* Mobile Aside */}
         {mobileAside && (
@@ -558,7 +569,12 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         </div>
 
         {/* Mobile Sector List */}
-        <div ref={mobileBarsRef} className="space-y-6">
+        <div 
+          ref={mobileBarsRef} 
+          className="space-y-6"
+          role="region"
+          aria-label="Cost breakdown by sector with individual bar charts"
+        >
           {costSectors.map((sector, i) => {
             const percentOfTotal = (sector.value / totalValue) * 100;
             // Calculate the maximum percentage (first item's percentage)

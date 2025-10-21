@@ -119,7 +119,11 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
       {/* Main Chart */}
       <div className="w-full mb-4">
         {/* Desktop Chart - Horizontal bars */}
-        <div className="hidden md:block">
+        <div 
+          className="hidden lg:block"
+          role="img"
+          aria-label={`Horizontal bar chart showing payer breakdown: Families & Businesses ${familiesBusinessesPercent.toFixed(1)}% (${formatCostShort(familiesBusinessesValue)}), Federal ${federalPercent.toFixed(1)}% (${formatCostShort(federalValue)}), State/Local ${stateLocalPercent.toFixed(1)}% (${formatCostShort(stateLocalValue)}). Total cost: ${formatCostShort(totalValue)}.`}
+        >
           <div className="relative w-full h-[90px] bg-gray-200">
             {/* Government Label and Bracket - positioned above the chart */}
             <div 
@@ -277,7 +281,11 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
         </div>
 
         {/* Mobile Chart - Vertical stacked bars */}
-        <div className="block px-4 md:hidden">
+        <div 
+          className="block px-4 lg:hidden"
+          role="img"
+          aria-label={`Vertical bar chart showing payer breakdown: Families & Businesses ${familiesBusinessesPercent.toFixed(1)}% (${formatCostShort(familiesBusinessesValue)}), Federal ${federalPercent.toFixed(1)}% (${formatCostShort(federalValue)}), State/Local ${stateLocalPercent.toFixed(1)}% (${formatCostShort(stateLocalValue)}). Total cost: ${formatCostShort(totalValue)}.`}
+        >
           {/* Government Label */}
           <div className="relative mb-6">
             <div
