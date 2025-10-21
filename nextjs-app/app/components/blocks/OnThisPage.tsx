@@ -45,7 +45,7 @@ export default function OnThisPage({ block }: OnThisPageProps) {
   }
 
   return (
-      <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]} mx-2 md:mx-0`}>
+      <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]} mx-4 md:mx-0 mb-4 md:mb-0`}>
         <div className="w-full bg-[#F5F5F0] py-6 md:py-8 px-6">
         {/* Desktop Version */}
         <div className="hidden md:flex items-center justify-center space-x-6">
