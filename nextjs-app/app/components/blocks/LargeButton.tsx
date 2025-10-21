@@ -149,7 +149,7 @@ export default function LargeButton({ block }: LargeButtonProps) {
           }}
           disabled={isDisabled}
         >
-          {buttonContent}
+          {buttonContent} <span className="ml-2">––&gt;</span>
         </button>
       </div>
       

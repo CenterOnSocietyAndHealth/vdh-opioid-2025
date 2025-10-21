@@ -53,7 +53,7 @@ export default async function Header() {
           
           {/* Mobile version */}
           <div className="block md:hidden">
-            Update: <Link href="/whats-new/">Read about new features ––&gt;</Link>
+            Update: <Link href="/whats-new/">Read about new features &rarr;</Link>
           </div>
         </div>
       </div>
