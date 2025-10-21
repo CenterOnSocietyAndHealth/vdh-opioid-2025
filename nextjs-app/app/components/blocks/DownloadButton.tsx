@@ -174,7 +174,7 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
       </div>
       
       {isLoading && (
-        <div className="mt-4 text-center">
+        <div className="mt-4 text-center hidden">
           <p className="text-sm text-gray-500">
             🔄 Loading file...
           </p>
@@ -182,7 +182,7 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
       )}
       
       {!isLoading && !fileUrl && (
-        <div className="mt-4 text-center">
+        <div className="mt-4 text-center hidden">
           <p className="text-sm text-gray-500">
             ⚠️ File not configured. Please upload a file in the CMS to enable this button.
           </p>

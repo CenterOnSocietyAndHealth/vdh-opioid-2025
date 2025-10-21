@@ -94,6 +94,13 @@ export default function ChoroplethMap({
   const applyHoverEffects = useCallback((currentHoveredLocality: Locality | null) => {
     if (!countiesRef.current) return;
     
+    // Hide the selected locality's tooltip when hovering
+    if (mapGroupRef.current) {
+      d3.select(mapGroupRef.current).selectAll(".selected-locality-tooltip")
+        .style("opacity", 0)
+        .style("transition", "opacity 100ms ease-in-out");
+    }
+    
     countiesRef.current.selectAll("path")
       .style("opacity", (pathData: any) => {
         // Find the locality for this path
@@ -124,11 +131,13 @@ export default function ChoroplethMap({
           return fipsMatch || nameMatch;
         });
         
-        // Return full opacity for selected or hovered localities, 25% for others
+        // Return full opacity for hovered localities, 10% for selected locality, 10% for others
         const isSelected = selectedLocality && pathLocality && selectedLocality._id === pathLocality._id;
         const isHovered = currentHoveredLocality && pathLocality && currentHoveredLocality._id === pathLocality._id;
         
-        return (isSelected || isHovered) ? 1 : 0.10;
+        if (isHovered) return 1;
+        if (isSelected) return 0.10;
+        return 0.10;
       })
       .style("transition", "opacity 100ms ease-in-out")
       .attr("stroke", (pathData: any) => {
@@ -160,11 +169,11 @@ export default function ChoroplethMap({
           return fipsMatch || nameMatch;
         });
         
-        // Set stroke color: yellow for selected or hovered localities, original strokeColor for others
+        // Set stroke color: yellow only for hovered localities, original strokeColor for others (including selected)
         const isSelected = selectedLocality && pathLocality && selectedLocality._id === pathLocality._id;
         const isHovered = currentHoveredLocality && pathLocality && currentHoveredLocality._id === pathLocality._id;
         
-        return (isSelected || isHovered) ? "#FFD900" : strokeColor;
+        return isHovered ? "#FFD900" : strokeColor;
       })
       .attr("stroke-width", (pathData: any) => {
         // Find the locality for this path
@@ -195,11 +204,11 @@ export default function ChoroplethMap({
           return fipsMatch || nameMatch;
         });
         
-        // Set stroke width: 2 for selected or hovered localities, 0.5 for others
+        // Set stroke width: 2 for hovered localities, 0.5 for others (including selected)
         const isSelected = selectedLocality && pathLocality && selectedLocality._id === pathLocality._id;
         const isHovered = currentHoveredLocality && pathLocality && currentHoveredLocality._id === pathLocality._id;
         
-        return (isSelected || isHovered) ? 2 : 0.5;
+        return isHovered ? 2 : 0.5;
       });
   }, [selectedLocality, localities, strokeColor]);
 
@@ -207,8 +216,48 @@ export default function ChoroplethMap({
   const resetHoverEffects = useCallback(() => {
     if (!countiesRef.current) return;
     
+    // Show the selected locality's tooltip again when not hovering
+    if (mapGroupRef.current) {
+      d3.select(mapGroupRef.current).selectAll(".selected-locality-tooltip")
+        .style("opacity", 1)
+        .style("transition", "opacity 100ms ease-in-out");
+    }
+    
     countiesRef.current.selectAll("path")
-      .style("opacity", 1)
+      .style("opacity", (pathData: any) => {
+        // Find the locality for this path
+        let pathFipsCode = pathData.properties.FIPS || pathData.properties.fips || pathData.properties.GEOID || 
+                         pathData.properties.id || pathData.id;
+        
+        if (pathFipsCode && typeof pathFipsCode === 'string' && pathFipsCode.length === 3) {
+          pathFipsCode = `51${pathFipsCode}`;
+        }
+        
+        const pathCountyName = pathData.properties.NAME || pathData.properties.name;
+        
+        const pathLocality = localities.find(loc => {
+          let locFips = loc.fips;
+          
+          if (locFips) {
+            locFips = locFips.replace('us-va-', '');
+            locFips = locFips.toString().replace(/\D/g, '');
+            locFips = locFips.padStart(3, '0');
+            if (locFips.length === 3) {
+              locFips = `51${locFips}`;
+            }
+          }
+          
+          const fipsMatch = pathFipsCode && locFips === pathFipsCode;
+          const nameMatch = pathCountyName && loc.counties === pathCountyName;
+          
+          return fipsMatch || nameMatch;
+        });
+        
+        // Restore original opacity: full for selected locality, 1 for others
+        const isSelected = selectedLocality && pathLocality && selectedLocality._id === pathLocality._id;
+        
+        return isSelected ? 1 : 1;
+      })
       .style("transition", "opacity 100ms ease-in-out")
       .attr("stroke", (pathData: any) => {
         // Find the locality for this path
@@ -283,6 +332,11 @@ export default function ChoroplethMap({
   // Function to create hover tooltip
   const createHoverTooltip = useCallback((locality: Locality, geoData: any, path: any) => {
     if (!mapGroupRef.current) return;
+    
+    // Don't show tooltip if this is the selected locality
+    if (selectedLocality && selectedLocality._id === locality._id) {
+      return;
+    }
     
     // Remove existing hover tooltip
     if (hoverTooltipRef.current) {
@@ -410,7 +464,7 @@ export default function ChoroplethMap({
           .style("pointer-events", "none");
       }
     }
-  }, [indicator]);
+  }, [indicator, selectedLocality]);
 
   // Function to remove hover tooltip
   const removeHoverTooltip = useCallback(() => {
@@ -1174,6 +1228,7 @@ export default function ChoroplethMap({
             if (centroid && !isNaN(centroid[0]) && !isNaN(centroid[1])) {
               // Create the annotation - add it to the map group so it moves with the map
               const annotation = mapGroup.append("g")
+                .attr("class", "selected-locality-tooltip")
                 .attr("transform", `translate(${centroid[0]}, ${centroid[1]})`)
                 .style("pointer-events", "none");
                 

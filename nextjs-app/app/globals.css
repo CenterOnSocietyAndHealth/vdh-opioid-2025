@@ -408,7 +408,7 @@ ol ol ol {
 
 .nav-link:hover {
   /* Use text-shadow to simulate bold text without changing width */
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   border-bottom: none;
   background-color: transparent;
