@@ -128,8 +128,15 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
         <h3 className="relative inline-block ml-2 mb-1">
           {subheading}
         </h3>
+        <label htmlFor="locality-selector" className="sr-only">
+          {subheading}
+        </label>
         <div className="flex">
+          <div id="locality-selector-description" className="sr-only">
+            Select a locality to view data for that specific county or independent city. Use arrow keys to navigate options and Enter to select.
+          </div>
           <Select
+            inputId="locality-selector"
             options={options}
             onChange={handleSetLocality}
             value={currentValue}
@@ -137,6 +144,10 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
             placeholder="County or Independent City"
             onMenuOpen={() => setMenuIsOpen(true)}
             onMenuClose={() => setMenuIsOpen(false)}
+            aria-label={`Select a locality. Currently selected: ${currentValue?.label || 'None'}. ${isUpdating ? 'Loading...' : ''}`}
+            aria-describedby="locality-selector-description"
+            className="locality-selector"
+            classNamePrefix="locality-select"
             styles={{
               control: (base: any, state: any) => ({
                 ...base,
@@ -152,9 +163,14 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 '&:hover': {
                   borderBottom: '1px solid black',
                 },
-                boxShadow: state.isFocused ? 'none' : 'none',
+                boxShadow: state.isFocused ? '0 0 0 3px rgba(59, 130, 246, 0.5)' : 'none',
                 '&:focus-within': {
-                  boxShadow: 'none',
+                  boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.5)',
+                  outline: 'none',
+                },
+                '&:focus': {
+                  boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.5)',
+                  outline: 'none',
                 },
               }),
               valueContainer: (base: any, state: any) => ({

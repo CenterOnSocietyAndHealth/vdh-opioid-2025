@@ -190,7 +190,12 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         .style('display', 'flex')
         .style('align-items', 'center')
         .style('justify-content', 'flex-start')
+        .style('outline', 'none') // Remove default outline
+        .style('transition', 'box-shadow 0.2s ease') // Smooth focus transition
         .attr('class', 'cost-block') // Use consistent class for D3 selection
+        .attr('tabindex', '0') // Make focusable
+        .attr('role', 'button') // Indicate it's interactive
+        .attr('aria-label', `${sector.title}: ${formatCostAbbr(sector.value)}${sector.subtitle ? ` (${sector.subtitle})` : ''}`) // Accessible label
         .on('mouseenter', function() {
           if (sector.showLabelAsTooltip) {
             const rect = (this as HTMLElement).getBoundingClientRect();
@@ -209,6 +214,56 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
             setTooltipPosition(null);
           }
           setActiveIndex(null)
+        })
+        .on('focus', function() {
+          // Add focus styling
+          d3.select(this).style('box-shadow', '0 0 0 3px rgba(59, 130, 246, 0.5)');
+          if (sector.showLabelAsTooltip) {
+            const rect = (this as HTMLElement).getBoundingClientRect();
+            const parentRect = chartRef.current?.getBoundingClientRect();
+            setTooltipPosition({
+              left: rect.left - (parentRect?.left || 0) + rect.width / 2,
+              top: rect.top - (parentRect?.top || 0),
+            });
+            setHoveredTooltipIndex(i);
+          }
+          setActiveIndex(i);
+        })
+        .on('blur', function() {
+          // Remove focus styling
+          d3.select(this).style('box-shadow', 'none');
+          if (sector.showLabelAsTooltip) {
+            setHoveredTooltipIndex(null);
+            setTooltipPosition(null);
+          }
+          setActiveIndex(null);
+        })
+        .on('keydown', function(event) {
+          const key = event.key;
+          if (key === 'Enter' || key === ' ') {
+            event.preventDefault();
+            // Trigger the same behavior as mouseenter for tooltip display
+            if (sector.showLabelAsTooltip) {
+              const rect = (this as HTMLElement).getBoundingClientRect();
+              const parentRect = chartRef.current?.getBoundingClientRect();
+              setTooltipPosition({
+                left: rect.left - (parentRect?.left || 0) + rect.width / 2,
+                top: rect.top - (parentRect?.top || 0),
+              });
+              setHoveredTooltipIndex(i);
+            }
+            setActiveIndex(i);
+          } else if (key === 'ArrowLeft' || key === 'ArrowRight') {
+            event.preventDefault();
+            // Navigate to previous/next bar
+            const nextIndex = key === 'ArrowLeft' ? i - 1 : i + 1;
+            if (nextIndex >= 0 && nextIndex < costSectors.length) {
+              const nextBar = d3.selectAll('.cost-block').nodes()[nextIndex] as HTMLElement;
+              if (nextBar) {
+                nextBar.focus();
+              }
+            }
+          }
         });
       
       // Add text content container for left-aligned two-line layout
@@ -484,8 +539,8 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         ref={chartRef} 
         className="w-full hidden md:block" 
         style={{position: 'relative', minHeight: '160px'}}
-        role="img"
-        aria-label={`Bar chart showing cost breakdown across ${costSectors.length} sectors: ${costSectors.map(sector => `${sector.title} (${formatCostShort(sector.value)})`).join(', ')}`}
+        role="group"
+        aria-label={`Interactive bar chart showing cost breakdown across ${costSectors.length} sectors. Use Tab to navigate between bars, Enter or Space to view details. ${costSectors.map(sector => `${sector.title} (${formatCostShort(sector.value)})`).join(', ')}`}
       >
         {/* Custom Tooltip for blocks with showLabelAsTooltip */}
         {hoveredTooltipIndex !== null && tooltipPosition && costSectors[hoveredTooltipIndex] && costSectors[hoveredTooltipIndex].showLabelAsTooltip && (
