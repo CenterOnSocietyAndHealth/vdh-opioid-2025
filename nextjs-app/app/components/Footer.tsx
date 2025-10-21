@@ -35,7 +35,7 @@ export default async function Footer() {
         <div className="max-w-[1280px] mx-auto px-4">
           {/* Navigation Links */}
           <div className="mb-6 flex justify-center">
-            <Navigation items={navigationItems} />
+            <Navigation items={navigationItems} context="footer" />
           </div>
           
           {/* Contact Information */}

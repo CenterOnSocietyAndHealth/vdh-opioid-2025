@@ -11,15 +11,26 @@ type NavigationItemProps = {
 };
 
 export default function Navigation({ 
-  items = [] 
+  items = [],
+  context = 'header'
 }: { 
-  items: NavigationItemProps[] 
+  items: NavigationItemProps[];
+  context?: 'header' | 'footer';
 }) {
   const pathname = usePathname();
 
+  // Different classes based on context
+  const navClasses = context === 'footer' 
+    ? "flex flex-col lg:flex-row lg:space-x-8 space-y-4 lg:space-y-0" 
+    : "hidden lg:flex";
+  
+  const ulClasses = context === 'footer' 
+    ? "flex flex-col lg:flex-row lg:space-x-8 space-y-4 lg:space-y-0" 
+    : "flex space-x-8";
+
   return (
-    <nav className="hidden lg:flex">
-      <ul className="flex space-x-8">
+    <nav className={navClasses}>
+      <ul className={ulClasses}>
         {items.map((item, index) => {
           const href = item.linkType === 'internal' 
             ? `/${item.slug || ''}` 
