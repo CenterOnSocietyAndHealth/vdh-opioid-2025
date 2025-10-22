@@ -134,19 +134,19 @@ export default function HighestCosts({ block, localities }: HighestCostsProps) {
               <th className="text-left py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
                 Locality
               </th>
-              <th className="text-center py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
+              <th className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
                 Income
               </th>
-              <th className="text-center py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
+              <th className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
                 Poverty Rate
               </th>
-              <th className="text-center py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
+              <th className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
                 <div className="flex flex-col">
                   <span>VA Costs Due to</span>
                   <span>Opioids*</span>
                 </div>
               </th>
-              <th className="text-center py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
+              <th className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
                 <div className="flex flex-col">
                   <span>VA Lost Labor Cost</span>
                   <span>Due to Opioids*</span>
@@ -160,25 +160,25 @@ export default function HighestCosts({ block, localities }: HighestCostsProps) {
                 <td className="py-2 px-0 text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
                   {locality.counties.trim()}
                 </td>
-                <td className="py-2 px-0 text-center text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
+                <td className="py-2 px-0 text-right text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
                   {locality.demographics?.medianIncome != null
                     ? formatIncome(locality.demographics.medianIncome)
                     : 'N/A'
                   }
                 </td>
-                <td className="py-2 px-0 text-center text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
+                <td className="py-2 px-0 text-right text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
                   {locality.demographics?.povertyPct != null
                     ? formatPercentage(locality.demographics.povertyPct)
                     : 'N/A'
                   }
                 </td>
-                <td className="py-2 px-0 text-center text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
+                <td className="py-2 px-0 text-right text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
                   {locality.opioidMetrics?.totalPerCapita != null
                     ? formatCostAbbr(locality.opioidMetrics.totalPerCapita)
                     : 'N/A'
                   }
                 </td>
-                <td className="py-2 px-0 text-center text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
+                <td className="py-2 px-0 text-right text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
                   {locality.opioidMetrics?.laborPerCapita != null
                     ? formatCostAbbr(locality.opioidMetrics.laborPerCapita)
                     : 'N/A'
