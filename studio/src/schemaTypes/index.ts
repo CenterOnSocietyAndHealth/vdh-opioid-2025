@@ -25,6 +25,7 @@ import {horizontalRule} from './objects/horizontalRule'
 import {povertyIncome} from './objects/povertyIncome'
 import {sourcesAccordion} from './objects/sourcesAccordion'
 import {updateIntro} from './objects/updateIntro'
+import {highestCosts} from './objects/highestCosts'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -59,4 +60,5 @@ export const schemaTypes = [
   povertyIncome,
   sourcesAccordion,
   updateIntro,
+  highestCosts,
 ]

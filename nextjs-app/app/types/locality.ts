@@ -363,4 +363,15 @@ export type DownloadButtonProps = {
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
   };
+};
+
+// Type for the highest costs component props
+export type HighestCostsProps = {
+  block: {
+    title: string;
+    maxWidth?: number;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  };
+  localities: Locality[];
 }; 

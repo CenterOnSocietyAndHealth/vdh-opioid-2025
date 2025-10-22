@@ -62,6 +62,7 @@ export const page = defineType({
         { type: 'povertyIncome' },
         { type: 'sourcesAccordion' },
         { type: 'updateIntro' },
+        { type: 'highestCosts' },
       ],
       options: {
         insertMenu: {
