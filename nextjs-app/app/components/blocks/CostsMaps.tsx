@@ -86,15 +86,6 @@ const sectorToTabMapping: Record<string, CostsMapIndicator> = {
   'Criminal Justice': 'Crime_Other',
 };
 
-// Tooltip contents for each indicator
-const tooltipContents = {
-  'Total': 'Total cost includes costs of lost labor, healthcare, and public services related to opioids, spanning local, state, and federal governments, as well as household and private sector expenses.',
-  'Labor': 'The cost of lost labor was calculated by counting opioid-related deaths, non-fatal cases of opioid use disorder, and incarcerations due to opioids. Next, we predicted the average earnings of these individuals combined. This prediction was based on Virginia residents of similar ages holding a high school diploma.',
-  'HealthCare': 'The health care total combines direct and indirect health care cost in each locality. Direct costs represent emergency and inpatient visits for opioid overdose, and other opioid-related visits. Indirect costs represent treatment for opioid-related conditions, such as HIV and Neonatal Abstinence Syndrome.',
-  'Crime_Other': 'The crime/other figure estimates government expenditures for public services needed to respond to the opioid epidemic, mainly criminal justice costs, child and family assistance costs, and education costs. In this calculation, we include the economic burden on households, local, state and federal government.',
-  'Household': 'The largest portion of the economic burden is held by households and the private sector. Costs include lost wages and increased private healthcare costs.'
-};
-
 export default function CostsMaps({ block, localities, pageId }: CostsMapProps) {
   const { selectedLocality, setSelectedLocality } = useLocality();
   const { selectedSector } = useSector();
@@ -117,8 +108,6 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
       }
     });
   }
-
-
 
   // Set mounted state once component is mounted on client
   useEffect(() => {

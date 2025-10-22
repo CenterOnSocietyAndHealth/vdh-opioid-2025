@@ -191,6 +191,7 @@ export default function Sources({ block }: SourcesProps) {
           className={`grid transition-[grid-template-rows] duration-1000 ease-in-out ${
             isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
           }`}
+          aria-hidden={!isExpanded}
         >
           <div className="overflow-hidden">
             <div className="px-[20px] py-[15px] pb-[20px]">

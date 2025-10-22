@@ -25,6 +25,14 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
 
   useEffect(() => {
     setMounted(true)
+    
+    // Cleanup function to remove live region on unmount
+    return () => {
+      const liveRegion = document.getElementById('definition-announcements')
+      if (liveRegion) {
+        liveRegion.remove()
+      }
+    }
   }, [])
 
   const calculatePosition = (mouseX: number, mouseY: number) => {
@@ -108,6 +116,18 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
     } else if (event.key === 'Escape' && isVisible) {
       event.preventDefault()
       setIsVisible(false)
+    } else if (event.key === 'ArrowDown' && !isVisible) {
+      // Open definition with arrow down
+      event.preventDefault()
+      if (triggerRef.current) {
+        const rect = triggerRef.current.getBoundingClientRect()
+        calculatePosition(rect.left + rect.width / 2, rect.top + rect.height / 2)
+      }
+      setIsVisible(true)
+    } else if (event.key === 'ArrowUp' && isVisible) {
+      // Close definition with arrow up
+      event.preventDefault()
+      setIsVisible(false)
     }
   }
 
@@ -127,35 +147,38 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
   // Handle focus management and screen reader announcements
   useEffect(() => {
     if (isVisible) {
-      // Use a more reliable method for screen reader announcements
-      // This approach works better with VoiceOver
-      const announcement = `Definition for ${term}: ${definition}`
-      
-      // Create a hidden live region that persists during the session
+      // Create a more robust live region for screen reader announcements
       let liveRegion = document.getElementById('definition-announcements')
       if (!liveRegion) {
         liveRegion = document.createElement('div')
         liveRegion.id = 'definition-announcements'
         liveRegion.setAttribute('aria-live', 'polite')
         liveRegion.setAttribute('aria-atomic', 'true')
+        liveRegion.setAttribute('aria-label', 'Definition announcements')
         liveRegion.className = 'sr-only'
         liveRegion.style.position = 'absolute'
         liveRegion.style.left = '-10000px'
         liveRegion.style.width = '1px'
         liveRegion.style.height = '1px'
         liveRegion.style.overflow = 'hidden'
+        liveRegion.style.clip = 'rect(0, 0, 0, 0)'
+        liveRegion.style.whiteSpace = 'nowrap'
         document.body.appendChild(liveRegion)
       }
       
-      // Update the live region content
-      liveRegion.textContent = announcement
+      // Clear previous content and announce new definition
+      liveRegion.textContent = ''
+      // Use a small delay to ensure the clear is processed
+      setTimeout(() => {
+        liveRegion.textContent = `Definition for ${term}: ${definition}`
+      }, 50)
       
-      // Clear the announcement after a short delay to allow for re-announcement
+      // Clear the announcement after a delay to allow for re-announcement
       setTimeout(() => {
         if (liveRegion) {
           liveRegion.textContent = ''
         }
-      }, 2000)
+      }, 3000)
     }
   }, [isVisible, term, definition])
 
@@ -215,9 +238,10 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
         tabIndex={0}
         role="button"
         aria-describedby={isVisible ? `definition-${term.replace(/\s+/g, '-').toLowerCase()}` : undefined}
-        aria-label={`Definition for ${term}. Press Enter or Space to toggle definition.`}
+        aria-label={`${term} definition. Press Enter, Space, or Arrow Down to ${isVisible ? 'close' : 'open'} definition.`}
         aria-expanded={isVisible ? "true" : "false"}
-        aria-haspopup="dialog"
+        aria-haspopup="true"
+        aria-controls={isVisible ? `definition-${term.replace(/\s+/g, '-').toLowerCase()}` : undefined}
         onMouseEnter={handleMouseEnter}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -232,10 +256,10 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
           ref={tooltipRef}
           id={`definition-${term.replace(/\s+/g, '-').toLowerCase()}`}
           className="fixed z-50 max-w-xs shadow-lg py-[27px] px-[17px]"
-          role="dialog"
+          role="tooltip"
           aria-labelledby={`definition-title-${term.replace(/\s+/g, '-').toLowerCase()}`}
           aria-describedby={`definition-content-${term.replace(/\s+/g, '-').toLowerCase()}`}
-          aria-modal="false"
+          aria-hidden="false"
           style={{
             top: `${position.top}px`,
             left: `${position.left}px`,

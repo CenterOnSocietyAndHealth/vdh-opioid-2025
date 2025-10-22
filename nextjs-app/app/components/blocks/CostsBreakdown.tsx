@@ -63,10 +63,6 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
   
   const chartRef = useRef<HTMLDivElement>(null);
-  const totalCostsRef = useRef<HTMLDivElement>(null);
-  const leftSpanRef = useRef<HTMLSpanElement>(null);
-  const rightSpanRef = useRef<HTMLSpanElement>(null);
-  const h3Ref = useRef<HTMLHeadingElement>(null);
   const mobileTitleRef = useRef<HTMLDivElement>(null);
   const mobileBarsRef = useRef<HTMLDivElement>(null);
 
