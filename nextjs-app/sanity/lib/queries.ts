@@ -403,7 +403,23 @@ export const getPageQuery = defineQuery(`
               definition
             }
           }
-        }
+        },
+        // Annotation fields
+        totalLeftAnnotation,
+        totalTopAnnotation,
+        totalRightAnnotation,
+        laborLeftAnnotation,
+        laborTopAnnotation,
+        laborRightAnnotation,
+        healthcareLeftAnnotation,
+        healthcareTopAnnotation,
+        healthcareRightAnnotation,
+        crimeOtherLeftAnnotation,
+        crimeOtherTopAnnotation,
+        crimeOtherRightAnnotation,
+        householdLeftAnnotation,
+        householdTopAnnotation,
+        householdRightAnnotation
       },
       _type == "largeButton" => {
         ...,

@@ -16,6 +16,9 @@ type ChoroplethMapProps = {
   totalValue: number;
   onLocalityClick?: (locality: Locality) => void;
   onResetToVirginia?: () => void;
+  leftAnnotation?: string;
+  topAnnotation?: string;
+  rightAnnotation?: string;
 };
 
 export default function ChoroplethMap({ 
@@ -27,7 +30,10 @@ export default function ChoroplethMap({
   strokeColor,
   totalValue,
   onLocalityClick,
-  onResetToVirginia
+  onResetToVirginia,
+  leftAnnotation,
+  topAnnotation,
+  rightAnnotation
 }: ChoroplethMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -492,6 +498,45 @@ export default function ChoroplethMap({
     // Skip if SVG ref isn't available or localities aren't loaded
     if (!svgRef.current || localities.length === 0) return;
 
+    // Function to wrap text within a specified width
+    const wrapText = (text: any, width: number) => {
+      text.each(function(this: SVGTextElement) {
+        const textElement = d3.select(this);
+        const originalText = textElement.text();
+        if (!originalText) return;
+        
+        const words = originalText.split(/\s+/).reverse();
+        let word;
+        let line: string[] = [];
+        let lineNumber = 0;
+        const lineHeight = 1.5; // 150% line height
+        const y = textElement.attr("y");
+        const dy = parseFloat(textElement.attr("dy")) || 0;
+        
+        // Clear the text and start with first tspan
+        textElement.text(null);
+        let tspan = textElement.append("tspan")
+          .attr("x", textElement.attr("x"))
+          .attr("y", y)
+          .attr("dy", dy + "em");
+
+        while (word = words.pop()) {
+          line.push(word);
+          tspan.text(line.join(" "));
+          const bbox = (tspan.node() as SVGTSpanElement).getBBox();
+          if (bbox.width > width) {
+            line.pop();
+            tspan.text(line.join(" "));
+            line = [word];
+            tspan = textElement.append("tspan")
+              .attr("x", textElement.attr("x"))
+              .attr("y", y)
+              .attr("dy", ++lineNumber * lineHeight + dy + "em")
+              .text(word);
+          }
+        }
+      });
+    };
 
     const drawMap = async () => {
       try {
@@ -566,7 +611,7 @@ export default function ChoroplethMap({
         
         // Set up dimensions
         const isMobile = windowWidth <= 768;
-        const width = isMobile ? windowWidth - 40 : 1050;
+        const width = isMobile ? windowWidth - 40 : 1080;
         const height = isMobile ? 500 : 500;
         
         // Create a color scale based on values from all localities
@@ -1109,7 +1154,7 @@ export default function ChoroplethMap({
         const spacing = isMobile ? 25 : 20;
         
         const legend = svg.append("g")
-          .attr("transform", `translate(${isMobile ? -10 : 120}, ${isMobile ? height - legendHeight - 0 : height - legendHeight - 300})`);
+          .attr("transform", `translate(${isMobile ? -10 : 40}, ${isMobile ? height - legendHeight - 0 : height - legendHeight - 360})`);
         
         legend.append("rect")
           .attr("width", isMobile ? legendWidth + 25 : legendWidth)
@@ -1178,6 +1223,61 @@ export default function ChoroplethMap({
             .text(labelText);
         });
         
+        // Add desktop-only annotations if provided and not on mobile
+        if (!isMobile && (leftAnnotation || topAnnotation || rightAnnotation)) {
+          // Create annotations group outside of map group so they don't get transformed
+          const annotationsGroup = svg.append("g")
+            .attr("class", "map-annotations")
+            .style("pointer-events", "none");
+          
+          // Left annotation
+          if (leftAnnotation) {
+            const leftText = annotationsGroup.append("text")
+              .attr("x", 50)
+              .attr("y", height / 2)
+              .attr("text-anchor", "start")
+              .attr("font-family", "Inter")
+              .attr("font-size", "14px")
+              .attr("font-weight", "400")
+              .attr("fill", "#1E1E1E")
+              .attr("line-height", "150%")
+              .attr("letter-spacing", "-0.266px")
+              .text(leftAnnotation);
+            wrapText(leftText, 200);
+          }
+          
+          // Top annotation
+          if (topAnnotation) {
+            const topText = annotationsGroup.append("text")
+              .attr("x", width / 2 - 200)
+              .attr("y", 80)
+              .attr("text-anchor", "start")
+              .attr("font-family", "Inter")
+              .attr("font-size", "14px")
+              .attr("font-weight", "400")
+              .attr("fill", "#1E1E1E")
+              .attr("line-height", "150%")
+              .attr("letter-spacing", "-0.266px")
+              .text(topAnnotation);
+            wrapText(topText, 200);
+          }
+          
+          // Right annotation
+          if (rightAnnotation) {
+            const rightText = annotationsGroup.append("text")
+              .attr("x", width - 200)
+              .attr("y", height / 2 - 160)
+              .attr("text-anchor", "start")
+              .attr("font-family", "Inter")
+              .attr("font-size", "14px")
+              .attr("font-weight", "400")
+              .attr("fill", "#1E1E1E")
+              .attr("line-height", "150%")
+              .attr("letter-spacing", "-0.266px")
+              .text(rightAnnotation);
+            wrapText(rightText, 200);
+          }
+        }
 
         
         // If a locality is selected, add an annotation
@@ -1311,7 +1411,7 @@ export default function ChoroplethMap({
     };
 
     drawMap();
-  }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue, indicatorDisplayNames, onLocalityClick, onResetToVirginia, strokeColor, applyHoverEffects, resetHoverEffects, createHoverTooltip, removeHoverTooltip]);
+  }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue, indicatorDisplayNames, onLocalityClick, onResetToVirginia, strokeColor, applyHoverEffects, resetHoverEffects, createHoverTooltip, removeHoverTooltip, leftAnnotation, topAnnotation, rightAnnotation]);
 
   return (
     <div className="relative">

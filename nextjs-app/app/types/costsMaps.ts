@@ -22,6 +22,22 @@ export interface CostsMapProps {
     healthcareSources?: any[];
     crimeOtherSources?: any[];
     householdSources?: any[];
+    // Annotation fields
+    totalLeftAnnotation?: string;
+    totalTopAnnotation?: string;
+    totalRightAnnotation?: string;
+    laborLeftAnnotation?: string;
+    laborTopAnnotation?: string;
+    laborRightAnnotation?: string;
+    healthcareLeftAnnotation?: string;
+    healthcareTopAnnotation?: string;
+    healthcareRightAnnotation?: string;
+    crimeOtherLeftAnnotation?: string;
+    crimeOtherTopAnnotation?: string;
+    crimeOtherRightAnnotation?: string;
+    householdLeftAnnotation?: string;
+    householdTopAnnotation?: string;
+    householdRightAnnotation?: string;
   };
   localities?: Locality[];
   selectedLocality: Locality | null;

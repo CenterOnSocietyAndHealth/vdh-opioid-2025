@@ -129,6 +129,101 @@ export const costsMaps = defineType({
       type: 'blockContent',
       description: 'Sources information for the Household tab',
     }),
+    // Annotation fields for Total sector
+    defineField({
+      name: 'totalLeftAnnotation',
+      title: 'Total - Left Annotation',
+      type: 'string',
+      description: 'Left annotation text for Total sector map (desktop only)',
+    }),
+    defineField({
+      name: 'totalTopAnnotation',
+      title: 'Total - Top Annotation',
+      type: 'string',
+      description: 'Top annotation text for Total sector map (desktop only)',
+    }),
+    defineField({
+      name: 'totalRightAnnotation',
+      title: 'Total - Right Annotation',
+      type: 'string',
+      description: 'Right annotation text for Total sector map (desktop only)',
+    }),
+    // Annotation fields for Labor sector
+    defineField({
+      name: 'laborLeftAnnotation',
+      title: 'Labor - Left Annotation',
+      type: 'string',
+      description: 'Left annotation text for Labor sector map (desktop only)',
+    }),
+    defineField({
+      name: 'laborTopAnnotation',
+      title: 'Labor - Top Annotation',
+      type: 'string',
+      description: 'Top annotation text for Labor sector map (desktop only)',
+    }),
+    defineField({
+      name: 'laborRightAnnotation',
+      title: 'Labor - Right Annotation',
+      type: 'string',
+      description: 'Right annotation text for Labor sector map (desktop only)',
+    }),
+    // Annotation fields for Healthcare sector
+    defineField({
+      name: 'healthcareLeftAnnotation',
+      title: 'Healthcare - Left Annotation',
+      type: 'string',
+      description: 'Left annotation text for Healthcare sector map (desktop only)',
+    }),
+    defineField({
+      name: 'healthcareTopAnnotation',
+      title: 'Healthcare - Top Annotation',
+      type: 'string',
+      description: 'Top annotation text for Healthcare sector map (desktop only)',
+    }),
+    defineField({
+      name: 'healthcareRightAnnotation',
+      title: 'Healthcare - Right Annotation',
+      type: 'string',
+      description: 'Right annotation text for Healthcare sector map (desktop only)',
+    }),
+    // Annotation fields for Crime_Other sector
+    defineField({
+      name: 'crimeOtherLeftAnnotation',
+      title: 'Crime/Other - Left Annotation',
+      type: 'string',
+      description: 'Left annotation text for Crime/Other sector map (desktop only)',
+    }),
+    defineField({
+      name: 'crimeOtherTopAnnotation',
+      title: 'Crime/Other - Top Annotation',
+      type: 'string',
+      description: 'Top annotation text for Crime/Other sector map (desktop only)',
+    }),
+    defineField({
+      name: 'crimeOtherRightAnnotation',
+      title: 'Crime/Other - Right Annotation',
+      type: 'string',
+      description: 'Right annotation text for Crime/Other sector map (desktop only)',
+    }),
+    // Annotation fields for Household sector
+    defineField({
+      name: 'householdLeftAnnotation',
+      title: 'Household - Left Annotation',
+      type: 'string',
+      description: 'Left annotation text for Household sector map (desktop only)',
+    }),
+    defineField({
+      name: 'householdTopAnnotation',
+      title: 'Household - Top Annotation',
+      type: 'string',
+      description: 'Top annotation text for Household sector map (desktop only)',
+    }),
+    defineField({
+      name: 'householdRightAnnotation',
+      title: 'Household - Right Annotation',
+      type: 'string',
+      description: 'Right annotation text for Household sector map (desktop only)',
+    }),
   ],
   preview: {
     select: {

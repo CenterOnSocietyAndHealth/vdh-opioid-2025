@@ -23,6 +23,9 @@ interface ChoroplethMapProps {
   totalValue: number;
   onLocalityClick?: (locality: Locality) => void;
   onResetToVirginia?: () => void;
+  leftAnnotation?: string;
+  topAnnotation?: string;
+  rightAnnotation?: string;
 }
 
 // Dynamic import for ChoroplethMap to avoid server-side rendering issues with D3
@@ -245,6 +248,49 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
     return sources;
   };
 
+  // Get the annotations for the current tab
+  const getCurrentAnnotations = () => {
+    const blockWithAnnotations = block as any; // Type assertion for new annotation fields
+    switch (indicatorTab) {
+      case 'Total':
+        return {
+          left: blockWithAnnotations.totalLeftAnnotation,
+          top: blockWithAnnotations.totalTopAnnotation,
+          right: blockWithAnnotations.totalRightAnnotation,
+        };
+      case 'Labor':
+        return {
+          left: blockWithAnnotations.laborLeftAnnotation,
+          top: blockWithAnnotations.laborTopAnnotation,
+          right: blockWithAnnotations.laborRightAnnotation,
+        };
+      case 'HealthCare':
+        return {
+          left: blockWithAnnotations.healthcareLeftAnnotation,
+          top: blockWithAnnotations.healthcareTopAnnotation,
+          right: blockWithAnnotations.healthcareRightAnnotation,
+        };
+      case 'Crime_Other':
+        return {
+          left: blockWithAnnotations.crimeOtherLeftAnnotation,
+          top: blockWithAnnotations.crimeOtherTopAnnotation,
+          right: blockWithAnnotations.crimeOtherRightAnnotation,
+        };
+      case 'Household':
+        return {
+          left: blockWithAnnotations.householdLeftAnnotation,
+          top: blockWithAnnotations.householdTopAnnotation,
+          right: blockWithAnnotations.householdRightAnnotation,
+        };
+      default:
+        return {
+          left: undefined,
+          top: undefined,
+          right: undefined,
+        };
+    }
+  };
+
   // Get field name for the current indicator
   const getFieldName = (indicator: CostsMapIndicator) => {
     let fieldName = indicator.toLowerCase();
@@ -330,6 +376,9 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
               totalValue={calculateTotal(`${indicatorTab}`)}
               onLocalityClick={handleLocalityClick}
               onResetToVirginia={handleResetToVirginia}
+              leftAnnotation={getCurrentAnnotations().left}
+              topAnnotation={getCurrentAnnotations().top}
+              rightAnnotation={getCurrentAnnotations().right}
             />
           </div>
 
