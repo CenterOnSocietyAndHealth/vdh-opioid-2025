@@ -129,7 +129,7 @@ export const imageBlock = defineType({
       type: 'number',
       description: 'Set custom width in pixels',
       hidden: ({parent}) => parent?.imageSize !== 'custom',
-      validation: (Rule) => Rule.min(100).max(2000).warning('Width should be between 100 and 2000 pixels'),
+      validation: (Rule) => Rule.min(10).max(2000).warning('Width should be between 10 and 2000 pixels'),
     }),
     defineField({
       name: 'hasShadow',

@@ -29,6 +29,19 @@ export function linkResolver(link: Link | undefined) {
   if (!link) return null;
   
   console.log('linkResolver called with:', link);
+  
+  // Debug: Log the specific structure of page links
+  if (link?.linkType === 'page' && link?.page) {
+    console.log('linkResolver - Page link structure:', {
+      linkType: link.linkType,
+      page: link.page,
+      pageType: typeof link.page,
+      pageKeys: Object.keys(link.page || {}),
+      slug: (link.page as any)?.slug,
+      slugCurrent: (link.page as any)?.slug?.current
+    });
+  }
+  
 
   // If linkType is not set but href is, lets set linkType to "href".  This comes into play when pasting links into the portable text editor because a link type is not assumed.
   if (!link.linkType && link.href) {

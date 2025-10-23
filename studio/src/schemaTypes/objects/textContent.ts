@@ -68,9 +68,9 @@ export const textContent = defineType({
       options: {
         list: [
           {title: 'None', value: 'none'},
-          {title: 'Small', value: 'small'},
-          {title: 'Medium', value: 'medium'},
-          {title: 'Large', value: 'large'},
+          {title: 'Small - 10px', value: 'small'},
+          {title: 'Medium - 30px', value: 'medium'},
+          {title: 'Large - 60px', value: 'large'},
         ],
       },
       initialValue: 'none',
@@ -82,9 +82,9 @@ export const textContent = defineType({
       options: {
         list: [
           {title: 'None', value: 'none'},
-          {title: 'Small', value: 'small'},
-          {title: 'Medium', value: 'medium'},
-          {title: 'Large', value: 'large'},
+          {title: 'Small - 10px', value: 'small'},
+          {title: 'Medium - 30px', value: 'medium'},
+          {title: 'Large - 60px', value: 'large'},
         ],
       },
       initialValue: 'none',

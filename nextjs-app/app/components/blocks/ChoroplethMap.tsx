@@ -656,7 +656,7 @@ export default function ChoroplethMap({
         const projection = d3.geoAlbers()
           .scale(isMobile ? 12000 : 9000) // Increased mobile zoom for better locality visibility
           .rotate([78, 0, 0])
-          .center([-1.6, 38.1]);
+          .center([-1.45, 38.1]);
         
         // Adjust projection for mobile
         if (isMobile) {
@@ -1225,8 +1225,9 @@ export default function ChoroplethMap({
         
         // Add desktop-only annotations if provided and not on mobile
         if (!isMobile && (leftAnnotation || topAnnotation || rightAnnotation)) {
-          // Create annotations group outside of map group so they don't get transformed
-          const annotationsGroup = svg.append("g")
+          // Create annotations group inside the map group so they move with the map
+          // and appear behind tooltips
+          const annotationsGroup = mapGroup.append("g")
             .attr("class", "map-annotations")
             .style("pointer-events", "none");
           

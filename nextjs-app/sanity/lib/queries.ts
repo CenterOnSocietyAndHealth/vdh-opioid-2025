@@ -320,15 +320,11 @@ export const getPageQuery = defineQuery(`
             ...,
             _type == "link" => {
               ...,
-              "page": page->{
+              page->{
                 _id,
+                _type,
                 "slug": slug.current
-              },
-              "post": post->slug.current
-            },
-            _type == "definition" => {
-              term,
-              definition
+              }
             }
           }
         },
@@ -338,15 +334,11 @@ export const getPageQuery = defineQuery(`
             ...,
             _type == "link" => {
               ...,
-              "page": page->{
+              page->{
                 _id,
+                _type,
                 "slug": slug.current
-              },
-              "post": post->slug.current
-            },
-            _type == "definition" => {
-              term,
-              definition
+              }
             }
           }
         },
@@ -356,15 +348,11 @@ export const getPageQuery = defineQuery(`
             ...,
             _type == "link" => {
               ...,
-              "page": page->{
+              page->{
                 _id,
+                _type,
                 "slug": slug.current
-              },
-              "post": post->slug.current
-            },
-            _type == "definition" => {
-              term,
-              definition
+              }
             }
           }
         },
@@ -374,15 +362,11 @@ export const getPageQuery = defineQuery(`
             ...,
             _type == "link" => {
               ...,
-              "page": page->{
+              page->{
                 _id,
+                _type,
                 "slug": slug.current
-              },
-              "post": post->slug.current
-            },
-            _type == "definition" => {
-              term,
-              definition
+              }
             }
           }
         },
@@ -392,15 +376,11 @@ export const getPageQuery = defineQuery(`
             ...,
             _type == "link" => {
               ...,
-              "page": page->{
+              page->{
                 _id,
+                _type,
                 "slug": slug.current
-              },
-              "post": post->slug.current
-            },
-            _type == "definition" => {
-              term,
-              definition
+              }
             }
           }
         },
@@ -459,11 +439,74 @@ export const getPageQuery = defineQuery(`
       },
       _type == "jitterPlot" => {
         ...,
-        sources[]{
+        totalSources[]{
           ...,
           markDefs[]{
             ...,
-            ${markDefsReference}
+            _type == "link" => {
+              ...,
+              page->{
+                _id,
+                _type,
+                "slug": slug.current
+              }
+            }
+          }
+        },
+        laborSources[]{
+          ...,
+          markDefs[]{
+            ...,
+            _type == "link" => {
+              ...,
+              page->{
+                _id,
+                _type,
+                "slug": slug.current
+              }
+            }
+          }
+        },
+        healthcareSources[]{
+          ...,
+          markDefs[]{
+            ...,
+            _type == "link" => {
+              ...,
+              page->{
+                _id,
+                _type,
+                "slug": slug.current
+              }
+            }
+          }
+        },
+        crimeOtherSources[]{
+          ...,
+          markDefs[]{
+            ...,
+            _type == "link" => {
+              ...,
+              page->{
+                _id,
+                _type,
+                "slug": slug.current
+              }
+            }
+          }
+        },
+        householdSources[]{
+          ...,
+          markDefs[]{
+            ...,
+            _type == "link" => {
+              ...,
+              page->{
+                _id,
+                _type,
+                "slug": slug.current
+              }
+            }
           }
         }
       },

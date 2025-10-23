@@ -18,6 +18,9 @@ export default function SourcesAccordion({
 }: SourcesAccordionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
+  // Debug: Log the sources data structure
+  console.log('SourcesAccordion - sources data:', sources);
+
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };
@@ -116,7 +119,7 @@ export default function SourcesAccordion({
                         link: ({ children, value }: any) => (
                           <ResolvedLink
                             link={value}
-                            className="text-[#1E1E1E] font-[400] hover:text-[#1E1E1E] hover:bg-[#F3E7B9] visited:text-[#5C4766] underline"
+                            className="text-[#1E1E1E] font-[400] hover:text-[#1E1E1E] hover:bg-[#cfe6ef] visited:text-[#5C4766]"
                             tabIndex={isExpanded ? 0 : -1}
                           >
                             {children}

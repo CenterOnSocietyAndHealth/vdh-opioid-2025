@@ -25,11 +25,6 @@ export default function ResolvedLink({
   
   // Debug logging for all links to see what's happening
   console.log('ResolvedLink - All links:', { link, resolvedLink, children });
-  
-  // Debug: Check if linkResolver is being called
-  if (link && !resolvedLink) {
-    console.log('ResolvedLink - linkResolver returned null for link:', link);
-  }
 
   if (typeof resolvedLink === "string") {
     // Check if it's an external URL (http/https/mailto) or internal page

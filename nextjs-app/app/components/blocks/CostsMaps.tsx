@@ -94,7 +94,6 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
   const { selectedSector } = useSector();
   const [indicatorTab, setIndicatorTab] = useState<CostsMapIndicator>(block.defaultIndicator || 'Total');
   const [mounted, setMounted] = useState(false);
-  const [showDetailedDescription, setShowDetailedDescription] = useState(false);
 
   // Debug: Log the block data to see what we're receiving
   console.log('CostsMaps - block data:', block);
