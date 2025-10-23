@@ -401,7 +401,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
 
     // Add non-selected dots first (so they appear behind)
     const dots = chartGroup.selectAll('.dot')
-      .data(nonSelectedData, d => d.locality._id)
+      .data(nonSelectedData, (d: any) => d.locality._id)
       .join(
         enter => enter.append('circle')
           .attr('class', 'dot')
@@ -457,7 +457,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     // Add selected dots last (so they appear in front)
     if (selectedData.length > 0) {
       const selectedDots = chartGroup.selectAll('.selected-dot')
-        .data(selectedData, d => d.locality._id)
+        .data(selectedData, (d: any) => d.locality._id)
         .join(
           enter => enter.append('circle')
             .attr('class', 'selected-dot')
