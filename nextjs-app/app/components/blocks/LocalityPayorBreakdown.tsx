@@ -241,7 +241,12 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
             </tr>
           </thead>
         </table>
-        <div className="max-h-[340px] overflow-y-auto scrollbar-hide">
+        <div 
+          className="max-h-[340px] overflow-y-auto scrollbar-hide"
+          tabIndex={0}
+          role="region"
+          aria-label="Locality data table with scrollable content"
+        >
           <table className="w-full border-collapse table-fixed">
             <colgroup>
               <col className="w-[31%]" />

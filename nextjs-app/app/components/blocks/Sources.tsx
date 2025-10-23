@@ -24,6 +24,8 @@ export default function Sources({ block }: SourcesProps) {
   const { citations = [], marginTop = 'none', marginBottom = 'none', width = 672 } = block
   const [isExpanded, setIsExpanded] = useState(false)
   const [highlightedSource, setHighlightedSource] = useState<string | null>(null)
+  
+  const ariaExpanded = isExpanded ? 'true' : 'false'
 
   const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none')
   const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
@@ -168,6 +170,9 @@ export default function Sources({ block }: SourcesProps) {
         <button
           onClick={toggleSources}
           className="w-full px-[20px] py-[10px] flex items-center justify-between text-left transition-colors duration-200"
+          aria-expanded={ariaExpanded}
+          aria-controls="sources-content"
+          id="sources-button"
         >
           <div className="flex items-center space-x-3">
             {/* Title */}
@@ -188,10 +193,13 @@ export default function Sources({ block }: SourcesProps) {
         
         {/* Sources Content */}
         <div
+          id="sources-content"
           className={`grid transition-[grid-template-rows] duration-1000 ease-in-out ${
             isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
           }`}
           aria-hidden={!isExpanded}
+          aria-labelledby="sources-button"
+          inert={!isExpanded}
         >
           <div className="overflow-hidden">
             <div className="px-[20px] py-[15px] pb-[20px]">
@@ -225,6 +233,7 @@ export default function Sources({ block }: SourcesProps) {
                                 <ResolvedLink
                                   link={value}
                                   className="text-[#1e1e1e] hover:bg-[#cfe6ef] hover:text-black visited:text-[#6b7280] underline break-all"
+                                  tabIndex={isExpanded ? 0 : -1}
                                 >
                                   {children}
                                 </ResolvedLink>

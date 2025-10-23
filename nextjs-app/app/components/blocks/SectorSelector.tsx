@@ -76,7 +76,7 @@ export default function SectorSelector({
                 px-3 py-2 rounded-[3px] font-inter text-sm transition-all duration-100
                 border
                 ${isSelected 
-                  ? 'bg-[#4783B5] text-white border-[#4783B5]' 
+                  ? 'bg-[#3275B6] text-white border-[#3275B6]' 
                   : 'bg-[#F2F1F1] text-[#414141] border-[#eee] hover:bg-[#F6F6F6] hover:shadow-md hover:transform hover:-translate-y-0.5'
                 }
                 active:scale-95
