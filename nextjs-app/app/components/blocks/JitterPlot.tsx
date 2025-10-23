@@ -403,29 +403,38 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     const dots = chartGroup.selectAll('.dot')
       .data(nonSelectedData, (d: any) => d.locality._id)
       .join(
-        enter => enter.append('circle')
-          .attr('class', 'dot')
-          .attr('cx', d => xScale(d.value))
-          .attr('cy', d => yScale(d.jitter))
-          .attr('r', 0)
-          .attr('fill', colors.dots)
-          .attr('stroke', 'none')
-          .attr('stroke-width', 0)
-          .style('cursor', 'pointer')
-          .transition()
-          .duration(500)
-          .attr('r', 8),
-        update => update
-          .transition()
-          .duration(500)
-          .attr('cx', d => xScale(d.value))
-          .attr('cy', d => yScale(d.jitter))
-          .attr('r', 8),
-        exit => exit
-          .transition()
-          .duration(500)
-          .attr('r', 0)
-          .remove()
+        enter => {
+          const circles = enter.append('circle')
+            .attr('class', 'dot')
+            .attr('cx', d => xScale(d.value))
+            .attr('cy', d => yScale(d.jitter))
+            .attr('r', 0)
+            .attr('fill', colors.dots)
+            .attr('stroke', 'none')
+            .attr('stroke-width', 0)
+            .style('cursor', 'pointer');
+          
+          circles.transition()
+            .duration(500)
+            .attr('r', 8);
+          
+          return circles;
+        },
+        update => {
+          update.transition()
+            .duration(500)
+            .attr('cx', d => xScale(d.value))
+            .attr('cy', d => yScale(d.jitter))
+            .attr('r', 8);
+          return update;
+        },
+        exit => {
+          exit.transition()
+            .duration(500)
+            .attr('r', 0)
+            .remove();
+          return exit;
+        }
       )
       .on('mouseover', function(event, d) {
         // Add stroke on hover
@@ -459,29 +468,38 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       const selectedDots = chartGroup.selectAll('.selected-dot')
         .data(selectedData, (d: any) => d.locality._id)
         .join(
-          enter => enter.append('circle')
-            .attr('class', 'selected-dot')
-            .attr('cx', d => xScale(d.value))
-            .attr('cy', d => yScale(d.jitter))
-            .attr('r', 0)
-            .attr('fill', colors.selectedDot)
-            .attr('stroke', 'none')
-            .attr('stroke-width', 0)
-            .style('cursor', 'pointer')
-            .transition()
-            .duration(500)
-            .attr('r', 8),
-          update => update
-            .transition()
-            .duration(500)
-            .attr('cx', d => xScale(d.value))
-            .attr('cy', d => yScale(d.jitter))
-            .attr('r', 8),
-          exit => exit
-            .transition()
-            .duration(500)
-            .attr('r', 0)
-            .remove()
+          enter => {
+            const circles = enter.append('circle')
+              .attr('class', 'selected-dot')
+              .attr('cx', d => xScale(d.value))
+              .attr('cy', d => yScale(d.jitter))
+              .attr('r', 0)
+              .attr('fill', colors.selectedDot)
+              .attr('stroke', 'none')
+              .attr('stroke-width', 0)
+              .style('cursor', 'pointer');
+            
+            circles.transition()
+              .duration(500)
+              .attr('r', 8);
+            
+            return circles;
+          },
+          update => {
+            update.transition()
+              .duration(500)
+              .attr('cx', d => xScale(d.value))
+              .attr('cy', d => yScale(d.jitter))
+              .attr('r', 8);
+            return update;
+          },
+          exit => {
+            exit.transition()
+              .duration(500)
+              .attr('r', 0)
+              .remove();
+            return exit;
+          }
         )
         .on('mouseover', function(event, d) {
           // Add stroke on hover
