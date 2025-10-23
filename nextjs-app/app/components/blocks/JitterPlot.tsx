@@ -340,28 +340,37 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     const gradientBar = chartGroup.selectAll('.gradient-bar')
       .data([maxValue])
       .join(
-        enter => enter.append('rect')
-          .attr('class', 'gradient-bar')
-          .attr('x', 0)
-          .attr('y', chartHeight / 2)
-          .attr('width', chartWidth)
-          .attr('height', 12)
-          .attr('stroke', 'rgb(49, 86, 116)')
-          .attr('stroke-width', 1)
-          .attr('fill', 'url(#costGradient)')
-          .style('opacity', 0)
-          .transition()
-          .duration(500)
-          .style('opacity', 1),
-        update => update
-          .transition()
-          .duration(500)
-          .attr('width', chartWidth),
-        exit => exit
-          .transition()
-          .duration(500)
-          .style('opacity', 0)
-          .remove()
+        enter => {
+          const rect = enter.append('rect')
+            .attr('class', 'gradient-bar')
+            .attr('x', 0)
+            .attr('y', chartHeight / 2)
+            .attr('width', chartWidth)
+            .attr('height', 12)
+            .attr('stroke', 'rgb(49, 86, 116)')
+            .attr('stroke-width', 1)
+            .attr('fill', 'url(#costGradient)')
+            .style('opacity', 0);
+          
+          rect.transition()
+            .duration(500)
+            .style('opacity', 1);
+          
+          return rect;
+        },
+        update => {
+          update.transition()
+            .duration(500)
+            .attr('width', chartWidth);
+          return update;
+        },
+        exit => {
+          exit.transition()
+            .duration(500)
+            .style('opacity', 0)
+            .remove();
+          return exit;
+        }
       );
 
     // Create jitter data with deterministic positioning
