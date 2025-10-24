@@ -156,7 +156,7 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
           style={buttonStyles}
           onMouseEnter={(e) => {
             if (!isDisabled) {
-              e.currentTarget.style.backgroundColor = '#417A90';
+              e.currentTarget.style.backgroundColor = '#3A658A';
             }
           }}
           onMouseLeave={(e) => {

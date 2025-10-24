@@ -64,6 +64,7 @@ export default function Accordion({ block }: AccordionProps) {
   }
 
   const getHeadingId = () => `accordion-heading-${title.replace(/\s+/g, '-').toLowerCase()}`
+  const getContentId = () => `accordion-content-${title.replace(/\s+/g, '-').toLowerCase()}`
   
   const renderHeading = () => {
     const headingProps = {
@@ -102,7 +103,7 @@ export default function Accordion({ block }: AccordionProps) {
             onClick={toggleAccordion}
             className="w-full flex items-center space-x-3 text-left transition-colors duration-200"
             aria-expanded={isExpanded}
-            aria-controls={`accordion-content-${title}`}
+            aria-controls={getContentId()}
             aria-labelledby={getHeadingId()}
             aria-label={`Toggle ${title} accordion`}
           >
@@ -127,11 +128,14 @@ export default function Accordion({ block }: AccordionProps) {
         
         {/* Accordion Content */}
         <div
-          id={`accordion-content-${title}`}
+          id={getContentId()}
           className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
             isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
           }`}
-          aria-hidden={!isExpanded}
+          style={{ 
+            visibility: isExpanded ? 'visible' : 'hidden',
+            pointerEvents: isExpanded ? 'auto' : 'none'
+          }}
         >
           <div className="overflow-hidden">
             <div className="px-4 md:px-0 py-4">
