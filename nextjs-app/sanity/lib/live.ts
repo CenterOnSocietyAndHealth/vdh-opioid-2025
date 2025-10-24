@@ -7,7 +7,7 @@ import { client } from "./client";
  */
 
 export const { sanityFetch, SanityLive } = defineLive({
-  client,
+  client, // Uses the non-stega client by default
   // Required for showing draft content when the Sanity Presentation Tool is used, or to enable the Vercel Toolbar Edit Mode
   serverToken: process.env.SANITY_API_READ_TOKEN,
   // Required for stand-alone live previews, the token is only shared to the browser if it's a valid Next.js Draft Mode session
