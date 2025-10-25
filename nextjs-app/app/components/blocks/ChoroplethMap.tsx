@@ -1028,9 +1028,6 @@ export default function ChoroplethMap({
             // Get locality name
             const countyName = d.properties.NAME || d.properties.name;
             
-            console.log('Map click - FIPS:', fipsCode, 'County:', countyName);
-            console.log('Available localities:', localities.map(l => ({ id: l._id, name: l.counties, fips: l.fips })));
-            
             // Try to find matching locality
             const locality = localities.find(loc => {
               // Clean up locality FIPS code for comparison
@@ -1051,9 +1048,7 @@ export default function ChoroplethMap({
               
               const fipsMatch = fipsCode && locFips === fipsCode;
               const nameMatch = countyName && loc.counties === countyName;
-              
-              console.log(`Comparing: ${loc.counties} - FIPS: ${locFips} vs ${fipsCode} (${fipsMatch}), Name: ${loc.counties} vs ${countyName} (${nameMatch})`);
-              
+                            
               return fipsMatch || nameMatch;
             });
             

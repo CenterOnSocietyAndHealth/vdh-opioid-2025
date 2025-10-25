@@ -749,7 +749,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     // Add legend
     const legendGroup = chartGroup.append('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(${chartWidth - 125}, ${(chartHeight + 40)})`);
+      .attr('transform', `translate(${chartWidth - 125}, ${(chartHeight + 45)})`);
 
     legendGroup.append('circle')
       .attr('cx', 0)
@@ -837,7 +837,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
           
           {/* Filter Options - positioned in lower left */}
           {selectedLocality && selectedLocality.counties !== 'Virginia' && (
-          <div className="absolute bottom-4 left-4 flex flex-row gap-4 transition-opacity duration-300">
+          <div className="absolute bottom-4 left-4 flex flex-col sm:flex-row gap-0 md:gap-4 transition-opacity duration-300">
             <div className="flex items-center gap-2">
               <input
                 type="radio"

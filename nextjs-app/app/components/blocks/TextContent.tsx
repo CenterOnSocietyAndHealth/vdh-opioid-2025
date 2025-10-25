@@ -87,19 +87,6 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
       window.removeEventListener('localityUpdateEnd', handleUpdateEnd)
     }
   }, [])
-
-  console.log('TextContent block:', { marginTop, marginBottom, textAlignment, backgroundColor, customBackgroundColor, maxWidth })
-  console.log('TextContent sector context:', { selectedSector })
-  console.log('TextContent content:', content)
-  console.log('Margin classes:', { 
-    topClass: marginMap[validMarginTop as keyof typeof marginMap], 
-    bottomClass: marginBottomMap[validMarginBottom as keyof typeof marginBottomMap] 
-  })
-  console.log('Text alignment:', { 
-    original: textAlignment,
-    valid: validTextAlignment, 
-    class: alignmentMap[validTextAlignment as keyof typeof alignmentMap] 
-  })
   
   return (
     <div className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
@@ -159,7 +146,6 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
             },
             marks: {
               link: ({ children, value: link }) => {
-                console.log('TextContent - Link mark:', { children, link });
                 return <ResolvedLink link={link}>{children}</ResolvedLink>;
               },
               smallGrayText: ({ children }) => (

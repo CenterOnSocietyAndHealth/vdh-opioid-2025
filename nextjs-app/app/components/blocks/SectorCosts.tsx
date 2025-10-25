@@ -210,32 +210,6 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                 
                 let fieldValue;
                 
-                // Debug logging for Draft mode
-                console.log('SectorCosts localityField debug:', {
-                  fieldPath: value.fieldPath,
-                  selectedLocality: selectedLocality ? {
-                    _id: selectedLocality._id,
-                    counties: selectedLocality.counties,
-                    fips: selectedLocality.fips
-                  } : null,
-                  localitiesCount: localities?.length
-                });
-                
-                // Debug: Show all Virginia-related localities
-                if (localities && localities.length > 0) {
-                  const virginiaCandidates = localities.filter(loc => 
-                    loc.counties?.toLowerCase().includes('virginia') ||
-                    loc.fips?.includes('999') ||
-                    loc.marcCountyId === '999'
-                  );
-                  console.log('Virginia candidates found:', virginiaCandidates.map(loc => ({
-                    _id: loc._id,
-                    counties: loc.counties,
-                    fips: loc.fips,
-                    marcCountyId: loc.marcCountyId
-                  })));
-                }
-                
                 if (selectedLocality) {
                   // Use selected locality value
                   fieldValue = getNestedValue(selectedLocality, value.fieldPath)
@@ -245,16 +219,9 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                     fieldValue = fieldValue.trim();
                   }
                   
-                  console.log('Using selectedLocality value:', fieldValue);
                 } else if (localities && localities.length > 0) {
                   // Find Virginia data row when no locality is selected
                   const virginia = findVirginiaLocality(localities);
-                  
-                  console.log('Found Virginia locality:', virginia ? {
-                    _id: virginia._id,
-                    counties: virginia.counties,
-                    fips: virginia.fips
-                  } : null);
                   
                   if (virginia) {
                     fieldValue = getNestedValue(virginia, value.fieldPath)
@@ -263,8 +230,6 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                     if (value.fieldPath === 'counties' && typeof fieldValue === 'string') {
                       fieldValue = fieldValue.trim();
                     }
-                    
-                    console.log('Using Virginia data value:', fieldValue);
                   }
                 }
                 
@@ -279,13 +244,9 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
                     if (value.fieldPath === 'counties' && typeof fieldValue === 'string') {
                       fieldValue = fieldValue.trim();
                     }
-                    
-                    console.log('Using Virginia fallback value:', fieldValue);
                   }
                 }
-                
-                console.log('Final fieldValue:', fieldValue);
-                
+                                
                 if (fieldValue === undefined) {
                   return children
                 }

@@ -95,22 +95,6 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
   const [indicatorTab, setIndicatorTab] = useState<CostsMapIndicator>(block.defaultIndicator || 'Total');
   const [mounted, setMounted] = useState(false);
 
-  // Debug: Log the block data to see what we're receiving
-  console.log('CostsMaps - block data:', block);
-  
-  // Debug: Check if any of the source fields have resolved page references
-  if (block.totalSources) {
-    block.totalSources.forEach((block: any, index: number) => {
-      if (block.markDefs) {
-        block.markDefs.forEach((markDef: any, markIndex: number) => {
-          if (markDef._type === 'link' && markDef.linkType === 'page') {
-            console.log(`CostsMaps - totalSources[${index}].markDefs[${markIndex}] link:`, markDef);
-          }
-        });
-      }
-    });
-  }
-
   // Set mounted state once component is mounted on client
   useEffect(() => {
     setMounted(true);
@@ -122,11 +106,6 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
       setIndicatorTab(sectorToTabMapping[selectedSector]);
     }
   }, [selectedSector]);
-
-  // Debug: Monitor changes to selectedLocality
-  useEffect(() => {
-    console.log('CostsMaps: selectedLocality changed to:', selectedLocality);
-  }, [selectedLocality]);
 
   // Get the display type from block props
   const displayType = block.type || 'PerCapita';
@@ -144,9 +123,6 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
     const strokeScheme = strokeColors.find(scheme => scheme.name === indicator);
     return strokeScheme ? strokeScheme.strokeColor : strokeColors[0].strokeColor;
   }
-
-  // Log sector context
-  console.log('CostsMaps sector context:', { selectedSector });
 
   // Calculate total for the current indicator (across all localities)
   const calculateTotal = (indicator: string) => {
@@ -243,7 +219,6 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
         sources = null;
     }
     
-    console.log(`CostsMaps - getCurrentSources for ${indicatorTab}:`, sources);
     return sources;
   };
 

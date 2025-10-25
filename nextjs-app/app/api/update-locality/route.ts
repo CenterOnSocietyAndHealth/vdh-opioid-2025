@@ -9,8 +9,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Page ID is required' }, { status: 400 });
     }
 
-    console.log('Updating locality:', { pageId, localityId });
-
     // First verify the page exists
     const page = await serverClient.fetch(`*[_id == $pageId][0]`, { pageId });
     if (!page) {
@@ -47,7 +45,6 @@ export async function POST(request: Request) {
     // Commit the changes
     try {
       const result = await patch.commit();
-      console.log('Update successful:', result);
       return NextResponse.json({ success: true, result });
     } catch (commitError: any) {
       console.error('Commit error:', {

@@ -39,11 +39,6 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
   const [fileName, setFileName] = useState<string>('download');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Debug logging to see what data we're receiving
-  console.log('DownloadButton block data:', JSON.stringify(block, null, 2));
-  console.log('File data:', JSON.stringify(file, null, 2));
-  console.log('Asset data:', JSON.stringify(file?.asset, null, 2));
-
   const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'medium')
   const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'medium')
 
@@ -108,8 +103,6 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
     resolveFileAsset();
   }, [file?.asset]);
 
-  console.log('File URL:', fileUrl);
-  console.log('File name:', fileName);
 
   // Handle button click
   const handleClick = () => {

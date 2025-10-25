@@ -18,9 +18,6 @@ export default function SourcesAccordion({
 }: SourcesAccordionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Debug: Log the sources data structure
-  console.log('SourcesAccordion - sources data:', sources);
-
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };

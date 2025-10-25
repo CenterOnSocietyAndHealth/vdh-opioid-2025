@@ -17,12 +17,6 @@ export default async function Page() {
     );
   }
 
-  console.log('Home page data:', {
-    pageId: page._id,
-    localities,
-    localitiesCount: localities?.length
-  });
-
   return (
     <div className="mx-auto">
       <PageBuilderPage page={page as GetPageQueryResult} localities={localities} />

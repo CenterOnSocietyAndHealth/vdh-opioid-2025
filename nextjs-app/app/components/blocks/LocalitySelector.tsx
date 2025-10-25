@@ -38,11 +38,6 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
     });
   }, []);
 
-  console.log('LocalitySelector props:', {
-    pageId,
-    localitiesCount: localities?.length,
-    block
-  });
 
   // Prepare options for react-select
   const options: OptionType[] = [
@@ -52,8 +47,6 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
       label: locality.counties.trim(),
     })).sort((a, b) => a.label.localeCompare(b.label)) : [])
   ];
-
-  console.log('Prepared options:', options);
 
   // Get the current value based on selectedLocality
   const currentValue = selectedLocality 
@@ -65,7 +58,6 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
     if (!selectedOption || isUpdating) return;
 
     const localityId = selectedOption.value;
-    console.log('LocalitySelector: handleSetLocality called with:', selectedOption);
     setIsUpdating(true);
     
     // Dispatch update start event
@@ -75,18 +67,14 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
       // Update the selected locality in state
       const newLocality = localityId === "State" ? null : 
         localities?.find(l => l._id === localityId) || null;
-      
-      console.log('LocalitySelector: Found locality:', newLocality);
-      
+            
       // Make sure we have all the required fields
       if (newLocality && !newLocality.opioidMetrics?.totalTotalPercentile) {
         console.error('Locality data is missing required fields:', newLocality);
         return;
       }
       
-      console.log('LocalitySelector: Calling setSelectedLocality with:', newLocality);
       setSelectedLocality(newLocality);
-      console.log('LocalitySelector: setSelectedLocality called');
     } catch (error) {
       console.error('Error updating selected locality:', error);
     } finally {

@@ -53,11 +53,6 @@ export function LocalityProvider({
     }
   }, [localities, selectedLocality]);
 
-  // Debug: Monitor changes to selectedLocality
-  React.useEffect(() => {
-    console.log('LocalityContext: selectedLocality changed to:', selectedLocality);
-  }, [selectedLocality]);
-
   return (
     <LocalityContext.Provider value={{ 
       selectedLocality, 

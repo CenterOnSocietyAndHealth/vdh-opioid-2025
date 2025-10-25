@@ -17,14 +17,6 @@ export default function ResolvedLink({
 }: ResolvedLinkProps) {
   // resolveLink() is used to determine the type of link and return the appropriate URL.
   const resolvedLink = linkResolver(link);
-  
-  // Debug logging for internal page links
-  if (link?.linkType === 'page') {
-    console.log('ResolvedLink - Page link:', { link, resolvedLink });
-  }
-  
-  // Debug logging for all links to see what's happening
-  console.log('ResolvedLink - All links:', { link, resolvedLink, children });
 
   if (typeof resolvedLink === "string") {
     // Check if it's an external URL (http/https/mailto) or internal page
@@ -59,9 +51,6 @@ export default function ResolvedLink({
       );
     }
   }
-  
-  // If no valid link was resolved, render as plain text (not as a link)
-  console.warn('ResolvedLink - No valid link resolved:', { link, resolvedLink });
   
   // Extract text content from children to avoid rendering nested <a> tags
   const getTextContent = (node: React.ReactNode): string => {

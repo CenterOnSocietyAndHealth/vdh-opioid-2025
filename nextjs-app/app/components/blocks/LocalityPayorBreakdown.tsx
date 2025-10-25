@@ -97,9 +97,6 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
     });
   }, [localities, searchTerm, sortColumn, sortDirection]);
 
-  console.log("filteredLocalities", filteredLocalities);
-  console.log("localities", localities);
-
   // Show loading state if localities are not loaded yet
   if (!localities || localities.length === 0) {
     return (

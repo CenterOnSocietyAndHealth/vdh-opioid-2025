@@ -341,7 +341,6 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         // const duration = totalDuration * sector.value / totalValue;
 
         const duration = 800;
-        console.log('duration', duration);
         // Animate the bar fade-in quickly
         bar
           .transition()
