@@ -438,3 +438,38 @@ ol ol ol {
   text-shadow: none;
 }
 
+/* High contrast mode support for bar charts */
+@media (prefers-contrast: high) {
+  /* Ensure bar chart elements have visible borders */
+  .cost-block,
+  .mobile-bar,
+  .Holzontal-Bar-Segment,
+  .Vertical-Bar-Segment {
+    border: 2px solid currentColor !important;
+  }
+  
+  /* Ensure chart backgrounds are visible */
+  .cost-block {
+    outline: 1px solid #000 !important;
+  }
+  
+  /* Make sure text is visible on bars */
+  .cost-block * {
+    color: #000 !important;
+  }
+}
+
+/* Windows High Contrast Mode support */
+@media (forced-colors: active) {
+  .cost-block,
+  .mobile-bar,
+  .Holzontal-Bar-Segment,
+  .Vertical-Bar-Segment {
+    border: 1px solid ButtonBorder !important;
+  }
+  
+  .cost-block * {
+    color: ButtonText !important;
+  }
+}
+

@@ -164,10 +164,10 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
             
             {/* Families & Businesses Segment */}
             <div 
-              className="absolute top-0 left-0 h-full flex items-center"
+              className="absolute top-0 left-0 h-full flex items-center Holzontal-Bar-Segment"
               style={{
                 width: `${familiesBusinessesPercent}%`,
-                backgroundColor: safeFamiliesBusinessesColor,
+                backgroundColor: safeFamiliesBusinessesColor
               }}
             >
               <div className="ml-4 text-left">
@@ -202,11 +202,11 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
             
             {/* Federal Segment */}
             <div 
-              className="absolute top-0 left-0 h-full flex items-center"
+              className="absolute top-0 left-0 h-full flex items-center Holzontal-Bar-Segment"
               style={{
                 left: `${familiesBusinessesPercent}%`,
                 width: `${federalPercent}%`,
-                backgroundColor: safeFederalColor,
+                backgroundColor: safeFederalColor
               }}
             >
               <div className="ml-4 text-left">
@@ -241,11 +241,11 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
             
             {/* State/Local Segment */}
             <div 
-              className="absolute top-0 left-0 h-full flex items-center"
+              className="absolute top-0 left-0 h-full flex items-center Holzontal-Bar-Segment"
               style={{
                 left: `${familiesBusinessesPercent + federalPercent}%`,
                 width: `${stateLocalPercent}%`,
-                backgroundColor: safeStateLocalColor,
+                backgroundColor: safeStateLocalColor
               }}
             >
               <div className="ml-4 text-left">
@@ -320,10 +320,10 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
               {/* Families & Businesses Bar */}
               <div className="w-full">
                 <div 
-                  className="w-full h-[30px]"
+                  className="w-full h-[30px] Vertical-Bar-Segment"
                   style={{
                     width: '90%',
-                    backgroundColor: safeFamiliesBusinessesColor,
+                    backgroundColor: safeFamiliesBusinessesColor
                   }}
                 ></div>
                 <div className="mt-2 text-left">
@@ -345,10 +345,10 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
               {/* Federal Bar */}
               <div className="w-full">
                 <div 
-                  className="w-full h-[30px]"
+                  className="w-full h-[30px] Vertical-Bar-Segment"
                   style={{
                     width: `${(federalPercent / governmentPercent) * 90}%`,
-                    backgroundColor: safeFederalColor,
+                    backgroundColor: safeFederalColor
                   }}
                 ></div>
                 <div className="mt-2 text-left">
@@ -370,10 +370,10 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
               {/* State/Local Bar */}
               <div className="w-full">
                 <div 
-                  className="w-full h-[30px]"
+                  className="w-full h-[30px] Vertical-Bar-Segment"
                   style={{
                     width: `${(stateLocalPercent / governmentPercent) * 90}%`,
-                    backgroundColor: safeStateLocalColor,
+                    backgroundColor: safeStateLocalColor
                   }}
                 ></div>
                 <div className="mt-2 text-left">
