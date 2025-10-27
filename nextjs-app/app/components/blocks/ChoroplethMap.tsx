@@ -1410,14 +1410,17 @@ export default function ChoroplethMap({
   }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue, indicatorDisplayNames, onLocalityClick, onResetToVirginia, strokeColor, applyHoverEffects, resetHoverEffects, createHoverTooltip, removeHoverTooltip, leftAnnotation, topAnnotation, rightAnnotation]);
 
   return (
-    <div className="relative">
+    <div 
+      className="relative"
+      role="region"
+      aria-label={`Interactive choropleth map visualization showing ${indicatorDisplayNames[indicator]} ${displayType === 'PerCapita' ? 'per capita' : 'total'} costs across Virginia localities. Each locality is colored based on its cost value. ${selectedLocality ? `Currently selected: ${selectedLocality.counties.trim()}` : 'No locality is currently selected.'} Click on any locality to select it, or click outside to reset to Virginia view.`}
+      aria-describedby="choropleth-map-description"
+    >
       <svg 
         ref={svgRef} 
         className="w-full max-w-full" 
-        role="img"
-        aria-label={`Interactive choropleth map showing ${indicatorDisplayNames[indicator]} ${displayType === 'PerCapita' ? 'per capita' : 'total'} costs across Virginia localities. Each locality is colored based on its cost value. ${selectedLocality ? `Currently selected: ${selectedLocality.counties.trim()}` : 'No locality is currently selected.'} Click on any locality to select it, or click outside to reset to Virginia view.`}
-        aria-describedby="choropleth-map-description"
         style={{ visibility: isInitialized ? 'visible' : 'hidden' }}
+        aria-hidden="true"
       />
       
       {/* Hidden description for screen readers */}

@@ -829,8 +829,8 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
           ref={chartRef}
           className="bg-white border border-gray-200 p-0 pt-6 relative"
           style={{ minHeight: '400px' }}
-          role="img"
-          aria-label={`Jitter plot showing ${sectorDisplayNames[selectedSector] || 'cost'} data for Virginia localities. Each dot represents a locality with its per capita cost. ${plotData.values.length} localities displayed. Average cost: $${Math.round(plotData.average).toLocaleString()} per person.${selectedLocality && selectedLocality.counties !== 'Virginia' ? ` Selected locality ${selectedLocality.counties.trim()} has $${Math.round(plotData.selectedValue).toLocaleString()} per person.` : ''}`}
+          role="region"
+          aria-label={`Interactive jitter plot visualization showing ${sectorDisplayNames[selectedSector] || 'cost'} data for Virginia localities. Each dot represents a locality with its per capita cost. ${plotData.values.length} localities displayed. Average cost: $${Math.round(plotData.average).toLocaleString()} per person.${selectedLocality && selectedLocality.counties !== 'Virginia' ? ` Selected locality ${selectedLocality.counties.trim()} has $${Math.round(plotData.selectedValue).toLocaleString()} per person.` : ''}`}
           aria-describedby="jitter-plot-description"
         >
           <svg ref={svgRef}></svg>

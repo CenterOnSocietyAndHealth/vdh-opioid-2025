@@ -534,8 +534,8 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         ref={chartRef} 
         className="w-full hidden md:block" 
         style={{position: 'relative', minHeight: '160px'}}
-        role="group"
-        aria-label={`Interactive bar chart showing cost breakdown across ${costSectors.length} sectors. Use Tab to navigate between bars, Enter or Space to view details. ${costSectors.map(sector => `${sector.title} (${formatCostShort(sector.value)})`).join(', ')}`}
+        role="region"
+          aria-label={`Interactive bar chart visualization showing cost breakdown across ${costSectors.length} sectors. Use Tab to navigate between bars, Enter or Space to view details. ${costSectors.map(sector => `${sector.title} (${formatCostShort(sector.value)})`).join(', ')}`}
       >
         {/* Custom Tooltip for blocks with showLabelAsTooltip */}
         {hoveredTooltipIndex !== null && tooltipPosition && costSectors[hoveredTooltipIndex] && costSectors[hoveredTooltipIndex].showLabelAsTooltip && (
@@ -584,8 +584,8 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       <div 
         className="md:hidden" 
         style={{minHeight: '600px'}}
-        role="img"
-        aria-label={`Mobile bar chart showing cost breakdown across ${costSectors.length} sectors: ${costSectors.map(sector => `${sector.title} (${formatCostShort(sector.value)})`).join(', ')}`}
+        role="region"
+        aria-label={`Interactive mobile bar chart visualization showing cost breakdown across ${costSectors.length} sectors: ${costSectors.map(sector => `${sector.title} (${formatCostShort(sector.value)})`).join(', ')}`}
       >
 
         {/* Mobile Aside */}
@@ -623,7 +623,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
           ref={mobileBarsRef} 
           className="space-y-6"
           role="region"
-          aria-label="Cost breakdown by sector with individual bar charts"
+          aria-label={`Interactive cost breakdown visualization by sector with ${costSectors.length} individual bar charts showing opioid epidemic costs across different sectors`}
         >
           {costSectors.map((sector, i) => {
             const percentOfTotal = (sector.value / totalValue) * 100;

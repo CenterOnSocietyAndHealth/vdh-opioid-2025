@@ -229,6 +229,8 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
     }
   }, [isVisible, definition.length]) // Removed position dependencies
 
+  const ariaExpandedValue = isVisible ? "true" : "false"
+
   return (
     <>
       <span
@@ -238,8 +240,8 @@ export default function DefinitionPopup({ term, definition, children }: Definiti
         tabIndex={0}
         role="button"
         aria-describedby={isVisible ? `definition-${term.replace(/\s+/g, '-').toLowerCase()}` : undefined}
-        aria-label={`${term} definition. Press Enter, Space, or Arrow Down to ${isVisible ? 'close' : 'open'} definition.`}
-        aria-expanded={isVisible ? "true" : "false"}
+        aria-label={isFocused ? `Definition available for ${term}. Press Enter or Space to read it.` : undefined}
+        aria-expanded={ariaExpandedValue}
         aria-haspopup="true"
         aria-controls={isVisible ? `definition-${term.replace(/\s+/g, '-').toLowerCase()}` : undefined}
         onMouseEnter={handleMouseEnter}

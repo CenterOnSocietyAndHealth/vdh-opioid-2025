@@ -121,8 +121,8 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
         {/* Desktop Chart - Horizontal bars */}
         <div 
           className="hidden lg:block"
-          role="img"
-          aria-label={`Horizontal bar chart showing payer breakdown: Families & Businesses ${familiesBusinessesPercent.toFixed(1)}% (${formatCostShort(familiesBusinessesValue)}), Federal ${federalPercent.toFixed(1)}% (${formatCostShort(federalValue)}), State/Local ${stateLocalPercent.toFixed(1)}% (${formatCostShort(stateLocalValue)}). Total cost: ${formatCostShort(totalValue)}.`}
+          role="region"
+          aria-label={`Interactive horizontal bar chart showing payer breakdown for opioid epidemic costs: Families & Businesses ${familiesBusinessesPercent.toFixed(1)}% (${formatCostShort(familiesBusinessesValue)}), Federal ${federalPercent.toFixed(1)}% (${formatCostShort(federalValue)}), State/Local ${stateLocalPercent.toFixed(1)}% (${formatCostShort(stateLocalValue)}). Total cost: ${formatCostShort(totalValue)}.`}
         >
           <div className="relative w-full h-[90px] bg-gray-200">
             {/* Government Label and Bracket - positioned above the chart */}
@@ -283,8 +283,8 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
         {/* Mobile Chart - Vertical stacked bars */}
         <div 
           className="block px-4 lg:hidden"
-          role="img"
-          aria-label={`Vertical bar chart showing payer breakdown: Families & Businesses ${familiesBusinessesPercent.toFixed(1)}% (${formatCostShort(familiesBusinessesValue)}), Federal ${federalPercent.toFixed(1)}% (${formatCostShort(federalValue)}), State/Local ${stateLocalPercent.toFixed(1)}% (${formatCostShort(stateLocalValue)}). Total cost: ${formatCostShort(totalValue)}.`}
+          role="region"
+          aria-label={`Interactive vertical bar chart showing payer breakdown for opioid epidemic costs: Families & Businesses ${familiesBusinessesPercent.toFixed(1)}% (${formatCostShort(familiesBusinessesValue)}), Federal ${federalPercent.toFixed(1)}% (${formatCostShort(federalValue)}), State/Local ${stateLocalPercent.toFixed(1)}% (${formatCostShort(stateLocalValue)}). Total cost: ${formatCostShort(totalValue)}.`}
         >
           {/* Government Label */}
           <div className="relative mb-6">

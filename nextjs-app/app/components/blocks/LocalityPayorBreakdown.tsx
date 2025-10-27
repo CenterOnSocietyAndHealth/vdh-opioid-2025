@@ -141,8 +141,12 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse table-fixed">
+      <div 
+        className="overflow-x-auto"
+        role="region"
+        aria-label={`Interactive sortable locality payer breakdown table for ${filteredLocalities.length} Virginia localities`}
+      >
+        <table className="w-full border-collapse table-fixed" role="table">
           <colgroup>
             <col className="w-[34%]" />
             <col className="w-[22%]" />
@@ -242,7 +246,7 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
           className="max-h-[340px] overflow-y-auto scrollbar-hide"
           tabIndex={0}
           role="region"
-          aria-label="Locality data table with scrollable content"
+          aria-label={`Interactive locality payer breakdown table showing ${filteredLocalities.length} Virginia localities with scrollable content. Columns show Families & Businesses, Federal Government, and State/Local Government costs for opioid epidemic`}
         >
           <table className="w-full border-collapse table-fixed">
             <colgroup>
