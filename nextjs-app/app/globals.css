@@ -103,6 +103,18 @@ h2 {
     line-height: 130%;
     letter-spacing: -0.66px;
 }
+
+#style-like-h3 h2{
+    color: #000;
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    letter-spacing: -0.528px;
+    text-align: center;
+}
+
 h3 {
     color: #000;
     font-family: var(--font-dm-sans), sans-serif;
@@ -425,3 +437,4 @@ ol ol ol {
 .nav-link.no-shadow {
   text-shadow: none;
 }
+

@@ -77,7 +77,7 @@ export default function BlockQuote({ block }: BlockQuoteProps) {
               marginTop: '16px',
             }}
           >
-            {byline}
+            <cite className="not-italic">{byline}</cite>
           </footer>
         )}
       </blockquote>
