@@ -31,11 +31,12 @@ export default function BlockQuote({ block }: BlockQuoteProps) {
 
   return (
     <div className={`px-4 md:px-0 ${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
-      <div 
+      <blockquote 
         className={`${alignmentMap[validTextAlignment as keyof typeof alignmentMap]}`}
         style={{
           backgroundColor: '#F3F2EC',
           padding: '40px',
+          margin: 0,
           ...(maxWidth ? { maxWidth: `${maxWidth}px`, marginLeft: 'auto', marginRight: 'auto' } : {})
         }}
       >
@@ -66,7 +67,7 @@ export default function BlockQuote({ block }: BlockQuoteProps) {
           />
         )}
         {byline && (
-          <div
+          <footer
             style={{
               fontSize: '14px',
               lineHeight: '120%',
@@ -77,9 +78,9 @@ export default function BlockQuote({ block }: BlockQuoteProps) {
             }}
           >
             {byline}
-          </div>
+          </footer>
         )}
-      </div>
+      </blockquote>
     </div>
   )
 }
