@@ -42,10 +42,13 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
   // Prepare options for react-select
   const options: OptionType[] = [
     { value: "State", label: "State of Virginia" },
-    ...(localities ? localities.map((locality) => ({
-      value: locality._id,
-      label: locality.counties.trim(),
-    })).sort((a, b) => a.label.localeCompare(b.label)) : [])
+    ...(localities ? localities
+      .filter((locality) => locality.counties.trim() !== "Virginia") // Filter out "Virginia" to avoid duplicate
+      .map((locality) => ({
+        value: locality._id,
+        label: locality.counties.trim(),
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label)) : [])
   ];
 
   // Get the current value based on selectedLocality
@@ -235,17 +238,23 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
               }),
               option: (base: any, state: any) => ({
                 ...base,
-                padding: '12px 12px 8px 12px',
-                backgroundColor: state.isFocused ? '#f3f4f6' : 'white',
-                color: 'black',
+                padding: '10px 12px',
+                backgroundColor: state.isFocused || state.isSelected ? '#F3F2EC' : 'white',
+                color: '#1E1E1E',
+                fontFamily: '"DM Sans"',
+                fontSize: '16px',
+                fontStyle: 'normal',
+                fontWeight: 400,
+                letterSpacing: '-0.32px',
+                borderBottom: '1px solid #F3F2EC',
                 cursor: 'pointer',
-                textAlign: 'center',
+                textAlign: 'left',
                 display: 'flex',
                 alignItems: 'flex-end',
-                justifyContent: 'center',
-                height: '40px',
+                justifyContent: 'flex-start',
+                height: 'auto',
                 '&:active': {
-                  backgroundColor: '#e5e7eb',
+                  backgroundColor: '#F3F2EC',
                 },
               }),
               dropdownIndicator: (base: any) => ({
