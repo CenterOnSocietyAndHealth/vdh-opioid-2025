@@ -151,6 +151,15 @@ h4 {
     font-weight: 300;
     line-height: 150%;
   }
+  .no-margin-p .content-container {
+    height: 213px;
+  }
+}
+
+@media (max-width: 500px) {
+  .no-margin-p .content-container {
+    height: 300px;
+  }
 }
 
 .chart-description h3 {
