@@ -374,4 +374,16 @@ export type HighestCostsProps = {
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
   };
   localities: Locality[];
+};
+
+// Type for the block quote component props
+export type BlockQuoteProps = {
+  block: {
+    quote: any[]; // blockContent array
+    byline?: string;
+    textAlignment?: 'left' | 'center' | 'right';
+    maxWidth?: number;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+  };
 }; 

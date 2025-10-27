@@ -549,6 +549,16 @@ export const getPageQuery = defineQuery(`
           }
         }
       },
+      _type == "blockQuote" => {
+        ...,
+        quote[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        }
+      },
     },
   }
 `);

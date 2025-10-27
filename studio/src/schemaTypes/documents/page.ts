@@ -63,6 +63,7 @@ export const page = defineType({
         { type: 'sourcesAccordion' },
         { type: 'updateIntro' },
         { type: 'highestCosts' },
+        { type: 'blockQuote' },
       ],
       options: {
         insertMenu: {

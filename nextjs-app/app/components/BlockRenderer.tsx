@@ -23,6 +23,7 @@ import PovertyIncome from "./blocks/PovertyIncome";
 import SourcesAccordionBlock from "./blocks/SourcesAccordionBlock";
 import UpdateIntro from "./blocks/UpdateIntro";
 import HighestCosts from "./blocks/HighestCosts";
+import BlockQuote from "./blocks/BlockQuote";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -63,6 +64,7 @@ const Blocks: BlocksType = {
   sourcesAccordion: SourcesAccordionBlock,
   updateIntro: UpdateIntro,
   highestCosts: HighestCosts,
+  blockQuote: BlockQuote,
 };
 
 /**
