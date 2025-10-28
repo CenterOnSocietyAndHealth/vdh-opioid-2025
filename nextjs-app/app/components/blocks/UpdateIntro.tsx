@@ -63,8 +63,8 @@ export default function UpdateIntro({ block }: UpdateIntroProps) {
       {...(maxWidth && { style: { maxWidth: `${maxWidth}px` } })}
     >
       <div className="text-center text-[#747474] text-xs font-normal leading-[130%] tracking-[-0.228px]" style={{ fontFamily: 'Inter, sans-serif' }}>
-        <p className="text-xs mb-0 md:mb-2">{introText}</p>
-        <p className="text-xs"><Link href='/whats-new'>Updated {dateUpdated}</Link></p>
+        <p className="text-[14px] mb-0 md:mb-2">{introText}</p>
+        <p className="text-[14px]"><Link href='/whats-new'>Updated {dateUpdated}</Link></p>
       </div>
     </div>
   )

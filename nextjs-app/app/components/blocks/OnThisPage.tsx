@@ -68,7 +68,7 @@ export default function OnThisPage({ block }: OnThisPageProps) {
               <button
                 key={index}
                 onClick={() => handleLinkClick(link.destinationId)}
-                className="text-[#1E1E1E] underline font-normal border-b border-transparent hover:border-[#1E1E1E]"
+                className="text-[#1E1E1E] underline font-normal hover:bg-[#cfe6ef]"
               >
                 {link.title}
               </button>
