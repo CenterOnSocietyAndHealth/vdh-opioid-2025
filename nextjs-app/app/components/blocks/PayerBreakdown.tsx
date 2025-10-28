@@ -289,7 +289,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
           {/* Government Label */}
           <div className="relative mb-6">
             <div
-              className="absolute top-[120px] left-0 h-8 flex items-center justify-center text-[#1E1E1E] font-medium text-[14px]"
+              className="absolute top-[160px] left-0 h-8 flex items-center justify-center text-[#1E1E1E] font-medium text-[14px]"
               style={{
                 left: `70%`,
                 width: `27%`,
@@ -306,21 +306,21 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
           <div className="relative">
             {/* Vertical bracket line spanning Federal and State/Local bars */}
             <div 
-              className="absolute top-[95px] w-[1px] bg-[#1E1E1E]"
+              className="absolute top-[127px] w-[1px] bg-[#1E1E1E]"
               style={{
                 left: '68%',
-                height: `80px`, // height of Federal bar + spacing + State/Local bar
+                height: `100px`, // height of Federal bar + spacing + State/Local bar
                 zIndex: 10,
               }}
             ></div>
-            <div className="absolute top-[95px] h-[1px] w-[3%] left-[65%] bg-[#1E1E1E]"></div>
-            <div className="absolute top-[174px] h-[1px] w-[3%] left-[65%] bg-[#1E1E1E]"></div>
+            <div className="absolute top-[127px] h-[1px] w-[3%] left-[65%] bg-[#1E1E1E]"></div>
+            <div className="absolute top-[226px] h-[1px] w-[3%] left-[65%] bg-[#1E1E1E]"></div>
 
             <div className="space-y-6">
               {/* Families & Businesses Bar */}
               <div className="w-full">
                 <div 
-                  className="w-full h-[30px] Vertical-Bar-Segment"
+                  className="w-full h-[50px] Vertical-Bar-Segment"
                   style={{
                     width: '90%',
                     backgroundColor: safeFamiliesBusinessesColor
@@ -345,7 +345,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
               {/* Federal Bar */}
               <div className="w-full">
                 <div 
-                  className="w-full h-[30px] Vertical-Bar-Segment"
+                  className="w-full h-[50px] Vertical-Bar-Segment"
                   style={{
                     width: `${(federalPercent / governmentPercent) * 90}%`,
                     backgroundColor: safeFederalColor
@@ -370,7 +370,7 @@ export default function PayerBreakdown({ block }: PayerBreakdownProps) {
               {/* State/Local Bar */}
               <div className="w-full">
                 <div 
-                  className="w-full h-[30px] Vertical-Bar-Segment"
+                  className="w-full h-[50px] Vertical-Bar-Segment"
                   style={{
                     width: `${(stateLocalPercent / governmentPercent) * 90}%`,
                     backgroundColor: safeStateLocalColor

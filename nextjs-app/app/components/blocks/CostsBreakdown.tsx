@@ -636,7 +636,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
               <div key={i} className="bg-white py-0 px-4 mobile-sector" style={{opacity: 0, transform: 'translateX(-30px)'}}>
                 {/* Sector Bar */}
                 <div className="mb-2">
-                  <div className="w-full h-[30px] overflow-hidden">
+                  <div className="w-full h-[50px] overflow-hidden">
                     <div
                       className="h-full mobile-bar"
                       style={{
