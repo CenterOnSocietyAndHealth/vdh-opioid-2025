@@ -58,7 +58,7 @@ export default function ChoroplethMap({
 
   // Indicator display names
   const indicatorDisplayNames = useMemo<Record<CostsMapIndicator, string>>(() => ({
-    'Total': 'Total',
+    'Total': 'All-Sector',
     'Labor': 'Lost Labor',
     'HealthCare': 'Health Care',
     'Crime_Other': 'Criminal Justice',

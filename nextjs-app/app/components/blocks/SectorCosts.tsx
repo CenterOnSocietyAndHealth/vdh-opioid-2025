@@ -142,6 +142,11 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
               },
             },
             block: {
+              h3: ({ children }) => (
+                <h3 className="text-center">
+                  {children}
+                </h3>
+              ),
               largeValue: ({ children }) => (
                 <div style={{
                   fontFamily: 'Inter',
