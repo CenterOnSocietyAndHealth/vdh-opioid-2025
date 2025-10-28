@@ -336,7 +336,7 @@ export default function ChoroplethMap({
   }, [selectedLocality, localities, strokeColor]);
 
   // Function to create hover tooltip
-  const createHoverTooltip = useCallback((locality: Locality, geoData: any, path: any) => {
+  const createHoverTooltip = useCallback((locality: Locality, geoData: any, path: any, colorScale: any) => {
     if (!mapGroupRef.current) return;
     
     // Don't show tooltip if this is the selected locality
@@ -411,6 +411,13 @@ export default function ChoroplethMap({
           getFieldPath(locality, indicator, 'Total')
         );
         
+        // Get the locality's fill color
+        const value = getValueFromPath(
+          locality, 
+          getFieldPath(locality, indicator, displayType)
+        );
+        const localityColor = value !== undefined && value !== null ? colorScale(value) : "#ccc";
+        
         // Add tooltip background
         tooltip.append("rect")
           .attr("x", -80)
@@ -437,11 +444,19 @@ export default function ChoroplethMap({
           .style("pointer-events", "none")
           .text(locality.counties);
           
+        // Add colored circle to the left of per capita value
+        tooltip.append("circle")
+          .attr("cx", -50)
+          .attr("cy", -44)
+          .attr("r", 4)
+          .attr("fill", localityColor)
+          .style("pointer-events", "none");
+          
         // Add per capita value
         tooltip.append("text")
-          .attr("x", 0)
+          .attr("x", -40)
           .attr("y", -40)
-          .attr("text-anchor", "middle")
+          .attr("text-anchor", "start")
           .attr("font-size", "12px")
           .attr("font-family", "Inter")
           .attr("font-weight", "400")
@@ -451,9 +466,9 @@ export default function ChoroplethMap({
           
         // Add total value
         tooltip.append("text")
-          .attr("x", 0)
+          .attr("x", -40)
           .attr("y", -20)
-          .attr("text-anchor", "middle")
+          .attr("text-anchor", "start")
           .attr("font-size", "12px")
           .attr("font-family", "Inter")
           .attr("font-weight", "400")
@@ -470,7 +485,7 @@ export default function ChoroplethMap({
           .style("pointer-events", "none");
       }
     }
-  }, [indicator, selectedLocality]);
+  }, [indicator, displayType, selectedLocality]);
 
   // Function to remove hover tooltip
   const removeHoverTooltip = useCallback(() => {
@@ -1107,7 +1122,7 @@ export default function ChoroplethMap({
               
               setHoveredLocality(locality);
               applyHoverEffects(locality);
-              createHoverTooltip(locality, geoData, path);
+              createHoverTooltip(locality, geoData, path, colorScale);
             }
           })
           .on("mouseleave", (event: any, d: any) => {
@@ -1339,6 +1354,13 @@ export default function ChoroplethMap({
                 getFieldPath(selectedLocality, indicator, 'Total')
               );
               
+              // Get the locality's fill color
+              const value = getValueFromPath(
+                selectedLocality, 
+                getFieldPath(selectedLocality, indicator, displayType)
+              );
+              const localityColor = value !== undefined && value !== null ? colorScale(value) : "#ccc";
+              
               // Add tooltip background
               annotation.append("rect")
                 .attr("x", -80)
@@ -1365,11 +1387,19 @@ export default function ChoroplethMap({
                 .style("pointer-events", "none")
                 .text(selectedLocality.counties);
                 
+              // Add colored circle to the left of per capita value
+              annotation.append("circle")
+                .attr("cx", -50)
+                .attr("cy", -44)
+                .attr("r", 4)
+                .attr("fill", localityColor)
+                .style("pointer-events", "none");
+                
               // Add per capita value
               annotation.append("text")
-                .attr("x", 0)
+                .attr("x", -40)
                 .attr("y", -40)
-                .attr("text-anchor", "middle")
+                .attr("text-anchor", "start")
                 .attr("font-size", "12px")
                 .attr("font-family", "Inter")
                 .attr("font-weight", "400")
@@ -1379,9 +1409,9 @@ export default function ChoroplethMap({
                 
               // Add total value
               annotation.append("text")
-                .attr("x", 0)
+                .attr("x", -40)
                 .attr("y", -20)
-                .attr("text-anchor", "middle")
+                .attr("text-anchor", "start")
                 .attr("font-size", "12px")
                 .attr("font-family", "Inter")
                 .attr("font-weight", "400")
