@@ -1159,8 +1159,8 @@ export default function ChoroplethMap({
         // Create legend
         const legendWidth = isMobile ? width : 165;
         const legendHeight = isMobile ? 40 : 85;
-        const boxSize = 18; // Fixed width
-        const boxHeight = 20; // Fixed height
+        const boxSize = isMobile ? 14 : 18; // Fixed width
+        const boxHeight = isMobile ? 16 : 20; // Fixed height
         const spacing = isMobile ? 25 : 20;
         
         const legend = svg.append("g")
@@ -1183,12 +1183,12 @@ export default function ChoroplethMap({
           : `${indicatorDisplayNames[indicator]} Costs`;
         
         legend.append("text")
-          .attr("x", 10)
-          .attr("y", -10)
+          .attr("x", isMobile ? 25 : 10)
+          .attr("y", isMobile ? -5 : -10)
           .attr("text-anchor", "start")
           .attr("font-family", "Inter")
           .attr("font-weight", "700")
-          .attr("font-size", "14px")
+          .attr("font-size", isMobile ? "12px" : "14px")
           .attr("fill", "#1E1E1E")
           .attr("line-height", "170%")
           .attr("letter-spacing", "-0.266px")
@@ -1197,8 +1197,8 @@ export default function ChoroplethMap({
         // Add colored boxes for each color in the scale
         colors.forEach((color, i) => {
           // For mobile, display all scales in a single row with tighter spacing
-          const mobileBoxSpacing = (legendWidth * 0.95) / colors.length + 12; // Reduced spacing for mobile + 8px extra
-          const x = isMobile ? 10 + i * mobileBoxSpacing : 10;
+          const mobileBoxSpacing = (legendWidth * 0.88) / colors.length + 12; // Reduced spacing for mobile + 8px extra
+          const x = isMobile ? 25 + i * mobileBoxSpacing : 10;
           const y = isMobile ? 10 : 10 + i * (spacing + 3);
           
           legend.append("rect")

@@ -333,7 +333,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
 
       <div className="relative mx-auto max-w-[1200px]">
         {/* Map Container */}
-        <div className="p-4">
+        <div className="py-4 px-0 md:px-4">
           <div 
             className="min-h-[400px]"
             role="region"
@@ -358,7 +358,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
 
           {/* DataTableDescription for the current sector */}
           {getCurrentDescription() && (
-            <div className="px-0 md:px-24 mt-4">
+            <div className="px-4 md:px-24 mt-4">
               <DataTableDescription
                 title="Map Description/Data Table"
                 description={getCurrentDescription() || undefined}
@@ -372,7 +372,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
 
           {/* SourcesAccordion for the current sector */}
           {getCurrentSources() && (
-            <div className="px-0 md:px-24 mt-0">
+            <div className="px-4 md:px-24 mt-0">
               <SourcesAccordion
                 title="Sources"
                 sources={getCurrentSources() || undefined}
