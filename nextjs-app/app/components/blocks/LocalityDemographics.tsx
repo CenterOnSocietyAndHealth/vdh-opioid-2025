@@ -105,7 +105,7 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
           ...(maxWidth ? { maxWidth: `${maxWidth}px`, marginLeft: 'auto', marginRight: 'auto' } : {})
         }}
       >
-        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-4 lg:gap-4">
+        <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 px-4">
           {/* Population */}
           <div className="flex items-center gap-1">
             <div 
