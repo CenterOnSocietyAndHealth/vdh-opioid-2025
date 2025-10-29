@@ -590,7 +590,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
 
         {/* Mobile Aside */}
         {mobileAside && (
-          <div className="bg-[#F3F2EC] p-4 pb-0.5 mb-6 mobile-aside">
+          <div className="bg-[#F3F2EC] p-4 pb-0.5 mb-8 mobile-aside">
             <div
               style={{
                 color: '#1E1E1E',
@@ -604,7 +604,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         )}
 
         {/* Title Section */}
-        <div ref={mobileTitleRef} className="text-center mb-6" style={{opacity: 0, transform: 'translateY(-20px)'}}>
+        <div ref={mobileTitleRef} className="text-center mb-6 px-4" style={{opacity: 0, transform: 'translateY(-20px)'}}>
           <h2 className="mb-2 text-gray-800">
             {totalCostSubtitle || 'The Opioid Epidemic Cost Virginians'}
           </h2>
