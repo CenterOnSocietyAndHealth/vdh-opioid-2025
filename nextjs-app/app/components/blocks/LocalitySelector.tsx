@@ -71,8 +71,11 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
       const newLocality = localityId === "State" ? null : 
         localities?.find(l => l._id === localityId) || null;
             
-      // Make sure we have all the required fields
-      if (newLocality && !newLocality.opioidMetrics?.totalTotalPercentile) {
+      // Make sure we have all the required fields (allow 0 as a valid value)
+      if (
+        newLocality &&
+        newLocality.opioidMetrics?.totalTotalPercentile == null
+      ) {
         console.error('Locality data is missing required fields:', newLocality);
         return;
       }
