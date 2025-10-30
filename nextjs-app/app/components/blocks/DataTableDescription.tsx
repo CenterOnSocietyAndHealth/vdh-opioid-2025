@@ -170,7 +170,7 @@ export default function DataTableDescription({
       {/* Accordion Header */}
       <button
         onClick={toggleExpanded}
-        aria-expanded={isExpanded ? "true" : "false"}
+        aria-expanded={isExpanded}
         aria-controls="data-table-content"
         className={`w-full px-0 py-2 flex items-start justify-start text-left border-b border-[#78787878] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors duration-200 ${isExpanded ? 'border-b border-[#78787800]' : ''}`}
       >
@@ -198,7 +198,7 @@ export default function DataTableDescription({
       {/* Accordion Content */}
       <div
         id="data-table-content"
-        aria-hidden={!isExpanded ? "true" : "false"}
+        aria-hidden={!isExpanded}
         className={`overflow-hidden transition-all duration-1000 ease-in-out ${
           isExpanded ? 'max-h-[2000px] border-b border-[#78787878]' : 'max-h-0'
         }`}
@@ -341,7 +341,7 @@ export default function DataTableDescription({
                             {columns.map((column) => (
                               <td 
                                 key={column.key}
-                                className={`py-0 px-1 ${
+                                className={`py-3 px-1 ${
                                   column.align === 'right' ? 'text-right' : 
                                   column.align === 'center' ? 'text-center' : 
                                   'text-left'
@@ -352,10 +352,20 @@ export default function DataTableDescription({
                                   fontSize: '14px',
                                   fontStyle: 'normal',
                                   fontWeight: isHighlighted ? '700' : '400',
-                                  lineHeight: '289%'
+                                  lineHeight: '150%',
+                                  letterSpacing: '-0.266px'
                                 }}
                               >
-                                {formatValue(row[column.key], column.format || 'text')}
+                                {(() => {
+                                  const raw = formatValue(row[column.key], column.format || 'text');
+                                  if (
+                                    typeof raw === 'string' &&
+                                    (/locality/i.test(column.key) || /county/i.test(column.key) || /locality/i.test(column.label) || /county/i.test(column.label))
+                                  ) {
+                                    return raw.replace(/\bCounty\b/g, 'Co.');
+                                  }
+                                  return raw;
+                                })()}
                               </td>
                             ))}
                           </tr>
