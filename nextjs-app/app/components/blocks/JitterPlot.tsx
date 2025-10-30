@@ -118,15 +118,23 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     if (!fieldName) return { values: [], average: 0, selectedValue: 0 };
 
     // Calculate Virginia average from ALL localities (not filtered)
+    // Use a population-weighted average of per-capita values to reflect differing locality sizes
     const allVirginiaLocalities = localities.filter(loc => loc.counties !== 'Virginia');
-    const allVirginiaValues = allVirginiaLocalities
+    const weightedData = allVirginiaLocalities
       .map(loc => {
-        const value = loc.opioidMetrics?.[fieldName as keyof typeof loc.opioidMetrics] || 0;
-        return typeof value === 'number' ? value : 0;
+        const perCapitaRaw = loc.opioidMetrics?.[fieldName as keyof typeof loc.opioidMetrics] || 0;
+        const perCapita = typeof perCapitaRaw === 'number' ? perCapitaRaw : 0;
+        const populationRaw = loc.demographics?.totalPopulation || 0;
+        const population = typeof populationRaw === 'number' ? populationRaw : 0;
+        return { perCapita, population };
       })
-      .filter(value => value >= 0);
-    
-    const virginiaAverage = 593;
+      .filter(d => d.perCapita >= 0 && d.population > 0);
+
+    const totalPopulation = weightedData.reduce((sum, d) => sum + d.population, 0);
+    const virginiaAverage = totalPopulation > 0
+      ? weightedData.reduce((sum, d) => sum + d.perCapita * d.population, 0) / totalPopulation
+      : 0;
+
 
     // Filter localities based on neighbor filtering for display
     let filteredLocalities = localities.filter(loc => loc.counties !== 'Virginia');
