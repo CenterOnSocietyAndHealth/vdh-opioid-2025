@@ -116,7 +116,7 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
 
   return (
     <div 
-      className={`mx-auto p-6 px-4 md:px-12 ${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}
+      className={`mx-4 md:mx-auto p-6 px-4 md:px-12 ${marginMap[marginTop]} ${marginBottomMap[marginBottom]}`}
       style={{ 
         maxWidth: `${maxWidth}px`,
         backgroundColor: '#F3F2EC'
@@ -148,10 +148,10 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
       >
         <table className="w-full border-collapse table-fixed" role="table">
           <colgroup>
-            <col className="w-[34%]" />
-            <col className="w-[22%]" />
-            <col className="w-[22%]" />
-            <col className="w-[22%]" />
+            <col className="w-[28%]" />
+            <col className="w-[24%]" />
+            <col className="w-[24%]" />
+            <col className="w-[24%]" />
           </colgroup>
           <thead className="sticky top-0 bg-[#F3F2EC] z-10">
             <tr className="border-t border-b border-[#979797]">
@@ -259,7 +259,7 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
               {filteredLocalities.map((locality) => (
                 <tr key={locality._id} className="border-b border-[#E0DCDC] hover:bg-gray-50">
                   <td className="py-2 px-0 text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
-                    {locality.counties.trim()}
+                    {locality.counties.trim().replace(/\bCounty\b/g, 'Co.')}
                   </td>
                   <td className="py-2 px-0 text-right text-[#1E1E1E] font-inter text-xs md:text-sm font-normal">
                     {locality.sectorBreakdown?.householdSectorTotal != null
