@@ -107,8 +107,9 @@ export default async function RootLayout({
           <Header />
           <main id="main-content">{children}</main>
           <Footer />
+          {/* Keep SpeedInsights within the main section to avoid any residual space below the footer */}
+          <SpeedInsights />
         </section>
-        <SpeedInsights />
       </body>
     </html>
   );

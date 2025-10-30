@@ -389,21 +389,67 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     const nonSelectedData = jitterData.filter(d => !d.isSelected);
     const selectedData = jitterData.filter(d => d.isSelected);
 
-    // Create tooltip
-    const tooltip = d3.select('body')
-      .append('div')
-      .attr('class', 'jitter-plot-tooltip')
-      .style('position', 'absolute')
-      .style('background', 'white')
-      .style('color', 'black')
-      .style('padding', '8px 12px')
-      .style('border-radius', '4px')
-      .style('font-size', '14px')
-      .style('pointer-events', 'none')
-      .style('opacity', 0)
-      .style('z-index', '1000')
-      .style('border', '1px solid #ccc')
-      .style('box-shadow', '0 2px 8px rgba(0, 0, 0, 0.15)');
+    // Layer for hover-selected guides
+    const hoverLayer = chartGroup.append('g').attr('class', 'hover-layer');
+
+    const renderHoverSelection = (d: any) => {
+      hoverLayer.selectAll('*').remove();
+      const selectedX = xScale(d.value);
+      const selectedJitter = getDeterministicJitter(d.locality._id);
+      const selectedY = yScale(selectedJitter);
+
+      // Determine text alignment based on position
+      const chartPosition = selectedX / chartWidth;
+      const textAnchor: 'start' | 'middle' | 'end' = chartPosition < 0.2 ? 'start' : chartPosition > 0.8 ? 'end' : 'middle';
+      const textX = textAnchor === 'start' ? Math.max(0, selectedX - 50) :
+                   textAnchor === 'end' ? Math.min(chartWidth, selectedX + 50) :
+                   selectedX;
+
+      const g = hoverLayer.append('g').attr('class', 'hover-selected-line');
+      g.append('line')
+        .attr('x1', selectedX)
+        .attr('x2', selectedX)
+        .attr('y1', selectedY)
+        .attr('y2', (chartHeight/2) + 65)
+        .attr('stroke', colors.selectedDot)
+        .attr('stroke-width', 1);
+
+      g.append('text')
+        .attr('x', textX)
+        .attr('y', (chartHeight/2 + 85))
+        .attr('text-anchor', textAnchor)
+        .attr('font-size', '16px')
+        .attr('fill', '#1E1E1E')
+        .attr('font-weight', '500')
+        .text(d.locality.counties.trim());
+
+      g.append('text')
+        .attr('x', textX)
+        .attr('y', (chartHeight/2 + 105))
+        .attr('text-anchor', textAnchor)
+        .attr('font-size', '16px')
+        .attr('fill', '#1E1E1E')
+        .attr('font-weight', '500')
+        .text(`${sectorDisplayNames[selectedSector]} Costs`);
+
+      g.append('text')
+        .attr('x', textX)
+        .attr('y', (chartHeight/2 + 125))
+        .attr('text-anchor', textAnchor)
+        .attr('font-size', '16px')
+        .attr('fill', '#1E1E1E')
+        .attr('font-weight', '700')
+        .text(`$${Math.round(d.value).toLocaleString()}/person`);
+
+      const population = typeof d.locality.demographics?.totalPopulation === 'number' ? d.locality.demographics.totalPopulation : 0;
+      g.append('text')
+        .attr('x', textX)
+        .attr('y', (chartHeight/2 + 145))
+        .attr('text-anchor', textAnchor)
+        .attr('font-size', '16px')
+        .attr('fill', '#1E1E1E')
+        .text(`($${Math.round(d.value * population).toLocaleString()} total cost)`);
+    };
 
     // Add non-selected dots first (so they appear behind)
     const dots = chartGroup.selectAll('.dot')
@@ -443,30 +489,20 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
         }
       )
       .on('mouseover', function(event, d) {
-        // Add stroke on hover
         d3.select(this)
           .attr('stroke', '#FFD900')
           .attr('stroke-width', 2);
-        
-        // Show tooltip
-        const sectorDisplayName = sectorDisplayNames[selectedSector] || 'Costs';
-        tooltip
-          .style('opacity', 1)
-          .html(`
-            <div><strong>${d.locality.counties.trim()}</strong></div>
-            <div>$${Math.round(d.value).toLocaleString()} per person</div>
-          `)
-          .style('left', (event.pageX + 10) + 'px')
-          .style('top', (event.pageY - 10) + 'px');
+        // Hide selected locality label to prevent overlap
+        chartGroup.selectAll('.selected-line').style('display', 'none');
+        renderHoverSelection(d);
       })
       .on('mouseout', function(event, d) {
-        // Remove stroke on mouse out
         d3.select(this)
           .attr('stroke', 'none')
           .attr('stroke-width', 0);
-        
-        // Hide tooltip
-        tooltip.style('opacity', 0);
+        hoverLayer.selectAll('*').remove();
+        // Restore selected locality label
+        chartGroup.selectAll('.selected-line').style('display', null);
       });
 
     // Add selected dots last (so they appear in front)
@@ -508,30 +544,20 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
           }
         )
         .on('mouseover', function(event, d) {
-          // Add stroke on hover
           d3.select(this)
             .attr('stroke', '#FFD900')
             .attr('stroke-width', 2);
-          
-          // Show tooltip
-          const sectorDisplayName = sectorDisplayNames[selectedSector] || 'Costs';
-          tooltip
-            .style('opacity', 1)
-            .html(`
-              <div><strong>${d.locality.counties.trim()}</strong></div>
-              <div>$${Math.round(d.value).toLocaleString()} per person</div>
-            `)
-            .style('left', (event.pageX + 10) + 'px')
-            .style('top', (event.pageY - 10) + 'px');
+          // Hide selected locality label to prevent overlap
+          chartGroup.selectAll('.selected-line').style('display', 'none');
+          renderHoverSelection(d);
         })
         .on('mouseout', function(event, d) {
-          // Remove stroke on mouse out
           d3.select(this)
             .attr('stroke', 'none')
             .attr('stroke-width', 0);
-          
-          // Hide tooltip
-          tooltip.style('opacity', 0);
+          hoverLayer.selectAll('*').remove();
+          // Restore selected locality label
+          chartGroup.selectAll('.selected-line').style('display', null);
         });
     }
 
@@ -889,7 +915,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
           
           {/* Hidden description for screen readers */}
           <div id="jitter-plot-description" className="sr-only">
-            Interactive jitter plot visualization. Each dot represents a Virginia locality positioned horizontally by per capita cost. Dots are jittered vertically for better visibility. Hover over dots to see locality names and exact costs. The dashed line shows the Virginia average. {selectedLocality && selectedLocality.counties !== 'Virginia' ? `The red dot represents the selected locality ${selectedLocality.counties.trim()}.` : 'No specific locality is currently selected.'}
+            Interactive jitter plot visualization. Each dot represents a Virginia locality positioned horizontally by per capita cost. Dots are jittered vertically for better visibility. Hovering a dot shows the locality label and a guide line at its value. The dashed line shows the Virginia average. {selectedLocality && selectedLocality.counties !== 'Virginia' ? `The red dot represents the selected locality ${selectedLocality.counties.trim()}.` : 'No specific locality is currently selected.'}
           </div>
         </div>
 
