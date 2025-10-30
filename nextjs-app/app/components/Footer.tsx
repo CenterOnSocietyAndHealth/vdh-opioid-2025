@@ -51,7 +51,7 @@ export default async function Footer() {
           
           {/* Physical Address */}
           <div className="mb-4 text-black">
-            <div>830 East Main Street, Suite 5035</div>
+            <div>830 East Main Street</div>
             <div>P.O. Box 980212</div>
             <div>Richmond, Virginia 23298-0212</div>
           </div>

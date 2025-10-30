@@ -126,9 +126,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       })
       .filter(value => value >= 0);
     
-    const virginiaAverage = allVirginiaValues.length > 0 
-      ? allVirginiaValues.reduce((sum, value) => sum + value, 0) / allVirginiaValues.length 
-      : 0;
+    const virginiaAverage = 593;
 
     // Filter localities based on neighbor filtering for display
     let filteredLocalities = localities.filter(loc => loc.counties !== 'Virginia');
