@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import imageUrlBuilder from '@sanity/image-url'
@@ -35,6 +35,28 @@ export default function MobileNavigation({
     setIsMenuOpen(false);
   };
 
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      // Save current scroll position
+      const scrollY = window.scrollY;
+      // Disable scroll on body
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+      
+      return () => {
+        // Re-enable scroll when menu closes
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [isMenuOpen]);
+
   return (
     <>
       {/* Mobile Menu Button */}
@@ -43,7 +65,7 @@ export default function MobileNavigation({
           onClick={toggleMenu}
           className="flex flex-col items-center justify-center p-2"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isMenuOpen ? 'true' : 'false'}
+          aria-expanded={isMenuOpen}
         >
           {/* Hamburger/X Icon */}
           <div className="relative w-6 h-5 flex flex-col justify-center">
@@ -76,22 +98,26 @@ export default function MobileNavigation({
         <div className="fixed inset-0 z-50 lg:hidden" style={{ top: '38px' }}>
           {/* Backdrop */}
           <div 
-            className="absolute inset-0"
+            className="absolute inset-0 bg-black/20"
             onClick={closeMenu}
             style={{ top: '-38px' }}
           />
           
           {/* Menu Content */}
           <div className="relative bg-white w-screen flex flex-col"
-            style={{ height: 'calc(100vh - 38px)' }}
+            style={{ 
+              height: 'calc(100vh - 38px)',
+              maxHeight: 'calc(100vh - 38px)',
+              paddingBottom: 'env(safe-area-inset-bottom, 0px)'
+            }}
             >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-200">
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-200 flex-shrink-0">
               {/* Logo */}
               <div className="logo h-[50px] flex-shrink-0">
                 {logo ? (
                   // eslint-disable-next-line @next/next/no-html-link-for-pages
-                  <a href="/" onClick={closeMenu}>
+                  <a href="/" onClick={closeMenu} aria-label="Go to home page">
                     <Image 
                       src={urlForImage(logo).width(590).url()} 
                       alt={logo.alt || "Virginia Opioid Cost Data Tool"}
@@ -122,8 +148,8 @@ export default function MobileNavigation({
               </button>
             </div>
 
-            {/* Navigation Items */}
-            <nav className="flex-1 px-6 py-6">
+            {/* Navigation Items - Scrollable */}
+            <nav className="flex-1 overflow-y-auto min-h-0 px-6 py-6">
               <ul className="space-y-0">
                 {items.map((item, index) => {
                   const href = item.linkType === 'internal' 
@@ -155,8 +181,10 @@ export default function MobileNavigation({
               </ul>
             </nav>
 
-            {/* Footer */}
-            <div className="px-6 py-8 border-t border-gray-200">
+            {/* Footer - Fixed at bottom */}
+            <div className="px-6 py-8 border-t border-gray-200 flex-shrink-0 bg-white"
+              style={{ paddingBottom: `calc(1rem + env(safe-area-inset-bottom, 0px))` }}
+            >
               <div className="text-sm text-gray-600 mb-4">
                 <div>Email: <a href="mailto:societyhealth@vcu.edu" className="underline">societyhealth@vcu.edu</a></div>
                 <div>VCU Center on Society and Health</div>

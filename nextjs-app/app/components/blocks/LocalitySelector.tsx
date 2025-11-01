@@ -150,7 +150,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
                 borderRadius: 0,
                 flex: 1,
                 height: 45,
-                width: 356,
+                width: 326,
                 backgroundColor: '#FAF9F8',
                 cursor: isUpdating ? "not-allowed" : "pointer",
                 opacity: isUpdating ? 0.7 : 1,

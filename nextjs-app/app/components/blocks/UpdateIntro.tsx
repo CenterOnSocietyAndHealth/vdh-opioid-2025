@@ -59,7 +59,7 @@ export default function UpdateIntro({ block }: UpdateIntroProps) {
 
   return (
     <div 
-      className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]} ${maxWidth ? 'mx-auto' : ''} ${displayClasses.join(' ')}`}
+      className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]} ${maxWidth ? 'px-4 mx-auto' : ''} ${displayClasses.join(' ')}`}
       {...(maxWidth && { style: { maxWidth: `${maxWidth}px` } })}
     >
       <div className="text-center text-[#747474] text-xs font-normal leading-[130%] tracking-[-0.228px]" style={{ fontFamily: 'Inter, sans-serif' }}>

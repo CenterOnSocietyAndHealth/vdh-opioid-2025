@@ -1144,7 +1144,7 @@ export default function ChoroplethMap({
         if (isMobile) {
           const zoom = d3.zoom<SVGSVGElement, unknown>()
             .scaleExtent([1, 1]) // Disable zooming (fixed at 1x)
-            .translateExtent([[-width * 1.5, -height * 0.5], [width * 2.5, height * 1.5]]) // Limit panning with more horizontal range
+            .translateExtent([[-width * 2.5, -height * 0.35], [width * 1.5, height * 1.1]]) // Limit panning with more horizontal range
             .on('zoom', (event) => {
               mapGroup.attr('transform', event.transform);
             });

@@ -95,7 +95,7 @@ export default function HighestCosts({ block, localities }: HighestCostsProps) {
   return (
     <section>
     <div 
-      className={`mx-auto p-6 px-4 md:px-8 ${marginMap[marginTop]}`}
+      className={`mx-4 md:mx-auto p-6 px-4 md:px-8 ${marginMap[marginTop]}`}
       style={{ 
         maxWidth: `${maxWidth}px`,
         backgroundColor: '#F3F2EC'
@@ -142,14 +142,14 @@ export default function HighestCosts({ block, localities }: HighestCostsProps) {
               </th>
               <th className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
                 <div className="flex flex-col">
-                  <span>VA Costs Due to</span>
-                  <span>Opioids*</span>
+                    <span>Local All-Sector</span>
+                    <span>Opioid Costs*</span>
                 </div>
               </th>
               <th className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
                 <div className="flex flex-col">
-                  <span>VA Lost Labor Cost</span>
-                  <span>Due to Opioids*</span>
+                  <span>Local Lost Labor</span>
+                  <span>Opioid Costs*</span>
                 </div>
               </th>
             </tr>
