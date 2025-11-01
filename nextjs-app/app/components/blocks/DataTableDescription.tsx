@@ -60,6 +60,14 @@ export default function DataTableDescription({
     }
   };
 
+  // Handle keyboard sorting
+  const handleKeyDown = (event: React.KeyboardEvent, columnKey: string) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleSort(columnKey);
+    }
+  };
+
   // Get numeric value for sorting
   const getNumericValue = (value: string | number | undefined): number => {
     if (value === undefined || value === null) return 0;
@@ -272,49 +280,59 @@ export default function DataTableDescription({
                     </colgroup>
                     <thead>
                       <tr className="border-b border-gray-200">
-                        {columns.map((column) => (
-                          <th 
-                            key={column.key}
-                            className={`py-2 px-1 cursor-pointer hover:bg-gray-100 transition-colors duration-150 ${
-                              column.align === 'right' ? 'text-right' : 
-                              column.align === 'center' ? 'text-center' : 
-                              'text-left'
-                            }`}
-                            style={{
-                              color: '#000',
-                              fontFamily: 'Inter',
-                              fontSize: '14px',
-                              fontStyle: 'normal',
-                              fontWeight: '600',
-                              lineHeight: '118%',
-                              letterSpacing: '-0.266px'
-                            }}
-                            onClick={() => handleSort(column.key)}
-                            tabIndex={isExpanded ? 0 : -1}
-                          >
-                            <div className={`flex items-center gap-1 ${
-                              column.align === 'right' ? 'justify-end' : 
-                              column.align === 'center' ? 'justify-center' : 
-                              'justify-start'
-                            }`}>
-                              <span>{column.label}</span>
-                              {/* Sort indicator */}
-                              {sortColumn === column.key && (
-                                <span className="inline-flex flex-col w-3 h-4">
-                                  {sortDirection === 'asc' ? (
-                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                      <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
-                                    </svg>
-                                  ) : (
-                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                      <path d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" />
-                                    </svg>
-                                  )}
-                                </span>
-                              )}
-                            </div>
-                          </th>
-                        ))}
+                        {columns.map((column) => {
+                          const isSorted = sortColumn === column.key;
+                          const sortAriaLabel = isSorted 
+                            ? `Sort by ${column.label}, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Click to reverse.`
+                            : `Sort by ${column.label}`;
+                          return (
+                            <th 
+                              key={column.key}
+                              role="columnheader"
+                              aria-sort={isSorted ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                              aria-label={sortAriaLabel}
+                              className={`py-2 px-1 cursor-pointer hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors duration-150 ${
+                                column.align === 'right' ? 'text-right' : 
+                                column.align === 'center' ? 'text-center' : 
+                                'text-left'
+                              }`}
+                              style={{
+                                color: '#000',
+                                fontFamily: 'Inter',
+                                fontSize: '14px',
+                                fontStyle: 'normal',
+                                fontWeight: '600',
+                                lineHeight: '118%',
+                                letterSpacing: '-0.266px'
+                              }}
+                              onClick={() => handleSort(column.key)}
+                              onKeyDown={(e) => handleKeyDown(e, column.key)}
+                              tabIndex={isExpanded ? 0 : -1}
+                            >
+                              <div className={`flex items-center gap-1 ${
+                                column.align === 'right' ? 'justify-end' : 
+                                column.align === 'center' ? 'justify-center' : 
+                                'justify-start'
+                              }`}>
+                                <span>{column.label}</span>
+                                {/* Sort indicator */}
+                                {isSorted && (
+                                  <span className="inline-flex flex-col w-3 h-4" aria-hidden="true">
+                                    {sortDirection === 'asc' ? (
+                                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
+                                      </svg>
+                                    ) : (
+                                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" />
+                                      </svg>
+                                    )}
+                                  </span>
+                                )}
+                              </div>
+                            </th>
+                          );
+                        })}
                       </tr>
                     </thead>
                   </table>

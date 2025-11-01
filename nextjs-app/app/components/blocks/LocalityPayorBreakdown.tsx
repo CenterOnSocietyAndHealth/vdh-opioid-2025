@@ -56,6 +56,14 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
     }
   };
 
+  // Handle keyboard sorting
+  const handleKeyDown = (event: React.KeyboardEvent, column: SortColumn) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleSort(column);
+    }
+  };
+
   // Filter localities excluding Virginia (CountyFIPS: 51999) and apply search filter
   const filteredLocalities = useMemo(() => {
     if (!localities || localities.length === 0) {
@@ -156,13 +164,18 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
           <thead className="sticky top-0 bg-[#F3F2EC] z-10">
             <tr className="border-t border-b border-[#979797]">
               <th 
-                className="text-left py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] transition-colors select-none"
+                role="columnheader"
+                aria-sort={sortColumn === 'locality' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                aria-label={`Sort by Locality${sortColumn === 'locality' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Click to reverse.` : ''}`}
+                className="text-left py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors select-none"
                 onClick={() => handleSort('locality')}
+                onKeyDown={(e) => handleKeyDown(e, 'locality')}
+                tabIndex={0}
               >
                 <div className="flex items-center gap-1">
                   <span>Locality</span>
                   {sortColumn === 'locality' && (
-                    <span className="inline-flex flex-col w-3 h-4">
+                    <span className="inline-flex flex-col w-3 h-4" aria-hidden="true">
                       {sortDirection === 'asc' ? (
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
@@ -177,13 +190,18 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
                 </div>
               </th>
               <th 
-                className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] transition-colors select-none"
+                role="columnheader"
+                aria-sort={sortColumn === 'household' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                aria-label={`Sort by Families / Businesses${sortColumn === 'household' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Click to reverse.` : ''}`}
+                className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors select-none"
                 onClick={() => handleSort('household')}
+                onKeyDown={(e) => handleKeyDown(e, 'household')}
+                tabIndex={0}
               >
                 <div className="flex items-center justify-end gap-1">
                   <span>Families / Businesses</span>
                   {sortColumn === 'household' && (
-                    <span className="inline-flex flex-col w-3 h-4">
+                    <span className="inline-flex flex-col w-3 h-4" aria-hidden="true">
                       {sortDirection === 'asc' ? (
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
@@ -198,13 +216,18 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
                 </div>
               </th>
               <th 
-                className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] transition-colors select-none"
+                role="columnheader"
+                aria-sort={sortColumn === 'federal' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                aria-label={`Sort by Federal Government${sortColumn === 'federal' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Click to reverse.` : ''}`}
+                className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors select-none"
                 onClick={() => handleSort('federal')}
+                onKeyDown={(e) => handleKeyDown(e, 'federal')}
+                tabIndex={0}
               >
                 <div className="flex items-center justify-end gap-1">
                   <span>Federal Gov&apos;t</span>
                   {sortColumn === 'federal' && (
-                    <span className="inline-flex flex-col w-3 h-4">
+                    <span className="inline-flex flex-col w-3 h-4" aria-hidden="true">
                       {sortDirection === 'asc' ? (
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
@@ -219,13 +242,18 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
                 </div>
               </th>
               <th 
-                className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] transition-colors select-none"
+                role="columnheader"
+                aria-sort={sortColumn === 'stateLocal' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                aria-label={`Sort by State / Local Government${sortColumn === 'stateLocal' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Click to reverse.` : ''}`}
+                className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors select-none"
                 onClick={() => handleSort('stateLocal')}
+                onKeyDown={(e) => handleKeyDown(e, 'stateLocal')}
+                tabIndex={0}
               >
                 <div className="flex items-center justify-end gap-1">
                   <span>State / Local Gov&apos;t</span>
                   {sortColumn === 'stateLocal' && (
-                    <span className="inline-flex flex-col w-3 h-4">
+                    <span className="inline-flex flex-col w-3 h-4" aria-hidden="true">
                       {sortDirection === 'asc' ? (
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" />
