@@ -27,6 +27,7 @@ import {sourcesAccordion} from './objects/sourcesAccordion'
 import {updateIntro} from './objects/updateIntro'
 import {highestCosts} from './objects/highestCosts'
 import {blockQuote} from './objects/blockQuote'
+import {imageAndText} from './objects/imageAndText'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -63,4 +64,5 @@ export const schemaTypes = [
   updateIntro,
   highestCosts,
   blockQuote,
+  imageAndText,
 ]
