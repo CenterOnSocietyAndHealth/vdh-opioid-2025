@@ -142,7 +142,7 @@ export default function ImageAndText({ block, pageId, pageType, localities, path
       style={containerStyle}
     >
       {/* Mobile: Always stack with image on top */}
-      <div className="flex flex-col md:hidden -mx-4">
+      <div className="flex flex-col gap-4 md:hidden -mx-4">
         <div className="w-full px-4">
           {imageElement}
         </div>
