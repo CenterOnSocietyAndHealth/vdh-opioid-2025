@@ -335,7 +335,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
         {/* Map Container */}
         <div className="py-4 px-0 md:px-4">
           <div 
-            className="min-h-[400px]"
+            className="min-h-[551.28px] md:min-h-[540.73px]"
             role="region"
             aria-label={`${tabIndicatorMapping[indicatorTab]} Costs Map`}
           >
