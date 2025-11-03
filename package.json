@@ -5,7 +5,8 @@
     "dev": "npm-run-all --parallel dev:*",
     "dev:next": "npm run dev --workspace=nextjs-app",
     "dev:studio": "npm run dev --workspace=studio",
-    "import-data": "node nextjs-app/scripts/importData.mjs"
+    "import-data": "node nextjs-app/scripts/importData.mjs",
+    "check-links": "node check-links.js"
   },
   "keywords": [
     "Sanity",

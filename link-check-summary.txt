@@ -1,0 +1,94 @@
+
+═══════════════════════════════════════════════════════════
+LINK CHECK SUMMARY REPORT
+Generated: 11/2/2025, 6:17:23 PM
+═══════════════════════════════════════════════════════════
+
+OVERALL STATISTICS
+───────────────────────────────────────────────────────────
+Total Links Checked: 27
+✅ Working Links: 0
+❌ Broken Links: 27
+
+BROKEN LINKS BY STATUS CODE
+───────────────────────────────────────────────────────────
+  503 - SERVICE UNAVAILABLE: 3 occurrence(s)
+  404 - NOT FOUND: 8 occurrence(s)
+  403 - FORBIDDEN (Blocked by server): 10 occurrence(s)
+  401 - UNAUTHORIZED: 2 occurrence(s)
+  0 - CONNECTION FAILED: 4 occurrence(s)
+
+UNIQUE BROKEN LINKS (13 unique URLs)
+───────────────────────────────────────────────────────────
+
+1. [503] SERVICE UNAVAILABLE
+   URL: https://fof.dea.gov/exhibit
+   Found on 3 page(s): https://www.virginiaopioidcostdata.org/, https://www.virginiaopioidcostdata.org/data, https://www.virginiaopioidcostdata.org/data/
+
+2. [401] UNAUTHORIZED
+   URL: https://www.wsj.com/health/drug-overdose-dropping-virginia-411f9397?st=DR4J32&reflink=desktopwebshare_permalink
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/key-findings, https://www.virginiaopioidcostdata.org/key-findings/
+
+3. [404] NOT FOUND
+   URL: https://www.cdc.gov/hiv/pdf/library/reports/surveillance/cdc-hiv-surveillance-report-2017-vol-29.pdf
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/data, https://www.virginiaopioidcostdata.org/data/
+
+4. [0] CONNECTION FAILED
+   URL: https://www.dss.virginia.gov/geninfo/reports/children/cps/all_other.cgi
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/data, https://www.virginiaopioidcostdata.org/data/
+
+5. [404] NOT FOUND
+   URL: https://www.cdc.gov/nchs/pressroom/nchs_press_releases/2025/20250514.htm
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/key-findings, https://www.virginiaopioidcostdata.org/key-findings/
+
+6. [403] FORBIDDEN
+   URL: https://doi.org/10.1001/jamapediatrics.2016.4086
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/data, https://www.virginiaopioidcostdata.org/data/
+
+7. [403] FORBIDDEN
+   URL: https://www.wric.com/news/virginia-news/opioid-epidemic-cost-virginia-3-5-billion-in-2020-vdh-opioid-cost-calculator-shows/
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/news, https://www.virginiaopioidcostdata.org/news/
+
+8. [403] FORBIDDEN
+   URL: http://doi.org/10.1001/jamapediatrics.2016.4086
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/data, https://www.virginiaopioidcostdata.org/data/
+
+9. [403] FORBIDDEN
+   URL: https://doi.org/10.1001/jama.2016.16885
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/data, https://www.virginiaopioidcostdata.org/data/
+
+10. [404] NOT FOUND
+   URL: https://altarum.org/sites/default/files/uploaded-related-files/70842GPreport.pdf
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/data, https://www.virginiaopioidcostdata.org/data/
+
+11. [404] NOT FOUND
+   URL: https://nhsa.org/wp-content/uploads/2021/12/2020-Opioid-Report.pdf
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/data, https://www.virginiaopioidcostdata.org/data/
+
+12. [403] FORBIDDEN
+   URL: https://www.ajpmonline.org/article/S0749-3797(17)30313-6/fulltext
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/data, https://www.virginiaopioidcostdata.org/data/
+
+13. [0] CONNECTION FAILED
+   URL: https://factfinder.census.gov/
+   Found on 2 page(s): https://www.virginiaopioidcostdata.org/data, https://www.virginiaopioidcostdata.org/data/
+
+NOTES
+───────────────────────────────────────────────────────────
+• Status 403 (Forbidden): These sites may be blocking automated requests.
+  Check these manually in a browser - they may actually work.
+
+• Status 401 (Unauthorized): These require authentication or subscription.
+  This is expected for paywalled content (e.g., WSJ).
+
+• Status 0 (Connection Failed): Site may be down or blocking requests.
+  Check manually.
+
+• Status 404 (Not Found): These links are genuinely broken and should be fixed.
+
+• Status 503 (Service Unavailable): Server is temporarily down or overloaded.
+  Check again later.
+
+═══════════════════════════════════════════════════════════
+Full JSON data available in: link-check-results.json
+═══════════════════════════════════════════════════════════

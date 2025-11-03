@@ -208,7 +208,7 @@ export default function DataTableDescription({
         id="data-table-content"
         aria-hidden={!isExpanded}
         className={`overflow-hidden transition-all duration-1000 ease-in-out ${
-          isExpanded ? 'max-h-[2000px] border-b border-[#78787878]' : 'max-h-0'
+          isExpanded ? 'max-h-[1200px] border-b border-[#78787878]' : 'max-h-0'
         }`}
       >
         <div className="pt-4 pb-6 space-y-6">
