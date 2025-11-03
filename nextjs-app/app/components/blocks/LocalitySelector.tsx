@@ -125,7 +125,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
         <label htmlFor="locality-selector" className="sr-only">
           {subheading}
         </label>
-        <div className="flex">
+        <div className="flex items-center justify-center">
           <div id="locality-selector-description" className="sr-only">
             Select a locality to view data for that specific county or independent city. Use arrow keys to navigate options and Enter to select.
           </div>
