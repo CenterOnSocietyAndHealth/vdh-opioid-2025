@@ -64,6 +64,10 @@ export default defineConfig({
           enable: '/api/draft-mode/enable',
         },
       },
+      allowOrigins: [
+        'https://www.virginiaopioidcostdata.org',
+        'https://vdh-opioid-2025-nextjs-app.vercel.app',
+      ],
       resolve: {
         // The Main Document Resolver API provides a method of resolving a main document from a given route or route pattern. https://www.sanity.io/docs/presentation-resolver-api#57720a5678d9
         mainDocuments: defineDocuments([
