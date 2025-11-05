@@ -21,8 +21,8 @@ import {assist} from '@sanity/assist'
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'your-projectID'
 const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
 
-// URL for preview functionality, defaults to localhost:3000 if not set
-const SANITY_STUDIO_PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
+// URL for preview functionality, defaults to production domain if not set
+const SANITY_STUDIO_PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'https://www.virginiaopioidcostdata.org'
 
 // Define the home location for the presentation tool
 const homeLocation = {
@@ -66,6 +66,7 @@ export default defineConfig({
       },
       allowOrigins: [
         'https://www.virginiaopioidcostdata.org',
+        'https://virginiaopioidcostdata.org', // Include both www and non-www
         'https://vdh-opioid-2025-nextjs-app.vercel.app',
       ],
       resolve: {
