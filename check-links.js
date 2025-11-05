@@ -22,18 +22,62 @@ console.log(`🔍 Checking links on ${siteUrl}...`);
 console.log(`📝 Results will be saved to:\n   - ${outputFile}\n   - ${jsonOutputFile}\n`);
 
 try {
-    // Run linkinator and capture output
-    const command = `npx linkinator ${siteUrl} --recurse --silent --format json > ${jsonOutputFile} 2>&1 && npx linkinator ${siteUrl} --recurse --format text`;
-
     console.log('⏳ Running link check (this may take a few minutes)...\n');
 
-    const output = execSync(command, {
-        encoding: 'utf8',
-        maxBuffer: 10 * 1024 * 1024 // 10MB buffer
-    });
+    // First, run linkinator to generate JSON output
+    // Note: linkinator may exit with non-zero code if broken links are found, which is expected
+    console.log('📊 Generating JSON report...');
+    let jsonOutput = '';
+    try {
+        jsonOutput = execSync(`npx linkinator ${siteUrl} --recurse --silent --format json`, {
+            encoding: 'utf8',
+            maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+            stdio: ['ignore', 'pipe', 'pipe'],
+            shell: true
+        });
+    } catch (jsonError) {
+        // Linkinator exits with non-zero code when broken links are found
+        // This is expected behavior, so we capture the output from the error
+        // The error object has an 'output' array: [stdin, stdout, stderr]
+        jsonOutput = (jsonError.output && jsonError.output[1]) || '';
+        if (!jsonOutput && jsonError.status !== undefined) {
+            // Exit code is non-zero, but that's expected if broken links are found
+            // Try to get output from the error object
+            console.log('⚠️  Linkinator found issues (this is expected if broken links exist)');
+        }
+    }
+
+    if (jsonOutput) {
+        fs.writeFileSync(jsonOutputFile, jsonOutput, 'utf8');
+    }
+
+    // Then run linkinator to generate text output
+    console.log('📝 Generating text report...');
+    let output = '';
+    try {
+        output = execSync(`npx linkinator ${siteUrl} --recurse --format text`, {
+            encoding: 'utf8',
+            maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+            stdio: ['ignore', 'pipe', 'pipe'],
+            shell: true
+        });
+    } catch (textError) {
+        // Linkinator exits with non-zero code when broken links are found
+        // This is expected behavior, so we capture the output from the error
+        // The error object has an 'output' array: [stdin, stdout, stderr]
+        output = (textError.output && textError.output[1]) || '';
+        if (!output && textError.status === undefined) {
+            // If there's no status code, it might be a real error
+            throw textError;
+        }
+    }
 
     // Save text output to file
-    fs.writeFileSync(outputFile, output, 'utf8');
+    if (output) {
+        fs.writeFileSync(outputFile, output, 'utf8');
+    } else {
+        console.log('⚠️  No text output generated, but continuing...');
+    }
 
     // Parse and summarize JSON results
     if (fs.existsSync(jsonOutputFile)) {

@@ -1,42 +1,6 @@
 {
   "links": [
     {
-      "url": "https://fof.dea.gov/exhibit",
-      "status": 503,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/"
-    },
-    {
-      "url": "https://fof.dea.gov/exhibit",
-      "status": 503,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/data"
-    },
-    {
-      "url": "https://www.wsj.com/health/drug-overdose-dropping-virginia-411f9397?st=DR4J32&reflink=desktopwebshare_permalink",
-      "status": 401,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/key-findings"
-    },
-    {
-      "url": "https://www.wsj.com/health/drug-overdose-dropping-virginia-411f9397?st=DR4J32&reflink=desktopwebshare_permalink",
-      "status": 401,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/key-findings/"
-    },
-    {
-      "url": "https://www.cdc.gov/hiv/pdf/library/reports/surveillance/cdc-hiv-surveillance-report-2017-vol-29.pdf",
-      "status": 404,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/data"
-    },
-    {
-      "url": "https://www.cdc.gov/hiv/pdf/library/reports/surveillance/cdc-hiv-surveillance-report-2017-vol-29.pdf",
-      "status": 404,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/data/"
-    },
-    {
       "url": "https://www.dss.virginia.gov/geninfo/reports/children/cps/all_other.cgi",
       "status": 0,
       "state": "BROKEN",
@@ -47,30 +11,6 @@
       "status": 0,
       "state": "BROKEN",
       "parent": "https://www.virginiaopioidcostdata.org/data/"
-    },
-    {
-      "url": "https://fof.dea.gov/exhibit",
-      "status": 503,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/data/"
-    },
-    {
-      "url": "https://www.cdc.gov/nchs/pressroom/nchs_press_releases/2025/20250514.htm",
-      "status": 404,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/key-findings"
-    },
-    {
-      "url": "https://www.cdc.gov/nchs/pressroom/nchs_press_releases/2025/20250514.htm",
-      "status": 404,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/key-findings/"
-    },
-    {
-      "url": "https://doi.org/10.1001/jamapediatrics.2016.4086",
-      "status": 403,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/data"
     },
     {
       "url": "https://www.wric.com/news/virginia-news/opioid-epidemic-cost-virginia-3-5-billion-in-2020-vdh-opioid-cost-calculator-shows/",
@@ -79,13 +19,31 @@
       "parent": "https://www.virginiaopioidcostdata.org/news"
     },
     {
-      "url": "http://doi.org/10.1001/jamapediatrics.2016.4086",
+      "url": "https://www.wric.com/news/virginia-news/opioid-epidemic-cost-virginia-3-5-billion-in-2020-vdh-opioid-cost-calculator-shows/",
+      "status": 403,
+      "state": "BROKEN",
+      "parent": "https://www.virginiaopioidcostdata.org/news/"
+    },
+    {
+      "url": "https://www.wsj.com/health/drug-overdose-dropping-virginia-411f9397?st=DR4J32&reflink=desktopwebshare_permalink",
+      "status": 401,
+      "state": "BROKEN",
+      "parent": "https://www.virginiaopioidcostdata.org/key-findings"
+    },
+    {
+      "url": "https://www.wsj.com/health/drug-overdose-dropping-virginia-411f9397?st=DR4J32&reflink=desktopwebshare_permalink",
+      "status": 401,
+      "state": "BROKEN",
+      "parent": "https://www.virginiaopioidcostdata.org/key-findings/"
+    },
+    {
+      "url": "https://doi.org/10.1001/jama.2016.16885",
       "status": 403,
       "state": "BROKEN",
       "parent": "https://www.virginiaopioidcostdata.org/data"
     },
     {
-      "url": "http://doi.org/10.1001/jamapediatrics.2016.4086",
+      "url": "https://doi.org/10.1001/jama.2016.16885",
       "status": 403,
       "state": "BROKEN",
       "parent": "https://www.virginiaopioidcostdata.org/data/"
@@ -94,47 +52,23 @@
       "url": "https://doi.org/10.1001/jamapediatrics.2016.4086",
       "status": 403,
       "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/data/"
-    },
-    {
-      "url": "https://doi.org/10.1001/jama.2016.16885",
-      "status": 403,
-      "state": "BROKEN",
       "parent": "https://www.virginiaopioidcostdata.org/data"
     },
     {
-      "url": "https://doi.org/10.1001/jama.2016.16885",
+      "url": "https://doi.org/10.1001/jamapediatrics.2016.4086",
       "status": 403,
       "state": "BROKEN",
       "parent": "https://www.virginiaopioidcostdata.org/data/"
     },
     {
-      "url": "https://www.wric.com/news/virginia-news/opioid-epidemic-cost-virginia-3-5-billion-in-2020-vdh-opioid-cost-calculator-shows/",
+      "url": "http://doi.org/10.1001/jamapediatrics.2016.4086",
       "status": 403,
       "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/news/"
-    },
-    {
-      "url": "https://altarum.org/sites/default/files/uploaded-related-files/70842GPreport.pdf",
-      "status": 404,
-      "state": "BROKEN",
       "parent": "https://www.virginiaopioidcostdata.org/data"
     },
     {
-      "url": "https://altarum.org/sites/default/files/uploaded-related-files/70842GPreport.pdf",
-      "status": 404,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/data/"
-    },
-    {
-      "url": "https://nhsa.org/wp-content/uploads/2021/12/2020-Opioid-Report.pdf",
-      "status": 404,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/data"
-    },
-    {
-      "url": "https://nhsa.org/wp-content/uploads/2021/12/2020-Opioid-Report.pdf",
-      "status": 404,
+      "url": "http://doi.org/10.1001/jamapediatrics.2016.4086",
+      "status": 403,
       "state": "BROKEN",
       "parent": "https://www.virginiaopioidcostdata.org/data/"
     },
@@ -147,18 +81,6 @@
     {
       "url": "https://www.ajpmonline.org/article/S0749-3797(17)30313-6/fulltext",
       "status": 403,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/data/"
-    },
-    {
-      "url": "https://factfinder.census.gov/",
-      "status": 0,
-      "state": "BROKEN",
-      "parent": "https://www.virginiaopioidcostdata.org/data"
-    },
-    {
-      "url": "https://factfinder.census.gov/",
-      "status": 0,
       "state": "BROKEN",
       "parent": "https://www.virginiaopioidcostdata.org/data/"
     }
