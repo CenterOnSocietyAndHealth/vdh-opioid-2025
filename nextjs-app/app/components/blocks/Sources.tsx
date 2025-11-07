@@ -172,6 +172,7 @@ export default function Sources({ block }: SourcesProps) {
           className="w-full px-[20px] py-[10px] flex items-center justify-between text-left transition-colors duration-200"
           aria-expanded={ariaExpanded}
           aria-controls="sources-content"
+          tabIndex={0}
           id="sources-button"
         >
           <div className="flex items-center space-x-3">

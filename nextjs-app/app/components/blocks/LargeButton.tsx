@@ -141,6 +141,7 @@ export default function LargeButton({ block }: LargeButtonProps) {
           onClick={handleClick}
           className={buttonClassName}
           style={buttonStyles}
+          tabIndex={0}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = '#3A658A';
           }}

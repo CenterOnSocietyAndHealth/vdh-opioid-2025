@@ -131,6 +131,7 @@ export default function PovertyIncome({ block, selectedLocality: propSelectedLoc
         <a 
           href={`#source-${sourceNumber.toString().padStart(2, '0')}`}
           className="text-blue-600 hover:text-blue-800 underline"
+          tabIndex={0}
           style={{
             color: '#1E1E1E',
             fontFamily: 'Inter',

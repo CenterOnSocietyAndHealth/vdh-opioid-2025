@@ -67,8 +67,10 @@ export default function OnThisPage({ block }: OnThisPageProps) {
             {links.map((link, index) => (
               <button
                 key={index}
+                type="button"
                 onClick={() => handleLinkClick(link.destinationId)}
-                className="text-[#1E1E1E] underline font-normal hover:bg-[#cfe6ef]"
+                tabIndex={0}
+                className="text-[#1E1E1E] underline font-normal hover:bg-[#cfe6ef] focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[#11607A] focus:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#11607A] focus-visible:no-underline"
               >
                 {link.title}
               </button>
@@ -94,7 +96,8 @@ export default function OnThisPage({ block }: OnThisPageProps) {
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="w-full bg-white border border-[#E7E7E7] rounded-[3px] px-4 py-3 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500"
+              tabIndex={0}
+              className="w-full bg-white border border-[#E7E7E7] rounded-[3px] px-4 py-3 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-[#11607A] focus:ring-offset-2 focus:ring-offset-[#F5F5F0]"
             >
               <span className="text-[#1E1E1E] font-normal">{selectedLink}</span>
               <svg 
@@ -113,8 +116,10 @@ export default function OnThisPage({ block }: OnThisPageProps) {
                 {links.map((link, index) => (
                   <button
                     key={index}
+                    type="button"
                     onClick={() => handleDropdownLinkClick(link)}
-                    className="w-full px-4 py-3 text-left text-[#1E1E1E] font-normal hover:bg-gray-50 first:rounded-t-[3px] last:rounded-b-[3px] border-b border-gray-200 last:border-b-0"
+                    tabIndex={0}
+                    className="w-full px-4 py-3 text-left text-[#1E1E1E] font-normal hover:bg-gray-50 first:rounded-t-[3px] last:rounded-b-[3px] border-b border-gray-200 last:border-b-0 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[#11607A] focus:bg-[#E6F1F5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#11607A] focus-visible:bg-[#E6F1F5]"
                   >
                     {link.title}
                   </button>

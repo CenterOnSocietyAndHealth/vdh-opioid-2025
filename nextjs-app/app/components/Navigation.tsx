@@ -47,6 +47,7 @@ export default function Navigation({
               <a 
                 href={href}
                 className={`nav-link text-lg ${isCurrentPage ? 'font-bold no-shadow' : ''}`}
+                tabIndex={0}
                 {...(item.linkType === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               >
                 {item.title}

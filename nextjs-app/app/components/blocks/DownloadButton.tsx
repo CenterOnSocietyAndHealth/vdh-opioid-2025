@@ -147,6 +147,7 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
         <button
           onClick={handleClick}
           style={buttonStyles}
+          tabIndex={0}
           onMouseEnter={(e) => {
             if (!isDisabled) {
               e.currentTarget.style.backgroundColor = '#3A658A';

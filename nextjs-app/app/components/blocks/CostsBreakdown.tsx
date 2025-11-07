@@ -764,6 +764,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
               <div className="mt-6">
                 <a
                   href={asideLink.internalPage ? `/${asideLink.internalPage.slug}` : asideLink.url}
+                  tabIndex={0}
                   className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
                   style={{
                     color: '#000',

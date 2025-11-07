@@ -29,6 +29,7 @@ export default function SourcesAccordion({
         onClick={toggleExpanded}
         aria-expanded={isExpanded ? "true" : "false"}
         aria-controls="sources-content"
+        tabIndex={0}
         className={`w-full px-0 py-2 flex items-start justify-start text-left border-b border-[#78787878] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors duration-200 ${isExpanded ? 'border-b border-[#78787800]' : ''}`}
       >
         <span className="text-[12px] font-[400] text-[#1E1E1E] mr-2">{title}</span>

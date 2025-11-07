@@ -72,6 +72,7 @@ export default function SectorSelector({
             <button
               key={sector}
               onClick={() => setSelectedSector(sector)}
+              tabIndex={0}
               className={`
                 px-3 py-2 rounded-[3px] font-inter text-sm transition-all duration-100
                 border

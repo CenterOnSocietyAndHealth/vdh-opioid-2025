@@ -215,7 +215,7 @@ export default function Accordion({ block }: AccordionProps) {
                 },
                 marks: {
                   link: ({ children, value: link }) => {
-                    return <ResolvedLink link={link}>{children}</ResolvedLink>;
+                    return <ResolvedLink link={link} tabIndex={0}>{children}</ResolvedLink>;
                   },
                   smallGrayText: ({ children }) => (
                     <span style={{
@@ -426,6 +426,7 @@ export default function Accordion({ block }: AccordionProps) {
                       <a
                         href={`#${citationId}`}
                         onClick={handleCitationClick}
+                        tabIndex={0}
                         className="hover:bg-[#F3E7B9] underline text-sm font-medium align-super cursor-pointer"
                         title="View source"
                         style={{ fontSize: '0.75em', verticalAlign: 'super' }}

@@ -146,7 +146,7 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
             },
             marks: {
               link: ({ children, value: link }) => {
-                return <ResolvedLink link={link}>{children}</ResolvedLink>;
+                return <ResolvedLink link={link} tabIndex={0}>{children}</ResolvedLink>;
               },
               smallGrayText: ({ children }) => (
                 <span style={{
@@ -411,6 +411,7 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                   <a
                     href={`#${citationId}`}
                     onClick={handleCitationClick}
+                    tabIndex={0}
                     className="hover:bg-[#cfe6ef] underline text-sm font-medium align-super cursor-pointer"
                     title="View source"
                     style={{ fontSize: '0.75em', verticalAlign: 'super' }}

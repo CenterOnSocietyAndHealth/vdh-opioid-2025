@@ -46,7 +46,7 @@ export default async function Header() {
           {/* Desktop version */}
           <div className="hidden md:block">
             Update: Our site is now the Virginia Opioid Cost Data Tool. Read more about new features in{' '}
-            <Link href="/whats-new/">
+            <Link href="/whats-new/" tabIndex={0}>
               our announcement. &rarr;
             </Link>
           </div>
@@ -67,7 +67,7 @@ export default async function Header() {
             {/* Logo */}
             <div className="logo h-[50px] flex-shrink-0">
               {logoUrl ? (
-                <Link href="/">
+                <Link href="/" tabIndex={0}>
                   <Image 
                     src={urlForImage(settings.logo).width(590).url()} 
                     alt={settings.logo.alt || "Virginia Opioid Cost Data Tool"}
@@ -77,7 +77,7 @@ export default async function Header() {
                   />
                 </Link>
               ) : (
-                <Link href="/" className="text-2xl font-bold">
+                <Link href="/" className="text-2xl font-bold" tabIndex={0}>
                   Virginia Opioid Cost Data Tool
                 </Link>
               )}

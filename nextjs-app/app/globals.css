@@ -442,6 +442,18 @@ ol ol ol {
   background-color: transparent;
 }
 
+.nav-link:focus,
+.nav-link:focus-visible {
+  outline: 3px solid #11607A;
+  outline-offset: 4px;
+  border-radius: 2px;
+  text-decoration: none;
+}
+
+.nav-link:focus-visible {
+  box-shadow: 0 0 0 3px rgba(17, 96, 122, 0.2);
+}
+
 .nav-link.no-shadow {
   text-shadow: none;
 }

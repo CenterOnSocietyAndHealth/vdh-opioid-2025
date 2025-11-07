@@ -42,7 +42,7 @@ export default async function Footer() {
           <div className="mb-4">
             <div className="mb-2">
               <span className="text-black">Email: </span>
-              <a href="mailto:societyhealth@vcu.edu" className="underline text-black hover:text-gray-600">societyhealth@vcu.edu</a>
+              <a href="mailto:societyhealth@vcu.edu" className="underline text-black hover:text-gray-600" tabIndex={0}>societyhealth@vcu.edu</a>
             </div>
             <div className="text-black">
               Phone: (804) 628-4055
@@ -69,12 +69,12 @@ export default async function Footer() {
       {/* Existing logo section */}
       <div className="footer-container flex flex-col gap-4 md:flex-row md:justify-between items-center max-w-[880px] mx-auto px-4">
         <div className="footer-left">
-          <a href="https://www.vdh.virginia.gov/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.vdh.virginia.gov/" target="_blank" rel="noopener noreferrer" tabIndex={0}>
             <Image src={VDHlogo} alt='VDH Logo' className="h-[33px] md:h-[50px] w-auto" />
           </a>
         </div>
         <div className="footer-right">
-          <a href="https://societyhealth.vcu.edu/" target="_blank" rel="noopener noreferrer">
+          <a href="https://societyhealth.vcu.edu/" target="_blank" rel="noopener noreferrer" tabIndex={0}>
             <Image src={CSHlogo} alt='CSH Logo' className="mt-2 md:mt-0 h-[38px] md:h-[50px] w-auto" />
           </a>
         </div>
