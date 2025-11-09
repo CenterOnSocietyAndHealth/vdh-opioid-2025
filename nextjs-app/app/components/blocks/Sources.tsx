@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { PortableText } from 'next-sanity'
 import { SourcesProps } from '@/app/types/locality'
 import { getValidKeyOrDefault } from '@/app/client-utils'
@@ -24,7 +24,6 @@ export default function Sources({ block }: SourcesProps) {
   const { citations = [], marginTop = 'none', marginBottom = 'none', width = 672 } = block
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
   const [highlightedSource, setHighlightedSource] = useState<string | null>(null)
-  const focusOriginsRef = useRef<Map<string, HTMLElement>>(new Map())
 
   const focusAndScrollToSource = (hash: string) => {
     if (!hash) return
@@ -78,39 +77,6 @@ export default function Sources({ block }: SourcesProps) {
 
   const ariaExpanded = isExpanded ? true : false
 
-  const updateFocusOrigin = (citationId: string, originElement?: HTMLElement | null) => {
-    if (!citationId || !originElement) {
-      return
-    }
-
-    focusOriginsRef.current.set(citationId, originElement)
-  }
-
-  const focusOriginLink = (citationId: string) => {
-    if (!citationId) return
-
-    const originElement = focusOriginsRef.current.get(citationId)
-
-    if (!originElement) {
-      focusOriginsRef.current.delete(citationId)
-    }
-
-    const elementToFocus =
-      originElement || (document.querySelector(`a[data-citation-id="${citationId}"]`) as HTMLElement | null)
-
-    if (elementToFocus) {
-      if (typeof elementToFocus.focus === 'function') {
-        elementToFocus.focus({ preventScroll: true })
-      }
-      elementToFocus.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }
-  }
-
-  const handleReturnToCitation = (citationId: string) => {
-    focusOriginLink(citationId)
-    setHighlightedSource(null)
-  }
-
 
   // Auto-open accordion when a citation link is clicked
   useEffect(() => {
@@ -130,14 +96,11 @@ export default function Sources({ block }: SourcesProps) {
       }
     }
 
-    const handleOpenSourcesAccordion = (
-      event: CustomEvent<{ citationId?: string; originElement?: HTMLElement | null }>
-    ) => {
+    const handleOpenSourcesAccordion = (event: CustomEvent) => {
       setIsExpanded(true)
-      const { citationId, originElement } = event.detail
+      const { citationId } = event.detail
       if (citationId) {
         setHighlightedSource(citationId)
-        updateFocusOrigin(citationId, originElement)
         
         focusAndScrollToSource(`#${citationId}`)
         
@@ -157,16 +120,13 @@ export default function Sources({ block }: SourcesProps) {
         event.preventDefault()
         const hash = link.getAttribute('href')
         if (hash) {
-          const sourceId = hash.substring(1)
-          const originElement = link as HTMLElement
-
           // Update the URL without triggering a page jump
           window.history.pushState(null, '', hash)
           
           // Handle the navigation ourselves
+          const sourceId = hash.substring(1)
           setIsExpanded(true)
           setHighlightedSource(sourceId)
-          updateFocusOrigin(sourceId, originElement)
           
           focusAndScrollToSource(hash)
           
@@ -263,44 +223,36 @@ export default function Sources({ block }: SourcesProps) {
                     <span className="flex-shrink-0 text-gray-700 text-sm font-medium ml-2 mr-6 mt-1">
                       {index + 1}
                     </span>
-                    <div className="flex-1 text-gray-900 leading-relaxed">
-                      <PortableText
-                        value={citation.text}
-                        components={{
-                          block: {
-                            normal: ({ children }) => (
-                              <span className="break-words">{children}</span>
-                            ),
-                          },
-                          marks: {
-                            link: ({ children, value }) => (
-                              <ResolvedLink
-                                link={value}
-                                className="text-[#1e1e1e] hover:bg-[#cfe6ef] hover:text-black visited:text-[#6b7280] underline break-all"
-                                tabIndex={isExpanded ? 0 : -1}
-                              >
-                                {children}
-                              </ResolvedLink>
-                            ),
-                            strong: ({ children }) => (
-                              <strong className="font-semibold">{children}</strong>
-                            ),
-                            em: ({ children }) => (
-                              <em className="italic">{children}</em>
-                            ),
-                          },
-                        }}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleReturnToCitation(citationId)}
-                        className="ml-2 inline-flex items-center gap-1 text-sm text-[#1e1e1e] underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1e1e1e]"
-                        tabIndex={isExpanded ? 0 : -1}
-                        aria-label="Return to citation"
-                      >
-                        <span aria-hidden="true" className="text-base leading-none">↩</span>
-                        <span className="sr-only">Back to citation</span>
-                      </button>
+                    <div className="flex-1">
+                      <div className="text-gray-900 leading-relaxed">
+                        <PortableText
+                          value={citation.text}
+                          components={{
+                            block: {
+                              normal: ({ children }) => (
+                                <p className="mb-2 last:mb-0 break-words">{children}</p>
+                              ),
+                            },
+                            marks: {
+                              link: ({ children, value }) => (
+                                <ResolvedLink
+                                  link={value}
+                                  className="text-[#1e1e1e] hover:bg-[#cfe6ef] hover:text-black visited:text-[#6b7280] underline break-all"
+                                  tabIndex={isExpanded ? 0 : -1}
+                                >
+                                  {children}
+                                </ResolvedLink>
+                              ),
+                              strong: ({ children }) => (
+                                <strong className="font-semibold">{children}</strong>
+                              ),
+                              em: ({ children }) => (
+                                <em className="italic">{children}</em>
+                              ),
+                            },
+                          }}
+                        />
+                      </div>
                     </div>
                   </li>
                 )
