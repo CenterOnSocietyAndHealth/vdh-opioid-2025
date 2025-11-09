@@ -383,8 +383,9 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                 // Generate citation ID based on the selected number
                 const citationId = isNaN(number) ? 'source-01' : `source-${String(number).padStart(2, '0')}`
                 
-                const handleCitationClick = (e: React.MouseEvent) => {
+                const handleCitationClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
                   e.preventDefault()
+                  const originElement = e.currentTarget
                   
                   // Set the hash to trigger the Sources accordion to open
                   window.location.hash = citationId
@@ -394,7 +395,7 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                   if (sourcesAccordion) {
                     // Trigger a custom event to open the accordion
                     const openEvent = new CustomEvent('openSourcesAccordion', { 
-                      detail: { citationId } 
+                      detail: { citationId, originElement } 
                     })
                     window.dispatchEvent(openEvent)
                   }
@@ -412,6 +413,7 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                   <a
                     href={`#${citationId}`}
                     onClick={handleCitationClick}
+                    data-citation-id={citationId}
                     tabIndex={0}
                     className="hover:bg-[#cfe6ef] underline text-sm font-medium align-super cursor-pointer"
                     title="View source"
