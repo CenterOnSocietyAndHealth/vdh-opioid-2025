@@ -22,10 +22,51 @@ const marginBottomMap = {
 
 export default function Sources({ block }: SourcesProps) {
   const { citations = [], marginTop = 'none', marginBottom = 'none', width = 672 } = block
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
   const [highlightedSource, setHighlightedSource] = useState<string | null>(null)
-  
-  const ariaExpanded = isExpanded ? 'true' : 'false'
+
+  const focusAndScrollToSource = (hash: string) => {
+    if (!hash) return
+
+    const scrollToElement = (element: HTMLElement) => {
+      const elementRect = element.getBoundingClientRect()
+      const absoluteElementTop = elementRect.top + window.pageYOffset
+      const center = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2)
+
+      window.scrollTo({
+        top: center,
+        behavior: 'smooth'
+      })
+    }
+
+    setTimeout(() => {
+      const element = document.querySelector(hash) as HTMLElement | null
+      if (!element) return
+
+      if (typeof element.focus === 'function') {
+        element.focus({ preventScroll: true })
+      }
+
+      scrollToElement(element)
+
+      let attempts = 0
+      const maxAttempts = 3
+      const interval = 300
+
+      const ensureVisibility = () => {
+        const rect = element.getBoundingClientRect()
+        const fullyVisible = rect.top >= 0 && rect.bottom <= window.innerHeight
+
+        if (!fullyVisible && attempts < maxAttempts) {
+          attempts += 1
+          scrollToElement(element)
+          setTimeout(ensureVisibility, interval)
+        }
+      }
+
+      setTimeout(ensureVisibility, interval)
+    }, 400)
+  }
 
   const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none')
   const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
@@ -33,6 +74,9 @@ export default function Sources({ block }: SourcesProps) {
   const toggleSources = () => {
     setIsExpanded(!isExpanded)
   }
+
+  const ariaExpanded = isExpanded ? true : false
+
 
   // Auto-open accordion when a citation link is clicked
   useEffect(() => {
@@ -43,21 +87,7 @@ export default function Sources({ block }: SourcesProps) {
         setIsExpanded(true)
         setHighlightedSource(sourceId)
         
-        // Scroll to the citation after a short delay to ensure accordion is open
-        setTimeout(() => {
-          const element = document.querySelector(hash)
-          if (element) {
-            // Calculate the element's position and scroll to center it smoothly
-            const elementRect = element.getBoundingClientRect()
-            const absoluteElementTop = elementRect.top + window.pageYOffset
-            const center = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2)
-            
-            window.scrollTo({
-              top: center,
-              behavior: 'smooth'
-            })
-          }
-        }, 350) // Slightly longer than the accordion transition duration
+        focusAndScrollToSource(hash)
         
         // Remove highlighting after 3 seconds
         setTimeout(() => {
@@ -72,21 +102,7 @@ export default function Sources({ block }: SourcesProps) {
       if (citationId) {
         setHighlightedSource(citationId)
         
-        // Scroll to the citation after a short delay
-        setTimeout(() => {
-          const element = document.querySelector(`#${citationId}`)
-          if (element) {
-            // Calculate the element's position and scroll to center it smoothly
-            const elementRect = element.getBoundingClientRect()
-            const absoluteElementTop = elementRect.top + window.pageYOffset
-            const center = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2)
-            
-            window.scrollTo({
-              top: center,
-              behavior: 'smooth'
-            })
-          }
-        }, 350)
+        focusAndScrollToSource(`#${citationId}`)
         
         // Remove highlighting after 3 seconds
         setTimeout(() => {
@@ -112,21 +128,7 @@ export default function Sources({ block }: SourcesProps) {
           setIsExpanded(true)
           setHighlightedSource(sourceId)
           
-          // Scroll to the citation after a short delay to ensure accordion is open
-          setTimeout(() => {
-            const element = document.querySelector(hash)
-            if (element) {
-              // Calculate the element's position and scroll to center it smoothly
-              const elementRect = element.getBoundingClientRect()
-              const absoluteElementTop = elementRect.top + window.pageYOffset
-              const center = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2)
-              
-              window.scrollTo({
-                top: center,
-                behavior: 'smooth'
-              })
-            }
-          }, 350)
+          focusAndScrollToSource(hash)
           
           // Remove highlighting after 3 seconds
           setTimeout(() => {
@@ -167,6 +169,7 @@ export default function Sources({ block }: SourcesProps) {
         style={{ maxWidth: `${width}px` }}
       >
         {/* Sources Header */}
+        {/* eslint-disable-next-line jsx-a11y/aria-proptypes */}
         <button
           onClick={toggleSources}
           className="w-full px-[20px] py-[10px] flex items-center justify-between text-left transition-colors duration-200"
@@ -212,6 +215,7 @@ export default function Sources({ block }: SourcesProps) {
                   <li 
                     key={citationId} 
                     id={citationId} 
+                    tabIndex={isExpanded ? 0 : -1}
                     className={`flex transition-colors duration-300 ${
                       isHighlighted ? 'bg-[#F3E7B9] rounded-lg' : ''
                     }`}

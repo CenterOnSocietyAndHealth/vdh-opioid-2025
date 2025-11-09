@@ -26,10 +26,17 @@ export default function OnThisPage({ block }: OnThisPageProps) {
 
   const handleLinkClick = (destinationId: string) => {
     const element = document.getElementById(destinationId)
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
+    if (!element) return
+
+    const restoreTabIndex = element.hasAttribute('tabindex') ? null : () => element.removeAttribute('tabindex')
+    if (restoreTabIndex) element.setAttribute('tabindex', '-1')
+
+    element.focus({ preventScroll: true })
+    element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })
+
+    if (restoreTabIndex) {
+      requestAnimationFrame(() => {
+        restoreTabIndex()
       })
     }
   }
