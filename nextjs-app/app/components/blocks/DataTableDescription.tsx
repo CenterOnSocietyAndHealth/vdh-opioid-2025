@@ -284,7 +284,7 @@ export default function DataTableDescription({
                         {columns.map((column) => {
                           const isSorted = sortColumn === column.key;
                           const sortAriaLabel = isSorted 
-                            ? `Sort by ${column.label}, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Click to reverse.`
+                            ? `Sort by ${column.label}, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Select to reverse.`
                             : `Sort by ${column.label}`;
                           return (
                             <th 

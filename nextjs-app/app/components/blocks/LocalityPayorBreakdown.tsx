@@ -166,7 +166,7 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
               <th 
                 role="columnheader"
                 aria-sort={sortColumn === 'locality' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
-                aria-label={`Sort by Locality${sortColumn === 'locality' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Click to reverse.` : ''}`}
+                aria-label={`Sort by Locality${sortColumn === 'locality' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Select to reverse.` : ''}`}
                 className="text-left py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors select-none"
                 onClick={() => handleSort('locality')}
                 onKeyDown={(e) => handleKeyDown(e, 'locality')}
@@ -192,7 +192,7 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
               <th 
                 role="columnheader"
                 aria-sort={sortColumn === 'household' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
-                aria-label={`Sort by Families / Businesses${sortColumn === 'household' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Click to reverse.` : ''}`}
+                aria-label={`Sort by Families / Businesses${sortColumn === 'household' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Select to reverse.` : ''}`}
                 className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors select-none"
                 onClick={() => handleSort('household')}
                 onKeyDown={(e) => handleKeyDown(e, 'household')}
@@ -218,7 +218,7 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
               <th 
                 role="columnheader"
                 aria-sort={sortColumn === 'federal' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
-                aria-label={`Sort by Federal Government${sortColumn === 'federal' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Click to reverse.` : ''}`}
+                aria-label={`Sort by Federal Government${sortColumn === 'federal' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Select to reverse.` : ''}`}
                 className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors select-none"
                 onClick={() => handleSort('federal')}
                 onKeyDown={(e) => handleKeyDown(e, 'federal')}
@@ -244,7 +244,7 @@ export default function LocalityPayorBreakdown({ block, localities }: LocalityPa
               <th 
                 role="columnheader"
                 aria-sort={sortColumn === 'stateLocal' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
-                aria-label={`Sort by State / Local Government${sortColumn === 'stateLocal' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Click to reverse.` : ''}`}
+                aria-label={`Sort by State / Local Government${sortColumn === 'stateLocal' ? `, ${sortDirection === 'asc' ? 'ascending' : 'descending'}. Select to reverse.` : ''}`}
                 className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal cursor-pointer hover:text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors select-none"
                 onClick={() => handleSort('stateLocal')}
                 onKeyDown={(e) => handleKeyDown(e, 'stateLocal')}
