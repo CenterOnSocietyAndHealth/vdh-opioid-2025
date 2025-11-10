@@ -493,3 +493,39 @@ ol ol ol {
   }
 }
 
+.recommended-citation-wrapper {
+  max-width: var(--recommended-citation-max-width, 672px);
+}
+
+.recommended-citation-title {
+  color: #1E1E1E;
+  font-family: "DM Sans", var(--font-dm-sans), sans-serif;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.57px;
+}
+
+.recommended-citation-copy-label {
+  color: #1E1E1E;
+  text-align: center;
+  font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova", sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  text-transform: uppercase;
+  max-width: 65px;
+}
+
+.recommended-citation-text {
+  color: #1E1E1E;
+  font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%;
+  letter-spacing: -0.304px;
+}
+

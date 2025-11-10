@@ -65,6 +65,7 @@ export const page = defineType({
         { type: 'highestCosts' },
         { type: 'blockQuote' },
         { type: 'imageAndText' },
+        { type: 'recommendedCitation' },
       ],
       options: {
         insertMenu: {

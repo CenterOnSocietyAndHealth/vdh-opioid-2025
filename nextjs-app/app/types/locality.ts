@@ -387,3 +387,13 @@ export type BlockQuoteProps = {
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
   };
 }; 
+
+export type RecommendedCitationProps = {
+  block: {
+    title: string;
+    citation: string;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+    maxWidth?: number;
+  };
+};
