@@ -392,6 +392,7 @@ export type RecommendedCitationProps = {
   block: {
     title: string;
     citation: string;
+    sectionId?: string;
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
     maxWidth?: number;

@@ -24,6 +24,13 @@ export const recommendedCitation = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'sectionId',
+      title: 'Section ID',
+      type: 'string',
+      description: 'Optional: Add an ID to this section for on-page navigation links (e.g., "section-1", "recommended-citation")',
+      validation: (Rule) => Rule.regex(/^[a-zA-Z0-9-_]+$/).warning('Please use only letters, numbers, hyphens, and underscores'),
+    }),
+    defineField({
       name: 'marginTop',
       title: 'Margin Top',
       type: 'string',
@@ -65,14 +72,19 @@ export const recommendedCitation = defineType({
       title: 'title',
       citation: 'citation',
       maxWidth: 'maxWidth',
+      sectionId: 'sectionId',
     },
-    prepare({title, citation, maxWidth}) {
+    prepare({title, citation, maxWidth, sectionId}) {
       const truncatedCitation =
         citation && citation.length > 60 ? `${citation.slice(0, 60)}…` : citation || 'No citation text'
+      
+      const subtitleParts = [truncatedCitation]
+      if (maxWidth) subtitleParts.push(`Max width: ${maxWidth}px`)
+      if (sectionId) subtitleParts.push(`ID: ${sectionId}`)
 
       return {
         title: title || 'Recommended Citation',
-        subtitle: maxWidth ? `${truncatedCitation} • Max width: ${maxWidth}px` : truncatedCitation,
+        subtitle: subtitleParts.join(' • '),
         media: LuCopy,
       }
     },

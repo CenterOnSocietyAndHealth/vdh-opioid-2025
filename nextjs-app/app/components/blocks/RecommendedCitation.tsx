@@ -21,6 +21,7 @@ export default function RecommendedCitation({ block }: RecommendedCitationProps)
   const {
     title,
     citation,
+    sectionId,
     marginTop = 'none',
     marginBottom = 'none',
     maxWidth,
@@ -78,6 +79,7 @@ export default function RecommendedCitation({ block }: RecommendedCitationProps)
 
   return (
     <section
+      id={sectionId}
       className={`recommended-citation-wrapper ${marginClasses} flex flex-col gap-6 bg-[#F3F2EC] px-6 py-6 md:px-10 mx-4 md:mx-auto`}
       {...(sectionStyleProps ?? {})}
     >
