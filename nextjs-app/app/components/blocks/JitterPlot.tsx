@@ -89,7 +89,12 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
   const { selectedSector } = useSector();
   const [mounted, setMounted] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number | null>(null);
-  const [showNeighborsOnly, setShowNeighborsOnly] = useState(false);
+  // Default to true when a locality is selected (not Virginia)
+  const [showNeighborsOnly, setShowNeighborsOnly] = useState(() => {
+    // This will be evaluated on initial render, but selectedLocality might not be available yet
+    // So we'll use useEffect to set it properly
+    return false;
+  });
   const svgRef = useRef<SVGSVGElement>(null);
   const chartRef = useRef<HTMLDivElement>(null);
 
@@ -103,6 +108,15 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       return () => window.removeEventListener('resize', handleResize);
     }
   }, []);
+
+  // Default to "Neighbors only" when a locality is selected
+  useEffect(() => {
+    if (selectedLocality && selectedLocality.counties !== 'Virginia') {
+      setShowNeighborsOnly(true);
+    } else {
+      setShowNeighborsOnly(false);
+    }
+  }, [selectedLocality]);
 
   // Get the margin values from block props
   const marginTop = block.marginTop || 'none';
