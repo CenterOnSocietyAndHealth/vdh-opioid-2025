@@ -217,7 +217,7 @@ export default function Sources({ block }: SourcesProps) {
                     id={citationId} 
                     tabIndex={isExpanded ? 0 : -1}
                     className={`flex transition-colors duration-300 ${
-                      isHighlighted ? 'bg-[#F3E7B9] rounded-lg' : ''
+                      isHighlighted ? 'bg-[#cfe6ef] rounded-lg' : ''
                     }`}
                   >
                     <span className="flex-shrink-0 text-gray-700 text-sm font-medium ml-2 mr-6 mt-1">
