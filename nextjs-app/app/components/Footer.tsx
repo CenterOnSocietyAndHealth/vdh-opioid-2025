@@ -60,8 +60,8 @@ export default async function Footer() {
           <div className="text-black">
             © Copyright 2025 VCU Center on Society and Health
           </div>
-          <div className="text-black text-[12px] my-4 max-w-[450px] mx-auto">
-            This work was partially supported by the National Center for Advancing Translational Sciences (grant UM1TR004360).
+          <div className="text-black text-[16px] my-4 max-w-[450px] mx-auto">
+            This work was partially supported by the Wright Regional Center for Clinical and Translational Science (National Center for Advancing Translational Sciences - grant UM1TR004360).
           </div>
         </div>
       </div>
