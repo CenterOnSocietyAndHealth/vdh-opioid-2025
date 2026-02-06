@@ -106,7 +106,7 @@ export const settings = defineType({
       fields: [
         defineField({
           name: 'alt',
-          description: 'Alternative text for the logo image',
+          description: 'Alternative text for the logo image. Use the site name (e.g. "Virginia Opioid Cost Data Tool")—avoid adding "Logo" here, as search engines may show this text as the link title in results.',
           title: 'Alternative text',
           type: 'string',
           validation: (rule) => {
