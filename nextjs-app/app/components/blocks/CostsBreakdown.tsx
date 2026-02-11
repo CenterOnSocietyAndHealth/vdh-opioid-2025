@@ -668,7 +668,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       {chartDescription && (
         <div className="mt-0 mx-4 md:mx-0">
           <DataTableDescription
-            title="Data Table/This Chart Described"
+            title="Chart Description/Data Table"
             description={chartDescription}
             columns={tableColumns}
             data={tableData}
