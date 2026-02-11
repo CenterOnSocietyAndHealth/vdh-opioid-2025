@@ -100,10 +100,14 @@ export default function ChoroplethMap({
   const applyHoverEffects = useCallback((currentHoveredLocality: Locality | null) => {
     if (!countiesRef.current) return;
     
-    // Hide the selected locality's tooltip when hovering
+    // Hide the selected locality's tooltip when hovering over a different locality
+    // But keep it visible if hovering over the selected locality itself
     if (mapGroupRef.current) {
+      const isHoveringSelected = currentHoveredLocality && selectedLocality && 
+                                  currentHoveredLocality._id === selectedLocality._id;
+      
       d3.select(mapGroupRef.current).selectAll(".selected-locality-tooltip")
-        .style("opacity", 0)
+        .style("opacity", isHoveringSelected ? 1 : 0)
         .style("transition", "opacity 100ms ease-in-out");
     }
     
@@ -186,7 +190,8 @@ export default function ChoroplethMap({
     if (!countiesRef.current) return;
     
     // Show the selected locality's tooltip again when not hovering
-    if (mapGroupRef.current) {
+    // This function is called when leaving a hover state, so always show the tooltip
+    if (mapGroupRef.current && selectedLocality) {
       d3.select(mapGroupRef.current).selectAll(".selected-locality-tooltip")
         .style("opacity", 1)
         .style("transition", "opacity 100ms ease-in-out");
@@ -708,7 +713,9 @@ export default function ChoroplethMap({
         svg.on("click", (event) => {
           // Check if the click was on a county path
           const target = event.target as SVGElement;
-          const isCountyClick = target.closest('.counties path');
+          // Check multiple ways to identify county clicks for Chrome compatibility
+          const isCountyPath = target.tagName === 'path' && target.closest('.counties');
+          const isCountyClick = isCountyPath || target.closest('.counties path');
           
           // If not clicking on a county and reset function is provided, reset to Virginia
           if (!isCountyClick && onResetToVirginia) {
@@ -717,10 +724,29 @@ export default function ChoroplethMap({
           }
         });
         
+        // Add mouseleave handler on SVG to restore selected tooltip when cursor leaves the map
+        svg.on("mouseleave", () => {
+          // Clear any pending hover timeout first
+          if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current);
+            hoverTimeoutRef.current = null;
+          }
+          
+          // Clear hover state and restore selected tooltip immediately
+          setHoveredLocality(null);
+          removeHoverTooltip();
+          
+          // Use setTimeout to ensure state update has processed
+          setTimeout(() => {
+            resetHoverEffects();
+          }, 0);
+        });
+        
         
         // Draw counties in the map group
         const counties = mapGroup.append("g")
-          .attr("class", "counties");
+          .attr("class", "counties")
+          .style("pointer-events", "all");
         
         // Store counties selection in ref for hover effects
         countiesRef.current = counties;
@@ -916,9 +942,24 @@ export default function ChoroplethMap({
             return 0.5;
           })
           .style("cursor", "pointer")
-          .on("click", (event: any, d: any) => {
+          .style("pointer-events", "all")
+          .each(function(d: any) {
+            // Store data on the node and a flag to prevent double-firing
+            (this as any).__data__ = d;
+            (this as any).__clickHandled = false;
+          })
+          .on("click", function(event: any, d: any) {
+            // Use function() instead of arrow function to ensure proper 'this' context
             // Stop event propagation to prevent background click handler from firing
             event.stopPropagation();
+            
+            // Mark that click was handled to prevent pointerup from also firing
+            (this as any).__clickHandled = true;
+            
+            // Reset flag after a short delay
+            setTimeout(() => {
+              (this as any).__clickHandled = false;
+            }, 100);
             
             // Get FIPS code using various property names
             let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
@@ -956,13 +997,74 @@ export default function ChoroplethMap({
               return fipsMatch || nameMatch;
             });
             
-            console.log('Matched locality:', locality);
+            console.log('Click event - Matched locality:', locality);
             
             if (locality && onLocalityClick) {
-              console.log('Calling onLocalityClick with:', locality);
+              console.log('Click event - Calling onLocalityClick with:', locality);
               onLocalityClick(locality);
             } else {
-              console.log('No locality found or no onLocalityClick handler');
+              console.log('Click event - No locality found or no onLocalityClick handler');
+            }
+          })
+          .on("mousedown", function(event: any) {
+            // Chrome desktop sometimes needs mousedown event for SVG clicks
+            // Stop propagation on mousedown to prevent conflicts
+            if (event.button === 0) {
+              event.stopPropagation();
+            }
+          })
+          .on("pointerdown", function(event: any) {
+            // Chrome desktop compatibility: handle pointer events
+            if (event.pointerType === 'mouse') {
+              event.stopPropagation();
+            }
+          })
+          .on("pointerup", function(event: any, d: any) {
+            // Chrome desktop fallback: handle click via pointerup if click didn't fire
+            // Only handle if click wasn't already handled (prevents double-firing)
+            if (event.pointerType === 'mouse' && event.button === 0 && !(this as any).__clickHandled) {
+              event.stopPropagation();
+              
+              // Get FIPS code using various property names
+              let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
+                            d.properties.id || d.id;
+              
+              // Add prefix if needed
+              if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
+                fipsCode = `51${fipsCode}`;
+              }
+              
+              // Get locality name
+              const countyName = d.properties.NAME || d.properties.name;
+              
+              // Try to find matching locality
+              const locality = localities.find(loc => {
+                // Clean up locality FIPS code for comparison
+                let locFips = loc.fips;
+                
+                if (locFips) {
+                  // Remove 'us-va-' prefix if present
+                  locFips = locFips.replace('us-va-', '');
+                  // Remove any remaining non-numeric characters
+                  locFips = locFips.toString().replace(/\D/g, '');
+                  // Ensure it's 5 digits
+                  locFips = locFips.padStart(3, '0');
+                  // Add state prefix if not present
+                  if (locFips.length === 3) {
+                    locFips = `51${locFips}`;
+                  }
+                }
+                
+                const fipsMatch = fipsCode && locFips === fipsCode;
+                const nameMatch = countyName && loc.counties === countyName;
+                              
+                return fipsMatch || nameMatch;
+              });
+              
+              if (locality && onLocalityClick) {
+                console.log('PointerUp event (Chrome fallback) - Calling onLocalityClick with:', locality);
+                onLocalityClick(locality);
+              }
             }
           })
           .on("mouseenter", (event: any, d: any) => {
@@ -1003,6 +1105,9 @@ export default function ChoroplethMap({
             });
             
             if (locality) {
+              // Check if this is the selected locality
+              const isSelectedLocality = selectedLocality && selectedLocality._id === locality._id;
+              
               // Clear any pending hover timeout
               if (hoverTimeoutRef.current) {
                 clearTimeout(hoverTimeoutRef.current);
@@ -1060,7 +1165,12 @@ export default function ChoroplethMap({
               
               setHoveredLocality(locality);
               applyHoverEffects(locality);
-              createHoverTooltip(locality, colorScale, mouseX, mouseY);
+              
+              // Only create hover tooltip if not hovering over the selected locality
+              // (the selected tooltip should remain visible instead)
+              if (!isSelectedLocality) {
+                createHoverTooltip(locality, colorScale, mouseX, mouseY);
+              }
             }
           })
           .on("mousemove", (event: any, d: any) => {
@@ -1284,7 +1394,8 @@ export default function ChoroplethMap({
               const annotation = mapGroup.append("g")
                 .attr("class", "selected-locality-tooltip")
                 .attr("transform", `translate(${centroid[0]}, ${centroid[1]})`)
-                .style("pointer-events", "none");
+                .style("pointer-events", "none")
+                .style("opacity", 1);
                 
               // Tooltip content
               const perCapitaValue = getValueFromPath(
@@ -1372,6 +1483,20 @@ export default function ChoroplethMap({
             }
           }
         }
+        
+        // Ensure selected locality tooltip is visible after rendering
+        // Use setTimeout to ensure this runs after all rendering is complete
+        setTimeout(() => {
+          if (selectedLocality && mapGroupRef.current) {
+            const isHoveringSelected = hoveredLocality && hoveredLocality._id === selectedLocality._id;
+            // Show tooltip if not hovering, or if hovering over the selected locality itself
+            const shouldShow = !hoveredLocality || isHoveringSelected;
+            
+            d3.select(mapGroupRef.current).selectAll(".selected-locality-tooltip")
+              .style("opacity", shouldShow ? 1 : 0)
+              .style("transition", "opacity 100ms ease-in-out");
+          }
+        }, 0);
         
         setMapLoaded(true);
       } catch (error) {
