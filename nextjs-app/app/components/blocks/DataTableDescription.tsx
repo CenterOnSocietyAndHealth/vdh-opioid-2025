@@ -222,7 +222,7 @@ export default function DataTableDescription({
                   components={{
                     block: {
                       normal: ({ children }: any) => (
-                        <p className="text-sm text-gray-700 leading-relaxed mb-3 last:mb-0">
+                        <p className="text-[14px] text-gray-700 leading-relaxed mb-3 last:mb-0">
                           {children}
                         </p>
                       ),

@@ -742,7 +742,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
                       fontFamily: 'Inter',
                       fontWeight: 300,
                       color: '#1E1E1E',
-                      fontSize: '16px',
+                      fontSize: '14px',
                       lineHeight: '130%'
                     }}
                   >

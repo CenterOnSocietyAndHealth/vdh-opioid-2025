@@ -185,7 +185,7 @@ h4 {
   font-family: var(--font-inter), sans-serif;
   font-size: 14px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 130%;
   letter-spacing: -0.266px;
   text-align: left;
@@ -216,7 +216,7 @@ h4 {
   font-family: var(--font-inter), sans-serif;
   font-size: 14px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 150%;
   text-align: left;
 }
