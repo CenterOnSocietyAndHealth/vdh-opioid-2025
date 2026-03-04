@@ -80,7 +80,7 @@ export default function SourcesAccordion({
                     components={{
                       block: {
                         normal: ({ children }: any) => (
-                          <p className="text-[14px] text-[#1E1E1E] leading-[150%] mb-3 last:mb-0">
+                          <p className="text-[14px] text-[#1E1E1E] leading-[130%] font-[300] mb-3 last:mb-0">
                             {children}
                           </p>
                         ),
