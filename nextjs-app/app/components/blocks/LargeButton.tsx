@@ -112,14 +112,8 @@ export default function LargeButton({ block }: LargeButtonProps) {
     }
   };
 
-  // Button styles
-  const buttonStyles = {
-    backgroundColor: '#427AA9',
-    color: '#FFFFFF',
-    border: '1px solid #417A90',
-  };
-
-  const buttonClassName = "inline-flex items-center justify-center px-8 py-4 rounded-full font-medium text-base md:text-xl transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-opacity-50";
+  const buttonClassName =
+    'inline-flex items-center justify-center px-3 py-2 rounded-[3px] bg-[#427AA9] text-white border border-[#417A90] font-inter text-[14px] font-semibold leading-[150%] tracking-[-0.266px] transition-all duration-100 hover:shadow-md active:scale-95 focus:outline-none focus:ring-4 focus:ring-opacity-50';
 
   // Button content
   const buttonContent = (
@@ -140,7 +134,6 @@ export default function LargeButton({ block }: LargeButtonProps) {
         <button
           onClick={handleClick}
           className={buttonClassName}
-          style={buttonStyles}
           tabIndex={0}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = '#3A658A';

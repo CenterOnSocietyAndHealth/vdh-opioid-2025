@@ -523,7 +523,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   }, [costSectors, chartWidth, totalValue]);
 
   return (
-    <div className={`max-w-[1311px] mx-auto px-0 md:px-4 ${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
+    <div className={`max-w-[1280px] mx-auto px-0 md:px-4 ${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       {/* Desktop Title */}
       <div className="hidden md:block text-center mb-5">
         <h2 className="text-[24px] font-normal mb-2">{totalCostSubtitle || 'Annual Cost'}</h2>

@@ -42,7 +42,7 @@ export default async function Header() {
 
       {/* Announcement Bar */}
       <div className="w-full py-2 px-4 text-center announcement-bar hidden">
-        <div className="container max-w-[1311px] mx-auto">
+        <div className="container max-w-[1280px] mx-auto">
           {/* Desktop version */}
           <div className="hidden md:block">
             Update: Our site is now the Virginia Opioid Cost Data Tool. Read more about new features in{' '}
@@ -62,7 +62,7 @@ export default async function Header() {
         role="banner" 
         className="w-full p-4 bg-[#F3F2EC]"
       >
-        <div className="container max-w-[1311px] px-1 mx-auto relative">
+        <div className="container max-w-[1280px] px-4 mx-auto relative">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="logo h-[50px] flex-shrink-0">

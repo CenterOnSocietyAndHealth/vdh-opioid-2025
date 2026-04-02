@@ -117,26 +117,8 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
     }
   };
 
-  // Button styles matching the mockup
-  const buttonStyles = {
-    backgroundColor: '#427AA9',
-    color: '#FFFFFF',
-    fontFamily: 'Inter',
-    fontSize: '16px',
-    fontStyle: 'normal',
-    fontWeight: 600,
-    lineHeight: '130%',
-    letterSpacing: '-0.304px',
-    border: 'none',
-    borderRadius: '30px', // Rounded pill shape
-    padding: '19px 30px',
-    cursor: 'pointer',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'all 0.2s ease',
-    boxShadow: '0 1px 3px rgba(71, 131, 181, 0.3)', // Subtle shadow
-  };
+  const buttonClassName =
+    'inline-flex items-center justify-center gap-2 px-3 py-2 rounded-[3px] bg-[#427AA9] text-white border border-[#417A90] font-inter text-[14px] font-semibold leading-[150%] tracking-[-0.266px] transition-all duration-100 hover:shadow-md active:scale-95 focus:outline-none focus:ring-4 focus:ring-opacity-50';
 
   // Determine if button should be disabled
   const isDisabled = !fileUrl || isLoading;
@@ -146,7 +128,7 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
       <div className="flex justify-center">
         <button
           onClick={handleClick}
-          style={buttonStyles}
+          className={buttonClassName}
           tabIndex={0}
           onMouseEnter={(e) => {
             if (!isDisabled) {
@@ -161,7 +143,7 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
           disabled={isDisabled}
         >
           <DownloadIcon />
-          <span className="whitespace-nowrap ml-3">
+          <span className="whitespace-nowrap">
             {isLoading ? 'Loading...' : buttonText}
           </span>
         </button>
