@@ -523,7 +523,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   }, [costSectors, chartWidth, totalValue]);
 
   return (
-    <div className={`max-w-[1311px] mx-auto ${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
+    <div className={`max-w-[1311px] mx-auto px-0 md:px-4 ${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
       {/* Desktop Title */}
       <div className="hidden md:block text-center mb-5">
         <h2 className="text-[24px] font-normal mb-2">{totalCostSubtitle || 'Annual Cost'}</h2>
@@ -686,11 +686,11 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
         </div>
       )}
       
-      {/* Desktop: Render all sector descriptions and aside in a grid */}
-      <div className="hidden md:grid mt-6 gap-8 md:grid-cols-3 mb-12">
+      {/* md–lg: stacked (aside below descriptions); lg+: aside right of descriptions */}
+      <div className="hidden md:grid md:grid-cols-1 mt-6 gap-8 lg:grid-cols-3 mb-12">
         {/* Breakdown descriptions in a nested 2-col grid */}
-        <div className="md:col-span-2">
-          <div className="grid gap-x-12 gap-y-6 md:grid-cols-2 mr-4">
+        <div className="lg:col-span-2">
+          <div className="grid gap-x-12 gap-y-6 md:grid-cols-2 lg:mr-4">
             {costSectors.map((sector, i) => {
               const percentOfTotal = sector.value / totalValue;
               // For mini-graph: build an array of widths/colors for all sectors
@@ -753,9 +753,9 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
             })}
           </div>
         </div>
-        {/* Aside (1/3 column on desktop, below on mobile) */}
+        {/* Aside: full width below descriptions on tablet; 1/3 column from lg */}
         {block.aside && (
-          <div className="bg-[#F3F2EC] p-[30px] h-full aside-container flex flex-col">
+          <div className="bg-[#F3F2EC] p-[30px] lg:h-full aside-container flex flex-col">
             <div className="flex-1">
               <PortableText value={block.aside} />
             </div>
