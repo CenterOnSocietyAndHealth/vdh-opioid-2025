@@ -27,7 +27,6 @@ const marginBottomMap = {
 export default function LocalitySelector({ block, localities, pageId }: LocalitySelectorProps) {
   const [mounted, setMounted] = useState(false);
   const [Select, setSelect] = useState<any>(null);
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
   const { selectedLocality, setSelectedLocality, isUpdating, setIsUpdating } = useLocality();
 
   useEffect(() => {
@@ -119,16 +118,14 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
   return (
     <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]} flex justify-center items-center`}>
       <div className="relative text-center">
-        <h3 className="relative inline-block ml-2 mb-1">
+        <h3 id="locality-selector-heading" className="relative inline-block ml-2 mb-1">
           {subheading}
         </h3>
-        <label htmlFor="locality-selector" className="sr-only">
-          {subheading}
-        </label>
+        <div id="locality-selector-instructions" className="sr-only">
+          Choose Virginia as a whole or a county or independent city to update the data on this page.
+          When the list is open, use arrow keys to move and Enter to select.
+        </div>
         <div className="flex items-center justify-center">
-          <div id="locality-selector-description" className="sr-only">
-            Select a locality to view data for that specific county or independent city. Use arrow keys to navigate options and Enter to select.
-          </div>
           <Select
             inputId="locality-selector"
             options={options}
@@ -136,10 +133,9 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
             value={currentValue}
             isDisabled={isUpdating}
             placeholder="County or Independent City"
-            onMenuOpen={() => setMenuIsOpen(true)}
-            onMenuClose={() => setMenuIsOpen(false)}
-            aria-label={`Select a locality. Currently selected: ${currentValue?.label || 'None'}. ${isUpdating ? 'Loading...' : ''}`}
-            aria-describedby="locality-selector-description"
+            aria-labelledby="locality-selector-heading"
+            aria-describedby="locality-selector-instructions"
+            aria-busy={isUpdating}
             className="locality-selector"
             classNamePrefix="locality-select"
             styles={{
