@@ -18,8 +18,9 @@ import {
 import {assist} from '@sanity/assist'
 
 // Environment variables for project configuration
-const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'your-projectID'
-const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
+// Branch staging-2026-data: defaults match hosted staging Studio + dataset (see .env.production).
+const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'hoc4qxji'
+const dataset = process.env.SANITY_STUDIO_DATASET || 'staging-2026'
 
 // URL for preview functionality, defaults to production domain if not set
 const SANITY_STUDIO_PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'https://www.virginiaopioidcostdata.org'
