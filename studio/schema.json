@@ -1,5 +1,674 @@
 [
   {
+    "name": "recommendedCitation",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "recommendedCitation"
+          }
+        },
+        "title": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": false
+        },
+        "citation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": false
+        },
+        "sectionId": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "marginTop": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "medium"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "marginBottom": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "medium"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "maxWidth": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
+    "name": "imageAndText",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "imageAndText"
+          }
+        },
+        "image": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "object",
+            "attributes": {
+              "asset": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "object",
+                  "attributes": {
+                    "_ref": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "_type": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "string",
+                        "value": "reference"
+                      }
+                    },
+                    "_weak": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "boolean"
+                      },
+                      "optional": true
+                    }
+                  },
+                  "dereferencesTo": "sanity.imageAsset"
+                },
+                "optional": true
+              },
+              "media": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "unknown"
+                },
+                "optional": true
+              },
+              "hotspot": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "inline",
+                  "name": "sanity.imageHotspot"
+                },
+                "optional": true
+              },
+              "crop": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "inline",
+                  "name": "sanity.imageCrop"
+                },
+                "optional": true
+              },
+              "alt": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "caption": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "_type": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string",
+                  "value": "image"
+                }
+              }
+            }
+          },
+          "optional": false
+        },
+        "hasShadow": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        },
+        "imagePosition": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "left"
+              },
+              {
+                "type": "string",
+                "value": "right"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "imageWidth": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "textWidth": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "textContent": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "array",
+            "of": {
+              "type": "union",
+              "of": [
+                {
+                  "type": "object",
+                  "attributes": {
+                    "_key": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "rest": {
+                    "type": "inline",
+                    "name": "textContent"
+                  }
+                },
+                {
+                  "type": "object",
+                  "attributes": {
+                    "_key": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "rest": {
+                    "type": "inline",
+                    "name": "imageBlock"
+                  }
+                }
+              ]
+            }
+          },
+          "optional": true
+        },
+        "sectionId": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "marginTop": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "medium"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "marginBottom": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "medium"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "maxWidth": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
+    "name": "blockQuote",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "blockQuote"
+          }
+        },
+        "quote": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "array",
+            "of": {
+              "type": "object",
+              "attributes": {
+                "children": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "array",
+                    "of": {
+                      "type": "object",
+                      "attributes": {
+                        "marks": {
+                          "type": "objectAttribute",
+                          "value": {
+                            "type": "array",
+                            "of": {
+                              "type": "string"
+                            }
+                          },
+                          "optional": true
+                        },
+                        "text": {
+                          "type": "objectAttribute",
+                          "value": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "_type": {
+                          "type": "objectAttribute",
+                          "value": {
+                            "type": "string",
+                            "value": "span"
+                          }
+                        }
+                      },
+                      "rest": {
+                        "type": "object",
+                        "attributes": {
+                          "_key": {
+                            "type": "objectAttribute",
+                            "value": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "optional": true
+                },
+                "style": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "union",
+                    "of": [
+                      {
+                        "type": "string",
+                        "value": "normal"
+                      }
+                    ]
+                  },
+                  "optional": true
+                },
+                "listItem": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "union",
+                    "of": [
+                      {
+                        "type": "string",
+                        "value": "bullet"
+                      },
+                      {
+                        "type": "string",
+                        "value": "number"
+                      }
+                    ]
+                  },
+                  "optional": true
+                },
+                "markDefs": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "array",
+                    "of": {
+                      "type": "object",
+                      "attributes": {
+                        "href": {
+                          "type": "objectAttribute",
+                          "value": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "_type": {
+                          "type": "objectAttribute",
+                          "value": {
+                            "type": "string",
+                            "value": "link"
+                          }
+                        }
+                      },
+                      "rest": {
+                        "type": "object",
+                        "attributes": {
+                          "_key": {
+                            "type": "objectAttribute",
+                            "value": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "optional": true
+                },
+                "level": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "number"
+                  },
+                  "optional": true
+                },
+                "_type": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string",
+                    "value": "block"
+                  }
+                }
+              },
+              "rest": {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "optional": false
+        },
+        "byline": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "textAlignment": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "left"
+              },
+              {
+                "type": "string",
+                "value": "center"
+              },
+              {
+                "type": "string",
+                "value": "right"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "maxWidth": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "marginTop": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "medium"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "marginBottom": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "medium"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
+    "name": "highestCosts",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "highestCosts"
+          }
+        },
+        "title": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": false
+        },
+        "maxWidth": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": false
+        },
+        "marginTop": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "medium"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "marginBottom": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "medium"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
     "name": "updateIntro",
     "type": "type",
     "value": {
@@ -466,11 +1135,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -1470,11 +2139,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -2041,11 +2710,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -2612,11 +3281,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -3183,11 +3852,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -3754,11 +4423,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -4325,11 +4994,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -4896,11 +5565,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -5467,11 +6136,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -6038,11 +6707,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -6609,11 +7278,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -7421,11 +8090,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -7992,11 +8661,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -8563,11 +9232,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -9134,11 +9803,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -9705,11 +10374,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -10428,11 +11097,11 @@
                                           },
                                           {
                                             "type": "string",
-                                            "value": "opioidCases.oudDeaths2023"
+                                            "value": "opioidCases.oudDeaths2024"
                                           },
                                           {
                                             "type": "string",
-                                            "value": "opioidCases.oudCases2023"
+                                            "value": "opioidCases.oudCases2024"
                                           },
                                           {
                                             "type": "string",
@@ -11613,11 +12282,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -12669,11 +13338,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -13240,11 +13909,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -13848,11 +14517,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -14419,11 +15088,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -14997,11 +15666,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -15621,11 +16290,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -16433,11 +17102,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -17004,11 +17673,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -17575,11 +18244,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -18146,11 +18815,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -18717,11 +19386,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -19288,11 +19957,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -19859,11 +20528,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -20430,11 +21099,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -21001,11 +21670,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -21572,11 +22241,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -21794,6 +22463,111 @@
                 }
               }
             }
+          },
+          "optional": true
+        },
+        "totalLeftAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "totalTopAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "totalRightAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "laborLeftAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "laborTopAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "laborRightAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "healthcareLeftAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "healthcareTopAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "healthcareRightAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "crimeOtherLeftAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "crimeOtherTopAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "crimeOtherRightAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "householdLeftAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "householdTopAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "householdRightAnnotation": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
           },
           "optional": true
         }
@@ -22121,6 +22895,13 @@
           "type": "objectAttribute",
           "value": {
             "type": "number"
+          },
+          "optional": true
+        },
+        "containerClass": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
           },
           "optional": true
         }
@@ -22903,11 +23684,11 @@
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudDeaths2023"
+                                    "value": "opioidCases.oudDeaths2024"
                                   },
                                   {
                                     "type": "string",
-                                    "value": "opioidCases.oudCases2023"
+                                    "value": "opioidCases.oudCases2024"
                                   },
                                   {
                                     "type": "string",
@@ -23684,11 +24465,11 @@
                             },
                             {
                               "type": "string",
-                              "value": "opioidCases.oudDeaths2023"
+                              "value": "opioidCases.oudDeaths2024"
                             },
                             {
                               "type": "string",
-                              "value": "opioidCases.oudCases2023"
+                              "value": "opioidCases.oudCases2024"
                             },
                             {
                               "type": "string",
@@ -24745,6 +25526,66 @@
                   "type": "inline",
                   "name": "updateIntro"
                 }
+              },
+              {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rest": {
+                  "type": "inline",
+                  "name": "highestCosts"
+                }
+              },
+              {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rest": {
+                  "type": "inline",
+                  "name": "blockQuote"
+                }
+              },
+              {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rest": {
+                  "type": "inline",
+                  "name": "imageAndText"
+                }
+              },
+              {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rest": {
+                  "type": "inline",
+                  "name": "recommendedCitation"
+                }
               }
             ]
           }
@@ -24963,14 +25804,14 @@
         "value": {
           "type": "object",
           "attributes": {
-            "oudDeaths2023": {
+            "oudDeaths2024": {
               "type": "objectAttribute",
               "value": {
                 "type": "number"
               },
               "optional": true
             },
-            "oudCases2023": {
+            "oudCases2024": {
               "type": "objectAttribute",
               "value": {
                 "type": "number"

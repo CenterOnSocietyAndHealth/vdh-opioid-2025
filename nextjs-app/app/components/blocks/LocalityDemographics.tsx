@@ -72,7 +72,7 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
   // Calculate cases per 100k
   const calculateCasesPer100k = () => {
     const population = parseNumber(selectedLocality?.demographics?.totalPopulation)
-    const cases = parseNumber(selectedLocality?.opioidCases?.oudCases2023)
+    const cases = parseNumber(selectedLocality?.opioidCases?.oudCases2024)
     
     if (!population || !cases) {
       return null
@@ -85,8 +85,8 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
 
   // Get data from selectedLocality and parse numbers
   const totalPopulation = parseNumber(selectedLocality?.demographics?.totalPopulation)
-  const oudCases2023 = parseNumber(selectedLocality?.opioidCases?.oudCases2023)
-  const oudDeaths2023 = parseNumber(selectedLocality?.opioidCases?.oudDeaths2023)
+  const oudCases2024 = parseNumber(selectedLocality?.opioidCases?.oudCases2024)
+  const oudDeaths2024 = parseNumber(selectedLocality?.opioidCases?.oudDeaths2024)
 
 
   // Format numbers with commas
@@ -149,7 +149,7 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
                 letterSpacing: '-0.266px',
               }}
                 >
-                  {formatNumber(oudDeaths2023)}
+                  {formatNumber(oudDeaths2024)}
                 </div>
             <div 
               style={{
@@ -179,7 +179,7 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
                 letterSpacing: '-0.266px',
               }}
                 >
-                  {formatNumber(oudCases2023)}
+                  {formatNumber(oudCases2024)}
                 </div>
             <div 
               style={{

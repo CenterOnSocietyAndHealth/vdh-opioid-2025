@@ -87,8 +87,8 @@ export const localitiesQuery = defineQuery(`
       totalPerCapitaComparison
     },
     opioidCases {
-      oudDeaths2023,
-      oudCases2023
+      oudDeaths2024,
+      oudCases2024
     }
   }
 `);
@@ -133,8 +133,8 @@ export const getPageQuery = defineQuery(`
           totalPerCapitaComparison
         },
         opioidCases {
-          oudDeaths2023,
-          oudCases2023
+          oudDeaths2024,
+          oudCases2024
         }
       },
       null
