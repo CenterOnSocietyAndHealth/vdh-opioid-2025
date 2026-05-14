@@ -22,7 +22,7 @@ export default function StagingEnvironmentIndicator() {
       aria-label="Staging environment indicator"
       title="Staging environment"
     >
-      Staging
+      Staging 2026
     </div>
   );
 }
