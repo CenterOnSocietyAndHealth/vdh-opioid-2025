@@ -1,11 +1,18 @@
 import type { NextConfig } from "next";
 
-// Sanity Presentation embeds this app in an iframe from *.sanity.studio.
-// CSP `frame-ancestors` overrides `X-Frame-Options: deny` from upstream (per CSP spec).
+// Sanity Presentation loads this site in an iframe. The *parent* document origin must
+// appear in frame-ancestors (not only your primary Studio hostname). Include:
+// - *.sanity.studio (branch / alternate hosted Studios)
+// - sanity.io / manage.sanity.io (some flows open Studio or preview from these origins)
+// CSP `frame-ancestors` overrides `X-Frame-Options` when both are present (per CSP spec).
 const SANITY_STUDIO_FRAME_ANCESTORS = [
   "'self'",
+  "https://*.sanity.studio",
   "https://vdh-opioid-staging-2026.sanity.studio",
   "https://vdh-opioid.sanity.studio",
+  "https://www.sanity.io",
+  "https://sanity.io",
+  "https://manage.sanity.io",
   "http://localhost:3333",
   "https://localhost:3333",
 ];
