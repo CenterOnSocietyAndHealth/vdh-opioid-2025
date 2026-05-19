@@ -44,8 +44,8 @@ export type StateComparisons = {
 };
 
 export type OpioidCases = {
-  oudDeaths2023?: number | null;
-  oudCases2023?: number | null;
+  oudDeaths2024?: number | null;
+  oudCases2024?: number | null;
 };
 
 export type LaborBreakdown = {

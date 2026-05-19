@@ -18,11 +18,35 @@ import {
 import {assist} from '@sanity/assist'
 
 // Environment variables for project configuration
-const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'your-projectID'
-const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
+// Branch staging-2026-data: defaults match hosted staging Studio + dataset (see .env.production).
+const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'hoc4qxji'
+const dataset = process.env.SANITY_STUDIO_DATASET || 'staging-2026'
 
-// URL for preview functionality, defaults to production domain if not set
-const SANITY_STUDIO_PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'https://www.virginiaopioidcostdata.org'
+// Presentation iframe loads this origin + /api/draft-mode/enable (see presentationTool below).
+const SANITY_STUDIO_PREVIEW_URL =
+  process.env.SANITY_STUDIO_PREVIEW_URL || 'https://www.virginiaopioidcostdata.org'
+
+function previewOrigin(url: string): string {
+  try {
+    return new URL(url).origin
+  } catch {
+    return url.replace(/\/+$/, '')
+  }
+}
+
+const presentationPreviewOrigin = previewOrigin(SANITY_STUDIO_PREVIEW_URL)
+
+// Origins the Presentation tool may embed; must include the site used as previewUrl.origin.
+const allowOrigins = Array.from(
+  new Set([
+    presentationPreviewOrigin,
+    'https://www.virginiaopioidcostdata.org',
+    'https://virginiaopioidcostdata.org',
+    'https://staging-2026.virginiaopioidcostdata.org',
+    'https://vdh-opioid-2025-nextjs-app.vercel.app',
+    'http://localhost:3000',
+  ]),
+)
 
 // Define the home location for the presentation tool
 const homeLocation = {
@@ -59,16 +83,12 @@ export default defineConfig({
     // Presentation tool configuration for Visual Editing
     presentationTool({
       previewUrl: {
-        origin: SANITY_STUDIO_PREVIEW_URL,
+        origin: SANITY_STUDIO_PREVIEW_URL.replace(/\/+$/, ''),
         previewMode: {
           enable: '/api/draft-mode/enable',
         },
       },
-      allowOrigins: [
-        'https://www.virginiaopioidcostdata.org',
-        'https://virginiaopioidcostdata.org', // Include both www and non-www
-        'https://vdh-opioid-2025-nextjs-app.vercel.app',
-      ],
+      allowOrigins,
       resolve: {
         // The Main Document Resolver API provides a method of resolving a main document from a given route or route pattern. https://www.sanity.io/docs/presentation-resolver-api#57720a5678d9
         mainDocuments: defineDocuments([

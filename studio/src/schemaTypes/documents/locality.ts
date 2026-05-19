@@ -107,16 +107,16 @@ export const locality = defineType({
             type: 'object',
             fields: [
                 defineField({ 
-                    name: 'oudDeaths2023', 
-                    title: 'OUD Deaths 2023', 
+                    name: 'oudDeaths2024', 
+                    title: 'OUD Deaths 2024', 
                     type: 'number',
-                    description: 'Number of opioid use disorder deaths in 2023'
+                    description: 'Number of opioid use disorder deaths in 2024'
                 }),
                 defineField({ 
-                    name: 'oudCases2023', 
-                    title: 'OUD Cases 2023', 
+                    name: 'oudCases2024', 
+                    title: 'OUD Cases 2024', 
                     type: 'number',
-                    description: 'Number of opioid use disorder cases in 2023'
+                    description: 'Number of opioid use disorder cases in 2024'
                 })
             ]
         }),
