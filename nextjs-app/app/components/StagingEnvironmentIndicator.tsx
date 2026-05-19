@@ -18,7 +18,7 @@ export default function StagingEnvironmentIndicator() {
 
   return (
     <div
-      className="fixed bottom-4 right-4 z-[1000] rounded-full bg-amber-500 px-3 py-1 text-xs font-bold uppercase tracking-wide text-black shadow-lg"
+      className="fixed top-4 right-4 z-[1000] rounded-full bg-amber-500 px-3 py-1 text-xs font-bold uppercase tracking-wide text-black shadow-lg"
       aria-label="Staging environment indicator"
       title="Staging environment"
     >
