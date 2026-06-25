@@ -561,6 +561,50 @@ export const getPageQuery = defineQuery(`
           }
         }
       },
+      _type == "contentWrapper" => {
+        ...,
+        content[]{
+          ...,
+          _type == "socioEconomicData" => {
+            ...,
+            heading[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            povertyComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            incomeComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            rentBurdenComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            uninsuredComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            }
+          }
+        }
+      },
       _type == "socioEconomicData" => {
         ...,
         heading[]{
