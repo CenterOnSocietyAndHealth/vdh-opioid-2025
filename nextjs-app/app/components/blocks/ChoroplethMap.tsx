@@ -522,6 +522,49 @@ export default function ChoroplethMap({
         const isMobile = windowWidth <= 768;
         const width = isMobile ? windowWidth - 40 : 1080;
         const height = isMobile ? 500 : 500;
+        const TAP_THRESHOLD_PX = 10;
+
+        const findLocalityFromGeoFeature = (d: any): Locality | undefined => {
+          let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID ||
+                        d.properties.id || d.id;
+
+          if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
+            fipsCode = `51${fipsCode}`;
+          }
+
+          const countyName = d.properties.NAME || d.properties.name;
+
+          return localities.find(loc => {
+            let locFips = loc.fips;
+
+            if (locFips) {
+              locFips = locFips.replace('us-va-', '');
+              locFips = locFips.toString().replace(/\D/g, '');
+              locFips = locFips.padStart(3, '0');
+              if (locFips.length === 3) {
+                locFips = `51${locFips}`;
+              }
+            }
+
+            const fipsMatch = fipsCode && locFips === fipsCode;
+            const nameMatch = countyName && loc.counties === countyName;
+
+            return fipsMatch || nameMatch;
+          });
+        };
+
+        const handleLocalitySelection = (pathEl: Element, featureData: any) => {
+          if ((pathEl as any).__clickHandled) return;
+
+          const locality = findLocalityFromGeoFeature(featureData);
+          if (locality && onLocalityClick) {
+            (pathEl as any).__clickHandled = true;
+            setTimeout(() => {
+              (pathEl as any).__clickHandled = false;
+            }, 100);
+            onLocalityClick(locality);
+          }
+        };
         
         // Create a color scale based on values from all localities
         const values = localities.map(locality => 
@@ -949,62 +992,8 @@ export default function ChoroplethMap({
             (this as any).__clickHandled = false;
           })
           .on("click", function(event: any, d: any) {
-            // Use function() instead of arrow function to ensure proper 'this' context
-            // Stop event propagation to prevent background click handler from firing
             event.stopPropagation();
-            
-            // Mark that click was handled to prevent pointerup from also firing
-            (this as any).__clickHandled = true;
-            
-            // Reset flag after a short delay
-            setTimeout(() => {
-              (this as any).__clickHandled = false;
-            }, 100);
-            
-            // Get FIPS code using various property names
-            let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
-                          d.properties.id || d.id;
-            
-            // Add prefix if needed
-            if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
-              fipsCode = `51${fipsCode}`;
-            }
-            
-            // Get locality name
-            const countyName = d.properties.NAME || d.properties.name;
-            
-            // Try to find matching locality
-            const locality = localities.find(loc => {
-              // Clean up locality FIPS code for comparison
-              let locFips = loc.fips;
-              
-              if (locFips) {
-                // Remove 'us-va-' prefix if present
-                locFips = locFips.replace('us-va-', '');
-                // Remove any remaining non-numeric characters
-                locFips = locFips.toString().replace(/\D/g, '');
-                // Ensure it's 5 digits
-                locFips = locFips.padStart(3, '0');
-                // Add state prefix if not present
-                if (locFips.length === 3) {
-                  locFips = `51${locFips}`;
-                }
-              }
-              
-              const fipsMatch = fipsCode && locFips === fipsCode;
-              const nameMatch = countyName && loc.counties === countyName;
-                            
-              return fipsMatch || nameMatch;
-            });
-            
-            console.log('Click event - Matched locality:', locality);
-            
-            if (locality && onLocalityClick) {
-              console.log('Click event - Calling onLocalityClick with:', locality);
-              onLocalityClick(locality);
-            } else {
-              console.log('Click event - No locality found or no onLocalityClick handler');
-            }
+            handleLocalitySelection(this, d);
           })
           .on("mousedown", function(event: any) {
             // Chrome desktop sometimes needs mousedown event for SVG clicks
@@ -1014,57 +1003,29 @@ export default function ChoroplethMap({
             }
           })
           .on("pointerdown", function(event: any) {
-            // Chrome desktop compatibility: handle pointer events
             if (event.pointerType === 'mouse') {
               event.stopPropagation();
+            } else if (event.pointerType === 'touch') {
+              (this as any).__touchStart = { x: event.clientX, y: event.clientY };
             }
           })
           .on("pointerup", function(event: any, d: any) {
-            // Chrome desktop fallback: handle click via pointerup if click didn't fire
-            // Only handle if click wasn't already handled (prevents double-firing)
-            if (event.pointerType === 'mouse' && event.button === 0 && !(this as any).__clickHandled) {
+            const isMouseClick = event.pointerType === 'mouse' && event.button === 0;
+            let isTouchTap = false;
+
+            if (event.pointerType === 'touch') {
+              const touchStart = (this as any).__touchStart;
+              if (touchStart) {
+                const dx = event.clientX - touchStart.x;
+                const dy = event.clientY - touchStart.y;
+                isTouchTap = Math.sqrt(dx * dx + dy * dy) < TAP_THRESHOLD_PX;
+              }
+              (this as any).__touchStart = null;
+            }
+
+            if ((isMouseClick || isTouchTap) && !(this as any).__clickHandled) {
               event.stopPropagation();
-              
-              // Get FIPS code using various property names
-              let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
-                            d.properties.id || d.id;
-              
-              // Add prefix if needed
-              if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
-                fipsCode = `51${fipsCode}`;
-              }
-              
-              // Get locality name
-              const countyName = d.properties.NAME || d.properties.name;
-              
-              // Try to find matching locality
-              const locality = localities.find(loc => {
-                // Clean up locality FIPS code for comparison
-                let locFips = loc.fips;
-                
-                if (locFips) {
-                  // Remove 'us-va-' prefix if present
-                  locFips = locFips.replace('us-va-', '');
-                  // Remove any remaining non-numeric characters
-                  locFips = locFips.toString().replace(/\D/g, '');
-                  // Ensure it's 5 digits
-                  locFips = locFips.padStart(3, '0');
-                  // Add state prefix if not present
-                  if (locFips.length === 3) {
-                    locFips = `51${locFips}`;
-                  }
-                }
-                
-                const fipsMatch = fipsCode && locFips === fipsCode;
-                const nameMatch = countyName && loc.counties === countyName;
-                              
-                return fipsMatch || nameMatch;
-              });
-              
-              if (locality && onLocalityClick) {
-                console.log('PointerUp event (Chrome fallback) - Calling onLocalityClick with:', locality);
-                onLocalityClick(locality);
-              }
+              handleLocalitySelection(this, d);
             }
           })
           .on("mouseenter", (event: any, d: any) => {
@@ -1195,9 +1156,41 @@ export default function ChoroplethMap({
           
         // Add panning functionality on mobile (zoom disabled)
         if (isMobile) {
+          let mobileTouchStart: { x: number; y: number } | null = null;
+
           const zoom = d3.zoom<SVGSVGElement, unknown>()
             .scaleExtent([1, 1]) // Disable zooming (fixed at 1x)
             .translateExtent([[-width * 2.5, -height * 0.35], [width * 1.5, height * 1.1]]) // Limit panning with more horizontal range
+            .on('start', (event) => {
+              const sourceEvent = event.sourceEvent;
+              if (sourceEvent?.type === 'touchstart' && sourceEvent.touches?.[0]) {
+                mobileTouchStart = {
+                  x: sourceEvent.touches[0].clientX,
+                  y: sourceEvent.touches[0].clientY,
+                };
+              }
+            })
+            .on('end', (event) => {
+              if (!mobileTouchStart) return;
+
+              const sourceEvent = event.sourceEvent;
+              const touch = sourceEvent?.changedTouches?.[0];
+              const start = mobileTouchStart;
+              mobileTouchStart = null;
+
+              if (!touch || sourceEvent?.type !== 'touchend') return;
+
+              const dx = touch.clientX - start.x;
+              const dy = touch.clientY - start.y;
+              if (Math.sqrt(dx * dx + dy * dy) >= TAP_THRESHOLD_PX) return;
+
+              const target = document.elementFromPoint(touch.clientX, touch.clientY);
+              const pathEl = target?.closest('.counties path');
+              if (!pathEl) return;
+
+              const featureData = d3.select(pathEl).datum();
+              handleLocalitySelection(pathEl, featureData);
+            })
             .on('zoom', (event) => {
               mapGroup.attr('transform', event.transform);
             });
