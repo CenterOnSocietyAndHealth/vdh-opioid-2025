@@ -31,9 +31,16 @@ const definitionReference = /* groq */ `
   }
 `;
 
+const citationReference = /* groq */ `
+  _type == "citation" => {
+    citationId
+  }
+`;
+
 const markDefsReference = /* groq */ `
   ${linkReference},
-  ${definitionReference}
+  ${definitionReference},
+  ${citationReference}
 `;
 
 const linkFields = /* groq */ `

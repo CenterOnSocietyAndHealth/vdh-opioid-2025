@@ -267,6 +267,45 @@ function createPortableTextComponents(
 
         return <>{displayValue}</>
       },
+      citation: ({children, value}) => {
+        const selectedText = children?.toString() || ''
+        const number = parseInt(selectedText, 10)
+        const citationId =
+          (typeof value?.citationId === 'string' && value.citationId) ||
+          (isNaN(number) ? 'source-01' : `source-${String(number).padStart(2, '0')}`)
+
+        const handleCitationClick = (e: React.MouseEvent) => {
+          e.preventDefault()
+          window.location.hash = citationId
+
+          const sourcesAccordion = document.querySelector('[data-sources-accordion]')
+          if (sourcesAccordion) {
+            window.dispatchEvent(
+              new CustomEvent('openSourcesAccordion', {detail: {citationId}}),
+            )
+          }
+
+          setTimeout(() => {
+            const element = document.querySelector(`#${citationId}`)
+            if (element) {
+              element.scrollIntoView({behavior: 'smooth', block: 'center'})
+            }
+          }, 400)
+        }
+
+        return (
+          <a
+            href={`#${citationId}`}
+            onClick={handleCitationClick}
+            tabIndex={0}
+            className="cursor-pointer text-sm font-medium underline hover:bg-[#cfe6ef]"
+            title="View source"
+            style={{fontSize: '0.75em', verticalAlign: 'super'}}
+          >
+            {children}
+          </a>
+        )
+      },
     },
   }
 }
