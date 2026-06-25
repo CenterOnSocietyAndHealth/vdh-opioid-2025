@@ -228,7 +228,9 @@ export const locality = defineType({
                 defineField({ name: 'totalPopulation', title: 'Total Population', type: 'number' }),
                 defineField({ name: 'medianAge', title: 'Median Age (Years)', type: 'number' }),
                 defineField({ name: 'medianIncome', title: 'Median Household Income', type: 'number' }),
-                defineField({ name: 'povertyPct', title: 'Poverty Percentage', type: 'number' })
+                defineField({ name: 'povertyPct', title: 'Poverty Percentage', type: 'number' }),
+                defineField({ name: 'severeRentBurdenPct', title: 'Severe Rent Burden Percentage', type: 'number' }),
+                defineField({ name: 'uninsuredPct', title: 'Uninsured Percentage', type: 'number' })
             ]
         }),
         defineField({

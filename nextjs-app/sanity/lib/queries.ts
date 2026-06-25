@@ -58,7 +58,9 @@ export const localitiesQuery = defineQuery(`
       totalPopulation,
       medianAge,
       medianIncome,
-      povertyPct
+      povertyPct,
+      severeRentBurdenPct,
+      uninsuredPct
     },
     regions {
       healthDistrict,
@@ -552,6 +554,44 @@ export const getPageQuery = defineQuery(`
       _type == "blockQuote" => {
         ...,
         quote[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        }
+      },
+      _type == "socioEconomicData" => {
+        ...,
+        heading[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        povertyComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        incomeComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        rentBurdenComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        uninsuredComparison[]{
           ...,
           markDefs[]{
             ...,

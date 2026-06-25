@@ -20,6 +20,8 @@ export type Demographics = {
   medianAge?: number | null;
   medianIncome?: number | null;
   povertyPct?: number | null;
+  severeRentBurdenPct?: number | null;
+  uninsuredPct?: number | null;
 };
 
 export type Regions = {
@@ -396,5 +398,29 @@ export type RecommendedCitationProps = {
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
     maxWidth?: number;
+  };
+};
+
+export type SocioEconomicDataProps = {
+  block: {
+    sectionId?: string;
+    marginTop?: 'none' | 'small' | 'medium' | 'large';
+    marginBottom?: 'none' | 'small' | 'medium' | 'large';
+    maxWidth?: number;
+    heading?: unknown[];
+    financialSectionLabel?: string;
+    housingSectionLabel?: string;
+    povertyLabel?: string;
+    incomeLabel?: string;
+    rentBurdenLabel?: string;
+    uninsuredLabel?: string;
+    povertyComparison?: unknown[];
+    incomeComparison?: unknown[];
+    rentBurdenComparison?: unknown[];
+    uninsuredComparison?: unknown[];
+    statePovertyPct?: number;
+    stateMedianIncome?: number;
+    stateSevereRentBurdenPct?: number;
+    stateUninsuredPct?: number;
   };
 };

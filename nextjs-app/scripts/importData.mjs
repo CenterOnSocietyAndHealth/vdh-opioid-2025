@@ -190,7 +190,9 @@ const importData = async () => {
                 totalPopulation: parseInt(String(popRaw ?? '0').replace(/,/g, ''), 10) || 0,
                 medianAge: parseFloat(String(medianAgeRaw ?? '0')) || 0,
                 medianIncome: parseInt(String(row.MedianHHIncome ?? '0').replace(/,/g, ''), 10) || 0,
-                povertyPct: parseFloat(String(row.PovertyPct ?? '0')) || 0
+                povertyPct: parseFloat(String(row.PovertyPct ?? '0')) || 0,
+                severeRentBurdenPct: parseFloat(String(row.SevereRentBurdenPct ?? '0')) || 0,
+                uninsuredPct: parseFloat(String(row.Uninsured ?? '0')) || 0
             },
             regions: {
                 healthDistrict: row.Hlth_Dist_Name ?? '',
