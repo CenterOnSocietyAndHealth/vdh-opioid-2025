@@ -418,6 +418,10 @@ export type SocioEconomicDataProps = {
     incomeComparison?: unknown[];
     rentBurdenComparison?: unknown[];
     uninsuredComparison?: unknown[];
+    statePovertyComparison?: unknown[];
+    stateIncomeComparison?: unknown[];
+    stateRentBurdenComparison?: unknown[];
+    stateUninsuredComparison?: unknown[];
     statePovertyPct?: number;
     stateMedianIncome?: number;
     stateSevereRentBurdenPct?: number;

@@ -101,28 +101,56 @@ export const socioEconomicData = defineType({
       title: 'Poverty Comparison Sentence',
       type: 'blockContent',
       description:
-        'Editable comparison text. Use Locality Field and State Comparison % annotations for dynamic values.',
+        'Shown when a county or city is selected. Use Locality Field and State Comparison % annotations for dynamic values.',
     }),
     defineField({
       name: 'incomeComparison',
       title: 'Median Income Comparison Sentence',
       type: 'blockContent',
       description:
-        'Editable comparison text. Use Locality Field and State Comparison % annotations for dynamic values.',
+        'Shown when a county or city is selected. Use Locality Field and State Comparison % annotations for dynamic values.',
     }),
     defineField({
       name: 'rentBurdenComparison',
       title: 'Rent Burden Comparison Sentence',
       type: 'blockContent',
       description:
-        'Editable comparison text. Use Locality Field, State Comparison %, and Definition annotations.',
+        'Shown when a county or city is selected. Use Locality Field, State Comparison %, and Definition annotations.',
     }),
     defineField({
       name: 'uninsuredComparison',
       title: 'Uninsured Comparison Sentence',
       type: 'blockContent',
       description:
-        'Editable comparison text. Use Locality Field, State Comparison %, and Definition annotations.',
+        'Shown when a county or city is selected. Use Locality Field, State Comparison %, and Definition annotations.',
+    }),
+    defineField({
+      name: 'statePovertyComparison',
+      title: 'State View: Poverty Comparison Sentence',
+      type: 'blockContent',
+      description:
+        'Shown when State of Virginia is selected or no locality is chosen. Use Locality Field annotations for statewide values.',
+    }),
+    defineField({
+      name: 'stateIncomeComparison',
+      title: 'State View: Median Income Comparison Sentence',
+      type: 'blockContent',
+      description:
+        'Shown when State of Virginia is selected or no locality is chosen. Use Locality Field annotations for statewide values.',
+    }),
+    defineField({
+      name: 'stateRentBurdenComparison',
+      title: 'State View: Rent Burden Comparison Sentence',
+      type: 'blockContent',
+      description:
+        'Shown when State of Virginia is selected or no locality is chosen. Use Locality Field and Definition annotations.',
+    }),
+    defineField({
+      name: 'stateUninsuredComparison',
+      title: 'State View: Uninsured Comparison Sentence',
+      type: 'blockContent',
+      description:
+        'Shown when State of Virginia is selected or no locality is chosen. Use Locality Field and Definition annotations.',
     }),
     defineField({
       name: 'statePovertyPct',

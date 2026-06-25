@@ -601,6 +601,34 @@ export const getPageQuery = defineQuery(`
                 ...,
                 ${markDefsReference}
               }
+            },
+            statePovertyComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            stateIncomeComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            stateRentBurdenComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            stateUninsuredComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
             }
           }
         }
@@ -636,6 +664,34 @@ export const getPageQuery = defineQuery(`
           }
         },
         uninsuredComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        statePovertyComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        stateIncomeComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        stateRentBurdenComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        stateUninsuredComparison[]{
           ...,
           markDefs[]{
             ...,

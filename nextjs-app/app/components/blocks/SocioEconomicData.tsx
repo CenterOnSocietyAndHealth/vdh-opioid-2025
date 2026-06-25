@@ -183,12 +183,18 @@ function createPortableTextComponents(
   selectedLocality: Locality | null | undefined,
   localities: Locality[] | undefined,
   benchmarks: StateBenchmarks,
+  isVirginia: boolean,
 ): PortableTextComponents {
+  const dataLocality =
+    selectedLocality ||
+    (isVirginia && localities?.length ? findVirginiaLocality(localities) : null) ||
+    null
+
   const getComparison = (metric: string) => {
-    const povertyPct = parseNumber(selectedLocality?.demographics?.povertyPct)
-    const medianIncome = parseNumber(selectedLocality?.demographics?.medianIncome)
-    const rentBurdenPct = parseNumber(selectedLocality?.demographics?.severeRentBurdenPct)
-    const uninsuredPct = parseNumber(selectedLocality?.demographics?.uninsuredPct)
+    const povertyPct = parseNumber(dataLocality?.demographics?.povertyPct)
+    const medianIncome = parseNumber(dataLocality?.demographics?.medianIncome)
+    const rentBurdenPct = parseNumber(dataLocality?.demographics?.severeRentBurdenPct)
+    const uninsuredPct = parseNumber(dataLocality?.demographics?.uninsuredPct)
 
     const comparisons: Record<string, ReturnType<typeof calculateComparison>> = {
       poverty: calculateComparison(povertyPct, benchmarks.statePovertyPct),
@@ -229,7 +235,7 @@ function createPortableTextComponents(
 
         let fieldValue: unknown
         const locality =
-          selectedLocality ||
+          dataLocality ||
           (localities?.length ? findVirginiaLocality(localities) : null)
 
         if (locality) {
@@ -269,14 +275,12 @@ function ComparisonText({
   content,
   fallback,
   components,
-  useFallback,
 }: {
   content?: unknown[]
   fallback: React.ReactNode
   components: PortableTextComponents
-  useFallback?: boolean
 }) {
-  if (!useFallback && content && content.length > 0) {
+  if (content && content.length > 0) {
     return (
       <div className="text-center" style={bodyTextStyle}>
         <PortableText value={content as never} components={components} />
@@ -293,14 +297,12 @@ function StatColumn({
   comparison,
   fallbackComparison,
   components,
-  useFallbackComparison,
 }: {
   value: string
   label: string
   comparison?: unknown[]
   fallbackComparison: React.ReactNode
   components: PortableTextComponents
-  useFallbackComparison?: boolean
 }) {
   return (
     <div className="flex flex-col items-center gap-2 px-4">
@@ -310,7 +312,6 @@ function StatColumn({
         content={comparison as unknown[] | undefined}
         fallback={fallbackComparison}
         components={components}
-        useFallback={useFallbackComparison}
       />
     </div>
   )
@@ -352,6 +353,10 @@ export default function SocioEconomicData({
     incomeComparison,
     rentBurdenComparison,
     uninsuredComparison,
+    statePovertyComparison,
+    stateIncomeComparison,
+    stateRentBurdenComparison,
+    stateUninsuredComparison,
     statePovertyPct = 9.3,
     stateMedianIncome = 93170,
     stateSevereRentBurdenPct = 22.5,
@@ -365,10 +370,18 @@ export default function SocioEconomicData({
     stateUninsuredPct,
   }
 
+  const isVirginia =
+    !selectedLocality ||
+    selectedLocality.counties?.trim() === 'Virginia Total' ||
+    selectedLocality.counties?.trim() === 'Virginia' ||
+    selectedLocality.fips === 'us-va-999' ||
+    selectedLocality.marcCountyId === '999'
+
   const portableTextComponents = createPortableTextComponents(
     selectedLocality,
     localities,
     benchmarks,
+    isVirginia,
   )
 
   const povertyPct = parseNumber(selectedLocality?.demographics?.povertyPct)
@@ -380,13 +393,6 @@ export default function SocioEconomicData({
   const incomeComparisonData = calculateComparison(medianIncome, stateMedianIncome)
   const rentBurdenComparisonData = calculateComparison(rentBurdenPct, stateSevereRentBurdenPct)
   const uninsuredComparisonData = calculateComparison(uninsuredPct, stateUninsuredPct)
-
-  const isVirginia =
-    !selectedLocality ||
-    selectedLocality.counties?.trim() === 'Virginia Total' ||
-    selectedLocality.counties?.trim() === 'Virginia' ||
-    selectedLocality.fips === 'us-va-999' ||
-    selectedLocality.marcCountyId === '999'
 
   const countyName = selectedLocality?.counties?.trim() || 'this locality'
   const direction = (comparison: ReturnType<typeof calculateComparison>) =>
@@ -431,9 +437,8 @@ export default function SocioEconomicData({
               <StatColumn
                 value={isVirginia ? formatPercent(statePovertyPct) : formatPercent(povertyPct)}
                 label={povertyLabel}
-                comparison={povertyComparison}
+                comparison={isVirginia ? statePovertyComparison : povertyComparison}
                 components={portableTextComponents}
-                useFallbackComparison={isVirginia}
                 fallbackComparison={
                   isVirginia ? (
                     <>
@@ -458,9 +463,8 @@ export default function SocioEconomicData({
                     : formatIncome(medianIncome)
                 }
                 label={incomeLabel}
-                comparison={incomeComparison}
+                comparison={isVirginia ? stateIncomeComparison : incomeComparison}
                 components={portableTextComponents}
-                useFallbackComparison={isVirginia}
                 fallbackComparison={
                   isVirginia ? (
                     <>
@@ -491,9 +495,8 @@ export default function SocioEconomicData({
                     : formatPercent(rentBurdenPct)
                 }
                 label={rentBurdenLabel}
-                comparison={rentBurdenComparison}
+                comparison={isVirginia ? stateRentBurdenComparison : rentBurdenComparison}
                 components={portableTextComponents}
-                useFallbackComparison={isVirginia}
                 fallbackComparison={
                   isVirginia ? (
                     <>
@@ -523,9 +526,8 @@ export default function SocioEconomicData({
                   isVirginia ? formatPercent(stateUninsuredPct) : formatPercent(uninsuredPct)
                 }
                 label={uninsuredLabel}
-                comparison={uninsuredComparison}
+                comparison={isVirginia ? stateUninsuredComparison : uninsuredComparison}
                 components={portableTextComponents}
-                useFallbackComparison={isVirginia}
                 fallbackComparison={
                   isVirginia ? (
                     <>
