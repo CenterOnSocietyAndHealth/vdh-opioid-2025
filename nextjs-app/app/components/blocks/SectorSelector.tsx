@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useId } from 'react';
 import { useSector } from '@/app/contexts/SectorContext';
 import { getValidKeyOrDefault } from '@/app/client-utils';
 
@@ -42,6 +42,8 @@ export default function SectorSelector({
   // State for dropdown functionality
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const listboxId = useId();
+  const triggerId = useId();
 
   // Handle click outside to close dropdown
   useEffect(() => {
@@ -65,14 +67,15 @@ export default function SectorSelector({
   return (
     <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]} flex justify-center items-center`}>
       {/* Desktop: Button layout */}
-      <div className="hidden md:flex flex-wrap gap-3 justify-center">
+      <div className="hidden md:flex flex-wrap gap-3 justify-center" role="group" aria-label="Sector filter">
         {sectors.map((sector) => {
           const isSelected = selectedSector === sector;
           return (
             <button
               key={sector}
+              type="button"
               onClick={() => setSelectedSector(sector)}
-              tabIndex={0}
+              aria-pressed={isSelected}
               className={`
                 px-3 py-2 rounded-[3px] font-inter text-sm transition-all duration-100
                 border
@@ -81,6 +84,7 @@ export default function SectorSelector({
                   : 'bg-[#F2F1F1] text-[#414141] border-[#eee] hover:bg-[#F6F6F6] hover:shadow-md hover:transform hover:-translate-y-0.5'
                 }
                 active:scale-95
+                focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[#11607A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#11607A]
               `}
               style={{
                 fontFamily: 'Inter, sans-serif',
@@ -99,12 +103,17 @@ export default function SectorSelector({
 
       {/* Mobile: Dropdown */}
       <div className="md:hidden flex items-center gap-3">
-        <label className="text-[#414141] font-inter text-[14px] font-bold whitespace-nowrap">
+        <label htmlFor={triggerId} className="text-[#414141] font-inter text-[14px] font-bold whitespace-nowrap">
           Sectors:
         </label>
         <div className="relative flex-1" ref={dropdownRef}>
           <button
+            id={triggerId}
+            type="button"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            aria-expanded={isDropdownOpen}
+            aria-haspopup="listbox"
+            aria-controls={listboxId}
             className="
               w-full min-w-[200px] px-4 py-1 
               bg-white border border-[#E7E7E7] rounded-[3px]
@@ -125,6 +134,7 @@ export default function SectorSelector({
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
@@ -132,7 +142,11 @@ export default function SectorSelector({
 
           {/* Dropdown Menu */}
           {isDropdownOpen && (
-            <div className="
+            <div
+              id={listboxId}
+              role="listbox"
+              aria-label="Sectors"
+              className="
               absolute top-full left-0 right-0 mt-1
               bg-white border border-gray-300 rounded-md shadow-lg
               z-50 max-h-60 overflow-y-auto
@@ -142,6 +156,9 @@ export default function SectorSelector({
                 return (
                   <button
                     key={sector}
+                    type="button"
+                    role="option"
+                    aria-selected={isSelected}
                     onClick={() => handleSectorSelect(sector)}
                     className={`
                       w-full px-4 py-3 text-left

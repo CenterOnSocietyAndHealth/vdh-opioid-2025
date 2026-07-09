@@ -817,7 +817,12 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     return (
       <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
         <div className="relative mx-auto p-4">
-          <div className="w-full h-[400px] bg-gray-100 flex items-center justify-center">
+          <div
+            className="w-full h-[400px] bg-gray-100 flex items-center justify-center"
+            role="status"
+            aria-busy="true"
+            aria-live="polite"
+          >
             <p>Loading chart...</p>
           </div>
         </div>
