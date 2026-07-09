@@ -297,9 +297,8 @@ function createPortableTextComponents(
           <a
             href={`#${citationId}`}
             onClick={handleCitationClick}
-            tabIndex={0}
+            aria-label={`View source ${selectedText}`}
             className="cursor-pointer text-sm font-medium underline hover:bg-[#cfe6ef]"
-            title="View source"
             style={{fontSize: '0.75em', verticalAlign: 'super'}}
           >
             {children}

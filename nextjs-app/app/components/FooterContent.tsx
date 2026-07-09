@@ -8,7 +8,7 @@ export default function FooterContent() {
   return (
     <button 
       onClick={scrollToTop}
-      tabIndex={0}
+      aria-label="Back to top"
       className="text-gray-700 font-medium hover:text-gray-900 cursor-pointer"
     >
       TOP ↑

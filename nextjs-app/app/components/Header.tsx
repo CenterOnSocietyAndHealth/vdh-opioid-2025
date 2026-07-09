@@ -34,7 +34,6 @@ export default async function Header() {
         <a 
           href="#main-content" 
           className="skip-navigation"
-          tabIndex={1}
         >
           Skip navigation »
         </a>
@@ -67,10 +66,10 @@ export default async function Header() {
             {/* Logo */}
             <div className="logo h-[50px] flex-shrink-0">
               {logoUrl ? (
-                <Link href="/" tabIndex={0}>
+                <Link href="/" aria-label="Virginia Opioid Cost Data Tool, home">
                   <Image 
                     src={urlForImage(settings.logo).width(590).url()} 
-                    alt={settings.logo.alt || "Virginia Opioid Cost Data Tool"}
+                    alt=""
                     width={590}
                     height={204}
                     style={{ maxHeight: '50px', width: 'auto', height: '100%' }}

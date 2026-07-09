@@ -28,8 +28,10 @@ export default function Navigation({
     ? "flex flex-col lg:flex-row lg:space-x-8 space-y-4 lg:space-y-0" 
     : "flex space-x-8";
 
+  const navLabel = context === 'footer' ? 'Footer navigation' : 'Main navigation';
+
   return (
-    <nav className={navClasses}>
+    <nav className={navClasses} aria-label={navLabel}>
       <ul className={ulClasses}>
         {items.map((item, index) => {
           const href = item.linkType === 'internal' 
@@ -47,10 +49,13 @@ export default function Navigation({
               <a 
                 href={href}
                 className={`nav-link text-lg ${isCurrentPage ? 'font-bold no-shadow' : ''}`}
-                tabIndex={0}
+                {...(isCurrentPage ? { 'aria-current': 'page' as const } : {})}
                 {...(item.linkType === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               >
                 {item.title}
+                {item.linkType === 'external' && (
+                  <span className="sr-only"> (opens in new tab)</span>
+                )}
               </a>
             </li>
           );
