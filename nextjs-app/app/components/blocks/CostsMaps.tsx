@@ -76,7 +76,7 @@ const tabIndicatorMapping = {
   'Total': 'Total',
   'Labor': 'Lost Labor',
   'HealthCare': 'Health Care',
-  'Crime_Other': 'Criminal Justice',
+  'Crime_Other': 'Criminal Legal System',
   'Household': 'Child Services & K-12',
 };
 
@@ -86,7 +86,7 @@ const sectorToTabMapping: Record<string, CostsMapIndicator> = {
   'Lost Labor': 'Labor',
   'Health Care': 'HealthCare',
   'Child Services & K-12': 'Household',
-  'Criminal Justice': 'Crime_Other',
+  'Criminal Legal System': 'Crime_Other',
 };
 
 export default function CostsMaps({ block, localities, pageId }: CostsMapProps) {

@@ -101,7 +101,7 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
         return healthcareContent || []
       case 'Child Services & K-12':
         return childServicesContent || []
-      case 'Criminal Justice':
+      case 'Criminal Legal System':
         return criminalJusticeContent || []
       case 'All Sectors':
       default:

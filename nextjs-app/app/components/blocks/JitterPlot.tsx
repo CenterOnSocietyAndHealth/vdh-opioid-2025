@@ -50,7 +50,7 @@ const sectorToFieldMapping: Record<string, string> = {
   'Lost Labor': 'laborPerCapita',
   'Health Care': 'healthcarePerCapita',
   'Child Services & K-12': 'householdPerCapita',
-  'Criminal Justice': 'crimeOtherPerCapita',
+  'Criminal Legal System': 'crimeOtherPerCapita',
 };
 
 // Mapping between SectorSelector sectors and total cost field names
@@ -59,7 +59,7 @@ const sectorToTotalFieldMapping: Record<string, string> = {
   'Lost Labor': 'laborTotal',
   'Health Care': 'healthcareTotal',
   'Child Services & K-12': 'householdTotal',
-  'Criminal Justice': 'crimeOtherTotal',
+  'Criminal Legal System': 'crimeOtherTotal',
 };
 
 // Display names for sectors
@@ -68,7 +68,7 @@ const sectorDisplayNames: Record<string, string> = {
   'Lost Labor': 'Lost Labor',
   'Health Care': 'Health Care',
   'Child Services & K-12': 'Child Services & K-12',
-  'Criminal Justice': 'Criminal Justice',
+  'Criminal Legal System': 'Criminal Legal System',
 };
 
 // Color scheme for the plot
@@ -239,7 +239,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
         return block.healthcareDescription;
       case 'Child Services & K-12':
         return block.householdDescription;
-      case 'Criminal Justice':
+      case 'Criminal Legal System':
         return block.crimeOtherDescription;
       default:
         return null;
@@ -257,7 +257,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
         return block.healthcareSources;
       case 'Child Services & K-12':
         return block.householdSources;
-      case 'Criminal Justice':
+      case 'Criminal Legal System':
         return block.crimeOtherSources;
       default:
         return null;

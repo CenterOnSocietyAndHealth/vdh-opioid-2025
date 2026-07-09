@@ -9,7 +9,7 @@ const sectors = [
   'Lost Labor',
   'Health Care',
   'Child Services & K-12',
-  'Criminal Justice'
+  'Criminal Legal System'
 ] as const;
 
 const marginMap = {

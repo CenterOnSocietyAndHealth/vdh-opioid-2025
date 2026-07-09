@@ -61,7 +61,7 @@ export default function ChoroplethMap({
     'Total': 'All-Sector',
     'Labor': 'Lost Labor',
     'HealthCare': 'Health Care',
-    'Crime_Other': 'Criminal Justice',
+    'Crime_Other': 'Criminal Legal System',
     'Household': 'Child Services & K-12',
   }), []);
 
