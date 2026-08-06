@@ -40,7 +40,7 @@ export default async function Header() {
       </div>
 
       {/* Announcement Bar */}
-      <div className="w-full py-2 px-4 text-center announcement-bar hidden">
+      <div className="w-full py-2 px-4 text-center announcement-bar">
         <div className="container max-w-[1280px] mx-auto">
           {/* Desktop version */}
           <div className="hidden md:block">
