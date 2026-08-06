@@ -44,7 +44,7 @@ export default async function Header() {
         <div className="container max-w-[1280px] mx-auto">
           {/* Desktop version */}
           <div className="hidden md:block">
-            Update: Our site is now the Virginia Opioid Cost Data Tool. Read more about new features in{' '}
+            We’ve updated our website with 2024 data. Read what’s new in {' '}
             <Link href="/whats-new/" tabIndex={0}>
               our announcement. &rarr;
             </Link>
@@ -52,7 +52,10 @@ export default async function Header() {
           
           {/* Mobile version */}
           <div className="block md:hidden">
-            Update: <Link href="/whats-new/">Read about new features &rarr;</Link>
+            We’ve updated our website with 2024 data. Read what’s new in {' '}
+            <Link href="/whats-new/" tabIndex={0}>
+              our announcement. &rarr;
+            </Link>
           </div>
         </div>
       </div>
