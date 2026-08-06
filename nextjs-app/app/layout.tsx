@@ -11,6 +11,7 @@ import { Toaster } from "sonner";
 import DraftModeToast from "@/app/components/DraftModeToast";
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
+import StagingEnvironmentIndicator from "@/app/components/StagingEnvironmentIndicator";
 import * as demo from "@/sanity/lib/demo";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { settingsQuery } from "@/sanity/lib/queries";
@@ -140,6 +141,7 @@ export default async function RootLayout({
           {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
           <SanityLive onError={handleError} />
           <Header />
+          <StagingEnvironmentIndicator />
           <main id="main-content">{children}</main>
           <Footer />
           {/* Keep SpeedInsights within the main section to avoid any residual space below the footer */}

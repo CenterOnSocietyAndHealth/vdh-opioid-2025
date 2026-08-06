@@ -33,7 +33,16 @@ const ChoroplethMap = dynamic<ChoroplethMapProps>(
   () => import('@/app/components/blocks/ChoroplethMap'),
   {
     ssr: false,
-    loading: () => <div className="w-full h-[400px] bg-gray-100 flex items-center justify-center">Loading map...</div>
+    loading: () => (
+      <div
+        className="w-full h-[400px] bg-gray-100 flex items-center justify-center"
+        role="status"
+        aria-busy="true"
+        aria-live="polite"
+      >
+        Loading map...
+      </div>
+    )
   }
 ) as React.ComponentType<ChoroplethMapProps>;
 
@@ -76,7 +85,7 @@ const tabIndicatorMapping = {
   'Total': 'Total',
   'Labor': 'Lost Labor',
   'HealthCare': 'Health Care',
-  'Crime_Other': 'Criminal Justice',
+  'Crime_Other': 'Criminal Legal System',
   'Household': 'Child Services & K-12',
 };
 
@@ -86,7 +95,7 @@ const sectorToTabMapping: Record<string, CostsMapIndicator> = {
   'Lost Labor': 'Labor',
   'Health Care': 'HealthCare',
   'Child Services & K-12': 'Household',
-  'Criminal Justice': 'Crime_Other',
+  'Criminal Legal System': 'Crime_Other',
 };
 
 export default function CostsMaps({ block, localities, pageId }: CostsMapProps) {
@@ -320,7 +329,12 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
     return (
       <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
         <div className="relative mx-auto p-4">
-          <div className="w-full h-[400px] bg-gray-100 flex items-center justify-center">
+          <div
+            className="w-full h-[400px] bg-gray-100 flex items-center justify-center"
+            role="status"
+            aria-busy="true"
+            aria-live="polite"
+          >
             <p>Loading map...</p>
           </div>
         </div>

@@ -129,7 +129,6 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
         <button
           onClick={handleClick}
           className={buttonClassName}
-          tabIndex={0}
           onMouseEnter={(e) => {
             if (!isDisabled) {
               e.currentTarget.style.backgroundColor = '#3A658A';
@@ -141,6 +140,8 @@ export default function DownloadButton({ block }: DownloadButtonProps) {
             }
           }}
           disabled={isDisabled}
+          aria-busy={isLoading}
+          aria-label={isLoading ? 'Downloading data' : buttonText}
         >
           <DownloadIcon />
           <span className="whitespace-nowrap">

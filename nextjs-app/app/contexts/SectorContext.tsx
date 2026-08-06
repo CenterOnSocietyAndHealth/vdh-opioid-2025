@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState } from 'react';
 
-export type Sector = 'All Sectors' | 'Lost Labor' | 'Health Care' | 'Child Services & K-12' | 'Criminal Justice';
+export type Sector = 'All Sectors' | 'Lost Labor' | 'Health Care' | 'Child Services & K-12' | 'Criminal Legal System';
 
 type SectorContextType = {
   selectedSector: Sector;

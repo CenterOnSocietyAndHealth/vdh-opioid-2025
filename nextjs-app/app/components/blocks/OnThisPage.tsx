@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useId } from 'react'
 import { OnThisPageProps } from '@/app/types/locality'
 import { getValidKeyOrDefault } from '@/app/client-utils'
 
@@ -20,6 +20,8 @@ export default function OnThisPage({ block }: OnThisPageProps) {
   const { links = [], marginTop = 'none', marginBottom = 'none' } = block
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [selectedLink, setSelectedLink] = useState(links[0]?.title || '')
+  const listboxId = useId()
+  const triggerId = useId()
 
   const safeMarginTop = getValidKeyOrDefault(marginTop, marginMap, 'none')
   const safeMarginBottom = getValidKeyOrDefault(marginBottom, marginBottomMap, 'none')
@@ -102,8 +104,13 @@ export default function OnThisPage({ block }: OnThisPageProps) {
           {/* Dropdown */}
           <div className="relative">
             <button
+              id={triggerId}
+              type="button"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              tabIndex={0}
+              aria-expanded={isDropdownOpen}
+              aria-haspopup="listbox"
+              aria-controls={listboxId}
+              aria-label="On this page section"
               className="w-full bg-white border border-[#E7E7E7] rounded-[3px] px-4 py-3 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-[#11607A] focus:ring-offset-2 focus:ring-offset-[#F5F5F0]"
             >
               <span className="text-[#1E1E1E] font-normal">{selectedLink}</span>
@@ -119,13 +126,19 @@ export default function OnThisPage({ block }: OnThisPageProps) {
             </button>
             
             {isDropdownOpen && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#E7E7E7] shadow-lg z-10">
+              <div
+                id={listboxId}
+                role="listbox"
+                aria-label="On this page"
+                className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#E7E7E7] shadow-lg z-10"
+              >
                 {links.map((link, index) => (
                   <button
                     key={index}
                     type="button"
+                    role="option"
+                    aria-selected={link.title === selectedLink}
                     onClick={() => handleDropdownLinkClick(link)}
-                    tabIndex={0}
                     className="w-full px-4 py-3 text-left text-[#1E1E1E] font-normal hover:bg-gray-50 first:rounded-t-[3px] last:rounded-b-[3px] border-b border-gray-200 last:border-b-0 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[#11607A] focus:bg-[#E6F1F5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#11607A] focus-visible:bg-[#E6F1F5]"
                   >
                     {link.title}

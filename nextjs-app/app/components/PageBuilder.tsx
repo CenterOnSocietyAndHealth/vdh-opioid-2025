@@ -10,6 +10,7 @@ import { dataAttr } from "@/sanity/lib/utils";
 import { studioUrl } from "@/sanity/lib/api";
 import { LocalityProvider } from "@/app/contexts/LocalityContext";
 import { SectorProvider } from "@/app/contexts/SectorContext";
+import FilterAnnouncer from "@/app/components/FilterAnnouncer";
 import { Locality } from "@/app/types/locality";
 
 type PageBuilderPageProps = {
@@ -96,6 +97,7 @@ export default function PageBuilder({ page, localities }: PageBuilderPageProps) 
   return (
     <SectorProvider>
       <LocalityProvider initialLocality={page.selectedLocality} localities={localities}>
+        <FilterAnnouncer />
         <div
           data-sanity={dataAttr({
             id: page._id,
