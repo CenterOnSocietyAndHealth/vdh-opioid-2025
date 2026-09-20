@@ -880,11 +880,8 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
           ref={chartRef}
           className="bg-white border border-gray-200 p-0 pt-6 relative"
           style={{ minHeight: '400px' }}
-          role="region"
-          aria-label={`Interactive jitter plot visualization showing ${sectorDisplayNames[selectedSector] || 'cost'} data for Virginia localities. Each dot represents a locality with its per capita cost. ${plotData.values.length} localities displayed. Average cost: $${Math.round(plotData.average).toLocaleString()} per resident.${selectedLocality && selectedLocality.counties !== 'Virginia' ? ` Selected locality ${selectedLocality.counties.trim()} has $${Math.round(plotData.selectedValue).toLocaleString()} per resident.` : ''}`}
-          aria-describedby="jitter-plot-description"
         >
-          <svg ref={svgRef}></svg>
+          <svg ref={svgRef} aria-hidden="true"></svg>
           
           {/* Filter Options - positioned in lower left */}
           {selectedLocality && selectedLocality.counties !== 'Virginia' && (
@@ -931,11 +928,6 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
             </div>
           </div>
           )}
-          
-          {/* Hidden description for screen readers */}
-          <div id="jitter-plot-description" className="sr-only">
-            Interactive jitter plot visualization. Each dot represents a Virginia locality positioned horizontally by per capita cost. Dots are jittered vertically for better visibility. Hovering a dot shows the locality label and a guide line at its value. The dashed line shows the Virginia average. {selectedLocality && selectedLocality.counties !== 'Virginia' ? `The red dot represents the selected locality ${selectedLocality.counties.trim()}.` : 'No specific locality is currently selected.'}
-          </div>
         </div>
 
         {/* DataTableDescription for the current sector */}

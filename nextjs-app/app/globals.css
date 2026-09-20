@@ -63,6 +63,14 @@ sup {
     border: 0;
 }
 
+.counties path:focus,
+.counties path:focus-visible {
+    outline: 3px solid #FFD900 !important;
+    outline-offset: 3px;
+    stroke: #FFD900 !important;
+    stroke-width: 3px !important;
+}
+
 /* Fix line spacing for citation links that use vertical-align: super */
 a[style*="vertical-align: super"],
 a.align-super {

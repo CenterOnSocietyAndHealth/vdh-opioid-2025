@@ -324,6 +324,11 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
     { key: 'perCapita', label: 'Per Capita Cost', align: 'right', format: 'currency' },
   ];
 
+  const annotations = getCurrentAnnotations();
+  const annotationTexts = [annotations.left, annotations.top, annotations.right].filter(
+    (text): text is string => Boolean(text)
+  );
+
   // Don't render until mounted on the client
   if (!mounted) {
     return (
@@ -353,8 +358,15 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
             role="region"
             aria-label={`${tabIndicatorMapping[indicatorTab]} Costs Map`}
           >
+            {annotationTexts.length > 0 && (
+              <div className="sr-only">
+                {annotationTexts.map((text) => (
+                  <p key={text}>{text}</p>
+                ))}
+              </div>
+            )}
             <ChoroplethMap 
-              key={`${indicatorTab}-${displayType}-${selectedLocality?._id || 'state'}`}
+              key={`${indicatorTab}-${displayType}`}
               indicator={indicatorTab}
               displayType={displayType}
               selectedLocality={selectedLocality}
@@ -364,9 +376,9 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
               totalValue={calculateTotal(`${indicatorTab}`)}
               onLocalityClick={handleLocalityClick}
               onResetToVirginia={handleResetToVirginia}
-              leftAnnotation={getCurrentAnnotations().left}
-              topAnnotation={getCurrentAnnotations().top}
-              rightAnnotation={getCurrentAnnotations().right}
+              leftAnnotation={annotations.left}
+              topAnnotation={annotations.top}
+              rightAnnotation={annotations.right}
             />
           </div>
 
