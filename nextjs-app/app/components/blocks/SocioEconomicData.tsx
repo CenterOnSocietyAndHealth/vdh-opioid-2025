@@ -24,7 +24,7 @@ const marginBottomMap = {
 const bodyTextStyle = {
   color: '#1E1E1E',
   fontFamily: 'Inter',
-  fontSize: '16px',
+  fontSize: '18px',
   fontStyle: 'normal' as const,
   fontWeight: 400,
   lineHeight: '150%',
