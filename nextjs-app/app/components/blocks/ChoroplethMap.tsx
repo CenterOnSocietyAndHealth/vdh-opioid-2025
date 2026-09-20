@@ -350,7 +350,7 @@ export default function ChoroplethMap({
       .attr("font-weight", "400")
       .attr("fill", "#1E1E1E")
       .style("pointer-events", "none")
-      .text(`${formatNumber(perCapitaValue, '$', ' per person')}`);
+      .text(`${formatNumber(perCapitaValue, '$', ' per resident')}`);
       
     // Add total value
     tooltip.append("text")
@@ -1224,8 +1224,8 @@ export default function ChoroplethMap({
         // Add descriptive legend label similar to mockup
         const legendTitle = isMobile
           ? (selectedLocality 
-              ? `${indicatorDisplayNames[indicator]} Costs per person for ${selectedLocality.counties}`
-              : `${indicatorDisplayNames[indicator]} Costs per person`)
+              ? `${indicatorDisplayNames[indicator]} Costs per resident for ${selectedLocality.counties}`
+              : `${indicatorDisplayNames[indicator]} Costs per resident`)
           : `${indicatorDisplayNames[indicator]} Costs`;
         
         legend.append("text")
@@ -1264,7 +1264,7 @@ export default function ChoroplethMap({
             // This is the highest value block on mobile - show "+" symbol
             labelText = `$${Math.round(min).toLocaleString()}+`;
           } else {
-            labelText = `$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()}${isMobile ? '' : ' per person'}`;
+            labelText = `$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()}${isMobile ? '' : ' per resident'}`;
           }
           
           legend.append("text")
@@ -1452,7 +1452,7 @@ export default function ChoroplethMap({
                 .attr("font-weight", "400")
                 .attr("fill", "#1E1E1E")
                 .style("pointer-events", "none")
-                .text(`${formatNumber(perCapitaValue, '$', ' per person')}`);
+                .text(`${formatNumber(perCapitaValue, '$', ' per resident')}`);
                 
               // Add total value
               annotation.append("text")
