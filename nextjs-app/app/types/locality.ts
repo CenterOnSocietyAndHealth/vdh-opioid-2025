@@ -249,6 +249,12 @@ export type ImageProps = {
       alt: string;
       caption?: string;
     };
+    mobileImage?: {
+      asset: {
+        _ref: string;
+      };
+      alt?: string;
+    };
     sectionId?: string;
     marginTop?: 'none' | 'small' | 'medium' | 'large';
     marginBottom?: 'none' | 'small' | 'medium' | 'large';
