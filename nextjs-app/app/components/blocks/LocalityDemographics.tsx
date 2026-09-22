@@ -140,7 +140,7 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
             </div>
           </div>
 
-          {/* Opioid Fatalities */}
+          {/* Opioid Overdose Deaths */}
           <div className="flex items-center gap-1">
             <div 
               style={{
@@ -166,7 +166,7 @@ export default function LocalityDemographics({ block }: LocalityDemographicsProp
                 letterSpacing: '-0.266px',
               }}
             >
-              Opioid Fatalities
+              Opioid Overdose Deaths
             </div>
           </div>
 
