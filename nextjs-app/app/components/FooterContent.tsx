@@ -1,5 +1,9 @@
 "use client";
 
+export function CopyrightYear() {
+  return <>{new Date().getFullYear()}</>;
+}
+
 export default function FooterContent() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

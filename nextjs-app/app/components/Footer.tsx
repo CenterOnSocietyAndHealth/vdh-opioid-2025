@@ -4,7 +4,7 @@ import CSHlogo from '@/public/csh-logo.png'
 import Navigation from './Navigation'
 import { client } from "@/sanity/lib/client";
 import { groq } from "next-sanity";
-import FooterContent from './FooterContent';
+import FooterContent, { CopyrightYear } from './FooterContent';
 
 async function getSettings() {
   return client.fetch(groq`*[_type == "settings"][0]{
@@ -58,7 +58,7 @@ export default async function Footer() {
           
           {/* Copyright */}
           <div className="text-black">
-            © Copyright 2025 VCU Center on Society and Health
+            © Copyright <CopyrightYear /> VCU Center on Society and Health
           </div>
           <div className="text-black my-4 max-w-[450px] mx-auto">
             This work was partially supported by the Wright Regional Center for Clinical and Translational Science (National Center for Advancing Translational Sciences - grant UM1TR004360).
