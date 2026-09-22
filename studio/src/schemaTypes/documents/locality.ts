@@ -34,31 +34,31 @@ export const locality = defineType({
             name: 'Total_PerCapita',
             title: 'Total Cost Per Capita',
             type: 'number',
-            description: 'Total economic burden per person in the locality',
+            description: 'Total economic burden per resident in the locality',
         }),
         defineField({
             name: 'Labor_PerCapita',
-            title: 'Lost Labor Cost Per Capita',
+            title: 'Lost Earnings Cost Per Capita',
             type: 'number',
-            description: 'Lost productivity cost per person due to opioid-related deaths, disabilities, and incarcerations',
+            description: 'Lost productivity cost per resident due to opioid-related deaths, disabilities, and incarcerations',
         }),
         defineField({
             name: 'HealthCare_PerCapita',
             title: 'Healthcare Cost Per Capita',
             type: 'number',
-            description: 'Healthcare cost per person related to opioid use',
+            description: 'Healthcare cost per resident related to opioid use',
         }),
         defineField({
             name: 'Crime_Other_PerCapita',
             title: 'Crime and Other Costs Per Capita',
             type: 'number',
-            description: 'Criminal justice and social services cost per person related to opioid use',
+            description: 'Criminal legal system and social services cost per resident related to opioid use',
         }),
         defineField({
             name: 'Household_PerCapita',
             title: 'Household Cost Per Capita',
             type: 'number',
-            description: 'Economic burden per person borne by households',
+            description: 'Economic burden per resident borne by households',
         }),
         defineField({
             name: 'opioidMetrics',
@@ -107,16 +107,16 @@ export const locality = defineType({
             type: 'object',
             fields: [
                 defineField({ 
-                    name: 'oudDeaths2023', 
-                    title: 'OUD Deaths 2023', 
+                    name: 'oudDeaths2024', 
+                    title: 'OUD Deaths 2024', 
                     type: 'number',
-                    description: 'Number of opioid use disorder deaths in 2023'
+                    description: 'Number of opioid use disorder deaths in 2024'
                 }),
                 defineField({ 
-                    name: 'oudCases2023', 
-                    title: 'OUD Cases 2023', 
+                    name: 'oudCases2024', 
+                    title: 'OUD Cases 2024', 
                     type: 'number',
-                    description: 'Number of opioid use disorder cases in 2023'
+                    description: 'Number of opioid use disorder cases in 2024'
                 })
             ]
         }),
@@ -228,7 +228,9 @@ export const locality = defineType({
                 defineField({ name: 'totalPopulation', title: 'Total Population', type: 'number' }),
                 defineField({ name: 'medianAge', title: 'Median Age (Years)', type: 'number' }),
                 defineField({ name: 'medianIncome', title: 'Median Household Income', type: 'number' }),
-                defineField({ name: 'povertyPct', title: 'Poverty Percentage', type: 'number' })
+                defineField({ name: 'povertyPct', title: 'Poverty Percentage', type: 'number' }),
+                defineField({ name: 'severeRentBurdenPct', title: 'Severe Rent Burden Percentage', type: 'number' }),
+                defineField({ name: 'uninsuredPct', title: 'Uninsured Percentage', type: 'number' })
             ]
         }),
         defineField({

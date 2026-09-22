@@ -26,6 +26,7 @@ import HighestCosts from "./blocks/HighestCosts";
 import BlockQuote from "./blocks/BlockQuote";
 import ImageAndText from "./blocks/ImageAndText";
 import RecommendedCitation from "./blocks/RecommendedCitation";
+import SocioEconomicData from "./blocks/SocioEconomicData";
 import { useLocality } from "@/app/contexts/LocalityContext";
 
 type BlocksType = {
@@ -69,6 +70,7 @@ const Blocks: BlocksType = {
   blockQuote: BlockQuote,
   imageAndText: ImageAndText,
   recommendedCitation: RecommendedCitation,
+  socioEconomicData: SocioEconomicData,
 };
 
 /**

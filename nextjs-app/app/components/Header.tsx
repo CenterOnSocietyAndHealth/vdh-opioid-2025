@@ -34,18 +34,17 @@ export default async function Header() {
         <a 
           href="#main-content" 
           className="skip-navigation"
-          tabIndex={1}
         >
           Skip navigation »
         </a>
       </div>
 
       {/* Announcement Bar */}
-      <div className="w-full py-2 px-4 text-center announcement-bar hidden">
+      <div className="w-full py-2 px-4 text-center announcement-bar">
         <div className="container max-w-[1280px] mx-auto">
           {/* Desktop version */}
           <div className="hidden md:block">
-            Update: Our site is now the Virginia Opioid Cost Data Tool. Read more about new features in{' '}
+            We’ve updated our website with 2024 data. Read what’s new in {' '}
             <Link href="/whats-new/" tabIndex={0}>
               our announcement. &rarr;
             </Link>
@@ -53,7 +52,10 @@ export default async function Header() {
           
           {/* Mobile version */}
           <div className="block md:hidden">
-            Update: <Link href="/whats-new/">Read about new features &rarr;</Link>
+            We’ve updated our website with 2024 data. Read what’s new in {' '}
+            <Link href="/whats-new/" tabIndex={0}>
+              our announcement. &rarr;
+            </Link>
           </div>
         </div>
       </div>
@@ -67,10 +69,10 @@ export default async function Header() {
             {/* Logo */}
             <div className="logo h-[50px] flex-shrink-0">
               {logoUrl ? (
-                <Link href="/" tabIndex={0}>
+                <Link href="/" aria-label="Virginia Opioid Cost Data Tool, home">
                   <Image 
                     src={urlForImage(settings.logo).width(590).url()} 
-                    alt={settings.logo.alt || "Virginia Opioid Cost Data Tool"}
+                    alt=""
                     width={590}
                     height={204}
                     style={{ maxHeight: '50px', width: 'auto', height: '100%' }}

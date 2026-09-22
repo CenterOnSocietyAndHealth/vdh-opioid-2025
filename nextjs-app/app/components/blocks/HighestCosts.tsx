@@ -62,7 +62,7 @@ export default function HighestCosts({ block, localities }: HighestCostsProps) {
     marginBottom = 'medium'
   } = block;
   
-  // Get the top 5 localities with highest Total Costs Per Person
+  // Get the top 5 localities with highest Total Costs Per Resident
   const topLocalities = useMemo(() => {
     if (!localities || localities.length === 0) {
       return [];
@@ -151,7 +151,7 @@ export default function HighestCosts({ block, localities }: HighestCostsProps) {
               </th>
               <th className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
                 <div className="flex flex-col">
-                  <span>Local Lost Labor</span>
+                  <span>Local Lost Earnings</span>
                   <span>Opioid Costs*</span>
                 </div>
               </th>
@@ -215,7 +215,7 @@ export default function HighestCosts({ block, localities }: HighestCostsProps) {
                 lineHeight: '100%'
             }}
         >
-            * Costs Per Person
+            * Costs Per Resident
         </p>
     </div>
     </section>

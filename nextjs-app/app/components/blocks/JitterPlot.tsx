@@ -47,28 +47,28 @@ const marginBottomMap: Record<string, string> = {
 // Mapping between SectorSelector sectors and data field names
 const sectorToFieldMapping: Record<string, string> = {
   'All Sectors': 'totalPerCapita',
-  'Lost Labor': 'laborPerCapita',
+  'Lost Earnings': 'laborPerCapita',
   'Health Care': 'healthcarePerCapita',
   'Child Services & K-12': 'householdPerCapita',
-  'Criminal Justice': 'crimeOtherPerCapita',
+  'Criminal Legal System': 'crimeOtherPerCapita',
 };
 
 // Mapping between SectorSelector sectors and total cost field names
 const sectorToTotalFieldMapping: Record<string, string> = {
   'All Sectors': 'totalTotal',
-  'Lost Labor': 'laborTotal',
+  'Lost Earnings': 'laborTotal',
   'Health Care': 'healthcareTotal',
   'Child Services & K-12': 'householdTotal',
-  'Criminal Justice': 'crimeOtherTotal',
+  'Criminal Legal System': 'crimeOtherTotal',
 };
 
 // Display names for sectors
 const sectorDisplayNames: Record<string, string> = {
   'All Sectors': 'All-Sector',
-  'Lost Labor': 'Lost Labor',
+  'Lost Earnings': 'Lost Earnings',
   'Health Care': 'Health Care',
   'Child Services & K-12': 'Child Services & K-12',
-  'Criminal Justice': 'Criminal Justice',
+  'Criminal Legal System': 'Criminal Legal System',
 };
 
 // Color scheme for the plot
@@ -210,8 +210,8 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     
     if (isVirginiaSelected) {
       return {
-        title: `${sectorDisplayName} costs in Virginia averaged $${Math.round(plotData.average).toLocaleString()} per person.`,
-        subtitle: `${sectorDisplayName} Cost Per Person of the Opioid Epidemic for All Virginia Localities, 2023`,
+        title: `${sectorDisplayName} costs in Virginia averaged $${Math.round(plotData.average).toLocaleString()} per resident.`,
+        subtitle: `${sectorDisplayName} Cost Per Resident of the Opioid Epidemic for All Virginia Localities, 2023`,
         percentageDifference: null,
       };
     } else {
@@ -222,7 +222,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       
       return {
         title: `${sectorDisplayName} costs in ${countyName} were ${absDiff}% ${moreOrLess} than the average community.`,
-        subtitle: `${sectorDisplayName} Cost Per Person of the Opioid Epidemic for ${countyName}, 2023`,
+        subtitle: `${sectorDisplayName} Cost Per Resident of the Opioid Epidemic for ${countyName}, 2023`,
         percentageDifference: diff,
       };
     }
@@ -233,13 +233,13 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     switch (selectedSector) {
       case 'All Sectors':
         return block.totalDescription;
-      case 'Lost Labor':
+      case 'Lost Earnings':
         return block.laborDescription;
       case 'Health Care':
         return block.healthcareDescription;
       case 'Child Services & K-12':
         return block.householdDescription;
-      case 'Criminal Justice':
+      case 'Criminal Legal System':
         return block.crimeOtherDescription;
       default:
         return null;
@@ -251,13 +251,13 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     switch (selectedSector) {
       case 'All Sectors':
         return block.totalSources;
-      case 'Lost Labor':
+      case 'Lost Earnings':
         return block.laborSources;
       case 'Health Care':
         return block.healthcareSources;
       case 'Child Services & K-12':
         return block.householdSources;
-      case 'Criminal Justice':
+      case 'Criminal Legal System':
         return block.crimeOtherSources;
       default:
         return null;
@@ -621,7 +621,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
             .attr('font-size', '12px')
             .attr('fill', colors.text)
             .attr('font-weight', '500')
-            .text('Virginia Average/Person')
+            .text('Virginia Average/Resident')
             .style('opacity', 0)
             .transition()
             .duration(500)
@@ -749,7 +749,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
             .attr('text-anchor', 'start')
             .attr('font-size', '14px')
             .attr('fill', '#000000')
-            .text('cost per person');
+            .text('cost per resident');
 
           g.append('text')
             .attr('x', chartWidth)
@@ -769,7 +769,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
             .attr('text-anchor', 'end')
             .attr('font-size', '14px')
             .attr('fill', '#000000')
-            .text('cost per person')
+            .text('cost per resident')
             .style('opacity', 0)
             .transition()
             .duration(500)
@@ -782,7 +782,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
             .filter((d, i) => i >= 2) // Only animate the right-side labels
             .transition()
             .duration(500)
-            .text((d, i) => i === 2 ? `$${Math.round(maxValue).toLocaleString()}` : 'cost per person');
+            .text((d, i) => i === 2 ? `$${Math.round(maxValue).toLocaleString()}` : 'cost per resident');
           return update;
         },
         exit => exit
@@ -817,7 +817,12 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     return (
       <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
         <div className="relative mx-auto p-4">
-          <div className="w-full h-[400px] bg-gray-100 flex items-center justify-center">
+          <div
+            className="w-full h-[400px] bg-gray-100 flex items-center justify-center"
+            role="status"
+            aria-busy="true"
+            aria-live="polite"
+          >
             <p>Loading chart...</p>
           </div>
         </div>
@@ -843,7 +848,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
             if (isVirginiaSelected) {
               return (
                 <>
-                  <span style={{ fontWeight: 700 }}>{sectorName}</span> costs in <span style={{ fontWeight: 700 }}>Virginia</span> averaged ${Math.round(plotData.average).toLocaleString()} per person.
+                  <span style={{ fontWeight: 700 }}>{sectorName}</span> costs in <span style={{ fontWeight: 700 }}>Virginia</span> averaged ${Math.round(plotData.average).toLocaleString()} per resident.
                 </>
               );
             }
@@ -853,7 +858,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
             const sectorLower = sectorName === 'All-Sector' ? 'all-sector costs' : sectorName.toLowerCase();
             return (
               <>
-                <span style={{ fontWeight: 700 }}>{localityName}</span> paid {absDiff}% {moreOrLess} per person for <span style={{ fontWeight: 700 }}>{sectorLower}</span> than the average Virginia community
+                <span style={{ fontWeight: 700 }}>{localityName}</span> paid {absDiff}% {moreOrLess} per resident for <span style={{ fontWeight: 700 }}>{sectorLower}</span> than the average Virginia community
               </>
             );
           })()}
@@ -875,11 +880,8 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
           ref={chartRef}
           className="bg-white border border-gray-200 p-0 pt-6 relative"
           style={{ minHeight: '400px' }}
-          role="region"
-          aria-label={`Interactive jitter plot visualization showing ${sectorDisplayNames[selectedSector] || 'cost'} data for Virginia localities. Each dot represents a locality with its per capita cost. ${plotData.values.length} localities displayed. Average cost: $${Math.round(plotData.average).toLocaleString()} per person.${selectedLocality && selectedLocality.counties !== 'Virginia' ? ` Selected locality ${selectedLocality.counties.trim()} has $${Math.round(plotData.selectedValue).toLocaleString()} per person.` : ''}`}
-          aria-describedby="jitter-plot-description"
         >
-          <svg ref={svgRef}></svg>
+          <svg ref={svgRef} aria-hidden="true"></svg>
           
           {/* Filter Options - positioned in lower left */}
           {selectedLocality && selectedLocality.counties !== 'Virginia' && (
@@ -926,11 +928,6 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
             </div>
           </div>
           )}
-          
-          {/* Hidden description for screen readers */}
-          <div id="jitter-plot-description" className="sr-only">
-            Interactive jitter plot visualization. Each dot represents a Virginia locality positioned horizontally by per capita cost. Dots are jittered vertically for better visibility. Hovering a dot shows the locality label and a guide line at its value. The dashed line shows the Virginia average. {selectedLocality && selectedLocality.counties !== 'Virginia' ? `The red dot represents the selected locality ${selectedLocality.counties.trim()}.` : 'No specific locality is currently selected.'}
-          </div>
         </div>
 
         {/* DataTableDescription for the current sector */}

@@ -98,7 +98,7 @@ export default function LocalitySelector({ block, localities, pageId }: Locality
   if (!mounted || !Select) {
     return (
       <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]} flex justify-center items-center`}>
-        <div className="relative text-center">
+        <div className="relative text-center" role="status" aria-busy="true" aria-live="polite">
           <label className="inline-block mb-3 font-bold font-lato text-base">
             {heading}
           </label>

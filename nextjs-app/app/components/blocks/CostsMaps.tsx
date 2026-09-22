@@ -33,7 +33,16 @@ const ChoroplethMap = dynamic<ChoroplethMapProps>(
   () => import('@/app/components/blocks/ChoroplethMap'),
   {
     ssr: false,
-    loading: () => <div className="w-full h-[400px] bg-gray-100 flex items-center justify-center">Loading map...</div>
+    loading: () => (
+      <div
+        className="w-full h-[400px] bg-gray-100 flex items-center justify-center"
+        role="status"
+        aria-busy="true"
+        aria-live="polite"
+      >
+        Loading map...
+      </div>
+    )
   }
 ) as React.ComponentType<ChoroplethMapProps>;
 
@@ -74,19 +83,19 @@ const strokeColors = [
 // Mapping between tab names and corresponding display names
 const tabIndicatorMapping = {
   'Total': 'Total',
-  'Labor': 'Lost Labor',
+  'Labor': 'Lost Earnings',
   'HealthCare': 'Health Care',
-  'Crime_Other': 'Criminal Justice',
+  'Crime_Other': 'Criminal Legal System',
   'Household': 'Child Services & K-12',
 };
 
 // Mapping between SectorSelector sectors and CostsMaps tabs
 const sectorToTabMapping: Record<string, CostsMapIndicator> = {
   'All Sectors': 'Total',
-  'Lost Labor': 'Labor',
+  'Lost Earnings': 'Labor',
   'Health Care': 'HealthCare',
   'Child Services & K-12': 'Household',
-  'Criminal Justice': 'Crime_Other',
+  'Criminal Legal System': 'Crime_Other',
 };
 
 export default function CostsMaps({ block, localities, pageId }: CostsMapProps) {
@@ -315,12 +324,22 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
     { key: 'perCapita', label: 'Per Capita Cost', align: 'right', format: 'currency' },
   ];
 
+  const annotations = getCurrentAnnotations();
+  const annotationTexts = [annotations.left, annotations.top, annotations.right].filter(
+    (text): text is string => Boolean(text)
+  );
+
   // Don't render until mounted on the client
   if (!mounted) {
     return (
       <div className={`${marginMap[safeMarginTop as keyof typeof marginMap]} ${marginBottomMap[safeMarginBottom as keyof typeof marginBottomMap]}`}>
         <div className="relative mx-auto p-4">
-          <div className="w-full h-[400px] bg-gray-100 flex items-center justify-center">
+          <div
+            className="w-full h-[400px] bg-gray-100 flex items-center justify-center"
+            role="status"
+            aria-busy="true"
+            aria-live="polite"
+          >
             <p>Loading map...</p>
           </div>
         </div>
@@ -339,8 +358,15 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
             role="region"
             aria-label={`${tabIndicatorMapping[indicatorTab]} Costs Map`}
           >
+            {annotationTexts.length > 0 && (
+              <div className="sr-only">
+                {annotationTexts.map((text) => (
+                  <p key={text}>{text}</p>
+                ))}
+              </div>
+            )}
             <ChoroplethMap 
-              key={`${indicatorTab}-${displayType}-${selectedLocality?._id || 'state'}`}
+              key={`${indicatorTab}-${displayType}`}
               indicator={indicatorTab}
               displayType={displayType}
               selectedLocality={selectedLocality}
@@ -350,9 +376,9 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
               totalValue={calculateTotal(`${indicatorTab}`)}
               onLocalityClick={handleLocalityClick}
               onResetToVirginia={handleResetToVirginia}
-              leftAnnotation={getCurrentAnnotations().left}
-              topAnnotation={getCurrentAnnotations().top}
-              rightAnnotation={getCurrentAnnotations().right}
+              leftAnnotation={annotations.left}
+              topAnnotation={annotations.top}
+              rightAnnotation={annotations.right}
             />
           </div>
 

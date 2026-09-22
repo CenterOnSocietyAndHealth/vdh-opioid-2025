@@ -15,10 +15,10 @@
       <text x="50" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="400" fill="#414141">Population</text>
     </g>
     
-    <!-- Opioid Fatalities -->
+    <!-- Opioid Overdose Deaths -->
     <g transform="translate(120, 0)">
       <text x="0" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#414141">45</text>
-      <text x="30" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="400" fill="#414141">Opioid Fatalities</text>
+      <text x="30" y="20" text-anchor="start" font-family="Inter, sans-serif" font-size="14" font-weight="400" fill="#414141">Opioid Overdose Deaths</text>
     </g>
     
     <!-- Persons with UOU -->
@@ -36,6 +36,6 @@
   
   <!-- Description -->
   <text x="100" y="100" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#666">
-    Population, opioid fatalities, UOU cases, and rates
+    Population, opioid overdose deaths, UOU cases, and rates
   </text>
 </svg>

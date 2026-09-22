@@ -105,7 +105,6 @@ export default function Accordion({ block }: AccordionProps) {
             aria-expanded={isExpanded}
             aria-controls={getContentId()}
             aria-labelledby={getHeadingId()}
-            aria-label={`Toggle ${title} accordion`}
           >
             {/* Plus/X icon */}
             <svg 
@@ -426,9 +425,8 @@ export default function Accordion({ block }: AccordionProps) {
                       <a
                         href={`#${citationId}`}
                         onClick={handleCitationClick}
-                        tabIndex={0}
+                        aria-label={`View source ${selectedText}`}
                         className="hover:bg-[#F3E7B9] underline text-sm font-medium align-super cursor-pointer"
-                        title="View source"
                         style={{ fontSize: '0.75em', verticalAlign: 'super' }}
                       >
                         {children}

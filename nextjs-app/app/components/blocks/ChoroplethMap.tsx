@@ -42,6 +42,7 @@ export default function ChoroplethMap({
   const countiesRef = useRef<d3.Selection<SVGGElement, unknown, null, undefined> | null>(null);
   const hoverTooltipRef = useRef<SVGGElement | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const keyboardFocusLocalityIdRef = useRef<string | null>(null);
   const [transform, setTransform] = useState<d3.ZoomTransform>(d3.zoomIdentity);
   const [isInitialized, setIsInitialized] = useState(false);
   const [hoveredLocality, setHoveredLocality] = useState<Locality | null>(null);
@@ -59,9 +60,9 @@ export default function ChoroplethMap({
   // Indicator display names
   const indicatorDisplayNames = useMemo<Record<CostsMapIndicator, string>>(() => ({
     'Total': 'All-Sector',
-    'Labor': 'Lost Labor',
+    'Labor': 'Lost Earnings',
     'HealthCare': 'Health Care',
-    'Crime_Other': 'Criminal Justice',
+    'Crime_Other': 'Criminal Legal System',
     'Household': 'Child Services & K-12',
   }), []);
 
@@ -282,6 +283,7 @@ export default function ChoroplethMap({
     // Create the hover tooltip - add it to the SVG root so it stays fixed to cursor
     const tooltip = d3.select(svgRef.current).append("g")
       .attr("class", "hover-tooltip")
+      .attr("aria-hidden", "true")
       .attr("transform", `translate(${mouseX}, ${mouseY - 50})`)
       .style("pointer-events", "none");
     
@@ -350,7 +352,7 @@ export default function ChoroplethMap({
       .attr("font-weight", "400")
       .attr("fill", "#1E1E1E")
       .style("pointer-events", "none")
-      .text(`${formatNumber(perCapitaValue, '$', ' per person')}`);
+      .text(`${formatNumber(perCapitaValue, '$', ' per resident')}`);
       
     // Add total value
     tooltip.append("text")
@@ -522,6 +524,58 @@ export default function ChoroplethMap({
         const isMobile = windowWidth <= 768;
         const width = isMobile ? windowWidth - 40 : 1080;
         const height = isMobile ? 500 : 500;
+        const TAP_THRESHOLD_PX = 10;
+
+        const findLocalityFromGeoFeature = (d: any): Locality | undefined => {
+          let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID ||
+                        d.properties.id || d.id;
+
+          if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
+            fipsCode = `51${fipsCode}`;
+          }
+
+          const countyName = d.properties.NAME || d.properties.name;
+
+          return localities.find(loc => {
+            let locFips = loc.fips;
+
+            if (locFips) {
+              locFips = locFips.replace('us-va-', '');
+              locFips = locFips.toString().replace(/\D/g, '');
+              locFips = locFips.padStart(3, '0');
+              if (locFips.length === 3) {
+                locFips = `51${locFips}`;
+              }
+            }
+
+            const fipsMatch = fipsCode && locFips === fipsCode;
+            const nameMatch = countyName && loc.counties === countyName;
+
+            return fipsMatch || nameMatch;
+          });
+        };
+
+        const isVirginiaTotalLocality = (locality: Locality | undefined) => {
+          if (!locality) return true;
+          return (
+            locality.counties === 'Virginia Total' ||
+            locality.fips === 'us-va-999' ||
+            locality.marcCountyId === '999'
+          );
+        };
+
+        const handleLocalitySelection = (pathEl: Element, featureData: any) => {
+          if ((pathEl as any).__clickHandled) return;
+
+          const locality = findLocalityFromGeoFeature(featureData);
+          if (locality && onLocalityClick) {
+            (pathEl as any).__clickHandled = true;
+            setTimeout(() => {
+              (pathEl as any).__clickHandled = false;
+            }, 100);
+            onLocalityClick(locality);
+          }
+        };
         
         // Create a color scale based on values from all localities
         const values = localities.map(locality => 
@@ -532,6 +586,13 @@ export default function ChoroplethMap({
           .domain(values)
           .range(colors);
         
+        const previouslyFocusedLocalityId =
+          svgRef.current &&
+          document.activeElement instanceof Element &&
+          svgRef.current.contains(document.activeElement)
+            ? document.activeElement.getAttribute('data-locality-id')
+            : keyboardFocusLocalityIdRef.current;
+
         // Clear previous SVG content
         d3.select(svgRef.current).selectAll("*").remove();
         
@@ -949,62 +1010,8 @@ export default function ChoroplethMap({
             (this as any).__clickHandled = false;
           })
           .on("click", function(event: any, d: any) {
-            // Use function() instead of arrow function to ensure proper 'this' context
-            // Stop event propagation to prevent background click handler from firing
             event.stopPropagation();
-            
-            // Mark that click was handled to prevent pointerup from also firing
-            (this as any).__clickHandled = true;
-            
-            // Reset flag after a short delay
-            setTimeout(() => {
-              (this as any).__clickHandled = false;
-            }, 100);
-            
-            // Get FIPS code using various property names
-            let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
-                          d.properties.id || d.id;
-            
-            // Add prefix if needed
-            if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
-              fipsCode = `51${fipsCode}`;
-            }
-            
-            // Get locality name
-            const countyName = d.properties.NAME || d.properties.name;
-            
-            // Try to find matching locality
-            const locality = localities.find(loc => {
-              // Clean up locality FIPS code for comparison
-              let locFips = loc.fips;
-              
-              if (locFips) {
-                // Remove 'us-va-' prefix if present
-                locFips = locFips.replace('us-va-', '');
-                // Remove any remaining non-numeric characters
-                locFips = locFips.toString().replace(/\D/g, '');
-                // Ensure it's 5 digits
-                locFips = locFips.padStart(3, '0');
-                // Add state prefix if not present
-                if (locFips.length === 3) {
-                  locFips = `51${locFips}`;
-                }
-              }
-              
-              const fipsMatch = fipsCode && locFips === fipsCode;
-              const nameMatch = countyName && loc.counties === countyName;
-                            
-              return fipsMatch || nameMatch;
-            });
-            
-            console.log('Click event - Matched locality:', locality);
-            
-            if (locality && onLocalityClick) {
-              console.log('Click event - Calling onLocalityClick with:', locality);
-              onLocalityClick(locality);
-            } else {
-              console.log('Click event - No locality found or no onLocalityClick handler');
-            }
+            handleLocalitySelection(this, d);
           })
           .on("mousedown", function(event: any) {
             // Chrome desktop sometimes needs mousedown event for SVG clicks
@@ -1014,57 +1021,29 @@ export default function ChoroplethMap({
             }
           })
           .on("pointerdown", function(event: any) {
-            // Chrome desktop compatibility: handle pointer events
             if (event.pointerType === 'mouse') {
               event.stopPropagation();
+            } else if (event.pointerType === 'touch') {
+              (this as any).__touchStart = { x: event.clientX, y: event.clientY };
             }
           })
           .on("pointerup", function(event: any, d: any) {
-            // Chrome desktop fallback: handle click via pointerup if click didn't fire
-            // Only handle if click wasn't already handled (prevents double-firing)
-            if (event.pointerType === 'mouse' && event.button === 0 && !(this as any).__clickHandled) {
+            const isMouseClick = event.pointerType === 'mouse' && event.button === 0;
+            let isTouchTap = false;
+
+            if (event.pointerType === 'touch') {
+              const touchStart = (this as any).__touchStart;
+              if (touchStart) {
+                const dx = event.clientX - touchStart.x;
+                const dy = event.clientY - touchStart.y;
+                isTouchTap = Math.sqrt(dx * dx + dy * dy) < TAP_THRESHOLD_PX;
+              }
+              (this as any).__touchStart = null;
+            }
+
+            if ((isMouseClick || isTouchTap) && !(this as any).__clickHandled) {
               event.stopPropagation();
-              
-              // Get FIPS code using various property names
-              let fipsCode = d.properties.FIPS || d.properties.fips || d.properties.GEOID || 
-                            d.properties.id || d.id;
-              
-              // Add prefix if needed
-              if (fipsCode && typeof fipsCode === 'string' && fipsCode.length === 3) {
-                fipsCode = `51${fipsCode}`;
-              }
-              
-              // Get locality name
-              const countyName = d.properties.NAME || d.properties.name;
-              
-              // Try to find matching locality
-              const locality = localities.find(loc => {
-                // Clean up locality FIPS code for comparison
-                let locFips = loc.fips;
-                
-                if (locFips) {
-                  // Remove 'us-va-' prefix if present
-                  locFips = locFips.replace('us-va-', '');
-                  // Remove any remaining non-numeric characters
-                  locFips = locFips.toString().replace(/\D/g, '');
-                  // Ensure it's 5 digits
-                  locFips = locFips.padStart(3, '0');
-                  // Add state prefix if not present
-                  if (locFips.length === 3) {
-                    locFips = `51${locFips}`;
-                  }
-                }
-                
-                const fipsMatch = fipsCode && locFips === fipsCode;
-                const nameMatch = countyName && loc.counties === countyName;
-                              
-                return fipsMatch || nameMatch;
-              });
-              
-              if (locality && onLocalityClick) {
-                console.log('PointerUp event (Chrome fallback) - Calling onLocalityClick with:', locality);
-                onLocalityClick(locality);
-              }
+              handleLocalitySelection(this, d);
             }
           })
           .on("mouseenter", (event: any, d: any) => {
@@ -1186,18 +1165,182 @@ export default function ChoroplethMap({
             
             // Set a small delay before resetting hover effects to prevent flashing
             hoverTimeoutRef.current = setTimeout(() => {
+              if (
+                svgRef.current?.contains(document.activeElement) &&
+                document.activeElement?.getAttribute('role') === 'button'
+              ) {
+                hoverTimeoutRef.current = null;
+                return;
+              }
               setHoveredLocality(null);
               resetHoverEffects();
               removeHoverTooltip();
               hoverTimeoutRef.current = null;
             }, 50); // 50ms delay
+          });
+
+        type InteractiveLocalityPath = {
+          node: SVGPathElement;
+          locality: Locality;
+          value: number;
+          featureData: any;
+        };
+
+        const interactivePaths: InteractiveLocalityPath[] = countiesPaths.nodes()
+          .map((node) => {
+            const featureData = d3.select(node).datum();
+            const locality = findLocalityFromGeoFeature(featureData);
+            if (!locality || isVirginiaTotalLocality(locality)) return null;
+            const value = getValueFromPath(
+              locality,
+              getFieldPath(locality, indicator, displayType)
+            ) || 0;
+            return {
+              node: node as SVGPathElement,
+              locality,
+              value,
+              featureData,
+            };
           })
+          .filter((item): item is InteractiveLocalityPath => item !== null)
+          .sort((a, b) => b.value - a.value);
+
+        const initialIndex = (() => {
+          if (previouslyFocusedLocalityId) {
+            const focusedIndex = interactivePaths.findIndex(
+              (item) => item.locality._id === previouslyFocusedLocalityId
+            );
+            if (focusedIndex !== -1) return focusedIndex;
+          }
+          if (selectedLocality && !isVirginiaTotalLocality(selectedLocality)) {
+            const selectedIndex = interactivePaths.findIndex(
+              (item) => item.locality._id === selectedLocality._id
+            );
+            if (selectedIndex !== -1) return selectedIndex;
+          }
+          return 0;
+        })();
+
+        const setRovingTabIndex = (activeIndex: number) => {
+          interactivePaths.forEach((item, pathIndex) => {
+            item.node.setAttribute('tabindex', pathIndex === activeIndex ? '0' : '-1');
+          });
+        };
+
+        const showKeyboardFocus = (item: InteractiveLocalityPath) => {
+          if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current);
+            hoverTimeoutRef.current = null;
+          }
+
+          setHoveredLocality(item.locality);
+          applyHoverEffects(item.locality);
+          d3.select(item.node)
+            .attr('stroke', '#FFD900')
+            .attr('stroke-width', 3);
+
+          const isSelectedLocality = selectedLocality && selectedLocality._id === item.locality._id;
+          if (isSelectedLocality || !svgRef.current) {
+            removeHoverTooltip();
+            return;
+          }
+
+          const centroid = path.centroid(item.featureData);
+          if (centroid && !isNaN(centroid[0]) && !isNaN(centroid[1])) {
+            createHoverTooltip(item.locality, colorScale, centroid[0], centroid[1]);
+          }
+        };
+
+        const valueSuffix = displayType === 'PerCapita' ? ' per resident' : ' total costs';
+
+        interactivePaths.forEach((item, pathIndex) => {
+          d3.select(item.node)
+            .attr('role', 'button')
+            .attr('tabindex', pathIndex === initialIndex ? 0 : -1)
+            .attr('data-locality-id', item.locality._id)
+            .attr(
+              'aria-label',
+              `${item.locality.counties.trim()}, ${formatNumber(item.value, '$', valueSuffix)}`
+            )
+            .attr('aria-pressed', selectedLocality?._id === item.locality._id ? 'true' : 'false')
+            .on('focusin', () => {
+              keyboardFocusLocalityIdRef.current = item.locality._id;
+              showKeyboardFocus(item);
+            })
+            .on('focusout', () => {
+              setTimeout(() => {
+                if (!svgRef.current?.contains(document.activeElement)) {
+                  keyboardFocusLocalityIdRef.current = null;
+                  setHoveredLocality(null);
+                  resetHoverEffects();
+                  removeHoverTooltip();
+                }
+              }, 0);
+            })
+            .on('keydown', (event: KeyboardEvent) => {
+              const key = event.key;
+              if (key === 'Enter' || key === ' ') {
+                event.preventDefault();
+                keyboardFocusLocalityIdRef.current = item.locality._id;
+                handleLocalitySelection(item.node, item.featureData);
+                return;
+              }
+
+              const isNext = key === 'ArrowRight' || key === 'ArrowDown';
+              const isPrev = key === 'ArrowLeft' || key === 'ArrowUp';
+              if (!isNext && !isPrev) return;
+
+              event.preventDefault();
+              const nextIndex = isNext
+                ? (pathIndex + 1) % interactivePaths.length
+                : (pathIndex - 1 + interactivePaths.length) % interactivePaths.length;
+              setRovingTabIndex(nextIndex);
+              interactivePaths[nextIndex].node.focus();
+              showKeyboardFocus(interactivePaths[nextIndex]);
+            });
+        });
+
+        if (previouslyFocusedLocalityId && interactivePaths[initialIndex]) {
+          interactivePaths[initialIndex].node.focus({ preventScroll: true });
+        }
           
         // Add panning functionality on mobile (zoom disabled)
         if (isMobile) {
+          let mobileTouchStart: { x: number; y: number } | null = null;
+
           const zoom = d3.zoom<SVGSVGElement, unknown>()
             .scaleExtent([1, 1]) // Disable zooming (fixed at 1x)
             .translateExtent([[-width * 2.5, -height * 0.35], [width * 1.5, height * 1.1]]) // Limit panning with more horizontal range
+            .on('start', (event) => {
+              const sourceEvent = event.sourceEvent;
+              if (sourceEvent?.type === 'touchstart' && sourceEvent.touches?.[0]) {
+                mobileTouchStart = {
+                  x: sourceEvent.touches[0].clientX,
+                  y: sourceEvent.touches[0].clientY,
+                };
+              }
+            })
+            .on('end', (event) => {
+              if (!mobileTouchStart) return;
+
+              const sourceEvent = event.sourceEvent;
+              const touch = sourceEvent?.changedTouches?.[0];
+              const start = mobileTouchStart;
+              mobileTouchStart = null;
+
+              if (!touch || sourceEvent?.type !== 'touchend') return;
+
+              const dx = touch.clientX - start.x;
+              const dy = touch.clientY - start.y;
+              if (Math.sqrt(dx * dx + dy * dy) >= TAP_THRESHOLD_PX) return;
+
+              const target = document.elementFromPoint(touch.clientX, touch.clientY);
+              const pathEl = target?.closest('.counties path');
+              if (!pathEl) return;
+
+              const featureData = d3.select(pathEl).datum();
+              handleLocalitySelection(pathEl, featureData);
+            })
             .on('zoom', (event) => {
               mapGroup.attr('transform', event.transform);
             });
@@ -1217,6 +1360,7 @@ export default function ChoroplethMap({
         const spacing = isMobile ? 25 : 20;
         
         const legend = svg.append("g")
+          .attr("aria-hidden", "true")
           .attr("transform", `translate(${isMobile ? -10 : 40}, ${isMobile ? height - legendHeight - 0 : height - legendHeight - 360})`);
         
         legend.append("rect")
@@ -1231,8 +1375,8 @@ export default function ChoroplethMap({
         // Add descriptive legend label similar to mockup
         const legendTitle = isMobile
           ? (selectedLocality 
-              ? `${indicatorDisplayNames[indicator]} Costs per person for ${selectedLocality.counties}`
-              : `${indicatorDisplayNames[indicator]} Costs per person`)
+              ? `${indicatorDisplayNames[indicator]} Costs per resident for ${selectedLocality.counties}`
+              : `${indicatorDisplayNames[indicator]} Costs per resident`)
           : `${indicatorDisplayNames[indicator]} Costs`;
         
         legend.append("text")
@@ -1271,7 +1415,7 @@ export default function ChoroplethMap({
             // This is the highest value block on mobile - show "+" symbol
             labelText = `$${Math.round(min).toLocaleString()}+`;
           } else {
-            labelText = `$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()}${isMobile ? '' : ' per person'}`;
+            labelText = `$${Math.round(min).toLocaleString()} - $${Math.round(max).toLocaleString()}${isMobile ? '' : ' per resident'}`;
           }
           
           legend.append("text")
@@ -1292,6 +1436,7 @@ export default function ChoroplethMap({
           // and appear behind tooltips
           const annotationsGroup = mapGroup.append("g")
             .attr("class", "map-annotations")
+            .attr("aria-hidden", "true")
             .style("pointer-events", "none");
           
           // Left annotation
@@ -1393,6 +1538,7 @@ export default function ChoroplethMap({
               // Create the annotation - add it to the map group so it moves with the map
               const annotation = mapGroup.append("g")
                 .attr("class", "selected-locality-tooltip")
+                .attr("aria-hidden", "true")
                 .attr("transform", `translate(${centroid[0]}, ${centroid[1]})`)
                 .style("pointer-events", "none")
                 .style("opacity", 1);
@@ -1459,7 +1605,7 @@ export default function ChoroplethMap({
                 .attr("font-weight", "400")
                 .attr("fill", "#1E1E1E")
                 .style("pointer-events", "none")
-                .text(`${formatNumber(perCapitaValue, '$', ' per person')}`);
+                .text(`${formatNumber(perCapitaValue, '$', ' per resident')}`);
                 
               // Add total value
               annotation.append("text")
@@ -1508,23 +1654,12 @@ export default function ChoroplethMap({
   }, [svgRef, localities, indicator, displayType, selectedLocality, colors, windowWidth, totalValue, indicatorDisplayNames, onLocalityClick, onResetToVirginia, strokeColor, applyHoverEffects, resetHoverEffects, createHoverTooltip, updateHoverTooltipPosition, removeHoverTooltip, leftAnnotation, topAnnotation, rightAnnotation]);
 
   return (
-    <div 
-      className="relative"
-      role="region"
-      aria-label={`Interactive choropleth map visualization showing ${indicatorDisplayNames[indicator]} ${displayType === 'PerCapita' ? 'per capita' : 'total'} costs across Virginia localities. Each locality is colored based on its cost value. ${selectedLocality ? `Currently selected: ${selectedLocality.counties.trim()}` : 'No locality is currently selected.'} Click on any locality to select it, or click outside to reset to Virginia view.`}
-      aria-describedby="choropleth-map-description"
-    >
+    <div className="relative">
       <svg 
         ref={svgRef} 
         className="w-full max-w-full" 
         style={{ visibility: isInitialized ? 'visible' : 'hidden' }}
-        aria-hidden="true"
       />
-      
-      {/* Hidden description for screen readers */}
-      <div id="choropleth-map-description" className="sr-only">
-        Interactive map of Virginia showing {indicatorDisplayNames[indicator]} {displayType === 'PerCapita' ? 'per capita' : 'total'} costs. Each locality is colored according to its cost value, with darker colors indicating higher costs. Hover over localities to see detailed information including locality name and cost values. {selectedLocality ? `The selected locality ${selectedLocality.counties.trim()} is highlighted with a gold border.` : 'No specific locality is currently selected.'} The map includes a color legend showing the cost ranges. On mobile devices, you can pan the map to explore different areas.
-      </div>
       
       {!mapLoaded && (
         <div className="absolute inset-0 flex items-center justify-center">
