@@ -52,7 +52,7 @@ export const locality = defineType({
             name: 'Crime_Other_PerCapita',
             title: 'Crime and Other Costs Per Capita',
             type: 'number',
-            description: 'Criminal justice and social services cost per resident related to opioid use',
+            description: 'Criminal legal system and social services cost per resident related to opioid use',
         }),
         defineField({
             name: 'Household_PerCapita',

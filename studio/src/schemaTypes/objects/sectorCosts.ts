@@ -37,9 +37,9 @@ export const sectorCosts = defineType({
     }),
     defineField({
       name: 'criminalJusticeContent',
-      title: 'Criminal Justice Content',
+      title: 'Criminal Legal System Content',
       type: 'blockContent',
-      description: 'Content displayed when "Criminal Justice" is selected',
+      description: 'Content displayed when "Criminal Legal System" is selected',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

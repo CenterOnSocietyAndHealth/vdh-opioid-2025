@@ -55,9 +55,9 @@ export const jitterPlot = defineType({
     }),
     defineField({
       name: 'crimeOtherDescription',
-      title: 'Criminal Justice Description',
+      title: 'Criminal Legal System Description',
       type: 'blockContent',
-      description: 'Description for the Criminal Justice jitter plot data table',
+      description: 'Description for the Criminal Legal System jitter plot data table',
     }),
     defineField({
       name: 'householdDescription',
@@ -85,9 +85,9 @@ export const jitterPlot = defineType({
     }),
     defineField({
       name: 'crimeOtherSources',
-      title: 'Criminal Justice Sources',
+      title: 'Criminal Legal System Sources',
       type: 'blockContent',
-      description: 'Sources information for the Criminal Justice jitter plot',
+      description: 'Sources information for the Criminal Legal System jitter plot',
     }),
     defineField({
       name: 'householdSources',
