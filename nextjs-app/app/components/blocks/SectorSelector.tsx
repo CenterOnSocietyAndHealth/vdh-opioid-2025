@@ -6,7 +6,7 @@ import { getValidKeyOrDefault } from '@/app/client-utils';
 
 const sectors = [
   'All Sectors',
-  'Lost Labor',
+  'Lost Earnings',
   'Health Care',
   'Child Services & K-12',
   'Criminal Legal System'

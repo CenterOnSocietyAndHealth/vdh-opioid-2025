@@ -47,7 +47,7 @@ const marginBottomMap: Record<string, string> = {
 // Mapping between SectorSelector sectors and data field names
 const sectorToFieldMapping: Record<string, string> = {
   'All Sectors': 'totalPerCapita',
-  'Lost Labor': 'laborPerCapita',
+  'Lost Earnings': 'laborPerCapita',
   'Health Care': 'healthcarePerCapita',
   'Child Services & K-12': 'householdPerCapita',
   'Criminal Legal System': 'crimeOtherPerCapita',
@@ -56,7 +56,7 @@ const sectorToFieldMapping: Record<string, string> = {
 // Mapping between SectorSelector sectors and total cost field names
 const sectorToTotalFieldMapping: Record<string, string> = {
   'All Sectors': 'totalTotal',
-  'Lost Labor': 'laborTotal',
+  'Lost Earnings': 'laborTotal',
   'Health Care': 'healthcareTotal',
   'Child Services & K-12': 'householdTotal',
   'Criminal Legal System': 'crimeOtherTotal',
@@ -65,7 +65,7 @@ const sectorToTotalFieldMapping: Record<string, string> = {
 // Display names for sectors
 const sectorDisplayNames: Record<string, string> = {
   'All Sectors': 'All-Sector',
-  'Lost Labor': 'Lost Labor',
+  'Lost Earnings': 'Lost Earnings',
   'Health Care': 'Health Care',
   'Child Services & K-12': 'Child Services & K-12',
   'Criminal Legal System': 'Criminal Legal System',
@@ -233,7 +233,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     switch (selectedSector) {
       case 'All Sectors':
         return block.totalDescription;
-      case 'Lost Labor':
+      case 'Lost Earnings':
         return block.laborDescription;
       case 'Health Care':
         return block.healthcareDescription;
@@ -251,7 +251,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     switch (selectedSector) {
       case 'All Sectors':
         return block.totalSources;
-      case 'Lost Labor':
+      case 'Lost Earnings':
         return block.laborSources;
       case 'Health Care':
         return block.healthcareSources;

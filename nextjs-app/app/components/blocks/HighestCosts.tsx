@@ -151,7 +151,7 @@ export default function HighestCosts({ block, localities }: HighestCostsProps) {
               </th>
               <th className="text-right py-1 px-0 text-[#6E6E6E] font-inter text-xs font-normal">
                 <div className="flex flex-col">
-                  <span>Local Lost Labor</span>
+                  <span>Local Lost Earnings</span>
                   <span>Opioid Costs*</span>
                 </div>
               </th>

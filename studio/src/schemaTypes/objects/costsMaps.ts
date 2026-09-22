@@ -77,9 +77,9 @@ export const costsMaps = defineType({
     }),
     defineField({
       name: 'laborDescription',
-      title: 'Lost Labor Description',
+      title: 'Lost Earnings Description',
       type: 'blockContent',
-      description: 'Detailed description for the Lost Labor tab',
+      description: 'Detailed description for the Lost Earnings tab',
     }),
     defineField({
       name: 'healthcareDescription',
@@ -107,9 +107,9 @@ export const costsMaps = defineType({
     }),
     defineField({
       name: 'laborSources',
-      title: 'Lost Labor Sources',
+      title: 'Lost Earnings Sources',
       type: 'blockContent',
-      description: 'Sources information for the Lost Labor tab',
+      description: 'Sources information for the Lost Earnings tab',
     }),
     defineField({
       name: 'healthcareSources',

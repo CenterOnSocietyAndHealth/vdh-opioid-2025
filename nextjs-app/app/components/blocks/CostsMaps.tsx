@@ -83,7 +83,7 @@ const strokeColors = [
 // Mapping between tab names and corresponding display names
 const tabIndicatorMapping = {
   'Total': 'Total',
-  'Labor': 'Lost Labor',
+  'Labor': 'Lost Earnings',
   'HealthCare': 'Health Care',
   'Crime_Other': 'Criminal Legal System',
   'Household': 'Child Services & K-12',
@@ -92,7 +92,7 @@ const tabIndicatorMapping = {
 // Mapping between SectorSelector sectors and CostsMaps tabs
 const sectorToTabMapping: Record<string, CostsMapIndicator> = {
   'All Sectors': 'Total',
-  'Lost Labor': 'Labor',
+  'Lost Earnings': 'Labor',
   'Health Care': 'HealthCare',
   'Child Services & K-12': 'Household',
   'Criminal Legal System': 'Crime_Other',

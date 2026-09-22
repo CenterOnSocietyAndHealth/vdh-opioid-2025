@@ -16,9 +16,9 @@ export const sectorCosts = defineType({
     }),
     defineField({
       name: 'lostLaborContent',
-      title: 'Lost Labor Content',
+      title: 'Lost Earnings Content',
       type: 'blockContent',
-      description: 'Content displayed when "Lost Labor" is selected',
+      description: 'Content displayed when "Lost Earnings" is selected',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

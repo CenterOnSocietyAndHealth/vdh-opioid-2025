@@ -38,7 +38,7 @@ export const locality = defineType({
         }),
         defineField({
             name: 'Labor_PerCapita',
-            title: 'Lost Labor Cost Per Capita',
+            title: 'Lost Earnings Cost Per Capita',
             type: 'number',
             description: 'Lost productivity cost per resident due to opioid-related deaths, disabilities, and incarcerations',
         }),

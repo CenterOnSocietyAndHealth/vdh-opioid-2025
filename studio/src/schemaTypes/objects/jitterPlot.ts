@@ -43,9 +43,9 @@ export const jitterPlot = defineType({
     }),
     defineField({
       name: 'laborDescription',
-      title: 'Lost Labor Description',
+      title: 'Lost Earnings Description',
       type: 'blockContent',
-      description: 'Description for the Lost Labor jitter plot data table',
+      description: 'Description for the Lost Earnings jitter plot data table',
     }),
     defineField({
       name: 'healthcareDescription',
@@ -73,9 +73,9 @@ export const jitterPlot = defineType({
     }),
     defineField({
       name: 'laborSources',
-      title: 'Lost Labor Sources',
+      title: 'Lost Earnings Sources',
       type: 'blockContent',
-      description: 'Sources information for the Lost Labor jitter plot',
+      description: 'Sources information for the Lost Earnings jitter plot',
     }),
     defineField({
       name: 'healthcareSources',

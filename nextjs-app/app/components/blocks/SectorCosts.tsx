@@ -95,7 +95,7 @@ export default function SectorCosts({ block, selectedLocality: propSelectedLocal
   // Get the content based on selected sector
   const getContentForSector = () => {
     switch (selectedSector) {
-      case 'Lost Labor':
+      case 'Lost Earnings':
         return lostLaborContent || []
       case 'Health Care':
         return healthcareContent || []
