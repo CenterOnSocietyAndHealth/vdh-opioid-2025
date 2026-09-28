@@ -295,7 +295,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
   const tableColumns: DataTableColumn[] = [
     { key: 'locality', label: 'Locality', align: 'left', format: 'text' },
     { key: 'total', label: 'Total Cost', align: 'right', format: 'currency' },
-    { key: 'perCapita', label: 'Per Capita Cost', align: 'right', format: 'currency' },
+    { key: 'perCapita', label: 'Per Resident Cost', align: 'right', format: 'currency' },
   ];
 
   // D3 chart rendering

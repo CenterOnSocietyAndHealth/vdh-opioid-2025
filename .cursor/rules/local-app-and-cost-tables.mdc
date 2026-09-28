@@ -23,5 +23,7 @@ The site is the Next.js app in `nextjs-app/`. Content comes from Sanity project 
 
 Change only the table the request names:
 
-- `JitterPlot.tsx` — `Chart Description/Data Table`, column `Per Capita Cost`
-- `CostsBreakdown.tsx` and `PayerBreakdown.tsx` — `Chart Description/Data Table`, their own column labels
+- `JitterPlot.tsx` — `Chart Description/Data Table`, column `Per Resident Cost`
+- `CostsBreakdown.tsx` — `Chart Description/Data Table`, column `Per Resident`
+- `DataTableDescription.tsx` — fallback column `Per Resident` when a caller does not pass columns
+- `PayerBreakdown.tsx` — `Chart Description/Data Table`, no per-resident column

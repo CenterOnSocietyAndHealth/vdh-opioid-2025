@@ -33,7 +33,7 @@ export default function DataTableDescription({
   columns = [
     { key: 'sector', label: 'Sector', align: 'left', format: 'text' },
     { key: 'total', label: 'Total', align: 'right', format: 'currency' },
-    { key: 'perCapita', label: 'Per Capita', align: 'right', format: 'currency' },
+    { key: 'perCapita', label: 'Per Resident', align: 'right', format: 'currency' },
     { key: 'percentageOfTotal', label: 'Percentage of Total', align: 'right', format: 'percentage' }
   ],
   data = [],
