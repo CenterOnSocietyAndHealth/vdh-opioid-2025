@@ -321,7 +321,7 @@ export default function CostsMaps({ block, localities, pageId }: CostsMapProps) 
   const tableColumns: DataTableColumn[] = [
     { key: 'locality', label: 'Locality', align: 'left', format: 'text' },
     { key: 'total', label: 'Total Cost', align: 'right', format: 'currency' },
-    { key: 'perCapita', label: 'Per Capita Cost', align: 'right', format: 'currency' },
+    { key: 'perCapita', label: 'Per Resident Cost', align: 'right', format: 'currency' },
   ];
 
   const annotations = getCurrentAnnotations();
