@@ -211,7 +211,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
     if (isVirginiaSelected) {
       return {
         title: `${sectorDisplayName} costs in Virginia averaged $${Math.round(plotData.average).toLocaleString()} per resident.`,
-        subtitle: `${sectorDisplayName} Cost Per Resident of the Opioid Epidemic for All Virginia Localities, 2023`,
+        subtitle: `${sectorDisplayName} Cost Per Resident of the Opioid Epidemic for All Virginia Localities, 2024`,
         percentageDifference: null,
       };
     } else {
@@ -222,7 +222,7 @@ export default function JitterPlot({ block, localities, pageId }: JitterPlotProp
       
       return {
         title: `${sectorDisplayName} costs in ${countyName} were ${absDiff}% ${moreOrLess} than the average community.`,
-        subtitle: `${sectorDisplayName} Cost Per Resident of the Opioid Epidemic for ${countyName}, 2023`,
+        subtitle: `${sectorDisplayName} Cost Per Resident of the Opioid Epidemic for ${countyName}, 2024`,
         percentageDifference: diff,
       };
     }
