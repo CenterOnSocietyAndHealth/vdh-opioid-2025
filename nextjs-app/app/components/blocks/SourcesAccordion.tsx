@@ -7,12 +7,18 @@ import ResolvedLink from '@/app/components/ResolvedLink';
 // Define the component props interface
 export interface SourcesAccordionProps {
   title?: string;
+  contentTitle?: string;
+  showContentTitle?: boolean;
+  showLeftBorder?: boolean;
   sources?: any[]; // WYSIWYG content (PortableText blocks)
   backgroundColor?: string; // CSS class for background color
 }
 
 export default function SourcesAccordion({ 
   title = "Sources",
+  contentTitle,
+  showContentTitle = true,
+  showLeftBorder = true,
   sources,
   backgroundColor = "bg-white"
 }: SourcesAccordionProps) {
@@ -21,6 +27,8 @@ export default function SourcesAccordion({
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };
+
+  const resolvedContentTitle = contentTitle?.trim() || "Sources";
 
   return (
     <div className={`sources-accordion ${backgroundColor} overflow-hidden`}>
@@ -65,13 +73,14 @@ export default function SourcesAccordion({
           {/* Sources Section */}
           {sources && (
             <div className="relative">
-              {/* Left indent border */}
+              {showLeftBorder && (
                 <div className="absolute left-0 top-0 bottom-0 w-[10px] bg-[#D9D9D9]"></div>
+              )}
               
-              {/* Content with left padding to account for border */}
-              <div className="pl-6">
-                {/* Main title */}
-                <h3 className="mb-4">Sources</h3>
+              <div className={showLeftBorder ? "pl-6" : undefined}>
+                {showContentTitle && (
+                  <h3 className="mb-4">{resolvedContentTitle}</h3>
+                )}
                 
                 {/* Sources content */}
                 <div className="max-w-[570px]">

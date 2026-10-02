@@ -106,6 +106,9 @@ export type UpdateIntro = {
 export type SourcesAccordion = {
   _type: 'sourcesAccordion';
   title: string;
+  contentTitle?: string;
+  hideContentTitle?: boolean;
+  hideLeftBorder?: boolean;
   sources: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -15163,6 +15166,9 @@ export type GetPageQueryResult = {
         _key: string;
         _type: 'sourcesAccordion';
         title: string;
+        contentTitle?: string;
+        hideContentTitle?: boolean;
+        hideLeftBorder?: boolean;
         sources: Array<{
           children?: Array<{
             marks?: Array<string>;
