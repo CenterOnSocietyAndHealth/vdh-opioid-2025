@@ -3,7 +3,7 @@
 import { PortableText } from 'next-sanity'
 import imageUrlBuilder from '@sanity/image-url'
 import { client } from '@/sanity/lib/client'
-import { useEffect, useState } from 'react'
+import { Children, Fragment, isValidElement, useEffect, useState, type ReactNode } from 'react'
 import { TextContentProps, Locality } from '@/app/types/locality'
 import DefinitionPopup from '@/app/components/DefinitionPopup'
 import Image from 'next/image'
@@ -34,6 +34,35 @@ const alignmentMap = {
   left: 'text-left',
   center: 'text-center',
   right: 'text-right',
+}
+
+function isSourceCitation(node: ReactNode) {
+  if (!isValidElement(node)) return false
+  const props = node.props as {
+    href?: string
+    markType?: string
+    value?: { citationId?: string }
+  }
+  if (props.markType === 'citation' || typeof props.value?.citationId === 'string') return true
+  return typeof props.href === 'string' && props.href.startsWith('#source-')
+}
+
+// Commas pasted between citation numbers are their own text spans, so they
+// would otherwise sit on the baseline between superscript links.
+function withSuperscriptCitationCommas(children: ReactNode) {
+  const nodes = Children.toArray(children)
+  return nodes.map((node, index) => {
+    if (typeof node !== 'string') return node
+    const match = node.match(/^,(\s*)$/)
+    if (!match) return node
+    if (!isSourceCitation(nodes[index - 1]) || !isSourceCitation(nodes[index + 1])) return node
+    return (
+      <Fragment key={`citation-comma-${index}`}>
+        <span style={{ fontSize: '0.75em', verticalAlign: 'super' }}>,</span>
+        {match[1]}
+      </Fragment>
+    )
+  })
 }
 
 const getNestedValue = (obj: any, path: string) => {
@@ -120,6 +149,7 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
               },
             },
             block: {
+              normal: ({ children }) => <p>{withSuperscriptCitationCommas(children)}</p>,
               largeValue: ({ children }) => (
                 <div style={{
                   fontFamily: 'Inter',
@@ -144,6 +174,10 @@ export default function TextContent({ block, selectedLocality: propSelectedLocal
                   {children}
                 </div>
               ),
+            },
+            listItem: {
+              bullet: ({ children }) => <li>{withSuperscriptCitationCommas(children)}</li>,
+              number: ({ children }) => <li>{withSuperscriptCitationCommas(children)}</li>,
             },
             marks: {
               link: ({ children, value: link }) => {
