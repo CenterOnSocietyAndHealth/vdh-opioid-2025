@@ -58,7 +58,8 @@ export default function ContentWrapper({ block, selectedLocality, localities, pa
     backgroundWidth = 'container',
     contentWidth = 'container',
     customContentWidth,
-    padding = 'medium'
+    padding = 'medium',
+    isAside = false,
   } = block
 
   // Clean corrupted string values
@@ -87,10 +88,12 @@ export default function ContentWrapper({ block, selectedLocality, localities, pa
   const validPadding = cleanPadding && paddingMap[cleanPadding as keyof typeof paddingMap] ? cleanPadding : 'medium'
 
 
+  const BackgroundTag = isAside ? 'aside' : 'div'
+
   return (
     <div className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
       {/* Background container */}
-      <div 
+      <BackgroundTag
         className={`${backgroundWidthMap[validBackgroundWidth as keyof typeof backgroundWidthMap]}`}
         style={{ backgroundColor: finalBackgroundColor }}
       >
@@ -115,7 +118,7 @@ export default function ContentWrapper({ block, selectedLocality, localities, pa
             />
           ))}
         </div>
-      </div>
+      </BackgroundTag>
     </div>
   )
 }

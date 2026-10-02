@@ -181,6 +181,7 @@ export type ContentWrapperProps = {
     contentWidth?: 'full' | 'container' | 'narrow' | 'custom';
     customContentWidth?: number;
     padding?: 'none' | 'small' | 'medium' | 'large';
+    isAside?: boolean;
   };
   selectedLocality?: Locality;
   localities?: Array<Locality>;
