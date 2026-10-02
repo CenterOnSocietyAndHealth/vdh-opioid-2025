@@ -162,6 +162,8 @@ export const blockContent = defineType({
                     {title: 'Median Age', value: 'demographics.medianAge'},
                     {title: 'Median Income', value: 'demographics.medianIncome'},
                     {title: 'Poverty Percentage', value: 'demographics.povertyPct'},
+                    {title: 'Severe Rent Burden Percentage', value: 'demographics.severeRentBurdenPct'},
+                    {title: 'Uninsured Percentage', value: 'demographics.uninsuredPct'},
                     {title: 'Health District', value: 'regions.healthDistrict'},
                     {title: 'Health Region', value: 'regions.healthRegion'},
                     {title: 'Cooper Center Region', value: 'regions.cooperCtrRegion'},
@@ -182,8 +184,8 @@ export const blockContent = defineType({
                     {title: 'Total Cost Comparison', value: 'opioidMetrics.totalTotalComparison'},
                     {title: 'Total Per Capita Percentile', value: 'opioidMetrics.totalPerCapitaPercentile'},
                     {title: 'Total Per Capita Comparison', value: 'opioidMetrics.totalPerCapitaComparison'},
-                    {title: 'OUD Deaths 2023', value: 'opioidCases.oudDeaths2023'},
-                    {title: 'OUD Cases 2023', value: 'opioidCases.oudCases2023'},
+                    {title: 'OUD Deaths 2024', value: 'opioidCases.oudDeaths2024'},
+                    {title: 'OUD Cases 2024', value: 'opioidCases.oudCases2024'},
                     {title: 'Labor Fatal Costs', value: 'laborBreakdown.laborFatal'},
                     {title: 'Labor OUD Costs', value: 'laborBreakdown.laborOUD'},
                     {title: 'Labor Incarceration Costs', value: 'laborBreakdown.laborIncarceration'},
@@ -259,6 +261,43 @@ export const blockContent = defineType({
                 type: 'boolean',
                 initialValue: false,
                 description: 'Make the locality field value bold',
+              }),
+            ],
+          },
+          {
+            name: 'stateComparison',
+            type: 'object',
+            title: 'State Comparison %',
+            icon: () => (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 3v18h18" />
+                <path d="M7 12l4-4 4 4 6-6" />
+              </svg>
+            ),
+            fields: [
+              defineField({
+                name: 'metric',
+                title: 'Metric',
+                type: 'string',
+                options: {
+                  list: [
+                    {title: 'Poverty vs State', value: 'poverty'},
+                    {title: 'Median Income vs State', value: 'income'},
+                    {title: 'Severe Rent Burden vs State', value: 'rentBurden'},
+                    {title: 'Uninsured vs State', value: 'uninsured'},
+                  ],
+                },
+                validation: (Rule) => Rule.required(),
               }),
             ],
           },

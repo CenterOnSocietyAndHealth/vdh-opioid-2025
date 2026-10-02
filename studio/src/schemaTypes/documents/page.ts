@@ -66,6 +66,7 @@ export const page = defineType({
         { type: 'blockQuote' },
         { type: 'imageAndText' },
         { type: 'recommendedCitation' },
+        { type: 'socioEconomicData' },
       ],
       options: {
         insertMenu: {

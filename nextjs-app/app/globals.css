@@ -29,7 +29,7 @@ p {
     line-height: 130%;
     font-family: var(--font-inter), sans-serif;
     color: #1E1E1E;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 300;
     line-height: 150%;
 }
@@ -61,6 +61,14 @@ sup {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+.counties path:focus,
+.counties path:focus-visible {
+    outline: 3px solid #FFD900 !important;
+    outline-offset: 3px;
+    stroke: #FFD900 !important;
+    stroke-width: 3px !important;
 }
 
 /* Fix line spacing for citation links that use vertical-align: super */
@@ -124,10 +132,20 @@ h3 {
     line-height: 130%;
     letter-spacing: -0.528px;
 }
-h4 {
+h4,
+aside h3 {
     font-size: 27px;
     margin-bottom: 5px;
     letter-spacing: -.3px;
+}
+
+/* h3 sets its own type styles. Inside an aside, drop those so the heading follows h4. */
+aside h3 {
+    color: inherit;
+    font-family: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
 }
 
 @media (max-width: 768px) {
@@ -142,11 +160,12 @@ h4 {
     font-size: 20px;
     line-height: 130%;
   }
-  h4 {
+  h4,
+  aside h3 {
     line-height: 130%;
     font-family: var(--font-inter), sans-serif;
     color: #1E1E1E;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 300;
     line-height: 150%;
   }
@@ -172,7 +191,8 @@ h4 {
   text-align: left;
 }
 
-.chart-description h4 {
+.chart-description h4,
+.chart-description aside h3 {
   font-family: var(--font-inter), sans-serif;
   font-size: 16px;
   font-style: normal;
@@ -203,7 +223,8 @@ h4 {
   margin-bottom: 20px;
 }
 
-.sources-accordion h4 {
+.sources-accordion h4,
+.sources-accordion aside h3 {
   font-family: var(--font-inter), sans-serif;
   font-size: 14px;
   font-style: normal;
@@ -245,7 +266,8 @@ h4 {
     letter-spacing: -0.57px;
 }
 
-.sub-page h4 {
+.sub-page h4,
+.sub-page aside h3 {
     font-family: var(--font-dm-sans), sans-serif;
     font-size: 22px;
     font-style: normal;
@@ -272,7 +294,8 @@ h4 {
     letter-spacing: -0.396px;
 }
 
-.aside h4 {
+.aside h4,
+.aside h3 {
     font-size: 22px;
     margin-top: 0;
     font-weight: 800;
@@ -522,7 +545,7 @@ ol ol ol {
 .recommended-citation-text {
   color: #1E1E1E;
   font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova", sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 300;
   line-height: 150%;

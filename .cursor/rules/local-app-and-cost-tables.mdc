@@ -1,0 +1,29 @@
+---
+description: Where the local Next.js app runs and which file owns each cost data-table header
+alwaysApply: true
+---
+
+# Local app and cost data tables
+
+The site is the Next.js app in `nextjs-app/`. Content comes from Sanity project `hoc4qxji`.
+
+## Which server to open
+
+- Current content work uses `npm run dev:staging` from `nextjs-app/`. That loads `.env.staging` (dataset `staging-2026`) and does not load `.env.local`.
+- `npm run dev` uses `.env.local` (dataset `production`).
+- Read the running terminal for the printed Local URL. Next starts on port 3000 and uses the next free port if 3000 is taken.
+- The homepage is Sanity slug `home`, served at `/`. The `costsMaps` block is on that page.
+
+## Map Description table
+
+- Accordion title `Map Description/Data Table` and its column labels are in `nextjs-app/app/components/blocks/CostsMaps.tsx` (`tableColumns`).
+- `CostsMaps` renders a loading placeholder until it mounts, so the table is absent from the first HTML response. Confirm a header in the hydrated DOM (text `Map Description/Data Table`), not with curl.
+
+## Similar tables
+
+Change only the table the request names:
+
+- `JitterPlot.tsx` — `Chart Description/Data Table`, column `Per Resident Cost`
+- `CostsBreakdown.tsx` — `Chart Description/Data Table`, column `Per Resident`
+- `DataTableDescription.tsx` — fallback column `Per Resident` when a caller does not pass columns
+- `PayerBreakdown.tsx` — `Chart Description/Data Table`, no per-resident column

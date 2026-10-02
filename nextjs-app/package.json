@@ -4,6 +4,7 @@
   "scripts": {
     "predev": "npm run typegen",
     "dev": "next --turbo",
+    "dev:staging": "node ./scripts/dev-staging.mjs",
     "prebuild": "npm run typegen",
     "build": "next build",
     "start": "next start",

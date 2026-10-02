@@ -30,6 +30,25 @@ export const imageBlock = defineType({
       ],
     }),
     defineField({
+      name: 'mobileImage',
+      title: 'Mobile Image',
+      type: 'image',
+      description:
+        'Optional. Shown on mobile screens instead of the main image. Use a tighter crop or alternate composition for small viewports.',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative Text',
+          description:
+            'Optional. Falls back to the main image alt text when left blank.',
+        },
+      ],
+    }),
+    defineField({
       name: 'sectionId',
       title: 'Section ID',
       type: 'string',

@@ -76,7 +76,7 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
   const tableColumns: DataTableColumn[] = [
     { key: 'sector', label: 'Sector', align: 'left', format: 'text' },
     { key: 'total', label: 'Total', align: 'right', format: 'currency' },
-    { key: 'perCapita', label: 'Per Capita', align: 'right', format: 'currency' },
+    { key: 'perCapita', label: 'Per Resident', align: 'right', format: 'currency' },
     { key: 'percentageOfTotal', label: 'Percentage of Total', align: 'right', format: 'percentage' }
   ];
 
@@ -589,17 +589,39 @@ export default function CostsBreakdown({ block }: CostsBreakdownProps) {
       >
 
         {/* Mobile Aside */}
-        {mobileAside && (
+        {(mobileAside || asideLink) && (
           <div className="bg-[#F3F2EC] p-4 pb-0.5 mb-8 mobile-aside">
-            <div
-              style={{
-                color: '#1E1E1E',
-                fontSize: '14px',
-                fontWeight: 400,
-              }}
-            >
-              <PortableText value={mobileAside} />
-            </div>
+            {mobileAside && (
+              <div
+                style={{
+                  color: '#1E1E1E',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                }}
+              >
+                <PortableText value={mobileAside} />
+              </div>
+            )}
+            {asideLink && (
+              <div className="mb-3.5">
+                <a
+                  href={asideLink.internalPage ? `/${asideLink.internalPage.slug}` : asideLink.url}
+                  tabIndex={0}
+                  className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
+                  style={{
+                    color: '#000',
+                    fontFamily: 'Inter',
+                    fontSize: '14px',
+                    fontStyle: 'normal',
+                    fontWeight: 400,
+                    lineHeight: 'normal',
+                    textDecorationLine: 'underline',
+                  }}
+                >
+                  {asideLink.title} ––&gt;
+                </a>
+              </div>
+            )}
           </div>
         )}
 

@@ -21,6 +21,9 @@ interface SourcesAccordionBlockProps {
     _type: 'sourcesAccordion';
     _key: string;
     title?: string;
+    contentTitle?: string;
+    hideContentTitle?: boolean;
+    hideLeftBorder?: boolean;
     sources?: any[];
     backgroundColor?: string;
     marginTop?: string;
@@ -31,7 +34,10 @@ interface SourcesAccordionBlockProps {
 
 export default function SourcesAccordionBlock({ block }: SourcesAccordionBlockProps) {
   const { 
-    title = 'Sources', 
+    title = 'Sources',
+    contentTitle,
+    hideContentTitle = false,
+    hideLeftBorder = false,
     sources, 
     backgroundColor = 'bg-white',
     marginTop = 'none',
@@ -49,6 +55,9 @@ export default function SourcesAccordionBlock({ block }: SourcesAccordionBlockPr
     >
       <SourcesAccordion
         title={title}
+        contentTitle={contentTitle}
+        showContentTitle={!hideContentTitle}
+        showLeftBorder={!hideLeftBorder}
         sources={sources}
         backgroundColor={backgroundColor}
       />

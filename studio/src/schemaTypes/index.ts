@@ -29,6 +29,7 @@ import {highestCosts} from './objects/highestCosts'
 import {blockQuote} from './objects/blockQuote'
 import {imageAndText} from './objects/imageAndText'
 import {recommendedCitation} from './objects/recommendedCitation'
+import {socioEconomicData} from './objects/socioEconomicData'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -67,4 +68,5 @@ export const schemaTypes = [
   blockQuote,
   imageAndText,
   recommendedCitation,
+  socioEconomicData,
 ]

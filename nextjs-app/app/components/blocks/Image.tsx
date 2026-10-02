@@ -47,6 +47,7 @@ const cleanString = (str: string | undefined): string | undefined => {
 export default function ImageBlock({ block }: ImageProps) {
   const { 
     image,
+    mobileImage,
     sectionId,
     marginTop = 'none', 
     marginBottom = 'none', 
@@ -90,6 +91,11 @@ export default function ImageBlock({ block }: ImageProps) {
     return null
   }
 
+  const hasMobileImage = Boolean(mobileImage?.asset?._ref)
+  const imageClassName = `${imageWidth ? '' : 'w-auto h-auto'} max-w-full ${hasShadow ? 'shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]' : ''}`
+  const imageHeight = imageWidth ? imageWidth * 0.75 : 600
+  const resolvedWidth = imageWidth || 800
+
   return (
     <div className={`${marginMap[validMarginTop as keyof typeof marginMap]} ${marginBottomMap[validMarginBottom as keyof typeof marginBottomMap]}`}>
       <div 
@@ -101,13 +107,23 @@ export default function ImageBlock({ block }: ImageProps) {
         }}
       >
         <div className="image-wrapper">
+          {hasMobileImage && (
+            <Image
+              src={urlForImage(mobileImage).url()}
+              alt={mobileImage?.alt || image.alt || ''}
+              width={resolvedWidth}
+              height={imageHeight}
+              priority={false}
+              className={`${imageClassName} md:hidden`}
+            />
+          )}
           <Image
             src={urlForImage(image).url()}
             alt={image.alt || ''}
-            width={imageWidth || 800}
-            height={imageWidth ? (imageWidth * 0.75) : 600} // Assume 4:3 aspect ratio
+            width={resolvedWidth}
+            height={imageHeight}
             priority={false}
-            className={`${imageWidth ? '' : 'w-auto h-auto'} max-w-full ${hasShadow ? 'shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]' : ''}`}
+            className={`${imageClassName}${hasMobileImage ? ' hidden md:block' : ''}`}
           />
           {image.caption && (
             <div 

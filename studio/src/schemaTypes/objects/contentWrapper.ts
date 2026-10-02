@@ -108,6 +108,13 @@ export const contentWrapper = defineType({
       initialValue: 'none',
     }),
     defineField({
+      name: 'isAside',
+      title: 'Render as aside',
+      type: 'boolean',
+      description: 'Use an aside element. An H3 inside an aside is styled like an H4.',
+      initialValue: false,
+    }),
+    defineField({
       name: 'content',
       title: 'Content',
       type: 'array',
@@ -123,6 +130,7 @@ export const contentWrapper = defineType({
         { type: 'localityDemographics' },
         { type: 'jitterPlot' },
         { type: 'povertyIncome' },
+        { type: 'socioEconomicData' },
         { type: 'downloadButton' },
       ],
       validation: (Rule) => Rule.required().min(1),

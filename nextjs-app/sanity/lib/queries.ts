@@ -31,9 +31,16 @@ const definitionReference = /* groq */ `
   }
 `;
 
+const citationReference = /* groq */ `
+  _type == "citation" => {
+    citationId
+  }
+`;
+
 const markDefsReference = /* groq */ `
   ${linkReference},
-  ${definitionReference}
+  ${definitionReference},
+  ${citationReference}
 `;
 
 const linkFields = /* groq */ `
@@ -58,7 +65,9 @@ export const localitiesQuery = defineQuery(`
       totalPopulation,
       medianAge,
       medianIncome,
-      povertyPct
+      povertyPct,
+      severeRentBurdenPct,
+      uninsuredPct
     },
     regions {
       healthDistrict,
@@ -87,8 +96,8 @@ export const localitiesQuery = defineQuery(`
       totalPerCapitaComparison
     },
     opioidCases {
-      oudDeaths2023,
-      oudCases2023
+      oudDeaths2024,
+      oudCases2024
     }
   }
 `);
@@ -133,8 +142,8 @@ export const getPageQuery = defineQuery(`
           totalPerCapitaComparison
         },
         opioidCases {
-          oudDeaths2023,
-          oudCases2023
+          oudDeaths2024,
+          oudCases2024
         }
       },
       null
@@ -552,6 +561,144 @@ export const getPageQuery = defineQuery(`
       _type == "blockQuote" => {
         ...,
         quote[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        }
+      },
+      _type == "contentWrapper" => {
+        ...,
+        content[]{
+          ...,
+          _type == "socioEconomicData" => {
+            ...,
+            heading[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            povertyComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            incomeComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            rentBurdenComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            uninsuredComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            statePovertyComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            stateIncomeComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            stateRentBurdenComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            },
+            stateUninsuredComparison[]{
+              ...,
+              markDefs[]{
+                ...,
+                ${markDefsReference}
+              }
+            }
+          }
+        }
+      },
+      _type == "socioEconomicData" => {
+        ...,
+        heading[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        povertyComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        incomeComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        rentBurdenComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        uninsuredComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        statePovertyComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        stateIncomeComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        stateRentBurdenComparison[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${markDefsReference}
+          }
+        },
+        stateUninsuredComparison[]{
           ...,
           markDefs[]{
             ...,

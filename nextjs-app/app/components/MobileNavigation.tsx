@@ -149,7 +149,7 @@ export default function MobileNavigation({
             </div>
 
             {/* Navigation Items - Scrollable */}
-            <nav className="flex-1 overflow-y-auto min-h-0 px-6 py-6">
+            <nav className="flex-1 overflow-y-auto min-h-0 px-6 py-6" aria-label="Main navigation">
               <ul className="space-y-0">
                 {items.map((item, index) => {
                   const href = item.linkType === 'internal' 
@@ -170,9 +170,15 @@ export default function MobileNavigation({
                         className={`flex items-center justify-between no-underline py-4 text-[20px] font-normal text-black hover:text-gray-600 transition-colors ${
                           isCurrentPage ? 'font-bold' : ''
                         }`}
+                        {...(isCurrentPage ? { 'aria-current': 'page' as const } : {})}
                         {...(item.linkType === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                       >
-                        <span>{item.title}</span>
+                        <span>
+                          {item.title}
+                          {item.linkType === 'external' && (
+                            <span className="sr-only"> (opens in new tab)</span>
+                          )}
+                        </span>
                               <span className="text-[#414141] text-2xl no-underline">›</span>
                       </a>
                     </li>
@@ -193,12 +199,12 @@ export default function MobileNavigation({
               {/* Logos */}
               <div className="flex items-center justify-start space-x-8">
                 {/* CSH Logo */}
-                <a href="https://societyhealth.vcu.edu/" target="_blank" rel="noopener noreferrer" title="Visit VCU Center on Society and Health website">
-                    <Image src="/csh-logo.png" alt='CSH Logo' width={100} height={24} className="h-[24px] w-auto" />
+                <a href="https://societyhealth.vcu.edu/" target="_blank" rel="noopener noreferrer" aria-label="VCU Center on Society and Health website (opens in new tab)">
+                    <Image src="/csh-logo.png" alt="" width={100} height={24} className="h-[24px] w-auto" />
                 </a>
                 {/* VDH Logo */}
-                <a href="https://www.vdh.virginia.gov/" target="_blank" rel="noopener noreferrer" title="Visit Virginia Department of Health website">
-                  <Image src="/vdh.png" alt='VDH Logo' width={100} height={24} className="h-[24px] w-auto" />
+                <a href="https://www.vdh.virginia.gov/" target="_blank" rel="noopener noreferrer" aria-label="Virginia Department of Health website (opens in new tab)">
+                  <Image src="/vdh.png" alt="" width={100} height={24} className="h-[24px] w-auto" />
                 </a>
               </div>
             </div>
